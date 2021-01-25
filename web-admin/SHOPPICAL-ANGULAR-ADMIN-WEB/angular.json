@@ -120,5 +120,8 @@
       }
     }
   },
-  "defaultProject": "SHOPPICAL-ANGULAR-ADMIN-WEB"
+  "defaultProject": "SHOPPICAL-ANGULAR-ADMIN-WEB",
+  "cli": {
+    "analytics": "820746eb-76b8-474e-82d7-1619fbe4bd2b"
+  }
 }
