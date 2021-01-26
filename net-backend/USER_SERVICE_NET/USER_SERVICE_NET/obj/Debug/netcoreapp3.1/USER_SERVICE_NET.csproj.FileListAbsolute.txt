@@ -61,3 +61,6 @@ C:\Users\hieuvo\Desktop\FinalStudent\net-backend\USER_SERVICE_NET\USER_SERVICE_N
 C:\Users\hieuvo\Desktop\FinalStudent\net-backend\USER_SERVICE_NET\USER_SERVICE_NET\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
 C:\Users\hieuvo\Desktop\FinalStudent\net-backend\USER_SERVICE_NET\USER_SERVICE_NET\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\hieuvo\Desktop\FinalStudent\net-backend\USER_SERVICE_NET\USER_SERVICE_NET\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\USER_SERVICE_NET\USER_SERVICE_NET\bin\Debug\netcoreapp3.1\MailKit.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\USER_SERVICE_NET\USER_SERVICE_NET\bin\Debug\netcoreapp3.1\MimeKit.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\USER_SERVICE_NET\USER_SERVICE_NET\bin\Debug\netcoreapp3.1\NETCore.MailKit.dll

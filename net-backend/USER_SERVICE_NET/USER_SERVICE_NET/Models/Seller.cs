@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using USER_SERVICE_NET.Utilities;
+using USER_SERVICE_NET.Utilities.Enums;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
 // If you have enabled NRTs for your project, then un-comment the following line:
