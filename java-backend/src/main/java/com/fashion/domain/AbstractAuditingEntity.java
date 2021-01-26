@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -20,9 +22,11 @@ public abstract class AbstractAuditingEntity extends PkIdModel implements Serial
 	private static final long serialVersionUID = -3888863584642256309L;
 
 	@CreatedDate
+	@CreationTimestamp
 	private Date createdAt;
 
 	@LastModifiedDate
+	@UpdateTimestamp
 	private Date updatedAt;
 
 	@CreatedBy

@@ -3,6 +3,8 @@ package com.fashion.modules.product.domain;
 import java.math.BigDecimal;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,6 +25,7 @@ import lombok.Data;
 @Entity
 @Table(name = "product")
 @Data
+@Access(AccessType.FIELD)
 public class Product extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = 8690924342016681887L;

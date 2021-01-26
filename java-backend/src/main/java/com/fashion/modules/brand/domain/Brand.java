@@ -2,6 +2,8 @@ package com.fashion.modules.brand.domain;
 
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +23,7 @@ import lombok.Data;
 @Entity
 @Table(name = "brand")
 @Data
+@Access(AccessType.FIELD)
 public class Brand extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = -18569127290012608L;

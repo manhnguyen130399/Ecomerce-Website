@@ -3,6 +3,8 @@ package com.fashion.modules.promotion.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,6 +22,7 @@ import lombok.Data;
 @Entity
 @Table(name="customer_promo")
 @Data
+@Access(AccessType.FIELD)
 public class CustomerPromo implements Serializable {
 
 	private static final long serialVersionUID = 629705961266622525L;

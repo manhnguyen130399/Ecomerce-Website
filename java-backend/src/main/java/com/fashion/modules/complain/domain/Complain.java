@@ -3,6 +3,8 @@ package com.fashion.modules.complain.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,6 +26,7 @@ import lombok.Data;
 @Entity
 @Table(name = "complain")
 @Data
+@Access(AccessType.FIELD)
 public class Complain implements Serializable {
 
 	private static final long serialVersionUID = 4857965269572311121L;

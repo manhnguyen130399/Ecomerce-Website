@@ -2,6 +2,8 @@ package com.fashion.modules.size.domain;
 
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +20,7 @@ import com.google.common.collect.Sets;
 
 @Entity
 @Table(name = "size")
+@Access(AccessType.FIELD)
 public class Size extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = 8401446074224917065L;

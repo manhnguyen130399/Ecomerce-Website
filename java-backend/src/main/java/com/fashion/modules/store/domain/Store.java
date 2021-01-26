@@ -1,18 +1,27 @@
 package com.fashion.modules.store.domain;
 
+import java.io.Serializable;
 import java.sql.Time;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fashion.domain.AbstractAuditingEntity;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import com.fashion.modules.blog.domain.Blog;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.category.domain.Category;
@@ -22,18 +31,18 @@ import com.fashion.modules.promotion.domain.Promotion;
 import com.fashion.modules.size.domain.Size;
 import com.google.common.collect.Sets;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "store")
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class Store extends AbstractAuditingEntity {
+public class Store implements Serializable {
 
 	private static final long serialVersionUID = 559304058982328096L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
 	private String storeName;
 
@@ -46,6 +55,14 @@ public class Store extends AbstractAuditingEntity {
 	private String owner;
 
 	private String website;
+	
+	@CreatedDate
+	@CreationTimestamp
+	private Date createdAt;
+
+	@LastModifiedDate
+	@UpdateTimestamp
+	private Date updatedAt;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	private Set<Promotion> promotions = Sets.newHashSet();
@@ -124,6 +141,24 @@ public class Store extends AbstractAuditingEntity {
 
 	public void setCloseTime(final Time closeTime) {
 		this.closeTime = closeTime;
+	}
+	
+	@Column(name = "created_at")
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(final Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	@Column(name = "updated_at")
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(final Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 }
