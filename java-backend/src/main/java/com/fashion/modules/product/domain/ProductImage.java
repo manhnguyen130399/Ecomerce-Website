@@ -1,5 +1,7 @@
 package com.fashion.modules.product.domain;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -16,6 +18,7 @@ import lombok.Data;
 @Entity
 @Table
 @Data
+@Access(AccessType.FIELD)
 public class ProductImage extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = 6371956687192174016L;

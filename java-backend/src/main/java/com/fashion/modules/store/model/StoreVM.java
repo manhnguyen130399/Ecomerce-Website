@@ -1,22 +1,12 @@
 package com.fashion.modules.store.model;
 
-import java.sql.Time;
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.Data;
-
-@Data
-public class StoreVM {
+@Getter
+@Setter
+public class StoreVM extends StoreReq{
 	
 	private Integer id;
-
-	private String storeName;
-
-	private String address;
-	
-	private String owner;
-
-	private Time openTime;
-
-	private Time closeTime;
 
 }

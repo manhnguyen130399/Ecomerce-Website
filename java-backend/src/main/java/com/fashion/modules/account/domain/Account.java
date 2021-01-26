@@ -24,6 +24,8 @@ import com.fashion.modules.comment.domain.Comment;
 import com.google.common.collect.Sets;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "account")
@@ -43,7 +45,7 @@ public class Account implements Serializable {
 	private String password;
 
 	@Column(name = "type")
-	@Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.ORDINAL)
 	private AccountEnum type;
 
 	@Column(name = "is_active")

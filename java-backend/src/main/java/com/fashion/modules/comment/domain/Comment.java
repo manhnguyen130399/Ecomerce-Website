@@ -3,6 +3,8 @@ package com.fashion.modules.comment.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ import lombok.Data;
 @Entity
 @Table(name = "comment")
 @Data
+@Access(AccessType.FIELD)
 public class Comment implements Serializable {
 
 	private static final long serialVersionUID = 8891567408598708082L;

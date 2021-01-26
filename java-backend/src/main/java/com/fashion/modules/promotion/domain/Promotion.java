@@ -3,6 +3,8 @@ package com.fashion.modules.promotion.domain;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,6 +24,7 @@ import lombok.Data;
 @Entity
 @Table(name = "promotion")
 @Data
+@Access(AccessType.FIELD)
 public class Promotion extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = -7444653312966419895L;
@@ -41,7 +44,6 @@ public class Promotion extends AbstractAuditingEntity {
 	@Column(name = "discouny")
 	private Integer discount;
 
-	@Type(type = "json")
 	@Column(name = "promo_condition", columnDefinition = "json")
 	private String condition;
 

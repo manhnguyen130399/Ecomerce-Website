@@ -2,6 +2,8 @@ package com.fashion.modules.color.domain;
 
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +27,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Access(AccessType.FIELD)
 public class Color extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = 4254079776649399838L;

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-public final class Constant {
+public final class Constants {
 	public static final String DATE_FORMAT_YYYYMMDDHHMM = "yyyyMMddhhmm";
 	public static final String DATE_FORMAT_YYYYMMDDHHMMSS = "yyyyMMddhhmmss";
 	public static final String DATE_FORMAT_MMYY = "MMyy";
@@ -68,6 +68,12 @@ public final class Constant {
 	public static final String REGEX_BLANK = "\\s+";
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
+	
+	//OUTPUT KEY
+	public static final String DATA = "data";
+	public static final String CODE = "code";
+	public static final String MESSAGE = "message";
+	public static final String META_DATA ="meta-data";
 
 
 }

@@ -2,6 +2,8 @@ package com.fashion.modules.blog.domain;
 
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +22,7 @@ import lombok.Data;
 @Entity
 @Table(name = "blog")
 @Data
+@Access(AccessType.FIELD)
 public class Blog extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = -1057915571154447944L;
