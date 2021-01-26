@@ -14,8 +14,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
-using USER_SERVICE_NET.Services;
+using USER_SERVICE_NET.Services.Emails;
+using USER_SERVICE_NET.Services.Users;
 using USER_SERVICE_NET.Utilities;
+using USER_SERVICE_NET.ViewModels.Emails;
 
 namespace USER_SERVICE_NET
 {
@@ -35,6 +37,11 @@ namespace USER_SERVICE_NET
             services.AddDbContext<ShopicaContext>(options =>
                     options.UseMySQL(Configuration.GetConnectionString(Constant.ConnectionString)));
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IEmailService, EmailService>();
+
+            var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+
+            services.AddSingleton(emailConfig);
 
             services.AddAuthentication(opt =>
             {
@@ -66,7 +73,9 @@ namespace USER_SERVICE_NET
             }
 
             app.UseHttpsRedirection();
+
             app.UseAuthentication();
+
             app.UseRouting();
 
             app.UseAuthorization();

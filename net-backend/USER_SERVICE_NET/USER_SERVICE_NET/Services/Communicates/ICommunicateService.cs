@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USER_SERVICE_NET.Utilities
+namespace USER_SERVICE_NET.Services.Communicates
 {
-    public enum AccountTypes
+    public interface ICommunicateService
     {
-        Admin,
-        Seller,
-        Customer
     }
 }
