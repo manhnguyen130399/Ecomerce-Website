@@ -27,7 +27,7 @@ namespace USER_SERVICE_NET.Controllers
         }
 
         [HttpPost("cusomerRegister")]
-        public async Task<IActionResult> CustomerRegister(RegisterRequest request)
+        public async Task<IActionResult> CustomerRegister([FromForm] RegisterRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +41,6 @@ namespace USER_SERVICE_NET.Controllers
         }
 
         [HttpPost("authenticate")]
-
         public async Task<IActionResult> Authenticate(LoginRequest request)
         {
             if (!ModelState.IsValid)
@@ -64,7 +63,7 @@ namespace USER_SERVICE_NET.Controllers
                 return BadRequest(ModelState);
             }
 
-            request.AccountId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var result = await _userService.ChangePassword(request);
 
@@ -131,7 +130,24 @@ namespace USER_SERVICE_NET.Controllers
             if (!result.IsSuccessed) return BadRequest(result);
 
             return Ok(result);
+        }
 
+        [HttpPatch("UpdateCustomerInfo")]
+        [Authorize]
+        public async Task<IActionResult> UpdateCustomerInfo(UpdateCustomerInfoRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var result = await _userService.UpdateCustomerInfo(request);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace USER_SERVICE_NET.ViewModels.Users
         [Required]
         public Genders Gender{ get; set; }
 
-        public string ImageUrl{ get; set; }
+        public IFormFile ImageFile{ get; set; }
 
         [Phone]
         public string Phone{ get; set; }
