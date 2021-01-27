@@ -64,7 +64,7 @@ namespace USER_SERVICE_NET.Controllers
                 return BadRequest(ModelState);
             }
 
-            request.Email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+            request.AccountId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var result = await _userService.ChangePassword(request);
 
@@ -110,6 +110,23 @@ namespace USER_SERVICE_NET.Controllers
             }
 
             var result = await _userService.ResetPassword(request);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+
+        }
+
+
+        [HttpPost("socialLogin")]
+        public async Task<IActionResult> SocialLogin(SocialLoginRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.SocialLogin(request);
 
             if (!result.IsSuccessed) return BadRequest(result);
 
