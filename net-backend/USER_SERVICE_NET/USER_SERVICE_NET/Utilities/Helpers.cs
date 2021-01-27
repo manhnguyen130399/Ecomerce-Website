@@ -7,19 +7,22 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using USER_SERVICE_NET.Models;
 
 namespace USER_SERVICE_NET.Utilities
 {
     public static class Helpers
     {
-        public static string CreateToken(int role, string email, IConfiguration _configuration)
+        public static string CreateToken(Account user,bool isSocial, IConfiguration _configuration)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var claims = new[]
            {
-                new Claim(ClaimTypes.Email,email),
-                new Claim(ClaimTypes.Role, role.ToString()),
+                new Claim(ClaimTypes.Email,user.Username),
+                new Claim(ClaimTypes.Role, user.Type.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("isSocial", isSocial.ToString()),
             };
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("SecretKey").Value);
             var tokenDescriptor = new SecurityTokenDescriptor

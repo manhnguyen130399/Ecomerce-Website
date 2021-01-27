@@ -8,7 +8,7 @@ namespace USER_SERVICE_NET.ViewModels.Users
 {
     public class ChangePasswordRequest
     {
-        public string Email { get; set; }
+        public string AccountId { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

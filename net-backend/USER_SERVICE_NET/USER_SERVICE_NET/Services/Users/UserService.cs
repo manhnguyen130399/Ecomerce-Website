@@ -37,7 +37,7 @@ namespace USER_SERVICE_NET.Services.Users
                 return new APIResultErrors<string>("UserName or Password is incorrect");
             }
 
-            var token = Helpers.CreateToken((int)user.Type, user.Username, _configuration);
+            var token = Helpers.CreateToken(user, false, _configuration);
             return new APIResultSuccess<string>(token);
         }
 
@@ -112,7 +112,7 @@ namespace USER_SERVICE_NET.Services.Users
 
         public async Task<APIResult<string>> ChangePassword(ChangePasswordRequest request)
         {
-            var user = await _context.Account.FirstOrDefaultAsync(ac => ac.Username == request.Email);
+            var user = await _context.Account.FindAsync(request.AccountId);
             if (user == null)
             {
                 return new APIResultErrors<string>("Can not found user");
@@ -177,6 +177,43 @@ namespace USER_SERVICE_NET.Services.Users
             }
 
             return new APIResultErrors<bool>("Token is invalid");
+
+        }
+
+        public async Task<APIResult<string>> SocialLogin(SocialLoginRequest request)
+        {
+            string result;
+            var user = await _context.Account.FirstOrDefaultAsync(ac => 
+                                            ac.ProviderKey == request.ProviderKey && ac.Provider == request.Provider);
+            if (user == null)
+            {
+                var account = new Account()
+                {
+                    Username = request.Email,
+                    Provider = request.Provider,
+                    ProviderKey = request.ProviderKey,
+                    ImageUrl = request.ImageUrl,
+                    IsActive = 1,
+                    Type = AccountTypes.Customer,
+                    Customer = new List<Customer>()
+                {
+                    new Customer()
+                    {
+                        CustomerName = request.FullName,
+                        Email = request.Email,
+                    }
+                }
+                };
+
+                _context.Account.Add(account);
+                await _context.SaveChangesAsync();
+
+                result = Helpers.CreateToken(account, true, _configuration);
+                return new APIResultSuccess<string>(result);
+            }
+
+            result = Helpers.CreateToken(user, true, _configuration);
+            return new APIResultSuccess<string>(result);
 
         }
     }

@@ -10,6 +10,7 @@ namespace USER_SERVICE_NET.Services.Users
     public interface IUserService
     {
         Task<APIResult<string>> Authencate(LoginRequest request);
+        Task<APIResult<string>> SocialLogin(SocialLoginRequest request);
         Task<APIResult<string>> RegisterForCustomer(RegisterRequest request);
         Task<APIResult<string>> RegisterForSeller(RegisterRequest request);
         Task<APIResult<bool>> ResetPassword(ResetPasswordRequest request);

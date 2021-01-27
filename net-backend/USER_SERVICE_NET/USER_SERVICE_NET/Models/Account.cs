@@ -22,6 +22,8 @@ namespace USER_SERVICE_NET.Models
         public AccountTypes Type { get; set; }
         public string ImageUrl { get; set; }
         public byte? IsActive { get; set; }
+        public string Provider { get; set; }
+        public string ProviderKey { get; set; }
         public string TokenResetPassword { get; set; }
 
         public virtual ICollection<Customer> Customer { get; set; }
