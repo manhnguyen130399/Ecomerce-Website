@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +36,7 @@ public class Color extends AbstractAuditingEntity {
 	@Column(name = "color_name")
 	private String colorName;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_color", joinColumns = @JoinColumn(name = "color_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private Set<Store> stores = Sets.newHashSet();
 

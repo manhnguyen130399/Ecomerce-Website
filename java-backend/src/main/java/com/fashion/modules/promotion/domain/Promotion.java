@@ -41,10 +41,10 @@ public class Promotion extends AbstractAuditingEntity {
 	@Column(name = "end_date")
 	private Date endDate;
 
-	@Column(name = "discouny")
+	@Column(name = "discount")
 	private Integer discount;
 
-	@Column(name = "promo_condition", columnDefinition = "json")
+	@Column(name = "promo_condition")
 	private String condition;
 
 	@ManyToOne

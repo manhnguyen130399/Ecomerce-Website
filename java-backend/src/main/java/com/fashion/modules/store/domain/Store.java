@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,11 +32,8 @@ import com.fashion.modules.promotion.domain.Promotion;
 import com.fashion.modules.size.domain.Size;
 import com.google.common.collect.Sets;
 
-import lombok.Data;
-
 @Entity
 @Table(name = "store")
-@Data
 public class Store implements Serializable {
 
 	private static final long serialVersionUID = 559304058982328096L;
@@ -73,15 +71,15 @@ public class Store implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	private Set<Blog> blogs = Sets.newHashSet();
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "store_has_size", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "size_id"))
 	private Set<Size> sizes = Sets.newHashSet();
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_color", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "color_id"))
 	private Set<Color> colors = Sets.newHashSet();
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_category", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = Sets.newHashSet();
 
@@ -160,5 +158,71 @@ public class Store implements Serializable {
 	public void setUpdatedAt(final Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Set<Promotion> getPromotions() {
+		return promotions;
+	}
+
+	public void setPromotions(Set<Promotion> promotions) {
+		this.promotions = promotions;
+	}
+
+	public Set<Complain> getComplains() {
+		return complains;
+	}
+
+	public void setComplains(Set<Complain> complains) {
+		this.complains = complains;
+	}
+
+	public Set<Blog> getBlogs() {
+		return blogs;
+	}
+
+	public void setBlogs(Set<Blog> blogs) {
+		this.blogs = blogs;
+	}
+
+	public Set<Size> getSizes() {
+		return sizes;
+	}
+
+	public void setSizes(Set<Size> sizes) {
+		this.sizes = sizes;
+	}
+
+	public Set<Color> getColors() {
+		return colors;
+	}
+
+	public void setColors(Set<Color> colors) {
+		this.colors = colors;
+	}
+
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
+	public Set<Brand> getBrands() {
+		return brands;
+	}
+
+	public void setBrands(Set<Brand> brands) {
+		this.brands = brands;
+	}
+	
+	
 
 }

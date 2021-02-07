@@ -38,7 +38,7 @@ public class Category extends AbstractAuditingEntity{
 	private Set<Product> products = Sets.newHashSet();
 	
 	@ManyToMany
-	@JoinTable(name = "store_has_category", joinColumns = @JoinColumn(name = "cetegory_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
+	@JoinTable(name = "store_has_category", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private Set<Store> stores = Sets.newHashSet();
 
 }
