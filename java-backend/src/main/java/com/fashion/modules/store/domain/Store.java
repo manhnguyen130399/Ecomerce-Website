@@ -71,11 +71,11 @@ public class Store implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	private Set<Blog> blogs = Sets.newHashSet();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_size", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "size_id"))
 	private Set<Size> sizes = Sets.newHashSet();
 
-	@ManyToMany(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_color", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "color_id"))
 	private Set<Color> colors = Sets.newHashSet();
 
@@ -83,7 +83,7 @@ public class Store implements Serializable {
 	@JoinTable(name = "store_has_category", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = Sets.newHashSet();
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_brand", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "brand_id"))
 	private Set<Brand> brands = Sets.newHashSet();
 	
