@@ -5,29 +5,44 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fashion.domain.UserContext;
+import com.fashion.modules.account.repository.AccountRepository;
+import com.fashion.modules.seller.domain.Seller;
+import com.fashion.modules.seller.repository.SellerRepository;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.model.StoreVM;
 import com.fashion.modules.store.repository.StoreRepository;
 import com.fashion.modules.store.service.StoreService;
+import com.fashion.service.impl.BaseService;
 
 @Service
-public class StoreServiceImpl implements StoreService{
+public class StoreServiceImpl extends BaseService implements StoreService {
 	
 	@Autowired
 	private StoreRepository storeRepo;
 	
 	@Autowired
-	private ModelMapper  mapper;
+	private SellerRepository sellerRepository;
+	
+	@Autowired
+	private AccountRepository accountRepo;
 
 	@Transactional
 	@Override
 	public StoreVM createStore(final StoreReq vm) {
-		return mapper.map(storeRepo.save(mapper.map(vm, Store.class)), StoreVM.class);
+		final UserContext context = getUserContext();
+		final Store store = mapper.map(vm, Store.class);
+		final Seller seller = new Seller();
+		seller.setStoreId(storeRepo.save(store).getId());
+		seller.setEmail(context.getEmail());
+		seller.setAccountId(context.getAccountId());
+		seller.setEmail(context.getEmail());
+		sellerRepository.save(seller);
+		return mapper.map(store, StoreVM.class);
 	}
 
 	@Transactional

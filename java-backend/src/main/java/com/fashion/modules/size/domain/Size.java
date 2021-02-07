@@ -45,7 +45,7 @@ public class Size extends AbstractAuditingEntity {
 		this.sizeName = sizeName;
 	}
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_size", joinColumns = @JoinColumn(name = "size_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private Set<Store> stores = Sets.newHashSet();
 
