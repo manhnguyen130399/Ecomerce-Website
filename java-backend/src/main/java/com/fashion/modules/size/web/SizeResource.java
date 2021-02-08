@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fashion.modules.size.model.SizeVM;
 import com.fashion.modules.size.service.SizeService;
+import com.fashion.service.impl.GoogleDriveService;
 import com.fashion.web.BaseResource;
 
 import io.swagger.annotations.Api;
@@ -27,10 +28,13 @@ public class SizeResource extends BaseResource {
 
 	@Autowired
 	private SizeService sizeService;
+	
+	@Autowired
+	private GoogleDriveService googleDriveService;
 
 	@PostMapping(URL + "/create")
 	public ResponseEntity<Map<String, Object>> createSize(@RequestBody final SizeVM req) {
-
+		
 		return success(sizeService.createSize(req));
 
 	}
