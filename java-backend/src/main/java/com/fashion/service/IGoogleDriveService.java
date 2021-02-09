@@ -13,6 +13,6 @@ public interface IGoogleDriveService {
 
 	void deleteFile(String filedId);
 
-	String uploadFile(File file);
+	String uploadFile(java.io.File file) throws IOException;
 
 }

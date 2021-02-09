@@ -74,6 +74,9 @@ public final class Constants {
 	public static final String CODE = "code";
 	public static final String MESSAGE = "message";
 	public static final String META_DATA ="meta-data";
+	
+	public static final String URL_VIEW_FILE = "https://drive.google.com/file/d/${file_id}/view";
+	public static final String FILE_ID = "file_id";
 
 
 }
