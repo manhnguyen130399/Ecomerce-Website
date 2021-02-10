@@ -9,37 +9,49 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fashion.domain.AbstractAuditingEntity;
-import com.fashion.modules.brand.domain.Brand;
-import com.fashion.modules.category.domain.Category;
-import com.fashion.modules.store.domain.Store;
-
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
-@Data
 @Access(AccessType.FIELD)
 public class ProductImage extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = 6371956687192174016L;
-	
+
 	@Column(name = "image")
 	private String image;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
 
-	@ManyToOne
-	@JoinColumn(name = "product_category_id")
-	private Category category;
+	public String getImage() {
+		return image;
+	}
 
-	@ManyToOne
-	@JoinColumn(name = "product_store_id")
-	private Store store;
+	public void setImage(final String image) {
+		this.image = image;
+	}
 
-	@ManyToOne
-	@JoinColumn(name = "product_brand_id")
-	private Brand brand;
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(final Product product) {
+		this.product = product;
+	}
+
+	public ProductImage(final String image) {
+		super();
+		this.image = image;
+	}
+
+	public ProductImage() {
+		super();
+	}
+	
+	
+	
 
 }

@@ -1,5 +1,6 @@
 package com.fashion.modules.category.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -41,10 +42,12 @@ public class CategoryResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> createCategory(@RequestParam final String categoryName,
 			@RequestParam final MultipartFile file) throws IOException {
 		final Map<String, String> res = Maps.newHashMap();
+		final File convertMultiPartToFile = CommonUtil.convertMultiPartToFile(file);
 		res.put(CommonUtil.customToSimpleThymleafVariable(Constants.FILE_ID),
-				driveService.uploadFile(CommonUtil.convertMultiPartToFile(file)));
+				driveService.uploadFile(convertMultiPartToFile));
 		final CategoryVM req = new CategoryVM(null, categoryName,
 				CommonUtil.replaceContextParam(Constants.URL_VIEW_FILE, res));
+		convertMultiPartToFile.delete();
 		return success(categoryService.createCategory(req));
 	}
 

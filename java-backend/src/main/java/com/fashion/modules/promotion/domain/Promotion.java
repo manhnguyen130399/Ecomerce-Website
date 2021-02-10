@@ -13,17 +13,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
-
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.store.domain.Store;
 import com.google.common.collect.Sets;
 
-import lombok.Data;
-
 @Entity
 @Table(name = "promotion")
-@Data
 @Access(AccessType.FIELD)
 public class Promotion extends AbstractAuditingEntity {
 
@@ -53,5 +48,69 @@ public class Promotion extends AbstractAuditingEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "promotion")
 	private Set<CustomerPromo> customerPromos = Sets.newHashSet();
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(final String title) {
+		this.title = title;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(final String code) {
+		this.code = code;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(final Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(final Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(final Integer discount) {
+		this.discount = discount;
+	}
+
+	public String getCondition() {
+		return condition;
+	}
+
+	public void setCondition(final String condition) {
+		this.condition = condition;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(final Store store) {
+		this.store = store;
+	}
+
+	public Set<CustomerPromo> getCustomerPromos() {
+		return customerPromos;
+	}
+
+	public void setCustomerPromos(final Set<CustomerPromo> customerPromos) {
+		this.customerPromos = customerPromos;
+	}
 
 }

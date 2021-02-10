@@ -23,13 +23,8 @@ import com.fashion.commons.enums.AccountEnum;
 import com.fashion.modules.comment.domain.Comment;
 import com.google.common.collect.Sets;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
 @Table(name = "account")
-@Data
 public class Account implements Serializable {
 
 	private static final long serialVersionUID = -834374896580318636L;
@@ -58,8 +53,72 @@ public class Account implements Serializable {
 	@LastModifiedDate
 	@Column(name = "updated_at")
 	private Date updatedAt;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
 	private Set<Comment> comment = Sets.newHashSet();
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(final Integer id) {
+		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(final String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(final String password) {
+		this.password = password;
+	}
+
+	public AccountEnum getType() {
+		return type;
+	}
+
+	public void setType(final AccountEnum type) {
+		this.type = type;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(final Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(final Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(final Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public Set<Comment> getComment() {
+		return comment;
+	}
+
+	public void setComment(final Set<Comment> comment) {
+		this.comment = comment;
+	}
 
 }
