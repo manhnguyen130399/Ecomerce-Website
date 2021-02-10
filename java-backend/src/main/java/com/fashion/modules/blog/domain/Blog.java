@@ -17,11 +17,8 @@ import com.fashion.modules.comment.domain.Comment;
 import com.fashion.modules.store.domain.Store;
 import com.google.common.collect.Sets;
 
-import lombok.Data;
-
 @Entity
 @Table(name = "blog")
-@Data
 @Access(AccessType.FIELD)
 public class Blog extends AbstractAuditingEntity {
 
@@ -39,8 +36,48 @@ public class Blog extends AbstractAuditingEntity {
 	@ManyToOne
 	@JoinColumn(name = "store_id")
 	private Store store;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "blog")
 	private Set<Comment> comments = Sets.newHashSet();
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(final String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(final String content) {
+		this.content = content;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(final String summary) {
+		this.summary = summary;
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	public void setStore(final Store store) {
+		this.store = store;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
 
 }

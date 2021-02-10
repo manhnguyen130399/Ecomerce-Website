@@ -18,11 +18,8 @@ import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.store.domain.Store;
 import com.google.common.collect.Sets;
 
-import lombok.Data;
-
 @Entity
 @Table(name = "brand")
-@Data
 @Access(AccessType.FIELD)
 public class Brand extends AbstractAuditingEntity {
 
@@ -30,12 +27,36 @@ public class Brand extends AbstractAuditingEntity {
 
 	@Column(name = "brand_name")
 	private String brandName;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
 	private Set<Product> products = Sets.newHashSet();
-	
+
 	@ManyToMany
 	@JoinTable(name = "store_has_brand", joinColumns = @JoinColumn(name = "brand_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private Set<Store> stores = Sets.newHashSet();
+
+	public String getBrandName() {
+		return brandName;
+	}
+
+	public void setBrandName(final String brandName) {
+		this.brandName = brandName;
+	}
+
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(final Set<Product> products) {
+		this.products = products;
+	}
+
+	public Set<Store> getStores() {
+		return stores;
+	}
+
+	public void setStores(final Set<Store> stores) {
+		this.stores = stores;
+	}
 
 }

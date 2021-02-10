@@ -18,15 +18,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import com.fashion.commons.enums.GenderEnum;
 import com.fashion.domain.PkIdModel;
 
-import lombok.Data;
-
 @Entity
 @Table(name = "seller")
-@Data
 public class Seller extends PkIdModel {
 
 	private static final long serialVersionUID = -4678692355182878116L;
-	
+
 	@CreatedDate
 	@CreationTimestamp
 	private Date createdAt;
@@ -58,4 +55,77 @@ public class Seller extends PkIdModel {
 	@OneToOne
 	@JoinColumn(name = "store_id", referencedColumnName = "id")
 	private Integer storeId;
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(final Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(final Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getSellerName() {
+		return sellerName;
+	}
+
+	public void setSellerName(final String sellerName) {
+		this.sellerName = sellerName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(final String address) {
+		this.address = address;
+	}
+
+	public GenderEnum getGender() {
+		return gender;
+	}
+
+	public void setGender(final GenderEnum gender) {
+		this.gender = gender;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(final String phone) {
+		this.phone = phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(final String email) {
+		this.email = email;
+	}
+
+	public Integer getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(final Integer accountId) {
+		this.accountId = accountId;
+	}
+
+	public Integer getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(final Integer storeId) {
+		this.storeId = storeId;
+	}
+
 }

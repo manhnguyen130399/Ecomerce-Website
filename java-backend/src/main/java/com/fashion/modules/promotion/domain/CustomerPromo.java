@@ -17,16 +17,13 @@ import javax.persistence.Table;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import lombok.Data;
-
 @Entity
-@Table(name="customer_promo")
-@Data
+@Table(name = "customer_promo")
 @Access(AccessType.FIELD)
 public class CustomerPromo implements Serializable {
 
 	private static final long serialVersionUID = 629705961266622525L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -48,5 +45,53 @@ public class CustomerPromo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "promotion_id")
 	private Promotion promotion;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(final Integer id) {
+		this.id = id;
+	}
+
+	public Date getUsedAt() {
+		return usedAt;
+	}
+
+	public void setUsedAt(final Date usedAt) {
+		this.usedAt = usedAt;
+	}
+
+	public String getCustomerPhone() {
+		return customerPhone;
+	}
+
+	public void setCustomerPhone(final String customerPhone) {
+		this.customerPhone = customerPhone;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(final Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(final Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public Promotion getPromotion() {
+		return promotion;
+	}
+
+	public void setPromotion(final Promotion promotion) {
+		this.promotion = promotion;
+	}
 
 }

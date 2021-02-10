@@ -37,7 +37,7 @@ import com.google.common.collect.Sets;
 public class Store implements Serializable {
 
 	private static final long serialVersionUID = 559304058982328096L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -53,7 +53,7 @@ public class Store implements Serializable {
 	private String owner;
 
 	private String website;
-	
+
 	@CreatedDate
 	@CreationTimestamp
 	private Date createdAt;
@@ -61,7 +61,7 @@ public class Store implements Serializable {
 	@LastModifiedDate
 	@UpdateTimestamp
 	private Date updatedAt;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	private Set<Promotion> promotions = Sets.newHashSet();
 
@@ -70,7 +70,7 @@ public class Store implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	private Set<Blog> blogs = Sets.newHashSet();
-	
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_size", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "size_id"))
 	private Set<Size> sizes = Sets.newHashSet();
@@ -86,7 +86,7 @@ public class Store implements Serializable {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_brand", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "brand_id"))
 	private Set<Brand> brands = Sets.newHashSet();
-	
+
 	@Column(name = "store_name")
 	public String getStoreName() {
 		return storeName;
@@ -140,7 +140,7 @@ public class Store implements Serializable {
 	public void setCloseTime(final Time closeTime) {
 		this.closeTime = closeTime;
 	}
-	
+
 	@Column(name = "created_at")
 	public Date getCreatedAt() {
 		return createdAt;
@@ -163,7 +163,7 @@ public class Store implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -171,7 +171,7 @@ public class Store implements Serializable {
 		return promotions;
 	}
 
-	public void setPromotions(Set<Promotion> promotions) {
+	public void setPromotions(final Set<Promotion> promotions) {
 		this.promotions = promotions;
 	}
 
@@ -179,7 +179,7 @@ public class Store implements Serializable {
 		return complains;
 	}
 
-	public void setComplains(Set<Complain> complains) {
+	public void setComplains(final Set<Complain> complains) {
 		this.complains = complains;
 	}
 
@@ -187,7 +187,7 @@ public class Store implements Serializable {
 		return blogs;
 	}
 
-	public void setBlogs(Set<Blog> blogs) {
+	public void setBlogs(final Set<Blog> blogs) {
 		this.blogs = blogs;
 	}
 
@@ -195,7 +195,7 @@ public class Store implements Serializable {
 		return sizes;
 	}
 
-	public void setSizes(Set<Size> sizes) {
+	public void setSizes(final Set<Size> sizes) {
 		this.sizes = sizes;
 	}
 
@@ -203,7 +203,7 @@ public class Store implements Serializable {
 		return colors;
 	}
 
-	public void setColors(Set<Color> colors) {
+	public void setColors(final Set<Color> colors) {
 		this.colors = colors;
 	}
 
@@ -211,7 +211,7 @@ public class Store implements Serializable {
 		return categories;
 	}
 
-	public void setCategories(Set<Category> categories) {
+	public void setCategories(final Set<Category> categories) {
 		this.categories = categories;
 	}
 
@@ -219,10 +219,8 @@ public class Store implements Serializable {
 		return brands;
 	}
 
-	public void setBrands(Set<Brand> brands) {
+	public void setBrands(final Set<Brand> brands) {
 		this.brands = brands;
 	}
-	
-	
 
 }

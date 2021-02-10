@@ -44,11 +44,28 @@ public class Size extends AbstractAuditingEntity {
 		super();
 		this.sizeName = sizeName;
 	}
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_size", joinColumns = @JoinColumn(name = "size_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private Set<Store> stores = Sets.newHashSet();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "size")
 	private Set<ProductDetail> productDetails = Sets.newHashSet();
+
+	public Set<Store> getStores() {
+		return stores;
+	}
+
+	public void setStores(final Set<Store> stores) {
+		this.stores = stores;
+	}
+
+	public Set<ProductDetail> getProductDetails() {
+		return productDetails;
+	}
+
+	public void setProductDetails(final Set<ProductDetail> productDetails) {
+		this.productDetails = productDetails;
+	}
+
 }
