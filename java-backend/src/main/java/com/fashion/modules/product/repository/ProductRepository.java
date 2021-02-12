@@ -15,6 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ " FROM Product p " 
 			+ " LEFT JOIN FETCH p.productDetails "
 			+ " LEFT JOIN FETCH p.productImages "
+			+ " LEFT JOIN FETCH p.comments "
 			+ " WHERE p.id = :id AND p.store.id = :storeId ")
 	Product findOneProductByIdAndStore(@Param("id") Integer id, @Param("storeId") Integer storeId);
 	
@@ -22,6 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ " FROM Product p " 
 			+ " LEFT JOIN FETCH p.productDetails "
 			+ " LEFT JOIN FETCH p.productImages "
+			+ " LEFT JOIN FETCH p.comments "
 			+ " WHERE p.store.id = :storeId ")
 	List<Product> findAllProductStore(@Param("storeId") Integer storeId);
 

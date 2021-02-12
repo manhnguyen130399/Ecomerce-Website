@@ -77,6 +77,8 @@ public final class Constants {
 	
 	public static final String URL_VIEW_FILE = "https://drive.google.com/file/d/${file_id}/view";
 	public static final String FILE_ID = "file_id";
+	
+	public static final String SUCCESS = "Success";
 
 
 }

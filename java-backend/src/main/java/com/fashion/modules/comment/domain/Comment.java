@@ -14,8 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fashion.modules.account.domain.Account;
 import com.fashion.modules.blog.domain.Blog;
@@ -29,7 +29,8 @@ public class Comment implements Serializable {
 	private static final long serialVersionUID = 8891567408598708082L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private Integer id;
 
 	@Column(name = "content")
@@ -38,14 +39,14 @@ public class Comment implements Serializable {
 	@Column(name = "email")
 	private String email;
 
-	@Column(name = "like")
+	@Column(name = "`like`")
 	private Integer like;
 
-	@CreatedDate
+	@CreationTimestamp
 	@Column(name = "created_at")
 	private Date createdAt;
 
-	@LastModifiedDate
+	@UpdateTimestamp
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
