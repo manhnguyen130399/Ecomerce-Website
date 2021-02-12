@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.brand.repository.BrandRepository;
 import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.category.repository.CategoryRepository;
@@ -43,6 +44,9 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		final Store store = getStore(getUserContext());
 		final Integer storeId = store.getId();
 		final Category category = categoryRepo.findOneByIdAndStoreId(req.getCategoryId(), storeId);
+		if(category ==null ) {
+			throw new InvalidArgumentException(" Can't found category ");
+		}
 		final Product product = new Product();
 		product.setPrice(req.getPrice());
 		product.setStore(store);
