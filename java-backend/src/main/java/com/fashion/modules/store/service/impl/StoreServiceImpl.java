@@ -73,5 +73,12 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 		
 	}
 
+	@Override
+	@Transactional
+	public StoreVM createStoreV2(StoreReq req) {
+		final Store store = mapper.map(req, Store.class);
+		return mapper.map(storeRepo.save(store), StoreVM.class);
+	}
+
 	
 }

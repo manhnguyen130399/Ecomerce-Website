@@ -8,6 +8,8 @@ import com.fashion.modules.store.model.StoreVM;
 public interface StoreService {
 	
 	StoreVM createStore(final StoreReq req);
+	
+	StoreVM createStoreV2(final StoreReq req);
 
 	StoreVM getStore(final Integer id);
 
