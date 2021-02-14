@@ -15,5 +15,7 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
 			+ " LEFT JOIN FETCH s.categories "
 			+ " WHERE s.id = :id ")
 	Store findOneById(@Param("id") Integer id);
+	
+	Store findByStoreNameLike(String storeName);
 
 }

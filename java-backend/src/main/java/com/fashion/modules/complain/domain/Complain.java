@@ -16,7 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fashion.commons.enums.ComplainEnum;
 import com.fashion.modules.store.domain.Store;
@@ -29,7 +29,7 @@ public class Complain implements Serializable {
 	private static final long serialVersionUID = 4857965269572311121L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "content")
@@ -42,7 +42,7 @@ public class Complain implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private ComplainEnum state;
 
-	@CreatedDate
+	@CreationTimestamp
 	@Column(name = "created_at")
 	private Date createdAt;
 

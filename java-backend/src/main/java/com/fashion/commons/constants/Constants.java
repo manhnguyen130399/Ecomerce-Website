@@ -79,6 +79,13 @@ public final class Constants {
 	public static final String FILE_ID = "file_id";
 	
 	public static final String SUCCESS = "Success";
+	
+	
+	// EMAIL
+	public static final String EMAIL = "manhnguyen130399@gmail.com";
+	public static final String PASSWORD = "manh130399";
+	public static final String COMPLAIN_TITLE = "REPONSE YOUR COMPLAIN";
+	public static final String THANK_YOU_COMPLAIN = "  Thanks .";
 
 
 }

@@ -5,15 +5,10 @@ import com.fashion.commons.enums.ComplainEnum;
 import lombok.Data;
 
 @Data
-public class ComplainVM {
+public class ComplainVM extends ComplainRequest {
 
 	private Integer id;
-
-	private String content;
-
-	private String email;
-
+	
 	private ComplainEnum state;
-
-
+	
 }
