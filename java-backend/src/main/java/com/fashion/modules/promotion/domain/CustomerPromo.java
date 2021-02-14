@@ -25,7 +25,7 @@ public class CustomerPromo implements Serializable {
 	private static final long serialVersionUID = 629705961266622525L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "used_at")

@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.store.domain.Store;
 import com.google.common.collect.Sets;
@@ -29,6 +31,9 @@ public class Promotion extends AbstractAuditingEntity {
 
 	@Column(name = "code")
 	private String code;
+	
+	@Column(name ="qr_code")
+	private String qrCode;
 
 	@Column(name = "start_date")
 	private Date startDate;
@@ -39,8 +44,9 @@ public class Promotion extends AbstractAuditingEntity {
 	@Column(name = "discount")
 	private Integer discount;
 
-	@Column(name = "promo_condition")
-	private String condition;
+	@Type(type = "json")
+	@Column(name = "promo_condition", columnDefinition = "json")
+	private PromotionCondition condition;
 
 	@ManyToOne
 	@JoinColumn(name = "store_id")
@@ -48,6 +54,14 @@ public class Promotion extends AbstractAuditingEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "promotion")
 	private Set<CustomerPromo> customerPromos = Sets.newHashSet();
+	
+	public String getQrCode() {
+		return qrCode;
+	}
+
+	public void setQrCode(final String qrCode) {
+		this.qrCode = qrCode;
+	}
 
 	public String getTitle() {
 		return title;
@@ -88,12 +102,12 @@ public class Promotion extends AbstractAuditingEntity {
 	public void setDiscount(final Integer discount) {
 		this.discount = discount;
 	}
-
-	public String getCondition() {
+	
+	public PromotionCondition getCondition() {
 		return condition;
 	}
 
-	public void setCondition(final String condition) {
+	public void setCondition(final PromotionCondition condition) {
 		this.condition = condition;
 	}
 

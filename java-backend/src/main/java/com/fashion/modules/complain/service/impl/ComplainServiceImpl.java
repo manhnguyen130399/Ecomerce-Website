@@ -74,7 +74,7 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 		final SimpleMailMessage content = new SimpleMailMessage();
 		content.setTo(complain.getEmail());
 		content.setSubject(Constants.COMPLAIN_TITLE);
-		content.setText(message + Constants.THANK_YOU_COMPLAIN);
+		content.setText(message + Constants.THANK_YOU);
 		mailSender.send(content);
 		complain.setState(ComplainEnum.RESPONSE);
 		return mapper.map(complain, ComplainVM.class);
