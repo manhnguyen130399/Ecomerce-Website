@@ -34,6 +34,11 @@ public class StoreResource extends BaseResource {
 		return success(storeService.createStore(req));
 	}
 
+	@PostMapping(value = { URL + "/v2" })
+	public ResponseEntity<Map<String, Object>> createStoreV2(@RequestBody final StoreReq req) {
+		return success(storeService.createStoreV2(req));
+	}
+
 	@GetMapping(value = { URL + "/{id}" })
 	public ResponseEntity<Map<String, Object>> getStore(@PathVariable(name = "id") final Integer id) {
 		return success(storeService.getStore(id));
