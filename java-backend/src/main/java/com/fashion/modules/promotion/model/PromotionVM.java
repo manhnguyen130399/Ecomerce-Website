@@ -1,28 +1,37 @@
 package com.fashion.modules.promotion.model;
 
-import java.util.Date;
+import com.fashion.modules.store.model.StoreVM;
 
-import com.fashion.modules.store.domain.Store;
-
-import lombok.Data;
-
-@Data
-public class PromotionVM {
+public class PromotionVM extends PromotionRequest {
 
 	private Integer id;
 
-	private String title;
+	private String qrCode;
 
-	private String code;
+	private StoreVM store;
 
-	private Date startDate;
+	public Integer getId() {
+		return id;
+	}
 
-	private Date endDate;
+	public void setId(final Integer id) {
+		this.id = id;
+	}
 
-	private Integer discount;
+	public StoreVM getStore() {
+		return store;
+	}
 
-	private String condition;
+	public void setStore(final StoreVM store) {
+		this.store = store;
+	}
 
-	private Store store;
+	public String getQrCode() {
+		return qrCode;
+	}
+
+	public void setQrCode(final String qrCode) {
+		this.qrCode = qrCode;
+	}
 
 }

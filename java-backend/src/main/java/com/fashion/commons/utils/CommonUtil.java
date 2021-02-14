@@ -1,19 +1,29 @@
 package com.fashion.commons.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.text.StrBuilder;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 public class CommonUtil {
 	
+	private static final int QR_CODE_SIZE = 300;
+	
 	public static File convertMultiPartToFile(final MultipartFile file) throws IOException {
-		File convFile = new File(file.getOriginalFilename());
-		FileOutputStream fos = new FileOutputStream(convFile);
+		final File convFile = new File(file.getOriginalFilename());
+		final FileOutputStream fos = new FileOutputStream(convFile);
 		fos.write(file.getBytes());
 		fos.close();
 		return convFile;
@@ -29,6 +39,20 @@ public class CommonUtil {
 	
 	public static String customToSimpleThymleafVariable(final String it) {
 		return "${" + it + "}";
+	}
+	
+	public static String generateQrCode(final String qrCode, Integer size) {
+		final QRCodeWriter qrCodeWriter = new QRCodeWriter();
+		BitMatrix bitMatrix;
+		try {
+			size = size != null ? size : QR_CODE_SIZE;
+			bitMatrix = qrCodeWriter.encode(qrCode, BarcodeFormat.QR_CODE, size, size);
+			final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			MatrixToImageWriter.writeToStream(bitMatrix, "jpg", stream);
+			return Base64.getEncoder().encodeToString(stream.toByteArray());
+		} catch (WriterException | IOException e) {
+			return null;
+		}
 	}
 
 }

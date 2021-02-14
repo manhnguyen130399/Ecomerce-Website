@@ -8,6 +8,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,8 +17,13 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
+
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@TypeDefs({ @TypeDef(name = "json", typeClass = JsonStringType.class),
+		@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class) })
 public abstract class AbstractAuditingEntity extends PkIdModel implements Serializable{
 
 	private static final long serialVersionUID = -3888863584642256309L;
