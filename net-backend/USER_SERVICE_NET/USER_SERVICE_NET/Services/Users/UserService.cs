@@ -1,14 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
+using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Utilities;
 using USER_SERVICE_NET.Utilities.Enums;
 using USER_SERVICE_NET.ViewModels.Commons;
@@ -20,11 +24,13 @@ namespace USER_SERVICE_NET.Services.Users
     {
         private readonly ShopicaContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IStorageService _storageService;
 
-        public UserService(ShopicaContext context, IConfiguration configuration)
+        public UserService(ShopicaContext context, IConfiguration configuration, IStorageService storageService)
         {
             _context = context;
             _configuration = configuration;
+            _storageService = storageService;
         }
         public async Task<APIResult<string>> Authencate(LoginRequest request)
         {
@@ -67,6 +73,11 @@ namespace USER_SERVICE_NET.Services.Users
                 }
             };
 
+            if (request.ImageFile != null)
+            {
+                account.ImageUrl = SaveFile(request.ImageFile);
+            }
+
             _context.Account.Add(account);
 
             await _context.SaveChangesAsync();
@@ -102,6 +113,11 @@ namespace USER_SERVICE_NET.Services.Users
                     }
                 }
             };
+
+            if (request.ImageFile != null)
+            {
+                account.ImageUrl = SaveFile(request.ImageFile);
+            }
 
             _context.Account.Add(account);
 
@@ -215,6 +231,45 @@ namespace USER_SERVICE_NET.Services.Users
             result = Helpers.CreateToken(user, true, _configuration);
             return new APIResultSuccess<string>(result);
 
+        }
+
+        public async Task<APIResult<bool>> UpdateInfo(UpdateInfoRequest request)
+        {
+            dynamic user;
+            if (request.IsCustomer)
+            {
+               user = await _context.Customer.FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
+            }
+            else
+            {
+                user = await _context.Seller.FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
+            }
+            
+            if (user == null)
+            {
+                return new APIResultErrors<bool>("Can not found user");
+            }
+
+            user.CustomerName = (!String.IsNullOrEmpty(request.Fullname) && user.CustomerName != request.Fullname) ? request.Fullname : user.CustomerName;
+            user.Gender = (!String.IsNullOrEmpty(request.Gender.ToString()) && user.Gender != request.Gender) ? request.Gender : user.Gender;
+            user.Phone = (!String.IsNullOrEmpty(request.Phone) && user.Phone != request.Phone) ? request.Phone : user.Phone;
+            user.Address = (!String.IsNullOrEmpty(request.Address) && user.Address != request.Address) ? request.Address : user.Address;
+
+            await _context.SaveChangesAsync();
+
+            return new APIResultSuccess<bool>();
+
+        }
+
+        private string SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+
+            _storageService.SaveFileAsync(file.OpenReadStream(), Constant.UserImageFolder, fileName);
+
+            return $"{Constant.BaseAppUrl}/{Constant.UserImageFolder}/{fileName}";
         }
     }
 }

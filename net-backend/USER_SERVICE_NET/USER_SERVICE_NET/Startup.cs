@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
 using USER_SERVICE_NET.Services.Emails;
+using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Services.Users;
 using USER_SERVICE_NET.Utilities;
 using USER_SERVICE_NET.ViewModels.Emails;
@@ -38,6 +39,7 @@ namespace USER_SERVICE_NET
                     options.UseMySQL(Configuration.GetConnectionString(Constant.ConnectionString)));
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IStorageService, StorageService>();
 
             var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 

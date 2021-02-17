@@ -9,7 +9,12 @@ namespace USER_SERVICE_NET.Utilities
     {
         public const string ConnectionString = "ShopicaDatabase";
 
+        public const string BaseAppUrl = "https://localhost:5001";
+
+        public const string UserImageFolder = "UserImages";
+
         public const long TokenExpireTime = 1000 * 60 * 10;
+
 
     }
 }
