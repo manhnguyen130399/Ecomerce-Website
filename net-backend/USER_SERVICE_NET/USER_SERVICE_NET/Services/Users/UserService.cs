@@ -75,7 +75,7 @@ namespace USER_SERVICE_NET.Services.Users
 
             if (request.ImageFile != null)
             {
-                account.ImageUrl = SaveFile(request.ImageFile);
+                account.ImageUrl = await _storageService.FileUploadAsync(request.ImageFile);
             }
 
             _context.Account.Add(account);
@@ -85,8 +85,6 @@ namespace USER_SERVICE_NET.Services.Users
             return new APIResultSuccess<string>("register successfully");
 
         }
-
-
 
         public async Task<APIResult<string>> RegisterForSeller(RegisterRequest request)
         {
@@ -116,7 +114,7 @@ namespace USER_SERVICE_NET.Services.Users
 
             if (request.ImageFile != null)
             {
-                account.ImageUrl = SaveFile(request.ImageFile);
+                account.ImageUrl = await _storageService.FileUploadAsync(request.ImageFile);
             }
 
             _context.Account.Add(account);
@@ -236,6 +234,7 @@ namespace USER_SERVICE_NET.Services.Users
         public async Task<APIResult<bool>> UpdateInfo(UpdateInfoRequest request)
         {
             dynamic user;
+
             if (request.IsCustomer)
             {
                user = await _context.Customer.FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
@@ -250,26 +249,20 @@ namespace USER_SERVICE_NET.Services.Users
                 return new APIResultErrors<bool>("Can not found user");
             }
 
+            if (request.ImageFile != null)
+            {
+                user.Account.ImageUrl = await _storageService.FileUploadAsync(request.ImageFile);
+            }
+
             user.CustomerName = (!String.IsNullOrEmpty(request.Fullname) && user.CustomerName != request.Fullname) ? request.Fullname : user.CustomerName;
             user.Gender = (!String.IsNullOrEmpty(request.Gender.ToString()) && user.Gender != request.Gender) ? request.Gender : user.Gender;
             user.Phone = (!String.IsNullOrEmpty(request.Phone) && user.Phone != request.Phone) ? request.Phone : user.Phone;
             user.Address = (!String.IsNullOrEmpty(request.Address) && user.Address != request.Address) ? request.Address : user.Address;
-
+         
             await _context.SaveChangesAsync();
 
             return new APIResultSuccess<bool>();
 
-        }
-
-        private string SaveFile(IFormFile file)
-        {
-            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
-
-            _storageService.SaveFileAsync(file.OpenReadStream(), Constant.UserImageFolder, fileName);
-
-            return $"{Constant.BaseAppUrl}/{Constant.UserImageFolder}/{fileName}";
         }
     }
 }
