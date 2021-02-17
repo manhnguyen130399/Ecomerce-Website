@@ -132,9 +132,9 @@ namespace USER_SERVICE_NET.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("UpdateCustomerInfo")]
+        [HttpPatch("UpdateInfo")]
         [Authorize]
-        public async Task<IActionResult> UpdateCustomerInfo(UpdateCustomerInfoRequest request)
+        public async Task<IActionResult> UpdateInfo(UpdateInfoRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -143,7 +143,7 @@ namespace USER_SERVICE_NET.Controllers
 
             request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var result = await _userService.UpdateCustomerInfo(request);
+            var result = await _userService.UpdateInfo(request);
 
             if (!result.IsSuccessed) return BadRequest(result);
 

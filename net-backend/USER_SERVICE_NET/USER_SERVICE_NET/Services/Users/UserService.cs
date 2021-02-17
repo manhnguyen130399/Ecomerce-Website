@@ -233,18 +233,27 @@ namespace USER_SERVICE_NET.Services.Users
 
         }
 
-        public async Task<APIResult<bool>> UpdateCustomerInfo(UpdateCustomerInfoRequest request)
+        public async Task<APIResult<bool>> UpdateInfo(UpdateInfoRequest request)
         {
-            var user = await _context.Customer.FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
+            dynamic user;
+            if (request.IsCustomer)
+            {
+               user = await _context.Customer.FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
+            }
+            else
+            {
+                user = await _context.Seller.FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
+            }
+            
             if (user == null)
             {
                 return new APIResultErrors<bool>("Can not found user");
             }
 
-            user.CustomerName = request.Fullname;
-            user.Gender = request.Gender;
-            user.Phone = request.Phone;
-            user.Address = request.Address;
+            user.CustomerName = (!String.IsNullOrEmpty(request.Fullname) && user.CustomerName != request.Fullname) ? request.Fullname : user.CustomerName;
+            user.Gender = (!String.IsNullOrEmpty(request.Gender.ToString()) && user.Gender != request.Gender) ? request.Gender : user.Gender;
+            user.Phone = (!String.IsNullOrEmpty(request.Phone) && user.Phone != request.Phone) ? request.Phone : user.Phone;
+            user.Address = (!String.IsNullOrEmpty(request.Address) && user.Address != request.Address) ? request.Address : user.Address;
 
             await _context.SaveChangesAsync();
 

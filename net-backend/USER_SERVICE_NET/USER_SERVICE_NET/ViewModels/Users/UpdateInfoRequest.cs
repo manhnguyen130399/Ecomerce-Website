@@ -8,7 +8,7 @@ using USER_SERVICE_NET.Utilities.Enums;
 
 namespace USER_SERVICE_NET.ViewModels.Users
 {
-    public class UpdateCustomerInfoRequest
+    public class UpdateInfoRequest
     {
         public int AccountId { get; set; }
         public string Fullname { get; set; }
@@ -17,5 +17,6 @@ namespace USER_SERVICE_NET.ViewModels.Users
         public IFormFile ImageFile { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public bool IsCustomer { get; set; }
     }
 }
