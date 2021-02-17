@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Services.Emails;
+using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Services.Users;
 using USER_SERVICE_NET.Utilities;
 using USER_SERVICE_NET.ViewModels.Emails;
@@ -20,10 +21,12 @@ namespace USER_SERVICE_NET.Controllers
     {
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
-        public UsersController(IUserService userService, IEmailService emailService)
+        private readonly IStorageService _storageService;
+        public UsersController(IUserService userService, IEmailService emailService, IStorageService storageService)
         {
             _userService = userService;
             _emailService = emailService;
+            _storageService = storageService;
         }
 
         [HttpPost("cusomerRegister")]
@@ -148,6 +151,18 @@ namespace USER_SERVICE_NET.Controllers
             if (!result.IsSuccessed) return BadRequest(result);
 
             return Ok(result);
+        }
+
+        [HttpPost("UploadFile")]
+        public async Task<IActionResult> UploadFileAsync([FromForm] IFormFile file)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var fileUrl = await _storageService.FileUploadAsync(file);
+
+            return Ok(fileUrl);
         }
     }
 }
