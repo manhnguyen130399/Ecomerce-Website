@@ -1,5 +1,6 @@
 package com.fashion.modules.promotion.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,16 +28,16 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Autowired
 	private PromotionRepository promoRepo;
-	
+
 	@Autowired
 	private StoreRepository storeRepo;
-	
+
 	@Autowired
 	private AccountRepository accountRepo;
-	
+
 	@Autowired
 	private JavaMailSender mailSender;
-	
+
 	@Autowired
 	private GoogleDriveService drive;
 
@@ -74,5 +75,13 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 		promoRepo.deleteById(id);
 	}
 
+	@Override
+	@Transactional
+	public List<PromotionVM> getPromotionValidDate() {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, 7);
+		return promoRepo.findPromotionValidDate(calendar.getTime()).stream()
+				.map(it -> mapper.map(it, PromotionVM.class)).collect(Collectors.toList());
+	}
 
 }

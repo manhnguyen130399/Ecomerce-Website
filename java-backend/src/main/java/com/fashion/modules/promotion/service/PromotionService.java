@@ -13,6 +13,8 @@ public interface PromotionService {
 
 	List<PromotionVM> getAllPromotionByStore();
 
+	List<PromotionVM> getPromotionValidDate();
+
 	void deletePromotion(Integer id);
 
 }

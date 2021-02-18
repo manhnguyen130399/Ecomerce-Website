@@ -43,6 +43,11 @@ public class PromotionResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> getPromotions() {
 		return success(promoService.getAllPromotionByStore());
 	}
+	
+	@GetMapping(URL+ "/valid-date")
+	public ResponseEntity<Map<String,Object>>getValidPromotionDate(){
+		return success(promoService.getPromotionValidDate());
+	}
 
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deletePromotion(@PathVariable final Integer id) {
