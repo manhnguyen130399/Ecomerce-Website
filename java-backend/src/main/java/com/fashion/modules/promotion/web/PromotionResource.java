@@ -1,5 +1,6 @@
 package com.fashion.modules.promotion.web;
 
+import java.text.ParseException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class PromotionResource extends BaseResource {
 	}
 	
 	@GetMapping(URL+ "/valid-date")
-	public ResponseEntity<Map<String,Object>>getValidPromotionDate(){
+	public ResponseEntity<Map<String,Object>>getValidPromotionDate() throws ParseException{
 		return success(promoService.getPromotionValidDate());
 	}
 
