@@ -1,5 +1,6 @@
 package com.fashion.modules.promotion.service.impl;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,10 +78,20 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
-	public List<PromotionVM> getPromotionValidDate() {
-		final Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DATE, 7);
-		return promoRepo.findPromotionValidDate(calendar.getTime()).stream()
+	public List<PromotionVM> getPromotionValidDate() throws ParseException {
+		final Calendar from = Calendar.getInstance();
+		from.add(Calendar.DATE, 6);
+		from.set(Calendar.HOUR, 12);
+		from.set(Calendar.MINUTE, 0);
+		from.set(Calendar.SECOND, 0);
+		from.set(Calendar.MILLISECOND, 0);
+		final Calendar to = Calendar.getInstance();
+		to.add(Calendar.DATE, 7);
+		to.set(Calendar.HOUR, 12);
+		to.set(Calendar.MINUTE, 0);
+		to.set(Calendar.SECOND, 0);
+		to.set(Calendar.MILLISECOND, 0);
+		return promoRepo.findPromotionValidDate(from.getTime(), to.getTime()).stream()
 				.map(it -> mapper.map(it, PromotionVM.class)).collect(Collectors.toList());
 	}
 
