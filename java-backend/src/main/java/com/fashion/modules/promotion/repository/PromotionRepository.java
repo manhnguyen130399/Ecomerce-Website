@@ -1,5 +1,6 @@
 package com.fashion.modules.promotion.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,5 +17,11 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
 			+ " FROM Promotion p " 
 			+ " WHERE p.store.id = :storeId")
 	List<Promotion> findAllByStore(@Param("storeId") Integer storeId);
+	
+	@Query(" SELECT p " 
+			+ " FROM Promotion p " 
+			+ " WHERE p.startDate = :date")
+	List<Promotion> findPromotionValidDate(@Param("date") Date date);
+	
 	
 }
