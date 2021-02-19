@@ -20,7 +20,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
 	
 	@Query(" SELECT p " 
 			+ " FROM Promotion p " 
-			+ " WHERE p.startDate > :from AND p.startDate < :to")
+			+ " WHERE p.startDate >= :from AND p.startDate <= :to")
 	List<Promotion> findPromotionValidDate(
 			@Param("from") Date from ,
 			@Param("to") Date to);	

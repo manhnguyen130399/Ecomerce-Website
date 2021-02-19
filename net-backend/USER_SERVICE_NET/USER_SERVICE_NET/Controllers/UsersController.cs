@@ -35,7 +35,7 @@ namespace USER_SERVICE_NET.Controllers
         }
 
         [HttpPost("cusomerRegister")]
-        public async Task<IActionResult> CustomerRegister([FromForm] RegisterRequest request)
+        public async Task<IActionResult> CustomerRegister([FromForm] CustomerRegisterRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -43,6 +43,20 @@ namespace USER_SERVICE_NET.Controllers
             }
 
             var result = await _userService.RegisterForCustomer(request);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpPost("sellerRegister")]
+        public async Task<IActionResult> SellerRegister(SellerRegisterRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.RegisterForSeller(request);
 
             if (!result.IsSuccessed) return BadRequest(result);
             return Ok(result);
@@ -89,9 +103,7 @@ namespace USER_SERVICE_NET.Controllers
 
             var emailToken = Helpers.GenerateRandomString();
 
-            var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "EmailTemplate", "ResetPassword.html");
-
-            string contentTemplate = System.IO.File.ReadAllText(filePath);
+            string contentTemplate = Helpers.GetStringFromHtml(_webHostEnvironment.WebRootPath, "ResetPassword.html");
 
             var emailRequest = new EmailRequest()
             {
@@ -169,7 +181,7 @@ namespace USER_SERVICE_NET.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var fileUrl = await _storageService.FileUploadAsync(file);
+            var fileUrl = await _storageService.UploadFileAsync(file);
 
             return Ok(fileUrl);
         }

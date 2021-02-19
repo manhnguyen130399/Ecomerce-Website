@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
+using USER_SERVICE_NET.Services.Commons;
+using USER_SERVICE_NET.Services.Communicates;
 using USER_SERVICE_NET.Services.CronJob;
 using USER_SERVICE_NET.Services.Emails;
 using USER_SERVICE_NET.Services.StorageServices;
@@ -41,6 +43,7 @@ namespace USER_SERVICE_NET
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IStorageService, StorageService>();
+            services.AddHttpContextAccessor();
 
             var emailConfig = Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 
@@ -70,6 +73,11 @@ namespace USER_SERVICE_NET
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
                 c.CronExpression = @"0 6 * * *"; // 6am every day
+            });
+
+            services.AddHttpClient<ICommunicateService, CommunicateService>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetSection("BaseUrl").Value);
             });
         }
 

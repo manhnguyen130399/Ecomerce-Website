@@ -12,10 +12,12 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
+using USER_SERVICE_NET.Services.Communicates;
 using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Utilities;
 using USER_SERVICE_NET.Utilities.Enums;
 using USER_SERVICE_NET.ViewModels.Commons;
+using USER_SERVICE_NET.ViewModels.Stores;
 using USER_SERVICE_NET.ViewModels.Users;
 
 namespace USER_SERVICE_NET.Services.Users
@@ -25,12 +27,14 @@ namespace USER_SERVICE_NET.Services.Users
         private readonly ShopicaContext _context;
         private readonly IConfiguration _configuration;
         private readonly IStorageService _storageService;
+        private readonly ICommunicateService _communicateService;
 
-        public UserService(ShopicaContext context, IConfiguration configuration, IStorageService storageService)
+        public UserService(ShopicaContext context, IConfiguration configuration, IStorageService storageService, ICommunicateService communicateService)
         {
             _context = context;
             _configuration = configuration;
             _storageService = storageService;
+            _communicateService = communicateService;
         }
         public async Task<APIResult<string>> Authencate(LoginRequest request)
         {
@@ -47,7 +51,7 @@ namespace USER_SERVICE_NET.Services.Users
             return new APIResultSuccess<string>(token);
         }
 
-        public async Task<APIResult<string>> RegisterForCustomer(RegisterRequest request)
+        public async Task<APIResult<string>> RegisterForCustomer(CustomerRegisterRequest request)
         {
             if (await _context.Account.FirstOrDefaultAsync(ac => ac.Username == request.Email) != null)
             {
@@ -75,7 +79,7 @@ namespace USER_SERVICE_NET.Services.Users
 
             if (request.ImageFile != null)
             {
-                account.ImageUrl = await _storageService.FileUploadAsync(request.ImageFile);
+                account.ImageUrl = await _storageService.UploadFileAsync(request.ImageFile);
             }
 
             _context.Account.Add(account);
@@ -86,12 +90,19 @@ namespace USER_SERVICE_NET.Services.Users
 
         }
 
-        public async Task<APIResult<string>> RegisterForSeller(RegisterRequest request)
+        public async Task<APIResult<string>> RegisterForSeller(SellerRegisterRequest request)
         {
             if (await _context.Account.FirstOrDefaultAsync(ac => ac.Username == request.Email) != null)
             {
                 return new APIResultErrors<string>("Email is already");
             }
+
+            var storeRequest = new StoreRequest();
+            storeRequest.Owner = request.Fullname;
+            storeRequest.StoreName = request.StoreName;
+            storeRequest.Website = request.StoreName;
+
+            var store = await _communicateService.CreateStoreForSeller(storeRequest);
 
             var account = new Account()
             {
@@ -108,18 +119,20 @@ namespace USER_SERVICE_NET.Services.Users
                         Phone = request.Phone,
                         Email = request.Email,
                         Gender = request.Gender,
+                        StoreId = store.Data.Id
                     }
                 }
             };
 
             if (request.ImageFile != null)
             {
-                account.ImageUrl = await _storageService.FileUploadAsync(request.ImageFile);
+                account.ImageUrl = await _storageService.UploadFileAsync(request.ImageFile);
             }
 
             _context.Account.Add(account);
-
             await _context.SaveChangesAsync();
+
+
 
             return new APIResultSuccess<string>("register successfully");
         }
@@ -251,7 +264,7 @@ namespace USER_SERVICE_NET.Services.Users
 
             if (request.ImageFile != null)
             {
-                user.Account.ImageUrl = await _storageService.FileUploadAsync(request.ImageFile);
+                user.Account.ImageUrl = await _storageService.UploadFileAsync(request.ImageFile);
             }
 
             user.CustomerName = (!String.IsNullOrEmpty(request.Fullname) && user.CustomerName != request.Fullname) ? request.Fullname : user.CustomerName;

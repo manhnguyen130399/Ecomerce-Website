@@ -9,9 +9,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
+using USER_SERVICE_NET.Services.Communicates;
 using USER_SERVICE_NET.Services.Emails;
+using USER_SERVICE_NET.Utilities;
 using USER_SERVICE_NET.ViewModels.CronJob;
 using USER_SERVICE_NET.ViewModels.Emails;
+using USER_SERVICE_NET.ViewModels.Promotions;
 
 namespace USER_SERVICE_NET.Services.CronJob
 {
@@ -33,22 +36,38 @@ namespace USER_SERVICE_NET.Services.CronJob
             using (var scope = _services.CreateScope())
             {
                 var _context = scope.ServiceProvider.GetRequiredService<ShopicaContext>();
-
-                var listCutomerMails = await _context.Customer.Select(x => x.Email).ToListAsync();
-
-                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "EmailTemplate", "ResetPassword.html");
-                string contentTemplate = File.ReadAllText(filePath);
-
-                var emailRequest = new EmailRequest();
-                emailRequest.Subject = "Promotion code daily";
-                emailRequest.Recipients = listCutomerMails;
-                emailRequest.Content = contentTemplate;
-         
                 var _emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                var _communicateService = scope.ServiceProvider.GetRequiredService<ICommunicateService>();
 
-                await _emailService.SendEmailAsync(emailRequest);
+                var listCutomerMail = await _context.Customer.Select(x => x.Email).ToListAsync();
+                var listPromotionValid = await _communicateService.GetPromotionValid();
+
+                if(listPromotionValid.Data.Count > 0)
+                {
+                    var emailRequest = GetMailRequest(listCutomerMail, listPromotionValid.Data, _webHostEnvironment.WebRootPath);
+
+                    await _emailService.SendEmailAsync(emailRequest);
+                }
             }
-           
+        }
+
+        public static EmailRequest GetMailRequest(List<string> listEmailCustomer, List<PromotionResponse> listPromotion, string rootPath)
+        {
+            string tableBody = "";
+            string template = Helpers.GetStringFromHtml(rootPath, "Promotion.html");
+            string tableTr = Helpers.GetStringFromHtml(rootPath, "TableTr.html");
+
+            foreach (var item in listPromotion)
+            {
+                tableBody += String.Format(tableTr, item.Code, "https://drive.google.com/thumbnail?id=140EX9F0ZUhQ1nTRIxyyAGWBDoPa-YWMp", item.Discount, item.StartDate, item.EndDate, item.StoreUrl, item.StoreName);
+            }
+
+            var emailRequest = new EmailRequest();
+            emailRequest.Subject = "Promotion code daily";
+            emailRequest.Recipients = listEmailCustomer;
+            emailRequest.Content = String.Format(template, tableBody); ;
+
+            return emailRequest;
         }
     }
 }

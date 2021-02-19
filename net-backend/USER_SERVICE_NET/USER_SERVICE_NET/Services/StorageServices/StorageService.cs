@@ -70,7 +70,7 @@ namespace USER_SERVICE_NET.Services.StorageServices
             return service;
         }
 
-        public async Task<string> FileUploadAsync(IFormFile file)
+        public async Task<string> UploadFileAsync(IFormFile file)
         {
             if (file != null && file.Length > 0)
             {
@@ -93,15 +93,15 @@ namespace USER_SERVICE_NET.Services.StorageServices
                     var result  = await request.UploadAsync();
                     if( result.Status == UploadStatus.Completed)
                     {
-                        return String.Format("https://drive.google.com/thumbnail?id={0}", fileId);
+                        return String.Format(Constant.DriveServiceBaseImageUrl, fileId);
                     }
                     else
                     {
-                        return String.Format("https://drive.google.com/thumbnail?id={0}", Constant.DriveServiceNotFoundImage);
+                        return String.Format(Constant.DriveServiceBaseImageUrl, Constant.DriveServiceNotFoundImage);
                     }
                 } 
             }
-            return String.Format("https://drive.google.com/thumbnail?id={0}", Constant.DriveServiceNotFoundImage);
+            return String.Format(Constant.DriveServiceBaseImageUrl, Constant.DriveServiceNotFoundImage);
         }
     }
 }

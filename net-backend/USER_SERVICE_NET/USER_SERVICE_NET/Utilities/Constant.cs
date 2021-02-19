@@ -16,6 +16,9 @@ namespace USER_SERVICE_NET.Utilities
 
         public const long TokenExpireTime = 1000 * 60 * 10;
 
+        public const string HttpClientMediaType = "application/json";
+
+        // google-driver
         public static readonly string[] DriveServiceScopes = { DriveService.Scope.Drive };
 
         public static readonly string[] DriveServiceFolder ={ "1L8wce4Ow8409OWbzhlCy93C5fKrAOlXs" } ;
@@ -23,6 +26,8 @@ namespace USER_SERVICE_NET.Utilities
         public const string DriveServiceAppName = "GoogleDriveRestAPI-v3";
 
         public const string DriveServiceNotFoundImage = "1KXVcuCEi-aYgrJXkUwV_RODDh5cT5qHv";
+
+        public const string DriveServiceBaseImageUrl = "https://drive.google.com/thumbnail?id={0}";
 
 
     }
