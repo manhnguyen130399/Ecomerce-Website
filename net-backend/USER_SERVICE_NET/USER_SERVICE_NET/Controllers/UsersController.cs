@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,11 +24,14 @@ namespace USER_SERVICE_NET.Controllers
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
         private readonly IStorageService _storageService;
-        public UsersController(IUserService userService, IEmailService emailService, IStorageService storageService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public UsersController(IUserService userService, IEmailService emailService, IStorageService storageService, IWebHostEnvironment webHostEnvironment)
         {
             _userService = userService;
             _emailService = emailService;
             _storageService = storageService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost("cusomerRegister")]
@@ -84,11 +89,15 @@ namespace USER_SERVICE_NET.Controllers
 
             var emailToken = Helpers.GenerateRandomString();
 
+            var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "EmailTemplate", "ResetPassword.html");
+
+            string contentTemplate = System.IO.File.ReadAllText(filePath);
+
             var emailRequest = new EmailRequest()
             {
                 To = email,
                 Subject = "Veritify code",
-                Content = emailToken
+                Content = String.Format(contentTemplate,emailToken)
             };
 
             _emailService.SendEmailAsync(emailRequest);

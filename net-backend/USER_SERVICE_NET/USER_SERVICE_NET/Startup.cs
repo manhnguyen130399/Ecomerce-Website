@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
+using USER_SERVICE_NET.Services.CronJob;
 using USER_SERVICE_NET.Services.Emails;
 using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Services.Users;
@@ -64,6 +65,12 @@ namespace USER_SERVICE_NET
                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Configuration.GetSection("SecretKey").Value))
                };
            });
+
+            services.AddCronJob<SendPromotionService>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Local;
+                c.CronExpression = @"0 6 * * *"; // 6am every day
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

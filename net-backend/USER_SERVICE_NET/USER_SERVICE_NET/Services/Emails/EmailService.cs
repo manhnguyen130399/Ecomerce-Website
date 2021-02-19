@@ -7,16 +7,19 @@ using USER_SERVICE_NET.ViewModels.Commons;
 using USER_SERVICE_NET.ViewModels.Emails;
 using MimeKit;
 using System.Text;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace USER_SERVICE_NET.Services.Emails
 {
     public class EmailService : IEmailService
     {
         private readonly EmailConfiguration _emailConfiguration;
-
-        public EmailService(EmailConfiguration emailConfiguration)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public EmailService(EmailConfiguration emailConfiguration, IWebHostEnvironment webHostEnvironment)
         {
             _emailConfiguration = emailConfiguration;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<APIResult<string>> SendEmailAsync(EmailRequest message)
@@ -49,8 +52,19 @@ namespace USER_SERVICE_NET.Services.Emails
         {
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("Shopica Email Service",_emailConfiguration.From));
-            emailMessage.To.Add(new MailboxAddress(message.To));
+            if (message.Recipients!=null)
+            {
+                foreach(var email in message.Recipients)
+                {
+                    emailMessage.To.Add(new MailboxAddress(email));
+                }
+            }
+            else
+            {
+                emailMessage.To.Add(new MailboxAddress(message.To));
+            }
             emailMessage.Subject = message.Subject;
+
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Content };
 
             return emailMessage;
