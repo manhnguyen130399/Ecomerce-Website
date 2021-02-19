@@ -5,10 +5,12 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fashion.domain.UserContext;
+import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.account.repository.AccountRepository;
 import com.fashion.modules.seller.domain.Seller;
 import com.fashion.modules.seller.repository.SellerRepository;
@@ -77,7 +79,12 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 	@Transactional
 	public StoreVM createStoreV2(StoreReq req) {
 		final Store store = mapper.map(req, Store.class);
-		return mapper.map(storeRepo.save(store), StoreVM.class);
+		try {
+			return mapper.map(storeRepo.save(store), StoreVM.class);
+		} catch (Exception e) {
+			throw new InvalidArgumentException("Duplicated store name");
+		}
+
 	}
 
 	
