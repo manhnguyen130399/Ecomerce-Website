@@ -8,7 +8,7 @@ using USER_SERVICE_NET.Utilities.Enums;
 
 namespace USER_SERVICE_NET.ViewModels.Users
 {
-    public class RegisterRequest
+    public class SellerRegisterRequest
     {
         [Required]
         public string Fullname { get; set; }
@@ -29,5 +29,13 @@ namespace USER_SERVICE_NET.ViewModels.Users
 
         [Required]
         public string Password { get; set; }
+
+        // Store
+        [Required]
+        public string StoreName { get; set; }
+        public string StoreAddress { get; set; }
+        public DateTime OpenTime { get; set; }
+        public DateTime CloseTime { get; set; }
+
     }
 }

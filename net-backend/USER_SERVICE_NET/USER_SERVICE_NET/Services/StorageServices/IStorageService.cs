@@ -12,7 +12,7 @@ namespace USER_SERVICE_NET.Services.StorageServices
     public interface IStorageService
     {
         DriveService GetService();
-        Task<string> FileUploadAsync(IFormFile file);
+        Task<string> UploadFileAsync(IFormFile file);
         Task SaveFileAsync(Stream mediaBinaryStream, string folder, string fileName);
         Task DeleteFileAsync(string folder, string fileName);
     }

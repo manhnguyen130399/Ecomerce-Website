@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using USER_SERVICE_NET.Services.CronJob;
 using USER_SERVICE_NET.ViewModels.CronJob;
 
-namespace USER_SERVICE_NET.Utilities
+namespace USER_SERVICE_NET.Services.Commons
 {
     public static class ScheduledServiceExtensions
     {

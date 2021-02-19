@@ -60,6 +60,7 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/auth/**").permitAll()
 				.antMatchers("/api/complain/create").permitAll()
 				.antMatchers("/api/promotion/valid-date").permitAll()
+				.antMatchers("/api/store/v2").permitAll()
 				.antMatchers("/api/**").authenticated();
 
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);

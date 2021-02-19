@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -61,6 +62,12 @@ namespace USER_SERVICE_NET.Utilities
         public static string GetCurrentTime()
         {
             return DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+        }
+
+        public static string GetStringFromHtml(string rootPath, string fileName)
+        {
+            var filePath = Path.Combine(rootPath, "EmailTemplate", fileName);
+            return File.ReadAllText(filePath);
         }
     }
 }
