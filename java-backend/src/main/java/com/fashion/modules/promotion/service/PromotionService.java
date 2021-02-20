@@ -18,5 +18,7 @@ public interface PromotionService {
 	List<QrVM> getPromotionValidDate() throws ParseException;
 
 	void deletePromotion(Integer id);
+	
+	String getDiscountPromtion(String code);
 
 }

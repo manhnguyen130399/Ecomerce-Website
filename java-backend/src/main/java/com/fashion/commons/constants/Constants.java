@@ -55,6 +55,7 @@ public final class Constants {
 	public static final String SHARP = "#";
 	public static final String COLON = ":";
 	public static final String PERCENT = "%";
+	public static final String END_LINE = "\n";
 
 	// Regex for acceptable logins
 	public static final String EMAIL_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
@@ -91,5 +92,19 @@ public final class Constants {
 	public static final String COMPLAIN_TITLE = "REPONSE YOUR COMPLAIN";
 	public static final String PROMOTION_TITLE = "PROMOTION FOR YOU";
 	public static final String THANK_YOU = "  Thanks .";
+	
+	//ORDER
+	public static final String ORDER = "Order";
+	public static final String CUSTOMER_NAME = "Customer Name : ";
+	public static final String ADDRESS = "Address : ";
+	public static final String PHONE_NUMBER = "Phone : ";
+	public static final String CUSTOMER_EMAIL = "Email : ";
+	public static final String ORDER_DATE = "Order date : ";
+	public static final String TOTAL = "Total :";
+	public static final String STATE = "State : ";
+	public static final String ORDER_DETAIL = "Order detail : ";
+	public static final String PRODUCT_NAME = "Product Name : ";
+	public static final String QUANTITY = "Quantity : ";
+	public static final String TOTAL_PRICE = "Total price : ";
 
 }

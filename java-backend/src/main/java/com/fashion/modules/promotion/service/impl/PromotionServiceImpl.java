@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 		}
 		final SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD_HYPHEN);
 		final String storeName = store.getStoreName();
-		final String text = String.join("\n", Constants.CODE_PROMOTION + Constants.BLANK + req.getCode(),
+		final String text = String.join(Constants.END_LINE, Constants.CODE_PROMOTION + Constants.BLANK + req.getCode(),
 				Constants.START_DATE + Constants.BLANK + formatter.format(req.getStartDate()),
 				Constants.END_DATE + Constants.BLANK + formatter.format(req.getEndDate()),
 				Constants.DISCOUNT + Constants.BLANK + req.getDiscount() + Constants.PERCENT,
@@ -115,6 +116,27 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 		to.set(Calendar.MILLISECOND, 0);
 		return promoRepo.findPromotionValidDate(from.getTime(), to.getTime()).stream()
 				.map(it -> mapper.map(it, QrVM.class)).collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional
+	public String getDiscountPromtion(final String code) {
+		final Promotion promotion = promoRepo.findOnePromotionByCode(code);
+		final Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR, 12);
+		calendar.set(Calendar.MINUTE, 1);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		final Date now = calendar.getTime();
+		if (promotion == null) {
+			throw new InvalidArgumentException(" Promotion not found ");
+		} else if (promotion.getStartDate().after(now) || promotion.getEndDate().before(now)) {
+			throw new InvalidArgumentException(" Can't use promotion. Start date or end date invalid. ");
+
+		} else {
+			return promotion.getDiscount().toString() + Constants.PERCENT;
+		}
+
 	}
 
 }

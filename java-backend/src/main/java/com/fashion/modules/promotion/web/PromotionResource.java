@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
 import com.fashion.modules.promotion.model.PromotionRequest;
@@ -54,6 +55,11 @@ public class PromotionResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> deletePromotion(@PathVariable final Integer id) {
 		promoService.deletePromotion(id);
 		return success(Constants.SUCCESS);
+	}
+	
+	@PostMapping(URL + "/code")
+	public ResponseEntity<Map<String, Object>> getDiscountByCode(@RequestParam final String code) {
+		return success(promoService.getDiscountPromtion(code));
 	}
 
 }
