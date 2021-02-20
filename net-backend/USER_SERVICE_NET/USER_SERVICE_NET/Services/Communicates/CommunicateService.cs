@@ -47,6 +47,7 @@ namespace USER_SERVICE_NET.Services.Communicates
         public async Task<APIResult<List<PromotionResponse>>> GetPromotionValid()
         {
             var response = await _httpClient.GetAsync("promotion/valid-date");
+
             if (response.IsSuccessStatusCode)
             {
                 using (HttpContent content = response.Content)
@@ -58,6 +59,17 @@ namespace USER_SERVICE_NET.Services.Communicates
             else
             {
                 return JsonConvert.DeserializeObject<APIResult<List<PromotionResponse>>>(null);
+            }
+        }
+
+        public APIResult<List<PromotionResponse>> GetPromotionValid1()
+        {
+            using (Stream s = _httpClient.GetStreamAsync("promotion/valid-date").Result)
+            using (StreamReader sr = new StreamReader(s))
+            using (JsonReader reader = new JsonTextReader(sr))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                return serializer.Deserialize<APIResult<List<PromotionResponse>>>(reader);
             }
         }
     }

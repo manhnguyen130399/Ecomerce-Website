@@ -12,5 +12,10 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="3.1.10-m8.0.23" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModels\Carts\" />
+    <Folder Include="ViewModels\Orders\" />
+  </ItemGroup>
+
 
 </Project>

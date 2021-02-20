@@ -19,76 +19,67 @@ namespace ORDER_SERVICE_NET.Models
         {
         }
 
-        public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<CartDetail> CartDetail { get; set; }
+        public virtual DbSet<Carts> Carts { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+        public virtual DbSet<Orders> Orders { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>(entity =>
+            modelBuilder.Entity<CartDetail>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.StoreId })
-                    .HasName("PRIMARY");
+                entity.ToTable("cart_detail");
 
-                entity.ToTable("order");
+                entity.HasIndex(e => e.CartId)
+                    .HasName("FK_CartDetail_Store");
 
-                entity.HasIndex(e => e.PromotionId)
-                    .HasName("fk_order_promotion1_idx");
-
-                entity.HasIndex(e => e.StoreId)
-                    .HasName("fk_order_store1_idx");
+                entity.HasIndex(e => e.ProductDetailId)
+                    .HasName("fk_cart_detail_product_detail");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.CartId)
+                    .HasColumnName("cart_id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.ProductDetailId)
+                    .HasColumnName("product_detail_id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Quantity)
+                    .HasColumnName("quantity")
                     .HasColumnType("int(11)")
-                    .ValueGeneratedOnAdd();
+                    .HasDefaultValueSql("'NULL'");
 
-                entity.Property(e => e.StoreId)
-                    .HasColumnName("store_id")
+                entity.HasOne(d => d.Cart)
+                    .WithMany(p => p.CartDetail)
+                    .HasForeignKey(d => d.CartId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CartDetail_Store");
+            });
+
+            modelBuilder.Entity<Carts>(entity =>
+            {
+                entity.ToTable("carts");
+
+                entity.HasIndex(e => e.CustomerId)
+                    .HasName("FK_Order_Customer");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.Address)
-                    .IsRequired()
-                    .HasColumnName("address")
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.CreatedBy)
-                    .HasColumnName("created_by")
-                    .HasMaxLength(45);
-
-                entity.Property(e => e.CustomerName)
-                    .HasColumnName("customer_name")
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnName("email")
-                    .HasMaxLength(45);
-
-                entity.Property(e => e.Phone)
-                    .IsRequired()
-                    .HasColumnName("phone")
-                    .HasMaxLength(12);
-
-                entity.Property(e => e.PromotionId)
-                    .HasColumnName("promotion_id")
+                entity.Property(e => e.CustomerId)
+                    .HasColumnName("customer_id")
                     .HasColumnType("int(11)");
-
-                entity.Property(e => e.QrCode)
-                    .HasColumnName("qr_code")
-                    .HasColumnType("longtext");
-
-                entity.Property(e => e.State)
-                    .IsRequired()
-                    .HasColumnName("state")
-                    .HasColumnType("enum('PENDING','DELIVER','COMPLETE','CANCLE')");
 
                 entity.Property(e => e.Total)
                     .HasColumnName("total")
-                    .HasColumnType("decimal(10,0)");
-
-                entity.Property(e => e.UpdatedBy)
-                    .HasColumnName("updated_by")
-                    .HasMaxLength(45);
+                    .HasColumnType("decimal(10,0)")
+                    .HasDefaultValueSql("'NULL'");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
@@ -99,10 +90,13 @@ namespace ORDER_SERVICE_NET.Models
                 entity.ToTable("order_detail");
 
                 entity.HasIndex(e => e.OrderId)
-                    .HasName("fk_order_detail_order1_idx");
+                    .HasName("FK_orderDetail_Order");
 
                 entity.HasIndex(e => e.ProductDetailId)
                     .HasName("fk_order_detail_product_detail1_idx");
+
+                entity.HasIndex(e => e.StoreId)
+                    .HasName("FK_OrderDetail_Store");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -119,19 +113,96 @@ namespace ORDER_SERVICE_NET.Models
 
                 entity.Property(e => e.CreatedBy)
                     .HasColumnName("created_by")
-                    .HasMaxLength(45);
+                    .HasMaxLength(45)
+                    .HasDefaultValueSql("'NULL'");
 
                 entity.Property(e => e.Quantity)
                     .HasColumnName("quantity")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.StoreId)
+                    .HasColumnName("store_id")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'NULL'");
 
                 entity.Property(e => e.TotalPriceProduct)
                     .HasColumnName("total_price_product")
-                    .HasColumnType("decimal(10,0)");
+                    .HasColumnType("decimal(10,0)")
+                    .HasDefaultValueSql("'NULL'");
 
                 entity.Property(e => e.UpdatedBy)
                     .HasColumnName("updated_by")
+                    .HasMaxLength(45)
+                    .HasDefaultValueSql("'NULL'");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetail)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_orderDetail_Order");
+            });
+
+            modelBuilder.Entity<Orders>(entity =>
+            {
+                entity.ToTable("orders");
+
+                entity.HasIndex(e => e.PromotionId)
+                    .HasName("FK_Order_Promotion");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Address)
+                    .IsRequired()
+                    .HasColumnName("address")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.CreatedBy)
+                    .HasColumnName("created_by")
+                    .HasMaxLength(45)
+                    .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.CustomerName)
+                    .HasColumnName("customer_name")
+                    .HasMaxLength(100)
+                    .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasColumnName("email")
                     .HasMaxLength(45);
+
+                entity.Property(e => e.Phone)
+                    .IsRequired()
+                    .HasColumnName("phone")
+                    .HasMaxLength(12);
+
+                entity.Property(e => e.PromotionId)
+                    .HasColumnName("promotion_id")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.QrCode)
+                    .HasColumnName("qr_code")
+                    .HasColumnType("longtext")
+                    .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.State)
+                    .IsRequired()
+                    .HasColumnName("state")
+                    .HasColumnType("enum('PENDING','DELIVER','COMPLETE','CANCLE')");
+
+                entity.Property(e => e.Total)
+                    .HasColumnName("total")
+                    .HasColumnType("decimal(10,0)")
+                    .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.UpdatedBy)
+                    .HasColumnName("updated_by")
+                    .HasMaxLength(45)
+                    .HasDefaultValueSql("'NULL'");
             });
 
             OnModelCreatingPartial(modelBuilder);

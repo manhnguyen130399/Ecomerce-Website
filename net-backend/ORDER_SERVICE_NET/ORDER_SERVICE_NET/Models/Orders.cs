@@ -7,8 +7,13 @@ using System.Collections.Generic;
 
 namespace ORDER_SERVICE_NET.Models
 {
-    public partial class Order
+    public partial class Orders
     {
+        public Orders()
+        {
+            OrderDetail = new HashSet<OrderDetail>();
+        }
+
         public int Id { get; set; }
         public string CustomerName { get; set; }
         public string Address { get; set; }
@@ -19,7 +24,8 @@ namespace ORDER_SERVICE_NET.Models
         public decimal? Total { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
-        public int StoreId { get; set; }
         public int? PromotionId { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
     }
 }
