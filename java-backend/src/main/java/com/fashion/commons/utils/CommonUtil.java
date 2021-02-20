@@ -58,9 +58,9 @@ public class CommonUtil {
 		}
 	}
 	
-	public static File QrCodeToFile(final String qrCode, final String storeName) throws Exception {
+	public static File QrCodeToFile(final String qrCode, final String name) throws Exception {
 		byte[] data = DatatypeConverter.parseBase64Binary(qrCode);
-		final File file = new File(Constants.CODE_PROMOTION + storeName);
+		final File file = new File(Constants.CODE_PROMOTION + name);
 		final FileOutputStream fos = new FileOutputStream(file);
 		fos.write(data);
 		fos.close();

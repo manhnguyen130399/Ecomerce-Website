@@ -25,4 +25,6 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
 			@Param("from") Date from ,
 			@Param("to") Date to);	
 	
+	Promotion findOnePromotionByCode(String code);
+	
 }
