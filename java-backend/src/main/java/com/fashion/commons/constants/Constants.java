@@ -32,17 +32,14 @@ public final class Constants {
 	public static final BigDecimal BIG_DECIMAL_PERCENTAGE_NUMBER = new BigDecimal(100);
 	public static final BigDecimal BIG_DECIMAL_ZERO = new BigDecimal(0);
 
-	public static final DateFormat DATE_FORMATTER = new SimpleDateFormat(
-			DATE_FORMAT_DDMMYYYYHHMMSS_HYPHEN);
+	public static final DateFormat DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT_DDMMYYYYHHMMSS_HYPHEN);
 
 	public static final DateFormat DATE_FORMAT_YYYYMMDDHHMMSS_FORMATTER = new SimpleDateFormat(
 			DATE_FORMAT_YYYYMMDDHHMMSS_EXTENSION);
 
-	public static final DateFormat SIMPLE_DATE_FORMATTER = new SimpleDateFormat(
-			DATE_FORMAT_DDMMYYYY_SLASH);
+	public static final DateFormat SIMPLE_DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT_DDMMYYYY_SLASH);
 
-	public static final DateFormat YYYY_MM_DD_DATE_FORMATTER = new SimpleDateFormat(
-			DATE_FORMAT_YYYYMMDD_HYPHEN);
+	public static final DateFormat YYYY_MM_DD_DATE_FORMATTER = new SimpleDateFormat(DATE_FORMAT_YYYYMMDD_HYPHEN);
 
 	public static final String KEY_LANG_EN = "en";
 	public static final String KEY_LANG_VI = "vi";
@@ -58,7 +55,7 @@ public final class Constants {
 	public static final String SHARP = "#";
 	public static final String COLON = ":";
 	public static final String PERCENT = "%";
-	
+
 	// Regex for acceptable logins
 	public static final String EMAIL_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 	public static final String LOGIN_REGEX = "^[_'.@A-Za-z0-9-]*$";
@@ -70,8 +67,8 @@ public final class Constants {
 	public static final String REGEX_BLANK = "\\s+";
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
-	
-	//OUTPUT KEY
+
+	// OUTPUT KEY
 	public static final String DATA = "data";
 	public static final String CODE = "code";
 	public static final String CODE_PROMOTION = "Code :";
@@ -81,20 +78,18 @@ public final class Constants {
 	public static final String STORE = "Store :";
 	public static final String WEBSITE = "Website :";
 	public static final String MESSAGE = "message";
-	public static final String META_DATA ="meta-data";
-	
-	public static final String URL_VIEW_FILE = "https://drive.google.com/file/d/${file_id}/view";
+	public static final String META_DATA = "meta-data";
+
+	public static final String URL_VIEW_FILE = "https://drive.google.com/uc?export=view&id=${file_id}";
 	public static final String FILE_ID = "file_id";
-	
+
 	public static final String SUCCESS = "Success";
-	
-	
+
 	// EMAIL
 	public static final String EMAIL = "manhnguyen130399@gmail.com";
 	public static final String PASSWORD = "manh130399";
 	public static final String COMPLAIN_TITLE = "REPONSE YOUR COMPLAIN";
 	public static final String PROMOTION_TITLE = "PROMOTION FOR YOU";
 	public static final String THANK_YOU = "  Thanks .";
-
 
 }
