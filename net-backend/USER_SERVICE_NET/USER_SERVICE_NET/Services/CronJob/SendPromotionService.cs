@@ -55,11 +55,11 @@ namespace USER_SERVICE_NET.Services.CronJob
         {
             string tableBody = "";
             string template = Helpers.GetStringFromHtml(rootPath, "Promotion.html");
-            string tableTr = Helpers.GetStringFromHtml(rootPath, "TableTr.html");
+            string tableTh = Helpers.GetStringFromHtml(rootPath, "TableTh.html");
 
             foreach (var item in listPromotion)
             {
-                tableBody += String.Format(tableTr, item.Code, "https://drive.google.com/thumbnail?id=140EX9F0ZUhQ1nTRIxyyAGWBDoPa-YWMp", item.Discount, item.StartDate, item.EndDate, item.StoreUrl, item.StoreName);
+                tableBody += String.Format(tableTh, item.QrCode);
             }
 
             var emailRequest = new EmailRequest();

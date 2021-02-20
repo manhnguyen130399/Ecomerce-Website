@@ -72,7 +72,7 @@ namespace USER_SERVICE_NET
             services.AddCronJob<SendPromotionService>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Local;
-                c.CronExpression = @"0 6 * * *"; // 6am every day
+                c.CronExpression = @"*/5 * * * *"; // 6am every day
             });
 
             services.AddHttpClient<ICommunicateService, CommunicateService>(client =>
