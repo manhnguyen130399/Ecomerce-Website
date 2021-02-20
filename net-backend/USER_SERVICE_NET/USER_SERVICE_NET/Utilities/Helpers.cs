@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
 
@@ -68,6 +69,24 @@ namespace USER_SERVICE_NET.Utilities
         {
             var filePath = Path.Combine(rootPath, "EmailTemplate", fileName);
             return File.ReadAllText(filePath);
+        }
+
+        public static string ConverToSlug(string value)
+        {
+            value = value.ToLowerInvariant();
+
+            var bytes = Encoding.GetEncoding("Cyrillic").GetBytes(value);
+            value = Encoding.ASCII.GetString(bytes);
+
+            value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
+
+            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
+
+            value = value.Trim('-', '_');
+
+            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
+
+            return value;
         }
     }
 }

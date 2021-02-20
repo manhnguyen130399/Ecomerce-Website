@@ -18,6 +18,8 @@ namespace USER_SERVICE_NET.Utilities
 
         public const string HttpClientMediaType = "application/json";
 
+        public const string ShopicaUrl = "http://localhost:4200";
+
         // google-driver
         public static readonly string[] DriveServiceScopes = { DriveService.Scope.Drive };
 

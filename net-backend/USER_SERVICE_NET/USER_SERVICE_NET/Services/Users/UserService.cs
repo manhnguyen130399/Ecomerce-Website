@@ -100,7 +100,7 @@ namespace USER_SERVICE_NET.Services.Users
             var storeRequest = new StoreRequest();
             storeRequest.Owner = request.Fullname;
             storeRequest.StoreName = request.StoreName;
-            storeRequest.Website = request.StoreName;
+            storeRequest.Website = Helpers.ConverToSlug(request.StoreName);
 
             var store = await _communicateService.CreateStoreForSeller(storeRequest);
 
