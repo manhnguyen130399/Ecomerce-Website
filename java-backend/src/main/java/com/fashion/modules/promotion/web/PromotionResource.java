@@ -31,7 +31,7 @@ public class PromotionResource extends BaseResource {
 	private PromotionService promoService;
 
 	@PostMapping(URL + "/create")
-	public ResponseEntity<Map<String, Object>> creatPromotion(@RequestBody final PromotionRequest req) {
+	public ResponseEntity<Map<String, Object>> creatPromotion(@RequestBody final PromotionRequest req) throws Exception {
 		return success(promoService.createPromotion(req));
 	}
 

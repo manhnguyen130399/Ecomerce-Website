@@ -56,6 +56,8 @@ public final class Constants {
 	public static final String SPACE = " ";
 	public static final String DEVIDE = "/";
 	public static final String SHARP = "#";
+	public static final String COLON = ":";
+	public static final String PERCENT = "%";
 	
 	// Regex for acceptable logins
 	public static final String EMAIL_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
@@ -72,6 +74,12 @@ public final class Constants {
 	//OUTPUT KEY
 	public static final String DATA = "data";
 	public static final String CODE = "code";
+	public static final String CODE_PROMOTION = "Code :";
+	public static final String START_DATE = "Start date :";
+	public static final String END_DATE = "End date :";
+	public static final String DISCOUNT = "Discount :";
+	public static final String STORE = "Store :";
+	public static final String WEBSITE = "Website :";
 	public static final String MESSAGE = "message";
 	public static final String META_DATA ="meta-data";
 	

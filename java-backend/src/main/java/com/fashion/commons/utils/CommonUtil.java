@@ -8,9 +8,12 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.apache.commons.lang3.text.StrBuilder;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fashion.commons.constants.Constants;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -53,6 +56,15 @@ public class CommonUtil {
 		} catch (WriterException | IOException e) {
 			return null;
 		}
+	}
+	
+	public static File QrCodeToFile(final String qrCode, final String storeName) throws Exception {
+		byte[] data = DatatypeConverter.parseBase64Binary(qrCode);
+		final File file = new File(Constants.CODE_PROMOTION + storeName);
+		final FileOutputStream fos = new FileOutputStream(file);
+		fos.write(data);
+		fos.close();
+		return file;
 	}
 
 }

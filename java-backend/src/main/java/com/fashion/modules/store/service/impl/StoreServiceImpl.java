@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,8 +76,7 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Override
 	@Transactional
-	public StoreVM createStoreV2(StoreReq req) {
-		
+	public StoreVM createStoreV2(final StoreReq req) {
 		final Store store = mapper.map(req, Store.class);
 		try {
 			return mapper.map(storeRepo.save(store), StoreVM.class);

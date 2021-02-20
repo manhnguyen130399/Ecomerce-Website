@@ -5,16 +5,17 @@ import java.util.List;
 
 import com.fashion.modules.promotion.model.PromotionRequest;
 import com.fashion.modules.promotion.model.PromotionVM;
+import com.fashion.modules.promotion.model.QrVM;
 
 public interface PromotionService {
 
-	PromotionVM createPromotion(PromotionRequest req);
+	PromotionVM createPromotion(PromotionRequest req) throws Exception;
 
 	PromotionVM findPromotionById(Integer id);
 
 	List<PromotionVM> getAllPromotionByStore();
 
-	List<PromotionVM> getPromotionValidDate() throws ParseException;
+	List<QrVM> getPromotionValidDate() throws ParseException;
 
 	void deletePromotion(Integer id);
 
