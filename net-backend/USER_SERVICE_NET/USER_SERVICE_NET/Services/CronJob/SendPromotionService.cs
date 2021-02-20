@@ -63,7 +63,7 @@ namespace USER_SERVICE_NET.Services.CronJob
             }
 
             var emailRequest = new EmailRequest();
-            emailRequest.Subject = "Promotion code daily";
+            emailRequest.Subject = "[SHOPICA] PROMOTION DAYLI";
             emailRequest.Recipients = listEmailCustomer;
             emailRequest.Content = String.Format(template, tableBody); ;
 
