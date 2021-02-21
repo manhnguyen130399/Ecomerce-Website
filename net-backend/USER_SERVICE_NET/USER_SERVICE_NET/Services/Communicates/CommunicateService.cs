@@ -62,15 +62,15 @@ namespace USER_SERVICE_NET.Services.Communicates
             }
         }
 
-        public APIResult<List<PromotionResponse>> GetPromotionValid1()
-        {
-            using (Stream s = _httpClient.GetStreamAsync("promotion/valid-date").Result)
-            using (StreamReader sr = new StreamReader(s))
-            using (JsonReader reader = new JsonTextReader(sr))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                return serializer.Deserialize<APIResult<List<PromotionResponse>>>(reader);
-            }
-        }
+        //public APIResult<List<PromotionResponse>> GetPromotionValid1()
+        //{
+        //    using (Stream s = _httpClient.GetStreamAsync("promotion/valid-date").Result)
+        //    using (StreamReader sr = new StreamReader(s))
+        //    using (JsonReader reader = new JsonTextReader(sr))
+        //    {
+        //        JsonSerializer serializer = new JsonSerializer();
+        //        return serializer.Deserialize<APIResult<List<PromotionResponse>>>(reader);
+        //    }
+        //}
     }
 }
