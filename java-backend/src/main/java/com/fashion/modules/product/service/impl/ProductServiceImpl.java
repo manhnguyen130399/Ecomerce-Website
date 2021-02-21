@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -117,10 +118,10 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	public List<ProductVM> getAllProductByStore(final Integer page, final Integer pageSize) {
+	public Page<ProductVM> getAllProductByStore(final Integer page, final Integer pageSize) {
 		final Pageable pageable = PageRequest.of(page, pageSize);
-		return productRepo.findAllProductStore(getStore(getUserContext()).getId()).stream()
-				.map(it -> mapper.map(it, ProductVM.class)).collect(Collectors.toList());
+		return productRepo.findAllProductStore(getStore(getUserContext()).getId(), pageable)
+				.map(it -> mapper.map(it, ProductVM.class));
 	}
 
 	@Override

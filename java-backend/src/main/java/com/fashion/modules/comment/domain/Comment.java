@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ import com.fashion.modules.product.domain.Product;
 @Entity
 @Table(name = "comment")
 @Access(AccessType.FIELD)
-public class Comment implements Serializable {
+public class Comment implements Serializable  {
 
 	private static final long serialVersionUID = 8891567408598708082L;
 
@@ -50,15 +51,15 @@ public class Comment implements Serializable {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "account_id")
 	private Account account;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private Product product;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "blog_id")
 	private Blog blog;
 
