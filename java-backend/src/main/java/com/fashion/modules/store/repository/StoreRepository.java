@@ -1,5 +1,7 @@
 package com.fashion.modules.store.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,5 +19,10 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
 	Store findOneById(@Param("id") Integer id);
 	
 	Store findByStoreNameLike(String storeName);
+	
+	@Query(value = " SELECT s " 
+			+ " FROM Store s " 
+			+ " WHERE s.id IN (:ids) ")
+	List<Store> getStoreByIds(@Param("ids") List<Integer> ids);
 
 }

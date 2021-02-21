@@ -18,5 +18,7 @@ public interface StoreService {
 	StoreVM updateStore(final StoreReq req, final Integer id);
 
 	void deleteStore(final Integer id);
+	
+	List<StoreVM> getStoreByIds(final List<Integer> ids);
 
 }

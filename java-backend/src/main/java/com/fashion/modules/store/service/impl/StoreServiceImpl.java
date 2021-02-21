@@ -86,5 +86,12 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	}
 
+	@Override
+	@Transactional
+	public List<StoreVM> getStoreByIds(final List<Integer> ids) {
+		return storeRepo.getStoreByIds(ids).stream().map(it -> mapper.map(it, StoreVM.class))
+				.collect(Collectors.toList());
+	}
+
 	
 }

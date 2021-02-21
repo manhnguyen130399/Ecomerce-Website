@@ -1,5 +1,6 @@
 package com.fashion.modules.store.web;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.service.StoreService;
@@ -59,6 +61,11 @@ public class StoreResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> deleteStore(@PathVariable(name = "id") final Integer id) {
 		storeService.deleteStore(id);
 		return success(null);
+	}
+	
+	@PostMapping(URL + "/list")
+	public ResponseEntity<Map<String, Object>> getStoreByIds(@RequestParam final List<Integer> ids) {
+		return success(storeService.getStoreByIds(ids));
 	}
 
 }
