@@ -14,7 +14,7 @@ namespace USER_SERVICE_NET.Utilities
 
         public const string UserImageFolder = "UserImages";
 
-        public const long TokenExpireTime = 1000 * 60 * 10;
+        public const long TokenExpireTime = 1000 * 60 * 10; // 10 minutes
 
         public const string HttpClientMediaType = "application/json";
 

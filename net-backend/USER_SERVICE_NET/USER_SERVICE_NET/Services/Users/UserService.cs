@@ -17,6 +17,7 @@ using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Utilities;
 using USER_SERVICE_NET.Utilities.Enums;
 using USER_SERVICE_NET.ViewModels.Commons;
+using USER_SERVICE_NET.ViewModels.Commons.Pagging;
 using USER_SERVICE_NET.ViewModels.Stores;
 using USER_SERVICE_NET.ViewModels.Users;
 
@@ -276,6 +277,81 @@ namespace USER_SERVICE_NET.Services.Users
 
             return new APIResultSuccess<bool>();
 
+        }
+
+        public async Task<APIResult<PaggingView<CustomerView>>> GetAllCustomer(PaggingRequest request)
+        {
+            var listCustomer = await _context.Customer
+                .Include(c => c.Account)
+                .ToListAsync();
+
+            var totalRow = listCustomer.Count();
+
+            var data = listCustomer
+                .Skip(request.pageSize*(request.pageIndex - 1))
+                .Take(request.pageSize)
+                .Select(x => new CustomerView()
+            {
+                CustomerName = x.CustomerName,
+                Address = x.Address,
+                Phone =x.Phone,
+                Email = x.Email,
+                Gender = x.Gender == Genders.Male ?"Male":"Female",
+                Image = x.Account.ImageUrl
+            }).ToList();
+
+            var customerView = new PaggingView<CustomerView>()
+            {
+                TotalRecord = totalRow,
+                Datas = data,
+                Pageindex = request.pageIndex,
+                PageSize = request.pageSize
+            };
+
+            return new APIResultSuccess<PaggingView<CustomerView>>(customerView);
+        }
+
+        public async Task<APIResult<PaggingView<SellerView>>> GetAllSeller(PaggingRequest request)
+        {
+
+            var listSeller = await _context.Seller
+                .Include(c => c.Account)
+                .ToListAsync();
+
+            var totalRow = listSeller.Count();
+
+            var listStoreId = listSeller.Select(x => x.StoreId).ToList();
+
+            var listStore = await _communicateService.GetListStore(listStoreId);
+
+            var fullList = from s in listSeller
+                           join st in listStore.Data on s.StoreId equals st.Id
+                           select new { s, st };
+
+            var data = fullList
+                .Skip(request.pageSize * (request.pageIndex - 1))
+                .Take(request.pageSize)
+                .Select(x => new SellerView()
+            {
+                SellerName = x.s.SellerName,
+                Address = x.s.Address,
+                Phone = x.s.Phone,
+                Email = x.s.Email,
+                Gender = x.s.Gender == Genders.Male ? "Male" : "Female",
+                Image = x.s.Account.ImageUrl,
+                StoreName = x.st.StoreName,
+                Website = x.st.Website
+            }).ToList();
+
+            var sellerView = new PaggingView<SellerView>()
+            {
+                TotalRecord = totalRow,
+                Datas = data,
+                Pageindex = request.pageIndex,
+                PageSize = request.pageSize
+            };
+
+            return new APIResultSuccess<PaggingView<SellerView>>(sellerView);
         }
     }
 }

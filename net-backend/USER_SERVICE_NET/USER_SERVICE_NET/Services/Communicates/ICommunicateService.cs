@@ -12,6 +12,6 @@ namespace USER_SERVICE_NET.Services.Communicates
     {
         Task<APIResult<StoreCreateResponse>> CreateStoreForSeller(StoreRequest request);
         Task<APIResult<List<PromotionResponse>>> GetPromotionValid();
-        //APIResult<List<PromotionResponse>> GetPromotionValid1();
+        Task<APIResult<List<StoreCreateResponse>>> GetListStore(List<int> storeIds);
     }
 }

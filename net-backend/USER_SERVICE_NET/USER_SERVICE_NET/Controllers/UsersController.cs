@@ -12,6 +12,7 @@ using USER_SERVICE_NET.Services.Emails;
 using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Services.Users;
 using USER_SERVICE_NET.Utilities;
+using USER_SERVICE_NET.ViewModels.Commons.Pagging;
 using USER_SERVICE_NET.ViewModels.Emails;
 using USER_SERVICE_NET.ViewModels.Users;
 
@@ -34,6 +35,36 @@ namespace USER_SERVICE_NET.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        [HttpGet("GetListCustomer")]
+        [Authorize(Roles = "0")]
+        public async Task<IActionResult> GetListCustomer([FromQuery] PaggingRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.GetAllCustomer(request);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpGet("GetListSeller")]
+        [Authorize(Roles = "0")]
+        public async Task<IActionResult> GetListSeller([FromQuery] PaggingRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.GetAllSeller(request);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+            return Ok(result);
+        }
+
         [HttpPost("cusomerRegister")]
         public async Task<IActionResult> CustomerRegister([FromForm] CustomerRegisterRequest request)
         {
@@ -49,7 +80,7 @@ namespace USER_SERVICE_NET.Controllers
         }
 
         [HttpPost("sellerRegister")]
-        public async Task<IActionResult> SellerRegister(SellerRegisterRequest request)
+        public async Task<IActionResult> SellerRegister([FromForm] SellerRegisterRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -172,18 +203,6 @@ namespace USER_SERVICE_NET.Controllers
             if (!result.IsSuccessed) return BadRequest(result);
 
             return Ok(result);
-        }
-
-        [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFileAsync([FromForm] IFormFile file)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var fileUrl = await _storageService.UploadFileAsync(file);
-
-            return Ok(fileUrl);
         }
     }
 }

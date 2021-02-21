@@ -77,7 +77,7 @@ namespace USER_SERVICE_NET
 
             services.AddHttpClient<ICommunicateService, CommunicateService>(client =>
             {
-                client.BaseAddress = new Uri(Configuration.GetSection("BaseUrl").Value);
+                client.BaseAddress = new Uri(Configuration.GetSection("ProductServiceUrl").Value);
             });
         }
 
