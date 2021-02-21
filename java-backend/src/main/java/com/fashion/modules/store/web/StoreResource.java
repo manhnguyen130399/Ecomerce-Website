@@ -1,5 +1,6 @@
 package com.fashion.modules.store.web;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,11 @@ public class StoreResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> deleteStore(@PathVariable(name = "id") final Integer id) {
 		storeService.deleteStore(id);
 		return success(null);
+	}
+	
+	@PostMapping(URL + "/list")
+	public ResponseEntity<Map<String, Object>> getStoreByIds(@RequestBody final List<Integer> ids) {
+		return success(storeService.getStoreByIds(ids));
 	}
 
 }
