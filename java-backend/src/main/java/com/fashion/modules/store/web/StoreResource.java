@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.service.StoreService;
@@ -64,7 +63,7 @@ public class StoreResource extends BaseResource {
 	}
 	
 	@PostMapping(URL + "/list")
-	public ResponseEntity<Map<String, Object>> getStoreByIds(@RequestParam final List<Integer> ids) {
+	public ResponseEntity<Map<String, Object>> getStoreByIds(@RequestBody final List<Integer> ids) {
 		return success(storeService.getStoreByIds(ids));
 	}
 
