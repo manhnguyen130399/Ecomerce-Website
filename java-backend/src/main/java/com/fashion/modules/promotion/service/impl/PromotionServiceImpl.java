@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -88,9 +90,9 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
-	public List<PromotionVM> getAllPromotionByStore() {
-		return promoRepo.findAllByStore(getStore(getUserContext()).getId()).stream()
-				.map(it -> mapper.map(it, PromotionVM.class)).collect(Collectors.toList());
+	public Page<PromotionVM> getAllPromotionByStore(final Integer page, final Integer pageSize) {
+		return promoRepo.findAllByStore(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, PromotionVM.class));
 	}
 
 	@Override

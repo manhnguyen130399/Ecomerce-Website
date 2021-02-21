@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.fashion.domain.UserContext;
@@ -45,19 +47,19 @@ public class SizeServiceImpl  extends BaseService implements SizeService{
 
 	@Override
 	@Transactional
-	public List<SizeVM> findAllByStore() {
-		return sizeRepo.findAllByStoreId(getStore(getUserContext()).getId()).stream()
-				.map(it -> mapper.map(it, SizeVM.class)).collect(Collectors.toList());
+	public Page<SizeVM> findAllByStore(final Integer page, final Integer pageSize) {
+		return sizeRepo.findAllByStoreId(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, SizeVM.class));
 	}
 
 	@Override
 	@Transactional
 	public void deleteSize(final Integer id) {
 		final Integer storeId = getStore(getUserContext()).getId();
-		final List<Size> sizes = sizeRepo.findAllByStoreId(storeId);
+		final List<Size> sizes = sizeRepo.findAllByStoreId(storeId, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
 		final Size size = sizeRepo.findOneByIdAndStoreId(id, storeId);
 		final Store store = getStore(getUserContext());
-		store.setSizes(sizes.stream().filter(it->!it.equals(size)).collect(Collectors.toSet()));
+		store.setSizes(sizes.stream().filter(it -> !it.equals(size)).collect(Collectors.toSet()));
 	}
 
 }

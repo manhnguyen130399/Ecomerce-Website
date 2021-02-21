@@ -1,12 +1,14 @@
 package com.fashion.modules.category.service.impl;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fashion.modules.category.domain.Category;
@@ -42,10 +44,10 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
-	public List<CategoryVM> findAllByStore() {
-	
-		return cateRepo.findAllByStoreId(getStore(getUserContext()).getId()).stream()
-				.map(it -> mapper.map(it, CategoryVM.class)).collect(Collectors.toList());
+	public Page<CategoryVM> findAllByStore(final Integer page, final Integer pageSize) {
+		final Pageable pageable = PageRequest.of(page, pageSize);
+		return cateRepo.findAllByStoreId(getStore(getUserContext()).getId(), pageable)
+				.map(it -> mapper.map(it, CategoryVM.class));
 	}
 
 	@Override
@@ -53,9 +55,10 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	public void deleteCategory(final Integer id) {
 		final Store store = getStore(getUserContext());
 		final Integer storeId = store.getId();
+		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
 		final Category category = cateRepo.findOneByIdAndStoreId(id, storeId);
-		store.setCategories(cateRepo.findAllByStoreId(storeId).stream().filter(it -> !it.equals(category))
-				.collect(Collectors.toSet()));
+		store.setCategories(cateRepo.findAllByStoreId(storeId, pageable).getContent().stream()
+				.filter(it -> !it.equals(category)).collect(Collectors.toSet()));
 
 	}
 

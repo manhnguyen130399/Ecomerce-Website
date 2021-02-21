@@ -39,8 +39,10 @@ public class ComplainResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getComplains() {
-		return success(complainService.getComplainByStore());
+	public ResponseEntity<Map<String, Object>> getComplains(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
+		return success(complainService.getComplainByStore(page, pageSize));
 	}
 	
 	@PostMapping(URL + "/reply/{id}")

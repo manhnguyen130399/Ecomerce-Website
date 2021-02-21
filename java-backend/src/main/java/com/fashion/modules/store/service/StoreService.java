@@ -2,6 +2,8 @@ package com.fashion.modules.store.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.model.StoreVM;
 
@@ -13,7 +15,7 @@ public interface StoreService {
 
 	StoreVM getStore(final Integer id);
 
-	List<StoreVM> getStores();
+	Page<StoreVM> getStores(final Integer page, final Integer pageSize);
 
 	StoreVM updateStore(final StoreReq req, final Integer id);
 

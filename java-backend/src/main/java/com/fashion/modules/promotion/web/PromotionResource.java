@@ -42,8 +42,10 @@ public class PromotionResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getPromotions() {
-		return success(promoService.getAllPromotionByStore());
+	public ResponseEntity<Map<String, Object>> getPromotions(
+			@RequestParam(required = true, defaultValue = "0") final Integer page,
+			@RequestParam(required = true, defaultValue = "50") final Integer pageSize) {
+		return success(promoService.getAllPromotionByStore(page, pageSize));
 	}
 	
 	@GetMapping(URL+ "/valid-date")

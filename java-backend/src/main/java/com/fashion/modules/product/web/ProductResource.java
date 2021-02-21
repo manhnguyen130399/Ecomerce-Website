@@ -76,8 +76,10 @@ public class ProductResource extends BaseResource {
 	}
 	
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllProductByStore() {
-		return success(productService.getAllProductByStore());
+	public ResponseEntity<Map<String, Object>> getAllProductByStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
+		return success(productService.getAllProductByStore(page, pageSize));
 	}
 	
 	@DeleteMapping(URL + "/{id}")

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.modules.color.model.ColorVM;
 import com.fashion.modules.color.service.ColorService;
@@ -39,10 +40,12 @@ public class ColorResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllColorByStore() {
-		return success(colorService.findByAllStore());
+	public ResponseEntity<Map<String, Object>> getAllColorByStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
+		return success(colorService.findByAllStore(page, pageSize));
 	}
-	
+
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deleteColorId(@PathVariable("id") final Integer id) {
 		colorService.deleteColor(id);

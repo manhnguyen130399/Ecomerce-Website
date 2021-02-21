@@ -1,6 +1,6 @@
 package com.fashion.modules.size.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import com.fashion.modules.size.model.SizeVM;
 
@@ -10,7 +10,7 @@ public interface SizeService {
 
 	SizeVM findById(Integer id);
 
-	List<SizeVM> findAllByStore();
+	Page<SizeVM> findAllByStore(Integer page, Integer pageSize);
 
 	void deleteSize(Integer id);
 

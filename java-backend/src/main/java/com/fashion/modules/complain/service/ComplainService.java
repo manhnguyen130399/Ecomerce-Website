@@ -1,6 +1,6 @@
 package com.fashion.modules.complain.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import com.fashion.modules.complain.model.ComplainRequest;
 import com.fashion.modules.complain.model.ComplainVM;
@@ -11,7 +11,7 @@ public interface ComplainService {
 
 	ComplainVM getComplain(Integer id);
 
-	List<ComplainVM> getComplainByStore();
+	Page<ComplainVM> getComplainByStore(Integer page, Integer pageSize);
 
 	ComplainVM reply(Integer id, String message);
 

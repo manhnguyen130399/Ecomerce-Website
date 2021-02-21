@@ -18,7 +18,7 @@ public interface ProductService {
 
 	ProductVM updateImageProduct(List<MultipartFile> files, Integer productId);
 
-	List<ProductVM> getAllProductByStore();
+	List<ProductVM> getAllProductByStore(Integer page, Integer pageSize);
 
 	void deleteProduct(Integer id);
 

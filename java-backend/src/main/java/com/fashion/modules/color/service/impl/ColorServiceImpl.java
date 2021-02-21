@@ -1,12 +1,14 @@
 package com.fashion.modules.color.service.impl;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fashion.domain.UserContext;
@@ -46,19 +48,20 @@ public class ColorServiceImpl extends BaseService implements ColorService{
 
 	@Override
 	@Transactional
-	public List<ColorVM> findByAllStore() {
-
-		return colorRepo.findAllByStore(getStore(getUserContext()).getId()).stream()
-				.map(it -> mapper.map(it, ColorVM.class)).collect(Collectors.toList());
+	public Page<ColorVM> findByAllStore(final Integer page, final Integer pageSize) {
+		final Pageable pageable = PageRequest.of(page, pageSize);
+		return colorRepo.findAllByStore(getStore(getUserContext()).getId(), pageable)
+				.map(it -> mapper.map(it, ColorVM.class));
 	}
 
 	@Override
 	@Transactional
 	public void deleteColor(final Integer id) {
+		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
 		final Color color = colorRepo.findOneByIdAndStore(id, getStore(getUserContext()).getId());
-		final List<Color> colors = colorRepo.findAllByStore(getStore(getUserContext()).getId());
+		final Page<Color> colors = colorRepo.findAllByStore(getStore(getUserContext()).getId(), pageable);
 		final Store store = getStore(getUserContext());
-		store.setColors(colors.stream().filter(it -> !it.equals(color)).collect(Collectors.toSet()));
+		store.setColors(colors.getContent().stream().filter(it -> !it.equals(color)).collect(Collectors.toSet()));
 
 	}
 

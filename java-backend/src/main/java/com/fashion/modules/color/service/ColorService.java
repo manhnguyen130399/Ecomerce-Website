@@ -1,6 +1,6 @@
 package com.fashion.modules.color.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import com.fashion.modules.color.model.ColorVM;
 
@@ -10,7 +10,7 @@ public interface ColorService {
 	
 	ColorVM findById(Integer id);
 	
-	List<ColorVM> findByAllStore();
+	Page<ColorVM> findByAllStore(Integer page, Integer pageSize);
 	
 	void deleteColor(Integer id);
 

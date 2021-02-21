@@ -1,7 +1,7 @@
 package com.fashion.modules.brand.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +20,6 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
 			+ " FROM Brand b " 
 			+ " LEFT JOIN b.stores st "
 			+ " WHERE  st.id = :id")
-	List<Brand> findAllByStoreId(@Param("id") Integer id);
+	Page<Brand> findAllByStoreId(@Param("id") Integer id, Pageable page);
 
 }

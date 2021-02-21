@@ -3,6 +3,8 @@ package com.fashion.modules.promotion.service;
 import java.text.ParseException;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.fashion.modules.promotion.model.PromotionRequest;
 import com.fashion.modules.promotion.model.PromotionVM;
 import com.fashion.modules.promotion.model.QrVM;
@@ -13,7 +15,7 @@ public interface PromotionService {
 
 	PromotionVM findPromotionById(Integer id);
 
-	List<PromotionVM> getAllPromotionByStore();
+	Page<PromotionVM> getAllPromotionByStore(Integer page, Integer pageSize);
 
 	List<QrVM> getPromotionValidDate() throws ParseException;
 

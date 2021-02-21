@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.fashion.domain.UserContext;
@@ -54,8 +56,8 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Transactional
 	@Override
-	public List<StoreVM> getStores() {
-		return storeRepo.findAll().stream().map(it -> mapper.map(it, StoreVM.class)).collect(Collectors.toList());
+	public Page<StoreVM> getStores(final Integer page, final Integer pageSize) {
+		return storeRepo.findAll(PageRequest.of(page, pageSize)).map(it -> mapper.map(it, StoreVM.class));
 	}
 
 	@Transactional

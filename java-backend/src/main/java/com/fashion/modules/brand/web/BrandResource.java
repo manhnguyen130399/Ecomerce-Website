@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.modules.brand.model.BrandVM;
 import com.fashion.modules.brand.service.BrandService;
@@ -39,8 +40,10 @@ public class BrandResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllBrandByStore() {
-		return success(brandService.findAllByStore());
+	public ResponseEntity<Map<String, Object>> getAllBrandByStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
+		return success(brandService.findAllByStore(page, pageSize));
 	}
 
 	@DeleteMapping(URL + "/{id}")

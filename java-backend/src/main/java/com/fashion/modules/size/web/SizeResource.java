@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.modules.size.model.SizeVM;
 import com.fashion.modules.size.service.SizeService;
@@ -43,10 +44,12 @@ public class SizeResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> findById(@PathVariable("id") final Integer id) {
 		return success(sizeService.findById(id));
 	}
-	
+
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllSizeByStore() {
-		return success(sizeService.findAllByStore());
+	public ResponseEntity<Map<String, Object>> getAllSizeByStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
+		return success(sizeService.findAllByStore(page, pageSize));
 	}
 
 	@DeleteMapping(URL + "/{id}")

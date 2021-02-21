@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fashion.modules.brand.domain.Brand;
@@ -40,9 +43,10 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	public List<BrandVM> findAllByStore() {
-		return brandRepo.findAllByStoreId(getStore(getUserContext()).getId()).stream()
-				.map(it -> mapper.map(it, BrandVM.class)).collect(Collectors.toList());
+	public Page<BrandVM> findAllByStore(final Integer page, final Integer pageSize) {
+		final Pageable pageable = PageRequest.of(page, pageSize);
+		return brandRepo.findAllByStoreId(getStore(getUserContext()).getId(), pageable)
+				.map(it -> mapper.map(it, BrandVM.class));
 	}
 
 	@Override
@@ -50,7 +54,8 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	public void deleteBrand(final Integer id) {
 		final Store store = getStore(getUserContext());
 		final Brand brand = brandRepo.findOneByIdAndStoreId(id, store.getId());
-		final List<Brand> brands = brandRepo.findAllByStoreId(store.getId());
+		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+		final List<Brand> brands = brandRepo.findAllByStoreId(store.getId(),pageable).getContent();
 		store.setBrands(brands.stream().filter(it -> !it.equals(brand)).collect(Collectors.toSet()));
 
 	}

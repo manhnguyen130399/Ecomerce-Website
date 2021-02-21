@@ -57,8 +57,10 @@ public class CategoryResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllCategoryByStore() {
-		return success(categoryService.findAllByStore());
+	public ResponseEntity<Map<String, Object>> getAllCategoryByStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
+		return success(categoryService.findAllByStore(page, pageSize));
 	}
 
 	@DeleteMapping(URL + "/{id}")

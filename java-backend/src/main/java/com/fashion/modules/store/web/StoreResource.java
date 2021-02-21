@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.service.StoreService;
@@ -46,8 +47,10 @@ public class StoreResource extends BaseResource {
 	}
 
 	@GetMapping(value = { URL })
-	public ResponseEntity<Map<String, Object>> getStores() {
-		return success(storeService.getStores());
+	public ResponseEntity<Map<String, Object>> getStores(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
+		return success(storeService.getStores(page, pageSize));
 	}
 
 	@PutMapping(value = { URL + "/{id}" })

@@ -1,11 +1,11 @@
 package com.fashion.modules.complain.service.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -59,9 +59,10 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 
 	@Override
 	@Transactional
-	public List<ComplainVM> getComplainByStore() {
-		return complainRepo.findComplainByStoreId(getStore(getUserContext()).getId()).stream()
-				.map(it -> mapper.map(it, ComplainVM.class)).collect(Collectors.toList());
+	public Page<ComplainVM> getComplainByStore(final Integer page, final Integer pageSize) {
+		final Pageable pageable = PageRequest.of(page, pageSize);
+		return complainRepo.findComplainByStoreId(getStore(getUserContext()).getId(), pageable)
+				.map(it -> mapper.map(it, ComplainVM.class));
 	}
 
 	@Override

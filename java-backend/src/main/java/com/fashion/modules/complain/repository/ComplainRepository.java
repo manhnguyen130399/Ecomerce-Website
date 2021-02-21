@@ -1,7 +1,7 @@
 package com.fashion.modules.complain.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +15,6 @@ public interface ComplainRepository extends JpaRepository<Complain, Integer> {
 	@Query(" SELECT p " 
 			+ " FROM Complain p " 
 			+ " WHERE p.store.id  = :storeId ")
-	List<Complain> findComplainByStoreId(@Param("storeId") Integer storeId);
+	Page<Complain> findComplainByStoreId(@Param("storeId") Integer storeId, Pageable page);
 
 }

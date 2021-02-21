@@ -1,7 +1,7 @@
 package com.fashion.modules.color.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +21,6 @@ public interface ColorRepository extends JpaRepository<Color, Integer> {
 			+ " FROM Color c " 
 			+ " LEFT JOIN c.stores s " 
 			+ " WHERE s.id = :id")
-	List<Color> findAllByStore(@Param("id") Integer storeId);
+	Page<Color> findAllByStore(@Param("id") Integer storeId, Pageable page);
 
 }
