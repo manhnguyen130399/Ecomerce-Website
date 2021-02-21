@@ -18,7 +18,9 @@ import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.product.domain.ProductImage;
 import com.fashion.modules.product.model.ProductReq;
+import com.fashion.modules.product.model.ProductRes;
 import com.fashion.modules.product.model.ProductVM;
+import com.fashion.modules.product.repository.ProductDetailRepository;
 import com.fashion.modules.product.repository.ProductRepository;
 import com.fashion.modules.product.service.ProductService;
 import com.fashion.modules.store.domain.Store;
@@ -37,6 +39,9 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	
 	@Autowired
 	private ProductRepository productRepo;
+	
+	@Autowired
+	private ProductDetailRepository productDetailRepo;
 	
 	@Override
 	@Transactional
@@ -113,6 +118,23 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	public List<ProductVM> getAllProductByStore() {
 		return productRepo.findAllProductStore(getStore(getUserContext()).getId()).stream()
 				.map(it -> mapper.map(it, ProductVM.class)).collect(Collectors.toList());
+	}
+
+	@Override
+	@Transactional
+	public List<ProductRes> getProductDetailInfos(final List<Integer> ids) {
+		return productDetailRepo.getProductDetailByIds(ids).stream().map(it -> {
+			final ProductRes res = new ProductRes();
+			final Product product = it.getProduct();
+			res.setProductId(product.getId());
+			res.setBrandName(product.getBrand().getBrandName());
+			res.setProductDetailId(it.getId());
+			res.setColorName(it.getColor().getColorName());
+			res.setSizeName(it.getSize().getSizeName());
+			res.setPrice(product.getPrice());
+			res.setProductName(product.getProductName());
+			return res;
+		}).collect(Collectors.toList());
 	}
 
 }

@@ -91,5 +91,10 @@ public class ProductResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> deleteProduct(@RequestBody final ProductReq req) {
 		return success(productService.updateProduct(req));
 	}
+	
+	@PostMapping(URL + "/detail")
+	public ResponseEntity<Map<String, Object>> getProductDetailInfos(@RequestParam final List<Integer> ids) {
+		return success(productService.getProductDetailInfos(ids));
+	}
 
 }
