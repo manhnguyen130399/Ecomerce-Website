@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ORDER_SERVICE_NET.Services.OrderServices;
 using ORDER_SERVICE_NET.ViewModels.Commons.Pagging;
@@ -35,7 +36,8 @@ namespace ORDER_SERVICE_NET.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IActionResult> GetOrderDetails([FromQuery] PaggingRequest request)
+        [Authorize]
+        public async Task<IActionResult> GetAll([FromQuery] PaggingRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -50,6 +52,7 @@ namespace ORDER_SERVICE_NET.Controllers
         }
 
         [HttpGet("GetAllByUser/{email}")]
+        [Authorize]
         public async Task<IActionResult> GetAllByUser(string email)
         {
             if (!ModelState.IsValid)
@@ -65,6 +68,7 @@ namespace ORDER_SERVICE_NET.Controllers
         }
 
         [HttpGet("GetById/{orderId}")]
+        [Authorize]
         public async Task<IActionResult> GetById(int orderId)
         {
             if (!ModelState.IsValid)
@@ -81,6 +85,7 @@ namespace ORDER_SERVICE_NET.Controllers
 
 
         [HttpGet("GetOrderDetails/{orderId}")]
+        [Authorize]
         public async Task<IActionResult> GetOrderDetails(int orderId)
         {
             if (!ModelState.IsValid)
