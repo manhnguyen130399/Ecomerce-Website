@@ -7,17 +7,11 @@ using System.Collections.Generic;
 
 namespace ORDER_SERVICE_NET.Models
 {
-    public partial class Carts
+    public partial class CustomerPromo
     {
-        public Carts()
-        {
-            CartDetail = new HashSet<CartDetail>();
-        }
-
         public int Id { get; set; }
-        public int CustomerId { get; set; }
-        public decimal Total { get; set; }
-
-        public virtual ICollection<CartDetail> CartDetail { get; set; }
+        public string CustomerPhone { get; set; }
+        public string UsedAt { get; set; }
+        public int PromotionId { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace ORDER_SERVICE_NET.Models
     public partial class CartDetail
     {
         public int Id { get; set; }
-        public int? Quantity { get; set; }
+        public int Quantity { get; set; }
         public int CartId { get; set; }
         public int ProductDetailId { get; set; }
 

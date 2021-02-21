@@ -23,6 +23,7 @@ namespace ORDER_SERVICE_NET.Models
         public virtual DbSet<Carts> Carts { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<CustomerPromo> CustomerPromo { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -84,7 +85,7 @@ namespace ORDER_SERVICE_NET.Models
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasKey(e => new { e.Id, e.OrderId, e.ProductDetailId })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("order_detail");
@@ -95,8 +96,6 @@ namespace ORDER_SERVICE_NET.Models
                 entity.HasIndex(e => e.ProductDetailId)
                     .HasName("fk_order_detail_product_detail1_idx");
 
-                entity.HasIndex(e => e.StoreId)
-                    .HasName("FK_OrderDetail_Store");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -121,10 +120,6 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'NULL'");
 
-                entity.Property(e => e.StoreId)
-                    .HasColumnName("store_id")
-                    .HasColumnType("int(11)")
-                    .HasDefaultValueSql("'NULL'");
 
                 entity.Property(e => e.TotalPriceProduct)
                     .HasColumnName("total_price_product")
@@ -146,6 +141,9 @@ namespace ORDER_SERVICE_NET.Models
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.ToTable("orders");
+
+                entity.HasKey(e => new { e.Id })
+                   .HasName("PRIMARY");
 
                 entity.HasIndex(e => e.PromotionId)
                     .HasName("FK_Order_Promotion");
@@ -203,6 +201,43 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnName("updated_by")
                     .HasMaxLength(45)
                     .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.CreateAt)
+                 .HasColumnName("created_at")
+                 .HasColumnType("datetime");
+
+                entity.Property(e => e.IsDeleted)
+                .HasColumnName("is_delete")
+                .HasColumnType("int(11)");
+            });
+
+            modelBuilder.Entity<CustomerPromo>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.PromotionId })
+                    .HasName("PRIMARY");
+
+                entity.ToTable("customer_promo");
+
+                entity.HasIndex(e => e.PromotionId)
+                    .HasName("fk_customer_promo_promotion1_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.PromotionId)
+                    .HasColumnName("promotion_id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.UsedAt)
+                  .HasColumnName("used_at")
+                  .HasColumnType("datetime");
+
+                entity.Property(e => e.CustomerPhone)
+                    .IsRequired()
+                    .HasColumnName("customer_phone")
+                    .HasMaxLength(12);
             });
 
             OnModelCreatingPartial(modelBuilder);

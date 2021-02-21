@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -7,7 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using ORDER_SERVICE_NET.Models;
+using ORDER_SERVICE_NET.Services.CartServices;
+using ORDER_SERVICE_NET.Services.OrderServices;
+using ORDER_SERVICE_NET.Services.ProductServices;
 using ORDER_SERVICE_NET.Utilities;
 using System;
 using System.Collections.Generic;
@@ -31,6 +36,36 @@ namespace ORDER_SERVICE_NET
             services.AddControllers();
             services.AddDbContext<ShopicaContext>(options =>
                options.UseMySQL(Configuration.GetConnectionString(Constant.ConnectionString)));
+
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<ICartService, CartService>();
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+          .AddJwtBearer(options =>
+          {
+              options.RequireHttpsMetadata = false;
+              options.SaveToken = true;
+              options.TokenValidationParameters = new TokenValidationParameters()
+              {
+                  ValidateIssuer = false,
+                  ValidateAudience = false,
+                  ValidateLifetime = true,
+                  ValidateIssuerSigningKey = true,
+                  ClockSkew = TimeSpan.Zero,
+                  IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Configuration.GetSection("SecretKey").Value))
+              };
+          });
+
+            services.AddHttpClient<IProductService, ProductService>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration.GetSection("ProductServiceUrl").Value);
+            });
+
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +77,8 @@ namespace ORDER_SERVICE_NET
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

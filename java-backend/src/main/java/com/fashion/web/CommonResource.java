@@ -34,9 +34,9 @@ public class CommonResource extends BaseResource {
 
 	private String buildInputOrderQrCode(final OrderQrVM order) {
 		final StringBuilder details = new StringBuilder();
-		order.getDetails().stream().forEach(it -> {
+		order.getOrderDetails().stream().forEach(it -> {
 			details.append(String.join(Constants.END_LINE, Constants.PRODUCT_NAME + it.getProductName(),
-					Constants.QUANTITY + it.getQuantity(), Constants.TOTAL_PRICE + it.getTotalPrice())
+					Constants.QUANTITY + it.getQuantity(), Constants.TOTAL_PRICE + it.getTotalPriceProduct())
 					+ Constants.END_LINE);
 		});
 		return String.join(Constants.END_LINE, Constants.ORDER, Constants.CUSTOMER_NAME + order.getCustomerName(),

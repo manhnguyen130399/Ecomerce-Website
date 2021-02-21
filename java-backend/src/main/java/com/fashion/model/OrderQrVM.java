@@ -22,6 +22,6 @@ public class OrderQrVM {
 	
 	private OrderEnum state;
 
-	private List<OrderDetailQrVM> details;
+	private List<OrderDetailQrVM> orderDetails;
 
 }

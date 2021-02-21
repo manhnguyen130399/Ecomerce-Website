@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.modules.product.domain.ProductImage;
@@ -93,8 +92,9 @@ public class ProductResource extends BaseResource {
 	}
 	
 	@PostMapping(URL + "/detail")
-	public ResponseEntity<Map<String, Object>> getProductDetailInfos(@RequestParam final List<Integer> ids) {
-		return success(productService.getProductDetailInfos(ids));
+	public ResponseEntity<Map<String, Object>> getProductDetailInfos(@RequestBody final List<Integer> req) {
+		return success(productService.getProductDetailInfos(req));
 	}
-
 }
+
+

@@ -9,6 +9,6 @@ public class OrderDetailQrVM {
 
 	private Integer quantity;
 
-	private Integer totalPrice;
+	private Integer totalPriceProduct;
 
 }

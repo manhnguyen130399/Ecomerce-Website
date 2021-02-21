@@ -10,13 +10,12 @@ namespace ORDER_SERVICE_NET.Models
     public partial class OrderDetail
     {
         public int Id { get; set; }
-        public int? Quantity { get; set; }
-        public decimal? TotalPriceProduct { get; set; }
+        public int Quantity { get; set; }
+        public decimal TotalPriceProduct { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public int OrderId { get; set; }
         public int ProductDetailId { get; set; }
-        public int? StoreId { get; set; }
 
         public virtual Orders Order { get; set; }
     }

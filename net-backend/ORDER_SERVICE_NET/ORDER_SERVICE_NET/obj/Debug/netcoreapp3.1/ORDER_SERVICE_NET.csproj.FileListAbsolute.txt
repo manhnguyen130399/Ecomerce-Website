@@ -52,3 +52,11 @@ C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE
 C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\obj\Debug\netcoreapp3.1\ORDER_SERVICE_NET.dll
 C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\obj\Debug\netcoreapp3.1\ORDER_SERVICE_NET.pdb
 C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\obj\Debug\netcoreapp3.1\ORDER_SERVICE_NET.genruntimeconfig.cache
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\hieuvo\Desktop\FinalStudent\net-backend\ORDER_SERVICE_NET\ORDER_SERVICE_NET\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

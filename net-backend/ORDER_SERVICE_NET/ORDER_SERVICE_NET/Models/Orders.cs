@@ -21,10 +21,14 @@ namespace ORDER_SERVICE_NET.Models
         public string Phone { get; set; }
         public string State { get; set; }
         public string QrCode { get; set; }
-        public decimal? Total { get; set; }
+        public string Notes { get; set; }
+        public decimal Total { get; set; }
+        public decimal DiscountAmount { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
+        public string CreateAt { get; set; }
         public int? PromotionId { get; set; }
+        public int IsDeleted{ get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
     }
