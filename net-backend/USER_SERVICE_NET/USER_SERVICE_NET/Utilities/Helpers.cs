@@ -21,7 +21,7 @@ namespace USER_SERVICE_NET.Utilities
 
             var claims = new[]
            {
-                new Claim(ClaimTypes.Email,user.Username),
+                new Claim("sub", user.Username),
                 new Claim(ClaimTypes.Role, user.Type.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim("isSocial", isSocial.ToString()),
@@ -31,7 +31,7 @@ namespace USER_SERVICE_NET.Utilities
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);

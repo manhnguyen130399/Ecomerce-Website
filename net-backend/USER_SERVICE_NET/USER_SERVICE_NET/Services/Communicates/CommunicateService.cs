@@ -64,7 +64,7 @@ namespace USER_SERVICE_NET.Services.Communicates
 
         public async Task<APIResult<List<StoreCreateResponse>>> GetListStore(List<int> storeIds)
         {
-            var response = await _httpClient.PostAsJsonAsyncWithAuth("", storeIds, _httpContextAccessor);
+            var response = await _httpClient.PostAsJsonAsyncWithAuth("store/list", storeIds, _httpContextAccessor);
             if (response.IsSuccessStatusCode)
             {
                 using(HttpContent content = response.Content)

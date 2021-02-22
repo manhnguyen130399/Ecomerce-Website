@@ -1,5 +1,6 @@
 package com.fashion.security.jwt;
 
+import java.nio.charset.Charset;
 import java.util.Date;
 
 import org.springframework.security.core.Authentication;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.fashion.security.domain.UserDetailsCustom;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -25,20 +27,20 @@ public class JwtUtils {
 	public String generateJwtToken(final Authentication authentication) {
 
 		final UserDetailsCustom userDetailsCustom = (UserDetailsCustom) authentication.getPrincipal();
-
+		
 		return Jwts.builder().setSubject(userDetailsCustom.getUsername()).setIssuedAt(new Date())
-				.setExpiration(new Date(new Date().getTime() + EXPIRATION)).signWith(SignatureAlgorithm.HS512, SERECT)
+				.setExpiration(new Date(new Date().getTime() + EXPIRATION)).signWith(SignatureAlgorithm.HS512, SERECT.getBytes(Charset.forName("UTF-8")))
 				.compact();
 
 	}
 
 	public String getUserNameFromJwtToken(final String token) {
-		return Jwts.parser().setSigningKey(SERECT).parseClaimsJws(token).getBody().getSubject();
+		return Jwts.parser().setSigningKey(SERECT.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token).getBody().getSubject();
 	}
 
 	public boolean validateJwtToken(final String authToken) {
 		try {
-			Jwts.parser().setSigningKey(SERECT).parseClaimsJws(authToken);
+			Jwts.parser().setSigningKey(SERECT.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(authToken);
 			return true;
 		} catch (MalformedJwtException ex) {
 			log.error("Invalid JWT token");

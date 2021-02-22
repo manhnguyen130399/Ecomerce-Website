@@ -36,7 +36,7 @@ namespace USER_SERVICE_NET.Controllers
         }
 
         [HttpGet("GetListCustomer")]
-        [Authorize(Roles = "0")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetListCustomer([FromQuery] PaggingRequest request)
         {
             if (!ModelState.IsValid)
@@ -51,7 +51,7 @@ namespace USER_SERVICE_NET.Controllers
         }
 
         [HttpGet("GetListSeller")]
-        [Authorize(Roles = "0")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetListSeller([FromQuery] PaggingRequest request)
         {
             if (!ModelState.IsValid)
