@@ -369,7 +369,6 @@ namespace USER_SERVICE_NET.Services.Users
             var accountView = new AccountView()
             {
                 UserName = account.Username,
-                Password = account.Password,
                 Type = account.Type,
                 ImageUrl = account.ImageUrl,
                 IsActive = account.IsActive
