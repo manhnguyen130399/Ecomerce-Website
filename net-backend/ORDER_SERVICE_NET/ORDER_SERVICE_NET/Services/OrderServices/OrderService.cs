@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Newtonsoft.Json;
 using ORDER_SERVICE_NET.Models;
 using ORDER_SERVICE_NET.Services.ProductServices;
 using ORDER_SERVICE_NET.Utilities;
+using ORDER_SERVICE_NET.ViewModels.Address;
 using ORDER_SERVICE_NET.ViewModels.Commons;
 using ORDER_SERVICE_NET.ViewModels.Commons.Pagging;
 using ORDER_SERVICE_NET.ViewModels.OrderDetails;
@@ -27,56 +29,61 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
         {
             try
             {
-                var qrCodeData = await _productService.GetOrderQrCode(request);
+                var listQrCode = await _productService.GetOrderQrCode(request);
+                string address = JsonConvert.SerializeObject(request.Address);
+                int i = 0;
 
-                List<OrderDetail> orderDetails = new List<OrderDetail>();
-                foreach (var item in request.OrderDetails)
+                foreach (var orderStore in request.OrderOneStores)
                 {
-                    var orderDetail = new OrderDetail
+                    var order = new Orders()
                     {
-                        ProductDetailId = item.ProductDetailId,
-                        Quantity = item.Quantity,
-                        TotalPriceProduct = item.TotalPriceProduct,
-                    };
-                    orderDetails.Add(orderDetail);
-                    _context.OrderDetail.Add(orderDetail);
-                }
-
-                var order = new Orders()
-                {
-                    CustomerName = request.CustomerName,
-                    Address = request.Address,
-                    Email = request.Email,
-                    Phone = request.Phone,
-                    State = Constant.PENDING,
-                    Notes = request.Notes,
-                    QrCode = qrCodeData.Code=="OK"? qrCodeData.Data: null,
-                    Total = request.Total,
-                    DiscountAmount = request.Discount,
-                    CreateAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
-                    OrderDetail = orderDetails,
-                    IsDeleted = 0,
-                };
-
-                _context.Orders.Add(order);
-
-                if (request.PromotionId != 0)
-                {
-                    order.PromotionId = request.PromotionId;
-
-                    var promotion = new CustomerPromo()
-                    {
-                        UsedAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
-                        CustomerPhone = request.Phone,
-                        PromotionId = request.PromotionId
+                        CustomerName = request.CustomerName,
+                        Address = address,
+                        Email = request.Email,
+                        Phone = request.Phone,
+                        State = Constant.PENDING,
+                        Notes = orderStore.Notes,
+                        QrCode = listQrCode.Code == "OK" ? listQrCode.Data[i] : null,
+                        Total = orderStore.Total,
+                        Discount = orderStore.Discount,
+                        CreateAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
+                        StoreId = orderStore.StoreId,
+                        IsDeleted = 0,
                     };
 
-                    _context.CustomerPromo.Add(promotion);
+                    foreach (var item in orderStore.OrderDetails)
+                    {
+                        var orderDetail = new OrderDetail
+                        {
+                            ProductDetailId = item.ProductDetailId,
+                            Quantity = item.Quantity,
+                            TotalPriceProduct = item.TotalPriceProduct,
+                        };
+                        order.OrderDetail.Add(orderDetail);
+                    }
+
+                    _context.Orders.Add(order);
+
+                    if (orderStore.PromotionId != 0)
+                    {
+                        order.PromotionId = orderStore.PromotionId;
+
+                        var promotion = new CustomerPromo()
+                        {
+                            UsedAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
+                            CustomerPhone = request.Phone,
+                            PromotionId = orderStore.PromotionId
+                        };
+
+                        _context.CustomerPromo.Add(promotion);
+                    }
+
+                    i++;
                 }
 
                 await _context.SaveChangesAsync();
 
-                return new APIResultSuccess<string>(order.Id.ToString());
+                return new APIResultSuccess<string>("Order successfully");
             }
             catch (Exception ex)
             {
@@ -115,7 +122,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                     Total = x.Total,
                     CreateAt = x.CreateAt,
                     Notes = x.Notes,
-                    Discount = x.DiscountAmount
+                    Discount = x.Discount
                 }).ToList();
 
             var result = new PaggingView<OrderView>()
@@ -143,12 +150,12 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                     Notes = x.Notes,
                     Email = x.Email,
                     Phone = x.Phone,
-                    Address = x.Address,
+                    Address = JsonConvert.DeserializeObject<AddressInfo>(x.Address),
                     CustomerName = x.CustomerName,
                     QrCode = x.QrCode,
                     State = x.State,
                     Total = x.Total,
-                    Discount = x.DiscountAmount,
+                    Discount = x.Discount,
                 }).ToListAsync();
 
             return new APIResultSuccess<List<OrderView>>(data);
@@ -170,12 +177,12 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                 Notes = order.Notes,
                 Email = order.Email,
                 Phone = order.Phone,
-                Address = order.Address,
+                Address = JsonConvert.DeserializeObject<AddressInfo>(order.Address),
                 CustomerName = order.CustomerName,
                 QrCode = order.QrCode,
                 State = order.State,
                 Total = order.Total,
-                Discount = order.DiscountAmount
+                Discount = order.Discount
             };
 
             return new APIResultSuccess<OrderView>(orderView);

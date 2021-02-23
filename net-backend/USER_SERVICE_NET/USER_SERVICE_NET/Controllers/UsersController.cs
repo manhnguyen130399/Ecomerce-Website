@@ -66,7 +66,7 @@ namespace USER_SERVICE_NET.Controllers
         }
 
         [HttpPost("cusomerRegister")]
-        public async Task<IActionResult> CustomerRegister([FromForm] CustomerRegisterRequest request)
+        public async Task<IActionResult> CustomerRegister(CustomerRegisterRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace USER_SERVICE_NET.Controllers
         }
 
         [HttpPost("sellerRegister")]
-        public async Task<IActionResult> SellerRegister([FromForm] SellerRegisterRequest request)
+        public async Task<IActionResult> SellerRegister(SellerRegisterRequest request)
         {
             if (!ModelState.IsValid)
             {

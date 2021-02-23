@@ -36,7 +36,7 @@ namespace ORDER_SERVICE_NET.Services.ProductServices
             return JsonConvert.DeserializeObject<APIResultErrors<List<ProductView>>>(null);
         }
 
-        public async Task<APIResult<string>> GetOrderQrCode(OrderCreateRequest request)
+        public async Task<APIResult<List<string>>> GetOrderQrCode(OrderCreateRequest request)
         {
             var response = await _httpClient.PostAsJsonAsyncWithAuth("qr", request, _httpContextAccessor);
             if (response.IsSuccessStatusCode)
@@ -44,10 +44,10 @@ namespace ORDER_SERVICE_NET.Services.ProductServices
                 using (HttpContent content = response.Content)
                 {
                     var data = await content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<APIResultSuccess<string>>(data);
+                    return JsonConvert.DeserializeObject<APIResultSuccess<List<string>>>(data);
                 }
             }
-            return JsonConvert.DeserializeObject<APIResultErrors<string>>(null);
+            return JsonConvert.DeserializeObject<APIResultErrors<List<string>>>(null);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Utilities.Enums;
+using USER_SERVICE_NET.ViewModels.Address;
 
 namespace USER_SERVICE_NET.ViewModels.Users
 {
@@ -14,7 +15,7 @@ namespace USER_SERVICE_NET.ViewModels.Users
         public string Fullname { get; set; }
 
         [Required]
-        public string Address{ get; set; }
+        public AddressType Address { get; set; }
 
         [Required]
         public Genders Gender{ get; set; }
@@ -33,7 +34,8 @@ namespace USER_SERVICE_NET.ViewModels.Users
         // Store
         [Required]
         public string StoreName { get; set; }
-        public string StoreAddress { get; set; }
+        [Required]
+        public AddressType StoreAddress { get; set; }
         public DateTime OpenTime { get; set; }
         public DateTime CloseTime { get; set; }
 
