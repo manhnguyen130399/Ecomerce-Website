@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using USER_SERVICE_NET.ViewModels.Address;
 
-namespace USER_SERVICE_NET.ViewModels.Users
+namespace USER_SERVICE_NET.ViewModels.Sellers
 {
     public class SellerView
     {
         public string SellerName { get; set; }
-        public string Address { get; set; }
+        public AddressInfo Address { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Image { get; set; }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace USER_SERVICE_NET.ViewModels.Users
+namespace USER_SERVICE_NET.ViewModels.Accounts
 {
     public class ChangePasswordRequest
     {

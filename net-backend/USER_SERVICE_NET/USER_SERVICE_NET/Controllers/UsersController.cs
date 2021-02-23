@@ -12,9 +12,11 @@ using USER_SERVICE_NET.Services.Emails;
 using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Services.Users;
 using USER_SERVICE_NET.Utilities;
+using USER_SERVICE_NET.ViewModels.Accounts;
 using USER_SERVICE_NET.ViewModels.Commons.Pagging;
+using USER_SERVICE_NET.ViewModels.Customers;
 using USER_SERVICE_NET.ViewModels.Emails;
-using USER_SERVICE_NET.ViewModels.Users;
+using USER_SERVICE_NET.ViewModels.Sellers;
 
 namespace USER_SERVICE_NET.Controllers
 {
@@ -47,6 +49,21 @@ namespace USER_SERVICE_NET.Controllers
             var result = await _userService.GetAllCustomer(request);
 
             if (!result.IsSuccessed) return BadRequest(result);
+            return Ok(result);
+        }
+
+        [HttpGet("GetAccountInfoByUserName")]
+        public async Task<IActionResult> GetAccountInfoByUserName(string userName)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.GetAccountInfoByUserName(userName);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
             return Ok(result);
         }
 

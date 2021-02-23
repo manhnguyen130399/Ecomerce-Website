@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace USER_SERVICE_NET.ViewModels.Users
+namespace USER_SERVICE_NET.ViewModels.Accounts
 {
     public class LoginRequest
     {
