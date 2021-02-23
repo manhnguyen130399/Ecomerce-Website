@@ -30,7 +30,6 @@ namespace ORDER_SERVICE_NET.Models
         public string CreateAt { get; set; }
         public int? PromotionId { get; set; }
         public int StoreId { set; get; }
-        public int IsDeleted{ get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
     }

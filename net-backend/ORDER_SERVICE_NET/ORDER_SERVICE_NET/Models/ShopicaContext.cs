@@ -140,7 +140,7 @@ namespace ORDER_SERVICE_NET.Models
 
             modelBuilder.Entity<Orders>(entity =>
             {
-                entity.ToTable("orders");
+                entity.ToTable("order");
 
                 entity.HasKey(e => new { e.Id })
                    .HasName("PRIMARY");
@@ -183,7 +183,7 @@ namespace ORDER_SERVICE_NET.Models
                     .HasDefaultValueSql("'NULL'");
 
                 entity.Property(e => e.StoreId)
-                   .HasColumnName("order_id")
+                   .HasColumnName("store_id")
                    .HasColumnType("int(11)")
                    .HasDefaultValueSql("'NULL'");
 
@@ -220,10 +220,6 @@ namespace ORDER_SERVICE_NET.Models
                 entity.Property(e => e.CreateAt)
                  .HasColumnName("created_at")
                  .HasColumnType("datetime");
-
-                entity.Property(e => e.IsDeleted)
-                .HasColumnName("is_delete")
-                .HasColumnType("int(11)");
             });
 
             modelBuilder.Entity<CustomerPromo>(entity =>

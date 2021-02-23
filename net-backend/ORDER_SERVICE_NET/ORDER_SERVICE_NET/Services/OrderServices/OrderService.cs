@@ -29,7 +29,8 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
         {
             try
             {
-                var listQrCode = await _productService.GetOrderQrCode(request);
+                var qrString = Helppers.GenerateQrString(request);
+                var qrCodeData = await _productService.GetOrderQrCode(qrString);
                 string address = JsonConvert.SerializeObject(request.Address);
                 int i = 0;
 
@@ -43,12 +44,11 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         Phone = request.Phone,
                         State = Constant.PENDING,
                         Notes = orderStore.Notes,
-                        QrCode = listQrCode.Code == "OK" ? listQrCode.Data[i] : null,
+                        QrCode = qrCodeData.Code == "OK" ? qrCodeData.Data : null,
                         Total = orderStore.Total,
                         Discount = orderStore.Discount,
                         CreateAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
                         StoreId = orderStore.StoreId,
-                        IsDeleted = 0,
                     };
 
                     foreach (var item in orderStore.OrderDetails)
@@ -98,8 +98,8 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
             {
                 return new APIResultErrors<bool>("Not found");
             }
+            _context.Orders.Remove(order);
 
-            order.IsDeleted = 1;
             await _context.SaveChangesAsync();
 
             return new APIResultSuccess<bool>();

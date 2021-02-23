@@ -11,6 +11,6 @@ namespace ORDER_SERVICE_NET.Services.ProductServices
     public interface IProductService
     {
         Task<APIResult<List<ProductView>>> GetListProduct(List<int> productDetailIdList);
-        Task<APIResult<List<string>>> GetOrderQrCode(OrderCreateRequest request);
+        Task<APIResult<string>> GetOrderQrCode(string request);
     }
 }
