@@ -23,11 +23,13 @@ namespace ORDER_SERVICE_NET.Models
         public string QrCode { get; set; }
         public string Notes { get; set; }
         public decimal Total { get; set; }
-        public decimal DiscountAmount { get; set; }
+        public decimal ShippingCost { get; set; }
+        public decimal Discount { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public string CreateAt { get; set; }
         public int? PromotionId { get; set; }
+        public int StoreId { set; get; }
         public int IsDeleted{ get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }

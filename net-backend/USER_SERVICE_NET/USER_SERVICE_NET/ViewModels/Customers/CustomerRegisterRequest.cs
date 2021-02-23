@@ -16,7 +16,6 @@ namespace USER_SERVICE_NET.ViewModels.Customers
 
         [Required]
         public AddressInfo Address { get; set; }
-
         [Required]
         public Genders Gender { get; set; }
 

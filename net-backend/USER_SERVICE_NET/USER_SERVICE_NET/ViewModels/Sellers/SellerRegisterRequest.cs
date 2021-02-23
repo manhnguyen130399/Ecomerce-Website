@@ -34,6 +34,7 @@ namespace USER_SERVICE_NET.ViewModels.Sellers
         // Store
         [Required]
         public string StoreName { get; set; }
+        [Required]
         public AddressInfo StoreAddress { get; set; }
         public DateTime OpenTime { get; set; }
         public DateTime CloseTime { get; set; }
