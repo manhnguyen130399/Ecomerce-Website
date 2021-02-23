@@ -36,23 +36,23 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Autowired
 	private CategoryRepository categoryRepo;
-	
+
 	@Autowired
 	private BrandRepository brandRepo;
-	
+
 	@Autowired
 	private ProductRepository productRepo;
-	
+
 	@Autowired
 	private ProductDetailRepository productDetailRepo;
-	
+
 	@Override
 	@Transactional
 	public ProductVM createProduct(final ProductReq req) {
 		final Store store = getStore(getUserContext());
 		final Integer storeId = store.getId();
 		final Category category = categoryRepo.findOneByIdAndStoreId(req.getCategoryId(), storeId);
-		if(category ==null ) {
+		if (category == null) {
 			throw new InvalidArgumentException(" Can't found category ");
 		}
 		final Product product = new Product();
