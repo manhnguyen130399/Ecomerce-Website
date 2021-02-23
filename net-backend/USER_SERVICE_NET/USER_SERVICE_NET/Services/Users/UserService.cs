@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,6 +17,7 @@ using USER_SERVICE_NET.Services.Communicates;
 using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Utilities;
 using USER_SERVICE_NET.Utilities.Enums;
+using USER_SERVICE_NET.ViewModels.Address;
 using USER_SERVICE_NET.ViewModels.Commons;
 using USER_SERVICE_NET.ViewModels.Commons.Pagging;
 using USER_SERVICE_NET.ViewModels.Stores;
@@ -70,7 +72,7 @@ namespace USER_SERVICE_NET.Services.Users
                     new Customer()
                     {
                         CustomerName = request.Fullname,
-                        Address = request.Address,
+                        Address = JsonConvert.SerializeObject(request.Address),
                         Phone = request.Phone,
                         Email = request.Email,
                         Gender = request.Gender,
@@ -100,6 +102,7 @@ namespace USER_SERVICE_NET.Services.Users
 
             var storeRequest = new StoreRequest();
             storeRequest.Owner = request.Fullname;
+            storeRequest.Address = JsonConvert.SerializeObject(request.StoreAddress);
             storeRequest.StoreName = request.StoreName;
             storeRequest.Website = Helpers.ConverToSlug(request.StoreName);
 
@@ -116,7 +119,7 @@ namespace USER_SERVICE_NET.Services.Users
                     new Seller()
                     {
                         SellerName = request.Fullname,
-                        Address = request.Address,
+                        Address = JsonConvert.SerializeObject(request.Address),
                         Phone = request.Phone,
                         Email = request.Email,
                         Gender = request.Gender,
@@ -271,7 +274,7 @@ namespace USER_SERVICE_NET.Services.Users
             user.CustomerName = (!String.IsNullOrEmpty(request.Fullname) && user.CustomerName != request.Fullname) ? request.Fullname : user.CustomerName;
             user.Gender = (!String.IsNullOrEmpty(request.Gender.ToString()) && user.Gender != request.Gender) ? request.Gender : user.Gender;
             user.Phone = (!String.IsNullOrEmpty(request.Phone) && user.Phone != request.Phone) ? request.Phone : user.Phone;
-            user.Address = (!String.IsNullOrEmpty(request.Address) && user.Address != request.Address) ? request.Address : user.Address;
+            user.Address = (request.Address == null && user.Address != request.Address) ? JsonConvert.SerializeObject(request.Address) : user.Address;
          
             await _context.SaveChangesAsync();
 
@@ -293,7 +296,7 @@ namespace USER_SERVICE_NET.Services.Users
                 .Select(x => new CustomerView()
             {
                 CustomerName = x.CustomerName,
-                Address = x.Address,
+                Address = JsonConvert.DeserializeObject<AddressType>(x.Address),
                 Phone =x.Phone,
                 Email = x.Email,
                 Gender = x.Gender == Genders.Male ?"Male":"Female",
@@ -334,7 +337,7 @@ namespace USER_SERVICE_NET.Services.Users
                 .Select(x => new SellerView()
             {
                 SellerName = x.s.SellerName,
-                Address = x.s.Address,
+                Address = JsonConvert.DeserializeObject<AddressType>(x.s.Address),
                 Phone = x.s.Phone,
                 Email = x.s.Email,
                 Gender = x.s.Gender == Genders.Male ? "Male" : "Female",

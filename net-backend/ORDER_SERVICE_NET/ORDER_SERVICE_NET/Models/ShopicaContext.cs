@@ -182,6 +182,11 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'NULL'");
 
+                entity.Property(e => e.StoreId)
+                   .HasColumnName("order_id")
+                   .HasColumnType("int(11)")
+                   .HasDefaultValueSql("'NULL'");
+
                 entity.Property(e => e.QrCode)
                     .HasColumnName("qr_code")
                     .HasColumnType("longtext")
@@ -196,6 +201,16 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnName("total")
                     .HasColumnType("decimal(10,0)")
                     .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.ShippingCost)
+                    .HasColumnName("shipping_cost")
+                    .HasColumnType("decimal(10,0)")
+                    .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.Discount)
+                .HasColumnName("discount")
+                .HasColumnType("decimal(10,0)")
+                .HasDefaultValueSql("'NULL'");
 
                 entity.Property(e => e.UpdatedBy)
                     .HasColumnName("updated_by")
