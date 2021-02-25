@@ -33,8 +33,8 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
         {
             try
             {
-                //var qrString = Helppers.GenerateQrString(request);
-                //var qrCodeData = await _productService.GetOrderQrCode(qrString);
+                var qrString = Helppers.GenerateQrString(request);
+                var qrCodeData = await _productService.GetOrderQrCode(qrString);
                 string address = JsonConvert.SerializeObject(request.Address);
                 List<Orders> listOrders = new List<Orders>();
 
@@ -48,7 +48,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         Phone = request.Phone,
                         State = Constant.PENDING,
                         Notes = orderStore.Notes,
-                        QrCode = /*qrCodeData.Message == "OK" ? qrCodeData.Data :*/ null,
+                        QrCode = qrCodeData.Message == "OK" ? qrCodeData.Data : null,
                         Total = orderStore.Total,
                         Discount = orderStore.Discount,
                         CreateAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
