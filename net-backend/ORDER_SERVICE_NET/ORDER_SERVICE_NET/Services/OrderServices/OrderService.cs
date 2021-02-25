@@ -33,10 +33,10 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
         {
             try
             {
-                var qrString = Helppers.GenerateQrString(request);
-                var qrCodeData = await _productService.GetOrderQrCode(qrString);
+                //var qrString = Helppers.GenerateQrString(request);
+                //var qrCodeData = await _productService.GetOrderQrCode(qrString);
                 string address = JsonConvert.SerializeObject(request.Address);
-                int i = 0;
+                List<Orders> listOrders = new List<Orders>();
 
                 foreach (var orderStore in request.OrderOneStores)
                 {
@@ -48,7 +48,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         Phone = request.Phone,
                         State = Constant.PENDING,
                         Notes = orderStore.Notes,
-                        QrCode = qrCodeData.Message == "OK" ? qrCodeData.Data : null,
+                        QrCode = /*qrCodeData.Message == "OK" ? qrCodeData.Data :*/ null,
                         Total = orderStore.Total,
                         Discount = orderStore.Discount,
                         CreateAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
@@ -66,6 +66,8 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         order.OrderDetail.Add(orderDetail);
                     }
 
+                    listOrders.Add(order);
+
                     _context.Orders.Add(order);
 
                     if (orderStore.PromotionId != 0)
@@ -81,14 +83,13 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 
                         _context.CustomerPromo.Add(promotion);
                     }
-                    i++;
                 }
 
                 await _context.SaveChangesAsync();
 
-                foreach(var item in request.OrderOneStores)
+                foreach(var item in listOrders)
                 {
-                    await _hubContext.Clients.User(item.StoreId.ToString()).SendAsync("NewOrderNotify",Constant.OrderNotify);
+                    await _hubContext.Clients.User(item.StoreId.ToString()).SendAsync("NewOrderNotify",item.Id);
                 }
 
                 return new APIResultSuccess<string>("Order successfully");
