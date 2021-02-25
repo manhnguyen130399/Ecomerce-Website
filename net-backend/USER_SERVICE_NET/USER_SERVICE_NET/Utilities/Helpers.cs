@@ -25,6 +25,7 @@ namespace USER_SERVICE_NET.Utilities
                 new Claim(ClaimTypes.Role, user.Type.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim("isSocial", isSocial.ToString()),
+                new Claim("storeId",  user.Seller.Count != 0 ? user.Seller.FirstOrDefault().StoreId.ToString() : "-1"),
             };
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("SecretKey").Value);
             var tokenDescriptor = new SecurityTokenDescriptor

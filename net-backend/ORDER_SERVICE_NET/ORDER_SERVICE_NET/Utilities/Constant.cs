@@ -13,6 +13,8 @@ namespace ORDER_SERVICE_NET.Utilities
 
         public const string HttpClientMediaType = "application/json";
 
+        public const string OrderNotify = "You have a new order";
+
         //OrderStatus
         public const string PENDING = "PENDING";
         public const string DELIVER = "DELIVER";
