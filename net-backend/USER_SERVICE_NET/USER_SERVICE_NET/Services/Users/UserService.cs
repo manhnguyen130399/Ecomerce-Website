@@ -43,7 +43,7 @@ namespace USER_SERVICE_NET.Services.Users
         }
         public async Task<APIResult<string>> Authencate(LoginRequest request)
         {
-            var user = await _context.Account.FirstOrDefaultAsync(u => u.Username == request.Email);
+            var user = await _context.Account.Include(x => x.Seller).FirstOrDefaultAsync(u => u.Username == request.Email);
 
             if (user == null) return new APIResultErrors<string>("Email not found");
 

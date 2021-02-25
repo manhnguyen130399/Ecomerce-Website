@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
+using ORDER_SERVICE_NET.Hubs;
 using ORDER_SERVICE_NET.Models;
 using ORDER_SERVICE_NET.Services.ProductServices;
 using ORDER_SERVICE_NET.Utilities;
@@ -20,10 +22,12 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
     {
         private readonly ShopicaContext _context;
         private readonly IProductService _productService;
-        public OrderService(ShopicaContext context, IProductService productService)
+        private readonly IHubContext<NotificationHub> _hubContext;
+        public OrderService(ShopicaContext context, IProductService productService, IHubContext<NotificationHub> hubContext)
         {
             _context = context;
             _productService = productService;
+            _hubContext = hubContext;
         }
         public async Task<APIResult<string>> Create(OrderCreateRequest request)
         {
@@ -44,7 +48,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         Phone = request.Phone,
                         State = Constant.PENDING,
                         Notes = orderStore.Notes,
-                        QrCode = qrCodeData.Code == "OK" ? qrCodeData.Data : null,
+                        QrCode = qrCodeData.Message == "OK" ? qrCodeData.Data : null,
                         Total = orderStore.Total,
                         Discount = orderStore.Discount,
                         CreateAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
@@ -77,11 +81,15 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 
                         _context.CustomerPromo.Add(promotion);
                     }
-
                     i++;
                 }
 
                 await _context.SaveChangesAsync();
+
+                foreach(var item in request.OrderOneStores)
+                {
+                    await _hubContext.Clients.User(item.StoreId.ToString()).SendAsync("NewOrderNotify",Constant.OrderNotify);
+                }
 
                 return new APIResultSuccess<string>("Order successfully");
             }
