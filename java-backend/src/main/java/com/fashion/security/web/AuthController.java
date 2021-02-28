@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.fashion.modules.account.repository.AccountRepository;
 import com.fashion.security.domain.LoginRequest;
 import com.fashion.security.jwt.JwtUtils;
 import com.fashion.web.BaseResource;
@@ -26,9 +25,6 @@ public class AuthController extends BaseResource {
 
 	@Autowired
 	AuthenticationManager authenticationManager;
-
-	@Autowired
-	AccountRepository accRepo;
 
 	@Autowired
 	JwtUtils JwtUtils;

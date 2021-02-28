@@ -2,9 +2,11 @@ package com.fashion.modules.complain.model;
 
 import com.fashion.commons.enums.ComplainEnum;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class ComplainVM extends ComplainRequest {
 
 	private Integer id;

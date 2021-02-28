@@ -17,7 +17,7 @@ public class BaseService implements IBaseService {
 
 	@Autowired
 	private SellerRepository sellerRepo;
-	
+
 	@Autowired
 	protected ModelMapper mapper;
 

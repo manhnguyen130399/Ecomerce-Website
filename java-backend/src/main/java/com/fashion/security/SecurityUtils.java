@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fashion.domain.UserContext;
-import com.fashion.modules.account.domain.Account;
+import com.fashion.model.AccountVM;
 import com.fashion.security.domain.UserDetailsCustom;
 
 public class SecurityUtils {
@@ -25,17 +25,13 @@ public class SecurityUtils {
 	}
 
 	public static UserContext getCurrentUserContext() {
-
 		final Authentication authentication = getAuthentication();
-
 		if (authentication != null) {
 			final UserDetailsCustom userDetails = (UserDetailsCustom) authentication.getPrincipal();
-			final Account acc = userDetails.getAccount();
-
+			final AccountVM acc = userDetails.getAccount();
 			return new UserContext(acc.getUsername(), null, null, acc.getId(), null, null);
 		}
 		return null;
-
 	}
 
 }

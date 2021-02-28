@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.fashion.domain.UserContext;
 import com.fashion.exception.InvalidArgumentException;
-import com.fashion.modules.account.repository.AccountRepository;
 import com.fashion.modules.seller.domain.Seller;
 import com.fashion.modules.seller.repository.SellerRepository;
 import com.fashion.modules.store.domain.Store;
@@ -30,9 +29,6 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 	
 	@Autowired
 	private SellerRepository sellerRepository;
-	
-	@Autowired
-	private AccountRepository accountRepo;
 
 	@Transactional
 	@Override

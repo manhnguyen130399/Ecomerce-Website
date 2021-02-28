@@ -14,13 +14,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
-import com.fashion.modules.account.repository.AccountRepository;
 import com.fashion.modules.promotion.domain.Promotion;
 import com.fashion.modules.promotion.model.PromotionRequest;
 import com.fashion.modules.promotion.model.PromotionVM;
@@ -41,12 +39,6 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Autowired
 	private StoreRepository storeRepo;
-
-	@Autowired
-	private AccountRepository accountRepo;
-
-	@Autowired
-	private JavaMailSender mailSender;
 
 	@Autowired
 	private GoogleDriveService drive;
