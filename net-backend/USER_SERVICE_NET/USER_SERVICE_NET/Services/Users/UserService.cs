@@ -293,17 +293,17 @@ namespace USER_SERVICE_NET.Services.Users
             var totalRow = listCustomer.Count();
 
             var data = listCustomer
-                .Skip(request.pageSize*(request.pageIndex - 1))
+                .Skip(request.pageSize * (request.pageIndex - 1))
                 .Take(request.pageSize)
                 .Select(x => new CustomerView()
-            {
-                CustomerName = x.CustomerName,
-                Address = JsonConvert.DeserializeObject<AddressInfo>(x.Address),
-                Phone =x.Phone,
-                Email = x.Email,
-                Gender = x.Gender == Genders.Male ?"Male":"Female",
-                Image = x.Account.ImageUrl
-            }).ToList();
+                {
+                    CustomerName = x.CustomerName,
+                    Address = x.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(x.Address) : null,
+                    Phone = x.Phone,
+                    Email = x.Email,
+                    Gender = x.Gender == Genders.Male ? "Male" : "Female",
+                    Image = x.Account.ImageUrl
+                }).ToList();
 
             var customerView = new PaggingView<CustomerView>()
             {
@@ -339,7 +339,7 @@ namespace USER_SERVICE_NET.Services.Users
                 .Select(x => new SellerView()
             {
                 SellerName = x.s.SellerName,
-                Address = JsonConvert.DeserializeObject<AddressInfo>(x.s.Address),
+                Address = x.s.Address!=null? JsonConvert.DeserializeObject<AddressInfo>(x.s.Address):null,
                 Phone = x.s.Phone,
                 Email = x.s.Email,
                 Gender = x.s.Gender == Genders.Male ? "Male" : "Female",
@@ -368,7 +368,9 @@ namespace USER_SERVICE_NET.Services.Users
             }
             var accountView = new AccountView()
             {
+                Id = account.Id,
                 UserName = account.Username,
+                Password = account.Password,
                 Type = account.Type,
                 ImageUrl = account.ImageUrl,
                 IsActive = account.IsActive
