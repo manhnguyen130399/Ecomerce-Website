@@ -6,24 +6,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.fashion.modules.account.domain.Account;
-import com.fashion.modules.account.repository.AccountRepository;
+import com.fashion.model.AccountVM;
 import com.fashion.security.domain.UserDetailsCustom;
+import com.fashion.service.IAccountService;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService{
+public class UserDetailServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private AccountRepository accRepo;
-	
-	
+	private IAccountService accountService;
+
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		final Account acc = accRepo.findByUsername(username);
+		final AccountVM acc = accountService.getAccountByUsername(username);
 		if (acc != null) {
 			return new UserDetailsCustom(acc);
 		}
 		throw new UsernameNotFoundException(username);
 	}
-
 }

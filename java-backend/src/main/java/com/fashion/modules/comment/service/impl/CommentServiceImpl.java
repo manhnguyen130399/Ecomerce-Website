@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fashion.exception.InvalidArgumentException;
-import com.fashion.modules.account.domain.Account;
-import com.fashion.modules.account.repository.AccountRepository;
+import com.fashion.model.AccountVM;
 import com.fashion.modules.blog.domain.Blog;
 import com.fashion.modules.blog.repository.BlogRepository;
 import com.fashion.modules.comment.domain.Comment;
@@ -17,6 +16,7 @@ import com.fashion.modules.comment.repository.CommentRepository;
 import com.fashion.modules.comment.service.CommentService;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.repository.ProductRepository;
+import com.fashion.service.IAccountService;
 import com.fashion.service.impl.BaseService;
 
 @Service
@@ -32,15 +32,15 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 	private BlogRepository blogRepo;
 
 	@Autowired
-	private AccountRepository accountRepo;
+	private IAccountService accountService;
 
 	@Override
 	@Transactional
 	public CommentVM createComment(final CommentReq req) {
 		final Comment comment = new Comment();
 		comment.setContent(req.getContent());
-		final Account account = accountRepo.findByUsername(getUserContext().getUsername());
-		comment.setAccount(account);
+		final AccountVM account = accountService.getAccountByUsername(getUserContext().getUsername());
+		comment.setAccountId(account.getId());
 		comment.setEmail(req.getEmail() != null ? req.getEmail() : account.getUsername());
 		final Integer productId = req.getProductId();
 		final Integer blogId = req.getBlogId();

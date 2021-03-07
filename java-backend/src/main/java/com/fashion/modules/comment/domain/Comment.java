@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fashion.modules.account.domain.Account;
 import com.fashion.modules.blog.domain.Blog;
 import com.fashion.modules.product.domain.Product;
 
@@ -51,9 +50,8 @@ public class Comment implements Serializable  {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id")
-	private Account account;
+	@Column(name ="account_id")
+	private Integer accountId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
@@ -111,12 +109,12 @@ public class Comment implements Serializable  {
 		this.updatedAt = updatedAt;
 	}
 
-	public Account getAccount() {
-		return account;
+	public Integer getAccountId() {
+		return accountId;
 	}
 
-	public void setAccount(final Account account) {
-		this.account = account;
+	public void setAccountId(final Integer accountId) {
+		this.accountId = accountId;
 	}
 
 	public Product getProduct() {

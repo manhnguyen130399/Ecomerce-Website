@@ -106,5 +106,8 @@ public final class Constants {
 	public static final String PRODUCT_NAME = "Product Name : ";
 	public static final String QUANTITY = "Quantity : ";
 	public static final String TOTAL_PRICE = "Total price : ";
+	
+	// NET API
+	public static final String URL = "https://user-service-net.herokuapp.com/api";
 
 }

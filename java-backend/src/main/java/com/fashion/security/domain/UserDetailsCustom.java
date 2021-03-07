@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fashion.modules.account.domain.Account;
+import com.fashion.model.AccountVM;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +16,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserDetailsCustom implements UserDetails{
 
-	private Account account ;
+	private AccountVM account ;
 	
 	private static final long serialVersionUID = 5444512873358438224L;
 

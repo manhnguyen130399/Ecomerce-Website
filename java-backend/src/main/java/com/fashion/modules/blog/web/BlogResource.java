@@ -10,6 +10,6 @@ import io.swagger.annotations.Api;
 @Api(value = "API for Blog")
 public class BlogResource {
 
-	private static final String URL = "blog/";
+	//private static final String URL = "blog/";
 
 }
