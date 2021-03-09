@@ -2,7 +2,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -12,8 +11,12 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
+    "baseUrl": "src",
     "paths": {
       "@app/*": [
+        "app/*"
+      ],
+      "@core/*": [
         "app/core/*"
       ],
       "@shared/*": [
@@ -25,8 +28,11 @@
       "@modules/*": [
         "app/modules/*"
       ],
-      "@data/*": [
-        "app/data/*"
+      "@layout/*": [
+        "app/layout/*"
+      ],
+      "@models/*": [
+        "app/models/*"
       ],
       "@assets/*":[
         "assets"

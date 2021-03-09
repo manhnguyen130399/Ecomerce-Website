@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  userServiceUrl: "https://localhost:5001/api",
+  userServiceUrl: "https://user-service-net.herokuapp.com/api",
+  orderServiceUrl: "https://order-service-net.herokuapp.com/api",
   tokenKey: "token",
 };
 

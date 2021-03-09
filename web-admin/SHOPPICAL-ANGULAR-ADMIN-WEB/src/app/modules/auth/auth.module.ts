@@ -14,8 +14,8 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 
-import { LoginComponent } from './page/login/login.component';
-import { RegisterComponent } from './page/register/register.component';
+import { LoginComponent } from '@modules/auth/page/login/login.component';
+import { RegisterComponent } from '@modules/auth/page/register/register.component';
 
 import { icons } from './auth-icon'
 @NgModule({

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { Login } from 'src/app/models/auth/login';
+import { AuthService } from '@core/services/auth.service';
+import { Login } from '@models/auth/login';
 import { tap, finalize, catchError } from 'rxjs/operators'
-import { environment } from 'src/environments/environment';
+import { environment } from '@env';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
