@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~ng-zorro-antd/style/index.min.css";
+@import "~ng-zorro-antd/layout/style/index.min.css";
+@import "~ng-zorro-antd/menu/style/index.min.css";
+@import "~ng-zorro-antd/form/style/index.min.css";
+@import "~ng-zorro-antd/input/style/index.min.css";
+@import "~ng-zorro-antd/checkbox/style/index.min.css";
+@import "~ng-zorro-antd/grid/style/index.min.css";
+@import "~ng-zorro-antd/button/style/index.min.css";
+@import "~ng-zorro-antd/steps/style/index.min.css";
+@import "~ng-zorro-antd/date-picker/style/index.min.css";

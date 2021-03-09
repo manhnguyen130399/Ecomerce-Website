@@ -12,6 +12,26 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
+    "paths": {
+      "@app/*": [
+        "app/core/*"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@env": [
+        "environments/environment"
+      ],
+      "@modules/*": [
+        "app/modules/*"
+      ],
+      "@data/*": [
+        "app/data/*"
+      ],
+      "@assets/*":[
+        "assets"
+      ]
+    },
     "lib": [
       "es2018",
       "dom"

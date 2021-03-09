@@ -37,6 +37,17 @@ namespace USER_SERVICE_NET
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "admin-app",
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin()
+                                      .AllowAnyHeader()
+                                      .AllowAnyMethod();
+                                  });
+            });
+
             services.AddControllers();
             services.AddDbContext<ShopicaContext>(options =>
                     options.UseMySQL(Configuration.GetConnectionString(Constant.ConnectionString)));
@@ -94,6 +105,8 @@ namespace USER_SERVICE_NET
             app.UseAuthentication();
 
             app.UseRouting();
+
+            app.UseCors("admin-app");
 
             app.UseAuthorization();
 
