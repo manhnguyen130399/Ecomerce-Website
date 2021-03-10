@@ -85,7 +85,7 @@ public class ProductResource extends BaseResource {
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deleteProduct(@PathVariable final Integer id) {
 		productService.deleteProduct(id);
-		return success("Success");
+		return success(Constants.SUCCESS);
 	}
 	
 	@PutMapping(URL)

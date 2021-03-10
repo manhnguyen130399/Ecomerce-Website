@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.modules.size.model.SizeVM;
 import com.fashion.modules.size.service.SizeService;
 import com.fashion.web.BaseResource;
@@ -51,7 +52,7 @@ public class SizeResource extends BaseResource {
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deleteSize(@PathVariable final Integer id) {
 		sizeService.deleteSize(id);
-		return success(null);
+		return success(Constants.SUCCESS);
 	}
 
 }

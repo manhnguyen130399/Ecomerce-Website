@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.modules.brand.model.BrandVM;
 import com.fashion.modules.brand.service.BrandService;
 import com.fashion.web.BaseResource;
@@ -49,7 +50,7 @@ public class BrandResource extends BaseResource {
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deleteBrand(@PathVariable final Integer id) {
 		brandService.deleteBrand(id);
-		return success(null);
+		return success(Constants.SUCCESS);
 	}
 
 }

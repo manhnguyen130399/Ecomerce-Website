@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.constants.RestURL;
 import com.fashion.model.AccountRes;
 import com.fashion.model.AccountVM;
 import com.fashion.service.IAccountService;
@@ -18,7 +19,7 @@ public class AccountService implements IAccountService {
 	@Override
 	public AccountVM getAccountByUsername(final String username) {
 		return restTemplate
-				.getForObject(Constants.URL + "/users/getAccountInfoByUserName?userName=" + username, AccountRes.class)
+				.getForObject(Constants.URL + RestURL.GET_ACCOUNT_INFO_BY_USERNAME + username, AccountRes.class)
 				.getData();
 	}
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.service.StoreService;
 import com.fashion.web.BaseResource;
@@ -62,7 +63,7 @@ public class StoreResource extends BaseResource {
 	@DeleteMapping(value = { URL + "/{id}" })
 	public ResponseEntity<Map<String, Object>> deleteStore(@PathVariable(name = "id") final Integer id) {
 		storeService.deleteStore(id);
-		return success(null);
+		return success(Constants.SUCCESS);
 	}
 	
 	@PostMapping(URL + "/list")

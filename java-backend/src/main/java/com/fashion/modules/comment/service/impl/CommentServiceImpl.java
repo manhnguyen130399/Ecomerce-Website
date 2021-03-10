@@ -67,16 +67,25 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 	@Transactional
 	public CommentVM updateComment(final String content, final Integer id) {
 		final Comment comment = commentRepo.findOneById(id);
-		if (comment == null) {
-			throw new InvalidArgumentException(" Can't found comment.");
-		}
+		checkUserComment(comment);
 		comment.setContent(content);
 		return mapper.map(comment, CommentVM.class);
 	}
 
+	private void checkUserComment(final Comment comment) {
+		if (comment == null) {
+			throw new InvalidArgumentException(" Can't found comment.");
+		}
+		if (comment.getAccountId() != getUserContext().getAccountId()) {
+			throw new InvalidArgumentException(" You can't owner this comment.");
+		}
+	}
+	
 	@Override
 	@Transactional
 	public void deleteComment(final Integer id) {
+		final Comment comment = commentRepo.findOneById(id);
+		checkUserComment(comment);
 		commentRepo.deleteById(id);
 	}
 

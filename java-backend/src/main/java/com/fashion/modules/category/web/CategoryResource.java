@@ -66,6 +66,6 @@ public class CategoryResource extends BaseResource {
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deleteCategory(@PathVariable("id") final Integer id) {
 		categoryService.deleteCategory(id);
-		return success(null);
+		return success(Constants.SUCCESS);
 	}
 }

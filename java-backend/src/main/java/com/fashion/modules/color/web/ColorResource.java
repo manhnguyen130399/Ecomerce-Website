@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.modules.color.model.ColorVM;
 import com.fashion.modules.color.service.ColorService;
 import com.fashion.web.BaseResource;
@@ -35,7 +36,6 @@ public class ColorResource extends BaseResource {
 
 	@GetMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> getColorById(@PathVariable("id") final Integer id) {
-
 		return success(colorService.findById(id));
 	}
 
@@ -49,7 +49,7 @@ public class ColorResource extends BaseResource {
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deleteColorId(@PathVariable("id") final Integer id) {
 		colorService.deleteColor(id);
-		return success(null);
+		return success(Constants.SUCCESS);
 	}
 
 }
