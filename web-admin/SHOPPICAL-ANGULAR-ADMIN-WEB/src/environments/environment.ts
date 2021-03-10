@@ -7,6 +7,11 @@ export const environment = {
   userServiceUrl: "https://user-service-net.herokuapp.com/api",
   orderServiceUrl: "https://order-service-net.herokuapp.com/api",
   tokenKey: "token",
+  backendDomain: [
+    "user-service-net.herokuapp.com",
+    "order-service-net.herokuapp.com",
+    "backend-java-api.herokuapp.com"
+  ]
 };
 
 /*

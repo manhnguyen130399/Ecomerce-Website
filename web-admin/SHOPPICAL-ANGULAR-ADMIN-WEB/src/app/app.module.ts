@@ -1,3 +1,4 @@
+import { JwtService } from './core/services/jwt.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +18,8 @@ import { routes } from '@app/app.routing';
 import { icons } from '@app/app-icon';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { jwtOptionsFactory } from './core/jwt/jwt-options-factory';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,14 @@ import { en_US } from 'ng-zorro-antd/i18n';
     NzButtonModule,
     NzLayoutModule,
     NzMenuModule,
-    NzIconModule.forRoot(icons)
+    NzIconModule.forRoot(icons),
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+        deps: [JwtService]
+      }
+    })
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]

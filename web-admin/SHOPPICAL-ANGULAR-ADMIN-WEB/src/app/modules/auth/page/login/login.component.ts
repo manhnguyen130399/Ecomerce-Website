@@ -32,16 +32,15 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(credentials)
       .pipe(
-        tap(res => {
-          console.log(res);
-          localStorage.setItem(environment.tokenKey, res.data)
-          this.router.navigate(['/dashboard'])
+        tap(result => {
+          if (result.isSuccessed) {
+            this.router.navigate(['/dashboard'])
+          }
+          else {
+            this.validateForm.setErrors({ "error": result.message });
+          }
         }),
-        finalize(() => (this.isLoading = false)),
-        catchError(res => {
-          this.validateForm.setErrors({ "error": res.error.message });
-          return throwError(res);
-        })
+        finalize(() => (this.isLoading = false))
       )
       .subscribe();
   }
