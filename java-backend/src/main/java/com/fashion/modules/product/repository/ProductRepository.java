@@ -26,5 +26,17 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 //			+ " LEFT JOIN FETCH p.comments "
 			+ " WHERE p.store.id = :storeId ")
 	Page<Product> findAllProductStore(@Param("storeId") Integer storeId, Pageable page);
+	
+	@Query(" SELECT p " 
+			+ " FROM Product p "
+			+ " LEFT JOIN p.category cate "
+			+ " LEFT JOIN p.brand brand "
+			+ " WHERE p.store.id = :storeId "
+			+ " AND p.productName LIKE %:keyword% "
+			+ " OR p.price LIKE %:keyword% "
+			+ " OR cate.categoryName LIKE %:keyword% "
+			+ " OR brand.brandName LIKE %:keyword% " )
+	Page<Product> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("storeId") Integer storeId,
+			Pageable page);
 
 }

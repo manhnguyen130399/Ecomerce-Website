@@ -22,5 +22,7 @@ public interface PromotionService {
 	void deletePromotion(Integer id);
 	
 	String getDiscountPromtion(String code);
+	
+	Page<PromotionVM> searchPromotionByKeywordAndStore(String keyword, Integer page, Integer pageSize);
 
 }

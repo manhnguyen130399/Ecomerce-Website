@@ -16,5 +16,14 @@ public interface ComplainRepository extends JpaRepository<Complain, Integer> {
 			+ " FROM Complain p " 
 			+ " WHERE p.store.id  = :storeId ")
 	Page<Complain> findComplainByStoreId(@Param("storeId") Integer storeId, Pageable page);
+	
+	@Query(" SELECT p " 
+			+ " FROM Complain p " 
+			+ " WHERE p.store.id  = :storeId "
+			+ " AND p.content LIKE %:keyword%"
+			+ " OR p.email LIKE %:keyword%"
+			+ " OR p.state LIKE %:keyword% ")
+	Page<Complain> searchComplainByKeywordAndStore(@Param("keyword") String keyword, @Param("storeId") Integer storeId,
+			Pageable page);
 
 }

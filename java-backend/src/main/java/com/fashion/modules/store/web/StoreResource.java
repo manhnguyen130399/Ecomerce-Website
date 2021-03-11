@@ -70,5 +70,14 @@ public class StoreResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> getStoreByIds(@RequestBody final List<Integer> ids) {
 		return success(storeService.getStoreByIds(ids));
 	}
+	
+	@GetMapping(URL + "/search")
+	public ResponseEntity<Map<String, Object>> searchStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam final String keyword) {
+		return success(storeService.searchStore(keyword, page, pageSize));
+	}
+	
 
 }

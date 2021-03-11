@@ -14,5 +14,7 @@ public interface ComplainService {
 	Page<ComplainVM> getComplainByStore(Integer page, Integer pageSize);
 
 	ComplainVM reply(Integer id, String message);
+	
+	Page<ComplainVM> searchComplainByKeyword(String keyword, Integer page, Integer pageSize);
 
 }

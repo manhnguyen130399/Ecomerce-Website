@@ -60,4 +60,12 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	}
 
+	@Override
+	@Transactional
+	public Page<BrandVM> seachBrandByStoreAndKeyword(final String keyword, final Integer page, final Integer pageSize) {
+		return brandRepo
+				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, BrandVM.class));
+	}
+
 }

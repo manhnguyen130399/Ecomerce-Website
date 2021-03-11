@@ -21,5 +21,12 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
 			+ " LEFT JOIN b.stores st "
 			+ " WHERE  st.id = :id")
 	Page<Brand> findAllByStoreId(@Param("id") Integer id, Pageable page);
+	
+	@Query(value = " SELECT b "
+			+ " FROM Brand b " 
+			+ " LEFT JOIN b.stores st "
+			+ " WHERE  st.id = :id "
+			+ " AND b.brandName LIKE %:keyword% ")
+	Page<Brand> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("id") Integer id, Pageable page);
 
 }

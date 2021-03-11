@@ -81,4 +81,11 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 		return mapper.map(complain, ComplainVM.class);
 	}
 
+	@Override
+	@Transactional
+	public Page<ComplainVM> searchComplainByKeyword(final String keyword, final Integer page, final Integer pageSize) {
+		return complainRepo.searchComplainByKeywordAndStore(keyword, getStore(getUserContext()).getId(),
+				PageRequest.of(page, pageSize)).map(it -> mapper.map(it, ComplainVM.class));
+	}
+
 }

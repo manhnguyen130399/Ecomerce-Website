@@ -63,5 +63,13 @@ public class PromotionResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> getDiscountByCode(@RequestParam final String code) {
 		return success(promoService.getDiscountPromtion(code));
 	}
+	
+	@GetMapping(URL + "/search")
+	public ResponseEntity<Map<String, Object>> searchPromotionByKeywordAndStore(
+			@RequestParam(required = true, defaultValue = "0") final Integer page,
+			@RequestParam(required = true, defaultValue = "50") final Integer pageSize,
+			@RequestParam final String keyword) {
+		return success(promoService.searchPromotionByKeywordAndStore(keyword, page, pageSize));
+	}
 
 }

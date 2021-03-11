@@ -68,4 +68,12 @@ public class CategoryResource extends BaseResource {
 		categoryService.deleteCategory(id);
 		return success(Constants.SUCCESS);
 	}
+	
+	@GetMapping(URL + "/search")
+	public ResponseEntity<Map<String, Object>> searchCategoryByKeywordAndStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam final String keyword) {
+		return success(categoryService.searchCategoryByKeywordAndStore(keyword, page, pageSize));
+	}
 }

@@ -22,5 +22,7 @@ public interface StoreService {
 	void deleteStore(final Integer id);
 	
 	List<StoreVM> getStoreByIds(final List<Integer> ids);
+	
+	Page<StoreVM> searchStore(final String keyword, final Integer page, final Integer pageSize);
 
 }

@@ -13,5 +13,7 @@ public interface CategoryService {
 	Page<CategoryVM> findAllByStore(Integer page, Integer pageSize);
 
 	void deleteCategory(Integer id);
+	
+	Page<CategoryVM> searchCategoryByKeywordAndStore(String keyword, Integer page, Integer pageSize);
 
 }

@@ -23,4 +23,10 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
 			+ " WHERE st.id = :id ")
 	Page<Size> findAllByStoreId(@Param("id") Integer id, Pageable page);
 
+	@Query(value = " SELECT s "//
+			+ " FROM Size s "//
+			+ " LEFT JOIN s.stores st "//
+			+ " WHERE s.sizeName LIKE %:keyword% "
+			+ " AND st.id = :id ") //
+	Page<Size> searchSizeByKeyword(@Param("keyword") String keyword, Integer id, Pageable page);
 }

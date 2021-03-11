@@ -22,5 +22,12 @@ public interface ColorRepository extends JpaRepository<Color, Integer> {
 			+ " LEFT JOIN c.stores s " 
 			+ " WHERE s.id = :id")
 	Page<Color> findAllByStore(@Param("id") Integer storeId, Pageable page);
+	
+	@Query(value = " SELECT c " 
+			+ " FROM Color c " 
+			+ " LEFT JOIN c.stores s " 
+			+ " WHERE s.id = :id "
+			+ " AND c.colorName LIKE %:keyword% ")
+	Page<Color> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("id") Integer storeId, Pageable page);
 
 }

@@ -7,11 +7,13 @@ import com.fashion.modules.color.model.ColorVM;
 public interface ColorService {
 	
 	ColorVM createColor(ColorVM vm);
-	
+
 	ColorVM findById(Integer id);
-	
+
 	Page<ColorVM> findByAllStore(Integer page, Integer pageSize);
-	
+
 	void deleteColor(Integer id);
+
+	Page<ColorVM> searchColorByKeywordAndStore(String keyword, Integer page, Integer pageSize);
 
 }

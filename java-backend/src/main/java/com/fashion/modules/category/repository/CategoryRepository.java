@@ -22,5 +22,12 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 			+ " LEFT JOIN c.stores st "
 			+ " WHERE st.id = :id ")
 	Page<Category> findAllByStoreId(@Param("id")Integer id, Pageable page);
+	
+	@Query(value = " SELECT c "//
+			+ " FROM Category c " //
+			+ " LEFT JOIN c.stores st "//
+			+ " WHERE st.id = :id "//
+			+ " AND c.categoryName LIKE %:keyword% ") //
+	Page<Category> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("id") Integer id, Pageable page);
 
 }

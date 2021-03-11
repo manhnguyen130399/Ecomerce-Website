@@ -50,5 +50,13 @@ public class ComplainResource extends BaseResource {
 			@RequestParam final String message) {
 		return success(complainService.reply(id, message));
 	}
+	
+	@GetMapping(URL + "/search")
+	public ResponseEntity<Map<String, Object>> searchComplainByKeywordAndStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam final String keyword) {
+		return success(complainService.searchComplainByKeyword(keyword, page, pageSize));
+	}
 
 }

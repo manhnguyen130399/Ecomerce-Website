@@ -29,4 +29,14 @@ public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
 	
 	Promotion findOnePromotionByCode(String code);
 	
+	@Query(" SELECT p " 
+			+ " FROM Promotion p " 
+			+ " WHERE p.store.id = :storeId"
+			+ " AND p.title LIKE %:keyword%"
+			+ " OR p.code LIKE %:keyword% "
+			+ " OR p.discount LIKE %:keyword% "
+			+ " OR p.startDate LIKE %:keyword% "
+			+ " OR p.endDate LIKE %:keyword%  ")
+	Page<Promotion> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("storeId") Integer storeId,
+			Pageable page);
 }
