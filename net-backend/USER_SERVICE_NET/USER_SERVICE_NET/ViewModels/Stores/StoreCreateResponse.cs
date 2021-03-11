@@ -10,9 +10,9 @@ namespace USER_SERVICE_NET.ViewModels.Stores
 {
     public class StoreCreateResponse
     {
-        [Required]
+        //[Required]
         public string StoreName { get; set; }
-        [Required]
+        //[Required]
         public string Owner { get; set; }
         public string Address { get; set; }
         public string Website { get; set; }

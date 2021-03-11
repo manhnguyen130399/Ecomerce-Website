@@ -16,6 +16,7 @@ namespace USER_SERVICE_NET.Services.Users
         Task<APIResult<PaggingView<SellerView>>> GetAllSeller(PaggingRequest request);
         Task<APIResult<AccountView>> GetAccountInfoByUserName(string userName);
         Task<APIResult<string>> Authencate(LoginRequest request);
+        Task<APIResult<string>> CheckEmailExist(string email);
         Task<APIResult<string>> SocialLogin(SocialLoginRequest request);
         Task<APIResult<string>> RegisterForCustomer(CustomerRegisterRequest request);
         Task<APIResult<string>> RegisterForSeller(SellerRegisterRequest request);

@@ -1,0 +1,59 @@
+<form [formGroup]="storeRegisterForm">
+  <!-- store name -->
+  <nz-form-item>
+    <nz-form-label nzFor="storeName" nzRequired [nzSm]="7" [nzXs]="9">Store Name</nz-form-label>
+    <nz-form-control nzValidatingTip="Validating..." nzHasFeedback [nzSm]="14" [nzLg]="12" [nzXs]="14"
+      [nzErrorTip]="userErrorTpl">
+      <input nz-input formControlName="storeName" id="storeName" />
+      <ng-template #userErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Please input your storeName!
+        </ng-container>
+        <ng-container *ngIf="control.hasError('duplicated')">
+          The storeName is already in use!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- storeAddress -->
+  <nz-form-item>
+    <nz-form-label [nzLg]="7" [nzSm]="7" [nzXs]="9" nzRequired nzFor="storeAddress">StoreAddress</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzLg]="12" [nzXs]="14" nzErrorTip="Please input your storeAddress!">
+      <input nz-input type="text" formControlName="storeAddress">
+    </nz-form-control>
+  </nz-form-item>
+  <!-- website -->
+  <nz-form-item>
+    <nz-form-label [nzLg]="7" [nzSm]="7" [nzXs]="9" nzRequired nzFor="website">WebSite</nz-form-label>
+    <nz-form-control [nzLg]="12" [nzSm]="14" [nzXs]="14" nzErrorTip="Please input your website!">
+      <input nz-input type="text" formControlName="website">
+    </nz-form-control>
+  </nz-form-item>
+  <!-- time -->
+  <nz-form-item>
+    <nz-form-label [nzSm]="7" [nzLg]="7" [nzXs]="10" nzRequired>Open Time</nz-form-label>
+    <nz-form-control [nzLg]="4" [nzSm]="4" [nzXs]="10">
+      <nz-time-picker nzFormat="HH:mm" formControlName="openTime"></nz-time-picker>
+    </nz-form-control>
+
+    <nz-form-label [nzSm]="6" [nzLg]="4" [nzXs]="10" nzRequired>Close Time</nz-form-label>
+    <nz-form-control [nzLg]="4" [nzSm]="4" [nzXs]="10">
+      <nz-time-picker nzFormat="HH:mm" formControlName="closeTime"></nz-time-picker>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<div class="btn-switch">
+  <div nz-col [nzOffset]="7" [nzSm]="14" [nzLg]="12" [nzXs]="14">
+    <button nz-button nzShape="round" nzType="default" (click)="changeToPrevStep()">
+      <i nz-icon nzType="backward" nzTheme="fill"></i>
+      Previous
+    </button>
+    <button nz-button nzShape="round" [disabled]="storeRegisterForm.invalid || !isValidSellerForm" nzType="primary"
+      (click)="submitForm()">
+      <span>
+        Done
+        <i nz-icon nzType="check" nzTheme="outline"></i>
+      </span>
+    </button>
+  </div>
+</div>

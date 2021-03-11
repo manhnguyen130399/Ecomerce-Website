@@ -1,1 +1,12 @@
-<p>register works!</p>
+<div nz-row nzAlign="middle" nzJustify="center">
+  <div class="register-form" nz-col nzSpan="16">
+    <nz-steps [nzCurrent]="current - 1">
+      <nz-step nzTitle="Seller Info"></nz-step>
+      <nz-step nzTitle="Store Info"></nz-step>
+      <nz-step nzTitle="Waiting"></nz-step>
+    </nz-steps>
+    <div class="steps-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

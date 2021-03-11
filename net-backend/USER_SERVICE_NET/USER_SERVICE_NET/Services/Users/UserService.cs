@@ -97,15 +97,11 @@ namespace USER_SERVICE_NET.Services.Users
 
         public async Task<APIResult<string>> RegisterForSeller(SellerRegisterRequest request)
         {
-            if (await _context.Account.FirstOrDefaultAsync(ac => ac.Username == request.Email) != null)
-            {
-                return new APIResultErrors<string>("Email is already");
-            }
-
             var storeRequest = new StoreRequest();
             storeRequest.Owner = request.Fullname;
-            storeRequest.Address = JsonConvert.SerializeObject(request.StoreAddress);
             storeRequest.StoreName = request.StoreName;
+            storeRequest.OpenTime = request.OpenTime;
+            storeRequest.CloseTime = request.CloseTime;
             storeRequest.Website = Helpers.ConverToSlug(request.StoreName);
 
             var store = await _communicateService.CreateStoreForSeller(storeRequest);
@@ -121,7 +117,6 @@ namespace USER_SERVICE_NET.Services.Users
                     new Seller()
                     {
                         SellerName = request.Fullname,
-                        Address = JsonConvert.SerializeObject(request.Address),
                         Phone = request.Phone,
                         Email = request.Email,
                         Gender = request.Gender,
@@ -137,8 +132,6 @@ namespace USER_SERVICE_NET.Services.Users
 
             _context.Account.Add(account);
             await _context.SaveChangesAsync();
-
-
 
             return new APIResultSuccess<string>("register successfully");
         }
@@ -377,6 +370,18 @@ namespace USER_SERVICE_NET.Services.Users
             };
 
             return new APIResultSuccess<AccountView>(accountView);
+        }
+
+        public async Task<APIResult<string>> CheckEmailExist(string email)
+        {
+            var account = await _context.Account.FirstOrDefaultAsync(x => x.Username == email);
+
+            if(account != null)
+            {
+                return new APIResultErrors<string>("Email is already in use");
+            }
+
+            return new APIResultSuccess<string>();
         }
     }
 }
