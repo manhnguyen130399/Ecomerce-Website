@@ -13,6 +13,16 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
+      {
+        path: 'size',
+        loadChildren: () =>
+          import('./modules/size/size.module').then(m => m.SizeModule)
+      },
+      {
+        path: 'category',
+        loadChildren: () =>
+          import('./modules/category/category.module').then(m => m.CategoryModule)
+      },
     ]
   },
   {

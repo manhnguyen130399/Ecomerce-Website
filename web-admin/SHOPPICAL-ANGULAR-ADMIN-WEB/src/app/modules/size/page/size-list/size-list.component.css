@@ -1,0 +1,8 @@
+.table-operations {
+  margin-bottom: 16px;
+  float: right;
+}
+
+.table-operations > button {
+  margin-right: 8px;
+}
