@@ -35,5 +35,6 @@ namespace USER_SERVICE_NET.Controllers
 
             return Ok(result);
         }
+
     }
 }

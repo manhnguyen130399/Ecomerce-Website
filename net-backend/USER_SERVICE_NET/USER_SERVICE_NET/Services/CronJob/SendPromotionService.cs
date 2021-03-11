@@ -44,9 +44,9 @@ namespace USER_SERVICE_NET.Services.CronJob
 
                 if(listPromotionValid.Data.Count > 0)
                 {
-                    var emailRequest = GetMailRequest(listCutomerMail, listPromotionValid.Data, _webHostEnvironment.WebRootPath);
+                    //var emailRequest = GetMailRequest(listCutomerMail, listPromotionValid.Data, _webHostEnvironment.WebRootPath);
 
-                    await _emailService.SendEmailAsync(emailRequest);
+                    //await _emailService.SendEmailAsync(emailRequest);
                 }
             }
         }

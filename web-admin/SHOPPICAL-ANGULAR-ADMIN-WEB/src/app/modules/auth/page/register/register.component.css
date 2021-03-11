@@ -1,0 +1,17 @@
+.register-form {
+  margin-top: 60px;
+}
+
+.steps-content {
+  margin-top: 16px;
+  min-height: 200px;
+  text-align: center;
+  border-radius: 10px;
+  background: #f5f5f5;
+  border: 5px solid #fff;
+  box-shadow: 0 0 16px rgb(41 42 51 / 6%), 0 6px 20px rgb(41 42 51 / 2%);
+}
+
+.steps-action {
+  margin-top: 24px;
+}

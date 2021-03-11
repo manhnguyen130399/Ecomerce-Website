@@ -1,0 +1,24 @@
+form {
+  margin-top: 25px;
+}
+
+.btn-switch {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 576px) {
+  .ant-btn {
+    padding: 4px 10px;
+    font-size: 13px;
+  }
+  .btn-send-code {
+    margin-left: 3px;
+  }
+}
+
+@media (max-width: 575px) {
+  .ant-btn {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+}

@@ -1,4 +1,4 @@
-import { JwtService } from './../services/jwt.service';
+import { JwtService } from '@core/services/jwt.service';
 import { environment } from '@env';
 export function jwtOptionsFactory(jwtService: JwtService) {
   return {

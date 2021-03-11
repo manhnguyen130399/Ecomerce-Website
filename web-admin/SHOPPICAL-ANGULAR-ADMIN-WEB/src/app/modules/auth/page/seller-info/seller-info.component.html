@@ -1,0 +1,74 @@
+<form [formGroup]="sellerRegisterForm">
+  <!-- email -->
+  <nz-form-item>
+    <nz-form-label nzFor="email" [nzLg]="7" [nzSm]="6" [nzXs]="4">Email</nz-form-label>
+    <nz-form-control nzValidatingTip="Validating..." nzHasFeedback [nzSm]="9" [nzLg]="9" [nzXs]="12"
+      [nzErrorTip]="userErrorTpl">
+      <input nz-input formControlName="email" id="email" />
+      <ng-template #userErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Please input your email!
+        </ng-container>
+        <ng-container *ngIf="control.hasError('duplicated')">
+          The email is already in use!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+    <div class="btn-send-code">
+      <button [disabled]="sellerRegisterForm.controls.email.invalid" (click)="sendCode()" nz-button>Send Code</button>
+    </div>
+  </nz-form-item>
+  <!-- verifyCode -->
+  <nz-form-item>
+    <nz-form-label [nzLg]="7" [nzSm]="6" [nzXs]="6" nzFor="verifyCode">Verify code</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzLg]="12" [nzXs]="16" [nzErrorTip]="confirmCodeErr">
+      <input nz-input type="text" formControlName="verifyCode">
+      <ng-template #confirmCodeErr let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Please input your verify code!
+        </ng-container>
+        <ng-container *ngIf="control.hasError('confirm')">
+          verify code is incorrect!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <!-- fullName -->
+  <nz-form-item>
+    <nz-form-label [nzLg]="7" [nzSm]="6" [nzXs]="6" nzFor="fullName">FullName</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzLg]="12" [nzXs]="16" nzErrorTip="Please input your fullName!">
+      <input nz-input type="text" formControlName="fullName">
+    </nz-form-control>
+  </nz-form-item>
+  <!-- password -->
+  <nz-form-item>
+    <nz-form-label [nzLg]="7" [nzSm]="6" [nzXs]="6" nzFor="password">Password</nz-form-label>
+    <nz-form-control [nzLg]="12" [nzSm]="14" [nzXs]="16" nzErrorTip="Please input your password!">
+      <input nz-input type="password" formControlName="password">
+    </nz-form-control>
+  </nz-form-item>
+  <!-- confirmPassword -->
+  <nz-form-item>
+    <nz-form-label [nzLg]="7" [nzSm]="6" [nzXs]="6" nzFor="confirmPassword">ConfirmPassword</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzLg]="12" [nzXs]="16" [nzErrorTip]="confirmError">
+      <input nz-input type="password" formControlName="confirmPassword">
+      <ng-template #confirmError let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Please input your confirm!
+        </ng-container>
+        <ng-container *ngIf="control.hasError('confirm')">
+          Two passwords is inconsistent!
+        </ng-container>
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<div class="btn-switch">
+  <div nz-col [nzOffset]="7" [nzSm]="14" [nzLg]="12" [nzXs]="14">
+    <button nz-button nzShape="round" [disabled]="sellerRegisterForm.invalid" nzType="default"
+      (click)="changeToNextStep()">
+      Next
+      <i nz-icon nzType="forward" nzTheme="fill"></i>
+    </button>
+  </div>
+</div>
