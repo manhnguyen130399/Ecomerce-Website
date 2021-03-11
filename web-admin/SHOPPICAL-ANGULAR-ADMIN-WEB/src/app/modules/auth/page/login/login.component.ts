@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
 import { AuthService } from '@core/services/auth.service';
 import { Login } from '@models/auth/login';
 import { tap, finalize, catchError } from 'rxjs/operators'

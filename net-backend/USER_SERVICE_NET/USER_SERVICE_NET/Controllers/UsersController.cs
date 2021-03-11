@@ -67,6 +67,21 @@ namespace USER_SERVICE_NET.Controllers
             return Ok(result);
         }
 
+        [HttpGet("CheckEmailExist")]
+        public async Task<IActionResult> CheckEmailExist(string email)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.CheckEmailExist(email);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
+
         [HttpGet("GetListSeller")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetListSeller([FromQuery] PaggingRequest request)
