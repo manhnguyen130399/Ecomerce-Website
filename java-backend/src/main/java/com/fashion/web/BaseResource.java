@@ -6,10 +6,11 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.fashion.commons.constants.Constants;
 
-
+@CrossOrigin(origins = "*")
 public class BaseResource {
 
 	protected ResponseEntity<Map<String, Object>> success(final Object data) {
