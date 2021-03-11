@@ -133,4 +133,13 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	}
 
+	@Override
+	@Transactional
+	public Page<PromotionVM> searchPromotionByKeywordAndStore(final String keyword, final Integer page,
+			final Integer pageSize) {
+		return promoRepo
+				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, PromotionVM.class));
+	}
+
 }

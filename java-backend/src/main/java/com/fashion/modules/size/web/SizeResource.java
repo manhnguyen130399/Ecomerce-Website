@@ -54,5 +54,14 @@ public class SizeResource extends BaseResource {
 		sizeService.deleteSize(id);
 		return success(Constants.SUCCESS);
 	}
+	
+	@GetMapping(URL + "/search")
+	public ResponseEntity<Map<String, Object>> searchSizeByKeyWord(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam final String keyword) {
+		return success(sizeService.searchByKeyword(keyword, page, pageSize));
+	}
+
 
 }

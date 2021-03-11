@@ -52,5 +52,13 @@ public class BrandResource extends BaseResource {
 		brandService.deleteBrand(id);
 		return success(Constants.SUCCESS);
 	}
+	
+	@GetMapping(URL + "/search")
+	public ResponseEntity<Map<String, Object>> searchBrandByStoreAndKeyword(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam final String keyword) {
+		return success(brandService.seachBrandByStoreAndKeyword(keyword, page, pageSize));
+	}
 
 }

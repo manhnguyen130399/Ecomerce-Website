@@ -62,4 +62,11 @@ public class SizeServiceImpl  extends BaseService implements SizeService{
 		store.setSizes(sizes.stream().filter(it -> !it.equals(size)).collect(Collectors.toSet()));
 	}
 
+	@Override
+	@Transactional
+	public Page<SizeVM> searchByKeyword(final String keyword, final Integer page, final Integer pageSize) {
+		return sizeRepo.searchSizeByKeyword(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, SizeVM.class));
+	}
+
 }

@@ -65,4 +65,13 @@ public class ColorServiceImpl extends BaseService implements ColorService{
 
 	}
 
+	@Override
+	@Transactional
+	public Page<ColorVM> searchColorByKeywordAndStore(final String keyword, final Integer page,
+			final Integer pageSize) {
+		return colorRepo
+				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, ColorVM.class));
+	}
+
 }

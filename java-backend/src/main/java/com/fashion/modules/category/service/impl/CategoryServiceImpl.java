@@ -62,4 +62,13 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	}
 
+	@Override
+	@Transactional
+	public Page<CategoryVM> searchCategoryByKeywordAndStore(final String keyword, final Integer page,
+			final Integer pageSize) {
+		return cateRepo
+				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, CategoryVM.class));
+	}
+
 }

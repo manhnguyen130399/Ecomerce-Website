@@ -13,5 +13,7 @@ public interface SizeService {
 	Page<SizeVM> findAllByStore(Integer page, Integer pageSize);
 
 	void deleteSize(Integer id);
+	
+	Page<SizeVM> searchByKeyword(String keyword, Integer page, Integer pageSize);
 
 }

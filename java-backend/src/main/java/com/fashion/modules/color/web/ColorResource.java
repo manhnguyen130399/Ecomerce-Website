@@ -52,4 +52,11 @@ public class ColorResource extends BaseResource {
 		return success(Constants.SUCCESS);
 	}
 
+	@GetMapping(URL + "/search")
+	public ResponseEntity<Map<String, Object>> searchColorByKeywordAndStore(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam final String keyword) {
+		return success(colorService.searchColorByKeywordAndStore(keyword, page, pageSize));
+	}
 }

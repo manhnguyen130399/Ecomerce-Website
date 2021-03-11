@@ -141,4 +141,13 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		}).collect(Collectors.toList());
 	}
 
+	@Override
+	@Transactional
+	public Page<ProductVM> searchProductByKeywordAndStore(final String keyword, final Integer page,
+			final Integer pageSize) {
+		return productRepo
+				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, ProductVM.class));
+	}
+
 }

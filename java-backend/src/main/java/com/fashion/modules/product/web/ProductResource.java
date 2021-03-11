@@ -97,6 +97,14 @@ public class ProductResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> getProductDetailInfos(@RequestBody final List<Integer> req) {
 		return success(productService.getProductDetailInfos(req));
 	}
+	
+	@GetMapping(URL + "/search")
+	public ResponseEntity<Map<String, Object>> searchProductByStoreAndKeyword(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam final String keyword) {
+		return success(productService.searchProductByKeywordAndStore(keyword, page, pageSize));
+	}
 }
 
 

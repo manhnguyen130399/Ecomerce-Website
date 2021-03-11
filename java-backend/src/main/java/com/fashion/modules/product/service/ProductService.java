@@ -25,4 +25,6 @@ public interface ProductService {
 
 	List<ProductRes> getProductDetailInfos(List<Integer> ids);
 
+	Page<ProductVM> searchProductByKeywordAndStore(String keyword, Integer page, Integer pageSize);
+
 }

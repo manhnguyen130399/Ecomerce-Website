@@ -91,5 +91,12 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	@Transactional
+	public Page<StoreVM> searchStore(final String keyword, final Integer page, final Integer pageSize) {
+		return storeRepo.seachStoreByKeyWord(keyword, PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, StoreVM.class));
+	}
+
 	
 }
