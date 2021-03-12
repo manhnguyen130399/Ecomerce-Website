@@ -1,4 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { finalize } from 'rxjs/operators';
+import { SizeService } from './../../services/size.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { Size } from '../../models/size';
 
 @Component({
   selector: 'app-size-modal',
@@ -7,21 +12,53 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class SizeModalComponent implements OnInit {
   @Input() isVisible = false;
+  @Input() modalTitle = "Add size";
+  @Input() sizeObject: Size;
   @Output() cancelModalEvent = new EventEmitter<string>();
   @Output() okModalEvent = new EventEmitter<string>();
-  constructor() { }
+  isLoading = false;
+  isEditMode = false;
+  sizeForm: FormGroup;
+
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly sizeService: SizeService,
+    private readonly messageService: NzMessageService) { }
 
   ngOnInit(): void {
+    this.buildForm();
   }
 
-  handleOk(): void {
-    this.okModalEvent.emit();
-    console.log('Button ok clicked!');
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    if (changes.sizeObject != undefined && changes.sizeObject.currentValue != undefined) {
+      this.sizeForm.controls.sizeName.setValue(changes.sizeObject.currentValue.sizeName);
+      this.modalTitle = "Edit size";
+    }
+  }
+
+  buildForm() {
+    this.sizeForm = this.formBuilder.group({
+      sizeName: [null, [Validators.required]]
+    })
+  }
+
+  submitForm() {
+    this.isLoading = true;
+    this.sizeService.createSize(this.sizeForm.get("sizeName").value.trim()).pipe(
+      finalize(() => this.isLoading = false)
+    ).subscribe(res => {
+      if (res.code == "OK") {
+        this.messageService.create("success", `Create size successfully!`);
+        this.okModalEvent.emit();
+        this.sizeForm.reset();
+      }
+    });
   }
 
   handleCancel(): void {
     this.cancelModalEvent.emit();
-    console.log('Button cancel clicked!');
+    this.sizeForm.reset();
   }
 
 }

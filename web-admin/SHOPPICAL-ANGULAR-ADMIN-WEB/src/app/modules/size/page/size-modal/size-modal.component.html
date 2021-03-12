@@ -1,5 +1,13 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzClosable]="false" [nzOkDisabled]="sizeForm.invalid"
+  [nzOkLoading]="isLoading" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
   <ng-container *nzModalContent>
-    <p>testcontaine</p>
+    <form nz-form [formGroup]="sizeForm">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="sizeName">Size Name</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your size name!">
+          <input nz-input type="text" formControlName="sizeName">
+        </nz-form-control>
+      </nz-form-item>
+    </form>
   </ng-container>
 </nz-modal>

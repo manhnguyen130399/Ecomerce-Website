@@ -1,17 +1,23 @@
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgZoroAntdModule } from './ng-zoro-antd.module';
-
 
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    NgZoroAntdModule
+    ReactiveFormsModule,
+    NgZoroAntdModule,
+    FormsModule
+
   ],
   exports: [
-    NgZoroAntdModule
+    ReactiveFormsModule,
+    NgZoroAntdModule,
+    FormsModule
   ]
 })
 export class SharedModule { }
