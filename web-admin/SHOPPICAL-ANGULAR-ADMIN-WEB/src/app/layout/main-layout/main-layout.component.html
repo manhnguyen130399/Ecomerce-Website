@@ -44,7 +44,27 @@
           <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
             <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
           </span>
+          <div class="seller-info">
+            <span class="notify">
+              <button nz-button nzType="default" nzShape="circle"><i nz-icon nzType="bell"
+                  nzTheme="outline"></i></button>
+            </span>
+
+            <span nz-dropdown [nzDropdownMenu]="menu">
+              <img src="/assets/images/avatar.jpg" width="32" height="32">
+              hieuvo044@gmail.com
+              <i nz-icon nzType="down"></i>
+            </span>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="log()">Change password</li>
+                <li nz-menu-item (click)="log()">Seller info</li>
+                <!-- <li nz-menu-item (click)="log()">3rd menu item</li> -->
+              </ul>
+            </nz-dropdown-menu>
+          </div>
         </div>
+
       </nz-header>
     </div>
 

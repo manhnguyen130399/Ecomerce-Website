@@ -69,6 +69,37 @@ nz-header {
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 }
 
+.seller-info {
+  float: right;
+  display: flex;
+}
+
+.seller-info .notify {
+  padding: 0 10px 0 10px;
+}
+
+.seller-info .ant-dropdown-trigger {
+  height: 100%;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  padding: 0 10px 0 10px;
+  margin-right: 40px;
+}
+
+.seller-info .ant-dropdown-trigger:hover {
+  background: #f2f2f2;
+}
+
+.seller-info .ant-dropdown-trigger img {
+  margin: 10px 8px 10px 0;
+  border-radius: 50%;
+}
+
+.seller-info .ant-dropdown-trigger i {
+  margin-left: 5px;
+}
+
 nz-content {
   margin: 24px;
 }

@@ -45,7 +45,8 @@ export class SizeModalComponent implements OnInit {
 
   submitForm() {
     this.isLoading = true;
-    this.sizeService.createSize(this.sizeForm.get("sizeName").value.trim()).pipe(
+    const sizeName = this.sizeForm.get("sizeName").value.trim();
+    this.sizeService.createSize(sizeName).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe(res => {
       if (res.code == "OK") {
