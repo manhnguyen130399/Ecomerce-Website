@@ -20,6 +20,13 @@ import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { jwtOptionsFactory } from './core/jwt/jwt-options-factory';
+import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+
+const ngZorroConfig: NzConfig = {
+  message: {
+    nzDuration: 3000
+  },
+};
 
 @NgModule({
   declarations: [
@@ -44,7 +51,10 @@ import { jwtOptionsFactory } from './core/jwt/jwt-options-factory';
       }
     })
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
+    { provide: NZ_CONFIG, useValue: ngZorroConfig }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

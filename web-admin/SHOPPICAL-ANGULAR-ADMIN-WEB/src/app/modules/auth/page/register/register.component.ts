@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit {
         const data = {
           ...this.sellerRegisterObject,
           ...formData
-        }
+        };
 
         this.UserService.sellerRegister(data).pipe(
           tap(result => {

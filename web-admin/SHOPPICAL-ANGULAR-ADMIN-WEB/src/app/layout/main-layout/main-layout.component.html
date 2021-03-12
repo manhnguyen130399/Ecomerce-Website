@@ -8,7 +8,7 @@
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+      <!-- <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a routerLink="/welcome">Welcome</a>
@@ -20,11 +20,18 @@
             <a>Workplace</a>
           </li>
         </ul>
-      </li>
-      <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
+      </li> -->
+      <li nz-submenu nzOpen nzTitle="Category" nzIcon="form">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a>Basic Form</a>
+            <a [routerLink]="['/category']">List category</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzOpen nzTitle="Size" nzIcon="form">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/size']">List size</a>
           </li>
         </ul>
       </li>
