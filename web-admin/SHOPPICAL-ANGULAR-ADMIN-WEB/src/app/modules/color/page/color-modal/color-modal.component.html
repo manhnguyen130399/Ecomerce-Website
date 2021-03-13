@@ -1,0 +1,14 @@
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzClosable]="false" [nzOkDisabled]="colorForm.invalid"
+  [nzOkLoading]="isLoading" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="colorForm">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="sizeName">Color Name</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your color name!">
+          <input nz-input type="text" formControlName="colorName">
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+

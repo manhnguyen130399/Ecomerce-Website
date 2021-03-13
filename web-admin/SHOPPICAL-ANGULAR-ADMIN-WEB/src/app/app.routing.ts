@@ -11,25 +11,34 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)
+          import('./modules/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
       },
       {
         path: 'size',
         loadChildren: () =>
-          import('./modules/size/size.module').then(m => m.SizeModule)
+          import('./modules/size/size.module').then((m) => m.SizeModule),
       },
       {
         path: 'category',
         loadChildren: () =>
-          import('./modules/category/category.module').then(m => m.CategoryModule)
+          import('./modules/category/category.module').then(
+            (m) => m.CategoryModule
+          ),
       },
-    ]
+      {
+        path: 'color',
+        loadChildren: () =>
+          import('./modules/color/color.module').then((m) => m.ColorModule),
+      },
+    ],
   },
   {
     path: 'auth',
     component: AuthLayoutComponent,
     loadChildren: () =>
-      import('./modules/auth/auth.module').then(m => m.AuthModule)
+      import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: '',

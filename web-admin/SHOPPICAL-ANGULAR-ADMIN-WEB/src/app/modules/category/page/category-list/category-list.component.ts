@@ -3,23 +3,19 @@ import { finalize } from 'rxjs/operators';
 import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { BaseList } from '@app/modules/BaseList';
 
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.css'],
 })
-export class CategoryListComponent implements OnInit {
-  isShowModal = false;
+export class CategoryListComponent extends BaseList implements OnInit {
   listCategory: Category[] = [];
-  isLoading = false;
-  pageSize = 5;
-  pageIndex = 1;
-  total = 1;
-  searchValue = '';
-  visible = false;
   selectedCategory: Category;
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.loadDataFromServer(
@@ -29,13 +25,6 @@ export class CategoryListComponent implements OnInit {
       null,
       null
     );
-  }
-
-  showModal() {
-    this.isShowModal = true;
-  }
-  closeModal() {
-    this.isShowModal = false;
   }
 
   deleteCategory(data: Category) {

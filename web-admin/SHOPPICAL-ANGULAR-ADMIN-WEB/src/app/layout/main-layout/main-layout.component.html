@@ -35,6 +35,13 @@
           </li>
         </ul>
       </li>
+      <li nz-submenu nzOpen nzTitle="Color" nzIcon="form">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/color']">List color</a>
+          </li>
+        </ul>
+      </li>
     </ul>
   </nz-sider>
   <nz-layout>
@@ -65,7 +72,7 @@
                   </div>
                   <div class="notify-message">
                     <h4>{{item.content}}</h4>
-                    <p>{{item.created_At}}</p>
+                    <p>{{item.created_at}}</p>
                   </div>
                 </div>
               </div>

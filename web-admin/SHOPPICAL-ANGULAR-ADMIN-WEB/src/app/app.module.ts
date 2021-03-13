@@ -35,7 +35,7 @@ const ngZorroConfig: NzConfig = {
   declarations: [
     AppComponent,
     AuthLayoutComponent,
-    MainLayoutComponent,
+    MainLayoutComponent
   ],
   imports: [
     BrowserModule,
