@@ -30,7 +30,7 @@ export class SizeService {
       });
     }
 
-    return this.httpClient.get(`${environment.productServiceUrl}/size`, { params }).pipe(
+    return this.httpClient.get(`${environment.productServiceUrl}/api/size`, { params }).pipe(
       catchError(error => {
         return of(error.error);
       })
@@ -41,7 +41,7 @@ export class SizeService {
     const request = {
       sizeName: sizeName
     }
-    return this.httpClient.post<BaseResponse<Size>>(`${environment.productServiceUrl}/size/create`, request).pipe(
+    return this.httpClient.post<BaseResponse<Size>>(`${environment.productServiceUrl}/api/size/create`, request).pipe(
       catchError(error => {
         return of(error.error);
       })
@@ -49,7 +49,7 @@ export class SizeService {
   }
 
   deleteSize(sizeId: number): Observable<BaseResponse<Size>> {
-    return this.httpClient.delete<BaseResponse<Size>>(`${environment.productServiceUrl}/size/${sizeId}`).pipe(
+    return this.httpClient.delete<BaseResponse<Size>>(`${environment.productServiceUrl}/api/size/${sizeId}`).pipe(
       catchError(error => {
         return of(error.error);
       })
