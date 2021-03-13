@@ -16,7 +16,7 @@ export class StoreService {
   }
 
   checkStoreExist(email: string): Observable<ValidationErrors> {
-    return this.httpClient.get<BaseResponse<string>>(`${environment.localUserServiceUrl}/users/checkEmailExist?email=${email}`).pipe(
+    return this.httpClient.get<BaseResponse<string>>(`${environment.localUserServiceUrl}/api/users/checkEmailExist?email=${email}`).pipe(
       map(result => {
         if (result.isSuccessed) {
           return null;
