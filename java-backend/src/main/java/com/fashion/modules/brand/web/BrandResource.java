@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.modules.brand.model.BrandVM;
 import com.fashion.modules.brand.service.BrandService;
 import com.fashion.web.BaseResource;
@@ -43,8 +44,11 @@ public class BrandResource extends BaseResource {
 	@GetMapping(URL)
 	public ResponseEntity<Map<String, Object>> getAllBrandByStore(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
-			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
-		return success(brandService.findAllByStore(page, pageSize));
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String brandName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "id") final String sortField) {
+		return success(brandService.findAllByStore(page, pageSize, brandName, sortOrder, sortField));
 	}
 
 	@DeleteMapping(URL + "/{id}")
@@ -52,13 +56,15 @@ public class BrandResource extends BaseResource {
 		brandService.deleteBrand(id);
 		return success(Constants.SUCCESS);
 	}
-	
+
 	@GetMapping(URL + "/search")
 	public ResponseEntity<Map<String, Object>> searchBrandByStoreAndKeyword(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
-			@RequestParam final String keyword) {
-		return success(brandService.seachBrandByStoreAndKeyword(keyword, page, pageSize));
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String brandName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "id") final String sortField) {
+		return success(brandService.seachBrandByStoreAndKeyword(brandName, sortOrder, page, pageSize, sortField));
 	}
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.service.StoreService;
 import com.fashion.web.BaseResource;
@@ -50,8 +51,11 @@ public class StoreResource extends BaseResource {
 	@GetMapping(value = { URL })
 	public ResponseEntity<Map<String, Object>> getStores(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
-			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
-		return success(storeService.getStores(page, pageSize));
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String storeName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+		return success(storeService.getStores(storeName, sortOrder, sortField, page, pageSize));
 	}
 
 	@PutMapping(value = { URL + "/{id}" })
@@ -65,19 +69,20 @@ public class StoreResource extends BaseResource {
 		storeService.deleteStore(id);
 		return success(Constants.SUCCESS);
 	}
-	
+
 	@PostMapping(URL + "/list")
 	public ResponseEntity<Map<String, Object>> getStoreByIds(@RequestBody final List<Integer> ids) {
 		return success(storeService.getStoreByIds(ids));
 	}
-	
+
 	@GetMapping(URL + "/search")
 	public ResponseEntity<Map<String, Object>> searchStore(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
-			@RequestParam final String keyword) {
-		return success(storeService.searchStore(keyword, page, pageSize));
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String storeName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+		return success(storeService.searchStore(storeName, sortOrder, sortField, page, pageSize));
 	}
-	
 
 }

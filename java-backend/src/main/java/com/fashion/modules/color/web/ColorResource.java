@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.modules.color.model.ColorVM;
 import com.fashion.modules.color.service.ColorService;
 import com.fashion.web.BaseResource;
@@ -25,7 +26,7 @@ import io.swagger.annotations.Api;
 @Api(value = "API for Color")
 public class ColorResource extends BaseResource {
 	private static final String URL = "/color";
-	
+
 	@Autowired
 	private ColorService colorService;
 
@@ -42,8 +43,11 @@ public class ColorResource extends BaseResource {
 	@GetMapping(URL)
 	public ResponseEntity<Map<String, Object>> getAllColorByStore(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
-			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
-		return success(colorService.findByAllStore(page, pageSize));
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String colorName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+		return success(colorService.findByAllStore(colorName, sortOrder, sortField, page, pageSize));
 	}
 
 	@DeleteMapping(URL + "/{id}")
@@ -56,7 +60,9 @@ public class ColorResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> searchColorByKeywordAndStore(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
-			@RequestParam final String keyword) {
-		return success(colorService.searchColorByKeywordAndStore(keyword, page, pageSize));
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String colorName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+		return success(colorService.searchColorByKeywordAndStore(colorName, sortOrder, sortField, page, pageSize));
 	}
 }

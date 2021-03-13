@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.utils.CommonUtil;
 import com.fashion.domain.UserContext;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.seller.domain.Seller;
@@ -23,10 +25,10 @@ import com.fashion.service.impl.BaseService;
 
 @Service
 public class StoreServiceImpl extends BaseService implements StoreService {
-	
+
 	@Autowired
 	private StoreRepository storeRepo;
-	
+
 	@Autowired
 	private SellerRepository sellerRepository;
 
@@ -46,14 +48,16 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Transactional
 	@Override
-	public StoreVM getStore(final Integer id) {		
+	public StoreVM getStore(final Integer id) {
 		return mapper.map(storeRepo.findOneById(id), StoreVM.class);
 	}
 
 	@Transactional
 	@Override
-	public Page<StoreVM> getStores(final Integer page, final Integer pageSize) {
-		return storeRepo.findAll(PageRequest.of(page, pageSize)).map(it -> mapper.map(it, StoreVM.class));
+	public Page<StoreVM> getStores(final String storeName, final SortEnum sortOrder, final String sortField,
+			final Integer page, final Integer pageSize) {
+		return storeRepo.findAll(PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
+				.map(it -> mapper.map(it, StoreVM.class));
 	}
 
 	@Transactional
@@ -67,9 +71,9 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 	@Transactional
 	@Override
 	public void deleteStore(final Integer id) {
-		
+
 		storeRepo.deleteById(id);
-		
+
 	}
 
 	@Override
@@ -93,10 +97,12 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Override
 	@Transactional
-	public Page<StoreVM> searchStore(final String keyword, final Integer page, final Integer pageSize) {
-		return storeRepo.seachStoreByKeyWord(keyword, PageRequest.of(page, pageSize))
+	public Page<StoreVM> searchStore(final String storeName, final SortEnum sortOrder, final String sortField,
+			final Integer page, final Integer pageSize) {
+		return storeRepo
+				.seachStoreByKeyWord(storeName,
+						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, StoreVM.class));
 	}
 
-	
 }

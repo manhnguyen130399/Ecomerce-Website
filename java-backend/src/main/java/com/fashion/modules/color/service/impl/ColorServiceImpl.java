@@ -5,12 +5,15 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.utils.CommonUtil;
 import com.fashion.domain.UserContext;
 import com.fashion.modules.color.domain.Color;
 import com.fashion.modules.color.model.ColorVM;
@@ -48,10 +51,16 @@ public class ColorServiceImpl extends BaseService implements ColorService{
 
 	@Override
 	@Transactional
-	public Page<ColorVM> findByAllStore(final Integer page, final Integer pageSize) {
-		final Pageable pageable = PageRequest.of(page, pageSize);
-		return colorRepo.findAllByStore(getStore(getUserContext()).getId(), pageable)
-				.map(it -> mapper.map(it, ColorVM.class));
+	public Page<ColorVM> findByAllStore(final String colorName, final SortEnum sortOrder, final String sortField,
+			final Integer page, final Integer pageSize) {
+
+		if (StringUtils.isEmpty(colorName)) {
+			return colorRepo
+					.findAllByStore(getStore(getUserContext()).getId(),
+							PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
+					.map(it -> mapper.map(it, ColorVM.class));
+		}
+		return searchColorByKeywordAndStore(colorName, sortOrder, sortField, page, pageSize);
 	}
 
 	@Override
@@ -67,10 +76,11 @@ public class ColorServiceImpl extends BaseService implements ColorService{
 
 	@Override
 	@Transactional
-	public Page<ColorVM> searchColorByKeywordAndStore(final String keyword, final Integer page,
-			final Integer pageSize) {
+	public Page<ColorVM> searchColorByKeywordAndStore(final String colorName, final SortEnum sortOrder,
+			final String sortField, final Integer page, final Integer pageSize) {
 		return colorRepo
-				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.searchByKeywordAndStore(colorName, getStore(getUserContext()).getId(),
+						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, ColorVM.class));
 	}
 

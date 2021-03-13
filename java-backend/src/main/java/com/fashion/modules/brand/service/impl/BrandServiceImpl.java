@@ -6,12 +6,15 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.utils.CommonUtil;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.brand.model.BrandVM;
 import com.fashion.modules.brand.repository.BrandRepository;
@@ -43,10 +46,15 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	public Page<BrandVM> findAllByStore(final Integer page, final Integer pageSize) {
-		final Pageable pageable = PageRequest.of(page, pageSize);
-		return brandRepo.findAllByStoreId(getStore(getUserContext()).getId(), pageable)
-				.map(it -> mapper.map(it, BrandVM.class));
+	public Page<BrandVM> findAllByStore(final Integer page, final Integer pageSize, final String brandName,
+			final SortEnum sortOrder, final String sortField) {
+		if (StringUtils.isEmpty(brandName)) {
+			return brandRepo
+					.findAllByStoreId(getStore(getUserContext()).getId(),
+							PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
+					.map(it -> mapper.map(it, BrandVM.class));
+		}
+		return seachBrandByStoreAndKeyword(brandName, sortOrder, page, pageSize, sortField);
 	}
 
 	@Override
@@ -62,9 +70,11 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	public Page<BrandVM> seachBrandByStoreAndKeyword(final String keyword, final Integer page, final Integer pageSize) {
+	public Page<BrandVM> seachBrandByStoreAndKeyword(final String brandName, final SortEnum sortOrder,
+			final Integer page, final Integer pageSize, final String sortField) {
 		return brandRepo
-				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.searchByKeywordAndStore(brandName, getStore(getUserContext()).getId(),
+						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, BrandVM.class));
 	}
 

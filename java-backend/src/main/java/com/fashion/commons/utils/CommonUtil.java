@@ -11,9 +11,11 @@ import java.util.Map.Entry;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.lang3.text.StrBuilder;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.SortEnum;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -65,6 +67,10 @@ public class CommonUtil {
 		fos.write(data);
 		fos.close();
 		return file;
+	}
+	
+	public static Sort sortCondition(final SortEnum sortOrder, final String sortField) {
+		return SortEnum.ascend.equals(sortOrder) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
 	}
 
 }

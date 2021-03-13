@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.modules.size.model.SizeVM;
 import com.fashion.modules.size.service.SizeService;
 import com.fashion.web.BaseResource;
@@ -32,11 +33,11 @@ public class SizeResource extends BaseResource {
 
 	@PostMapping(URL + "/create")
 	public ResponseEntity<Map<String, Object>> createSize(@RequestBody final SizeVM req) {
-		
+
 		return success(sizeService.createSize(req));
 
 	}
-	
+
 	@GetMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> findById(@PathVariable("id") final Integer id) {
 		return success(sizeService.findById(id));
@@ -45,8 +46,11 @@ public class SizeResource extends BaseResource {
 	@GetMapping(URL)
 	public ResponseEntity<Map<String, Object>> getAllSizeByStore(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
-			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
-		return success(sizeService.findAllByStore(page, pageSize));
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String sizeName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+		return success(sizeService.findAllByStore(page, pageSize, sizeName, sortOrder, sortField));
 	}
 
 	@DeleteMapping(URL + "/{id}")
@@ -54,14 +58,15 @@ public class SizeResource extends BaseResource {
 		sizeService.deleteSize(id);
 		return success(Constants.SUCCESS);
 	}
-	
+
 	@GetMapping(URL + "/search")
 	public ResponseEntity<Map<String, Object>> searchSizeByKeyWord(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
-			@RequestParam final String keyword) {
-		return success(sizeService.searchByKeyword(keyword, page, pageSize));
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String sizeName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+		return success(sizeService.searchByKeyword(sizeName, page, pageSize, sortOrder, sortField));
 	}
-
 
 }

@@ -6,11 +6,14 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.utils.CommonUtil;
 import com.fashion.domain.UserContext;
 import com.fashion.modules.size.domain.Size;
 import com.fashion.modules.size.model.SizeVM;
@@ -20,11 +23,11 @@ import com.fashion.modules.store.domain.Store;
 import com.fashion.service.impl.BaseService;
 
 @Service
-public class SizeServiceImpl  extends BaseService implements SizeService{
+public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Autowired
 	private SizeRepository sizeRepo;
-	
+
 	@Override
 	@Transactional
 	public SizeVM createSize(final SizeVM size) {
@@ -47,9 +50,17 @@ public class SizeServiceImpl  extends BaseService implements SizeService{
 
 	@Override
 	@Transactional
-	public Page<SizeVM> findAllByStore(final Integer page, final Integer pageSize) {
-		return sizeRepo.findAllByStoreId(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
-				.map(it -> mapper.map(it, SizeVM.class));
+	public Page<SizeVM> findAllByStore(final Integer page, final Integer pageSize, final String sizeName,
+			final SortEnum sortOrder, final String sortField) {
+		if (StringUtils.isEmpty(sizeName)) {
+			return sizeRepo
+					.findAllByStoreId(getStore(getUserContext()).getId(),
+							PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
+					.map(it -> mapper.map(it, SizeVM.class));
+		} else {
+			return searchByKeyword(sizeName, page, pageSize, sortOrder, sortField);
+		}
+
 	}
 
 	@Override
@@ -64,8 +75,11 @@ public class SizeServiceImpl  extends BaseService implements SizeService{
 
 	@Override
 	@Transactional
-	public Page<SizeVM> searchByKeyword(final String keyword, final Integer page, final Integer pageSize) {
-		return sizeRepo.searchSizeByKeyword(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+	public Page<SizeVM> searchByKeyword(final String keyword, final Integer page, final Integer pageSize,
+			final SortEnum sortOrder, final String sortField) {
+		return sizeRepo
+				.searchSizeByKeyword(keyword, getStore(getUserContext()).getId(),
+						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, SizeVM.class));
 	}
 
