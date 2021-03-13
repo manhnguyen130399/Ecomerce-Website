@@ -9,5 +9,7 @@ namespace ORDER_SERVICE_NET.ViewModels.Commons.Pagging
     {
         public int pageIndex { get; set; }
         public int pageSize { get; set; }
-    }
+        public string sortField { get; set; }
+        public string sortOrder { get; set; }
+    }                                        
 }

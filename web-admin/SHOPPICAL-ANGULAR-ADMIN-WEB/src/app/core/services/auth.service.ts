@@ -1,4 +1,5 @@
-import { JwtService } from './jwt.service';
+import { UtilitiesService } from './utilities/utilities.service';
+import { StorageService } from './storage/storage.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
@@ -16,7 +17,8 @@ export class AuthService {
   constructor(
     private readonly httpClient: HttpClient,
     private readonly jwtHelperService: JwtHelperService,
-    private readonly jwtService: JwtService) {
+    private readonly storageService: StorageService,
+    private readonly utilitiesService: UtilitiesService) {
   }
 
   login(request: Login): Observable<BaseResponse<string>> {
@@ -24,7 +26,11 @@ export class AuthService {
       tap(result => {
         if (result.isSuccessed) {
           const tokenObject = this.jwtHelperService.decodeToken(result.data);
-          this.jwtService.setToken(result.data, tokenObject.exp)
+          const user = {
+            ...tokenObject,
+            token: result.data
+          };
+          this.storageService.setObject(environment.tokenKey, user);
         }
       }),
       catchError(error => {
@@ -34,6 +40,6 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    return this.jwtService.getToken() != null;
+    return this.utilitiesService.isTokeExpire();
   }
 }

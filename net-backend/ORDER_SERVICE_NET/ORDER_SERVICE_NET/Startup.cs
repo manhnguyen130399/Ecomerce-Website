@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using ORDER_SERVICE_NET.Hubs;
 using ORDER_SERVICE_NET.Models;
 using ORDER_SERVICE_NET.Services.CartServices;
+using ORDER_SERVICE_NET.Services.NotifyServices;
 using ORDER_SERVICE_NET.Services.OrderServices;
 using ORDER_SERVICE_NET.Services.ProductServices;
 using ORDER_SERVICE_NET.Utilities;
@@ -51,6 +52,7 @@ namespace ORDER_SERVICE_NET
 
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<ICartService, CartService>();
+            services.AddTransient<INotifyService, NotifyService>();
 
             services.AddSingleton<IUserIdProvider, StoreIdProvider>();
 

@@ -1,5 +1,5 @@
-import { OrderNotify } from './../../../models/orders/order-notify';
-import { JwtService } from '@core/services/jwt.service';
+import { UtilitiesService } from './../utilities/utilities.service';
+import { Notify } from './../../../models/notifies/notify';
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
 import * as signalR from '@microsoft/signalr';
@@ -11,15 +11,15 @@ import { Subject } from 'rxjs';
 export class SignalrService {
   private hubConnection: signalR.HubConnection
 
-  private notifySubject = new Subject<OrderNotify>()
+  private notifySubject = new Subject<Notify>()
 
   notifyEventEmitter$ = this.notifySubject.asObservable();
 
-  constructor(private readonly jwtService: JwtService) { }
+  constructor(private readonly utilitiesService: UtilitiesService) { }
 
   public buildConnection() {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${environment.localOrderServiceUrl}/orderNotifys`, { accessTokenFactory: () => this.jwtService.getToken() })
+      .withUrl(`${environment.orderServiceUrl}/orderNotifys`, { accessTokenFactory: () => this.utilitiesService.getToken() })
       .withAutomaticReconnect()
       .build();
   }
