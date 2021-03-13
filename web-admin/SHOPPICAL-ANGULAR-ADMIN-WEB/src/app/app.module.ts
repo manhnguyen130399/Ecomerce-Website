@@ -1,4 +1,3 @@
-import { JwtService } from './core/services/jwt.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +23,7 @@ import { en_US } from 'ng-zorro-antd/i18n';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { jwtOptionsFactory } from './core/jwt/jwt-options-factory';
 import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { UtilitiesService } from './core/services/utilities/utilities.service';
 
 const ngZorroConfig: NzConfig = {
   message: {
@@ -53,7 +53,7 @@ const ngZorroConfig: NzConfig = {
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,
         useFactory: jwtOptionsFactory,
-        deps: [JwtService]
+        deps: [UtilitiesService]
       }
     })
   ],

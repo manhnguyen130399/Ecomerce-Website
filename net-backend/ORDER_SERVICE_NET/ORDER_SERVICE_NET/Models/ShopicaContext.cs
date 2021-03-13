@@ -23,8 +23,9 @@ namespace ORDER_SERVICE_NET.Models
         public virtual DbSet<Carts> Carts { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<Notify> Notify { get; set; }
         public virtual DbSet<CustomerPromo> CustomerPromo { get; set; }
-
+                                                                       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -249,6 +250,34 @@ namespace ORDER_SERVICE_NET.Models
                     .IsRequired()
                     .HasColumnName("customer_phone")
                     .HasMaxLength(12);
+            });
+
+            modelBuilder.Entity<Notify>(entity =>
+            {
+                entity.ToTable("notify");
+
+                entity.HasIndex(e => e.StoreId)
+                    .HasName("FK_Notify_Store");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Content)
+                    .HasColumnName("content")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.StoreId).HasColumnName("store_id");
+
+                entity.Property(e => e.Type)
+                    .HasColumnName("type")
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.OrderId)
+                    .HasColumnName("order_id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Created_At)
+                    .HasColumnName("created_at")
+                    .HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);

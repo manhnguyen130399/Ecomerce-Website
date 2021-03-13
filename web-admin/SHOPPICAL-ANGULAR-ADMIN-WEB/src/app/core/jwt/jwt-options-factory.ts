@@ -1,9 +1,9 @@
-import { JwtService } from '@core/services/jwt.service';
+import { UtilitiesService } from './../services/utilities/utilities.service';
 import { environment } from '@env';
-export function jwtOptionsFactory(jwtService: JwtService) {
+export function jwtOptionsFactory(utilitiesService: UtilitiesService) {
   return {
     tokenGetter: () => {
-      return jwtService.getToken();
+      return utilitiesService.getToken();
     },
     authScheme: "Bearer ",
     allowedDomains: environment.backendDomain,

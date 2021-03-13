@@ -1,6 +1,7 @@
+import { NotifyService } from './../../core/services/notify/notify.service';
 import { SignalrService } from './../../core/services/signalr/signalr.service';
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { OrderNotify } from '@app/models/orders/order-notify';
+import { Notify } from '@app/models/notifies/notify';
 
 @Component({
   selector: 'app-main-layout',
@@ -10,19 +11,36 @@ import { OrderNotify } from '@app/models/orders/order-notify';
 export class MainLayoutComponent implements OnInit {
   isCollapsed = false;
   @ViewChild('audioElement', { static: true }) private audioElement;
+  listNotify: Notify[] = [];
+  numUnRead = 0;
 
-  numNotify = 0;
-  listNotify: OrderNotify[] = [];
   constructor(
     private readonly signalrService: SignalrService,
-    private readonly renderer: Renderer2
+    private readonly renderer: Renderer2,
+    private readonly notifyService: NotifyService
   ) { }
 
   ngOnInit(): void {
+
+    this.notifyService.getAllNotify().subscribe(res => {
+      if (res.isSuccessed) {
+        this.listNotify = res.data.datas;
+        this.numUnRead = this.listNotify.filter(x => !x.isRead).length;
+      }
+    })
+
     this.signalrService.notifyEventEmitter$.subscribe(data => {
-      this.numNotify++;
-      this.listNotify.push(data);
+      this.listNotify.unshift(data);
+      this.numUnRead++;
       this.playNotifySound();
+    })
+  }
+
+  updateNumUnread() {
+    this.notifyService.updateNumUnread().subscribe(res => {
+      if (res.isSuccessed) {
+        this.numUnRead = 0;
+      }
     })
   }
 

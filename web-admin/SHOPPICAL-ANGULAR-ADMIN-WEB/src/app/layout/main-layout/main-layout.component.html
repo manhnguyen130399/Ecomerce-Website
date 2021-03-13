@@ -46,10 +46,10 @@
           </span>
           <div class="seller-info">
             <span class="notify">
-              <nz-badge [nzCount]="numNotify">
-                <button nz-popconfirm nzPopconfirmOverlayClassName="notify-card" [nzPopconfirmTitle]="notify"
-                  nzPopconfirmPlacement="bottom" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="bell"
-                    nzTheme="outline"></i></button>
+              <nz-badge [nzCount]="numUnRead">
+                <button (click)="updateNumUnread()" nz-popconfirm nzPopconfirmOverlayClassName="notify-card"
+                  [nzPopconfirmTitle]="notify" nzPopconfirmPlacement="bottom" nz-button nzType="default"
+                  nzShape="circle"><i nz-icon nzType="bell" nzTheme="outline"></i></button>
               </nz-badge>
             </span>
 
@@ -65,7 +65,7 @@
                   </div>
                   <div class="notify-message">
                     <h4>{{item.content}}</h4>
-                    <p>{{item.created_At}}</p>
+                    <p>{{item.created_at}}</p>
                   </div>
                 </div>
               </div>

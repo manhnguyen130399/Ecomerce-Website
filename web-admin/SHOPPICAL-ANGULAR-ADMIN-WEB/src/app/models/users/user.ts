@@ -1,8 +1,10 @@
 export interface User {
   id: number;
   username: string;
-  password: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
+  email: string;
+  role: number;
+  exp: number;
+  storeId: number;
   token: string;
 }
