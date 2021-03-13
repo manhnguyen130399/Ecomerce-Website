@@ -46,12 +46,44 @@
           </span>
           <div class="seller-info">
             <span class="notify">
-              <button nz-button nzType="default" nzShape="circle"><i nz-icon nzType="bell"
-                  nzTheme="outline"></i></button>
+              <nz-badge [nzCount]="numNotify">
+                <button nz-popconfirm nzPopconfirmOverlayClassName="notify-card" [nzPopconfirmTitle]="notify"
+                  nzPopconfirmPlacement="bottom" nz-button nzType="default" nzShape="circle"><i nz-icon nzType="bell"
+                    nzTheme="outline"></i></button>
+              </nz-badge>
             </span>
 
+            <!-- notify template -->
+            <ng-template #notify>
+              <div class="notify-header">
+                Notifications
+              </div>
+              <div class="notify-content" *ngIf="listNotify.length > 0;else noNotify">
+                <div *ngFor="let item of listNotify" [routerLink]="['/order',item.orderId]" class="notify-item">
+                  <div class="notify-icon">
+                    <i nz-icon nzType="info-circle" style="font-size: 30px; color: #08c;" nzTheme="outline"></i>
+                  </div>
+                  <div class="notify-message">
+                    <h4>{{item.content}}</h4>
+                    <p>{{item.created_At}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="notify-footer">
+                View all
+              </div>
+            </ng-template>
+
+            <!-- no notify template -->
+            <ng-template #noNotify>
+              <div class="notFound">
+                <img src="https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg" alt="not found">
+                <div>You have viewed all notifications.</div>
+              </div>
+            </ng-template>
+
             <span nz-dropdown [nzDropdownMenu]="menu">
-              <img src="/assets/images/avatar.jpg" width="32" height="32">
+              <img src="/assets/images/avatar.jpg" width="34" height="34">
               hieuvo044@gmail.com
               <i nz-icon nzType="down"></i>
             </span>
@@ -75,3 +107,5 @@
     </nz-content>
   </nz-layout>
 </nz-layout>
+
+<div #audioElement></div>

@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   login(request: Login): Observable<BaseResponse<string>> {
-    return this.httpClient.post<BaseResponse<string>>(`${environment.userServiceUrl}/users/authenticate`, request).pipe(
+    return this.httpClient.post<BaseResponse<string>>(`${environment.userServiceUrl}/api/users/authenticate`, request).pipe(
       tap(result => {
         if (result.isSuccessed) {
           const tokenObject = this.jwtHelperService.decodeToken(result.data);

@@ -12,7 +12,7 @@ export class ProductService {
 
   getAll(pageIndex: number, pageSize: number) {
 
-    return this.httpClient.get(`${environment.userServiceUrl}/users/getListCustomer?pageIndex=${pageIndex}&PageSize=${pageSize}`).pipe(
+    return this.httpClient.get(`${environment.userServiceUrl}/api/users/getListCustomer?pageIndex=${pageIndex}&PageSize=${pageSize}`).pipe(
       tap(res => {
         console.log(res);
       }),

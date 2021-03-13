@@ -10,6 +10,8 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 import { AppComponent } from './app.component';
 import { AuthLayoutComponent } from '@layout/auth-layout/auth-layout.component';
@@ -44,6 +46,8 @@ const ngZorroConfig: NzConfig = {
     NzLayoutModule,
     NzMenuModule,
     NzDropDownModule,
+    NzPopconfirmModule,
+    NzBadgeModule,
     NzIconModule.forRoot(icons),
     JwtModule.forRoot({
       jwtOptionsProvider: {

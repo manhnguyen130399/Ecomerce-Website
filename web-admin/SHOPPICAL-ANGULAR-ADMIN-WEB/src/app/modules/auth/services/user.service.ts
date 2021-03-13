@@ -16,7 +16,7 @@ export class UserService {
   }
 
   checkEmailExist(email: string): Observable<ValidationErrors> {
-    return this.httpClient.get<BaseResponse<string>>(`${environment.localUserServiceUrl}/users/checkEmailExist?email=${email}`).pipe(
+    return this.httpClient.get<BaseResponse<string>>(`${environment.localUserServiceUrl}/api/users/checkEmailExist?email=${email}`).pipe(
       map(result => {
         if (result.isSuccessed) {
           return null;
@@ -29,7 +29,7 @@ export class UserService {
   }
 
   sellerRegister(request): Observable<BaseResponse<string>> {
-    return this.httpClient.post<BaseResponse<string>>(`${environment.localUserServiceUrl}/users/sellerRegister`, request).pipe(
+    return this.httpClient.post<BaseResponse<string>>(`${environment.localUserServiceUrl}/api/users/sellerRegister`, request).pipe(
       catchError(error => {
         return of(error.error);
       })
@@ -44,7 +44,7 @@ export class UserService {
       Content: code,
     }
 
-    this.httpClient.post<BaseResponse<string>>(`${environment.localUserServiceUrl}/emails/sendmail`, emailContent).subscribe();
+    this.httpClient.post<BaseResponse<string>>(`${environment.localUserServiceUrl}/api/emails/sendmail`, emailContent).subscribe();
     localStorage.setItem(environment.verifyKey, btoa(code));
   }
 
