@@ -89,7 +89,14 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 
                 foreach(var item in listOrders)
                 {
-                    await _hubContext.Clients.User(item.StoreId.ToString()).SendAsync("NewOrderNotify",item.Id);
+                    var notify = new OrderNotify()
+                    {
+                        Content = "You have a new order with orderId - " + item.Id,
+                        OrderId = item.Id,
+                        Type = "Info",
+                        Created_At = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")
+                    };
+                    await _hubContext.Clients.User(item.StoreId.ToString()).SendAsync("NewOrderNotify", notify);
                 }
 
                 return new APIResultSuccess<string>("Order successfully");
