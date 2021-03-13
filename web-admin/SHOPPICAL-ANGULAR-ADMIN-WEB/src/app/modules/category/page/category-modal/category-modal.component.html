@@ -1,1 +1,19 @@
-<p>category-modal works!</p>
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzClosable]="false" [nzOkDisabled]="categoryForm.invalid" [nzOkLoading]="isLoading" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="categoryForm">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="categoryName">Category Name</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Please input your category name!">
+                    <input nz-input type="text" formControlName="categoryName">
+                </nz-form-control>
+            </nz-form-item>
+            <br>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="categoryName">Image</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Please input your category image!">
+                    <input type="file" class="form-control" (change)="onFileChange($event)">
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
