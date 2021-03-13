@@ -21,7 +21,7 @@ export class CategoryService {
 
     return this.httpClient
       .post<BaseResponse<Category>>(
-        `${environment.productServiceUrl}/category/create`,
+        `${environment.productServiceUrl}/api/category/create`,
         body
       )
       .pipe(
@@ -34,7 +34,7 @@ export class CategoryService {
   deleteCategory(categoryId: number): Observable<BaseResponse<Category>> {
     return this.httpClient
       .delete<BaseResponse<Category>>(
-        `${environment.productServiceUrl}/category/${categoryId}`
+        `${environment.productServiceUrl}/api/category/${categoryId}`
       )
       .pipe(
         catchError((error) => {
@@ -63,7 +63,7 @@ export class CategoryService {
     }
     return this.httpClient
       .get<BaseResponse<Category>>(
-        `${environment.productServiceUrl}/category`,
+        `${environment.productServiceUrl}/api/category`,
         { params }
       )
       .pipe(
