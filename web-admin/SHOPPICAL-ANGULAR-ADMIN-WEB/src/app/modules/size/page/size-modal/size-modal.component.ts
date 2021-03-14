@@ -15,7 +15,7 @@ export class SizeModalComponent implements OnInit {
   @Input() modalTitle = "Add size";
   @Input() sizeObject: Size;
   @Output() cancelModalEvent = new EventEmitter<string>();
-  @Output() okModalEvent = new EventEmitter<string>();
+  @Output() okModalEvent = new EventEmitter<Size>();
   isLoading = false;
   isEditMode = false;
   sizeForm: FormGroup;
@@ -30,7 +30,6 @@ export class SizeModalComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if (changes.sizeObject != undefined && changes.sizeObject.currentValue != undefined) {
       this.sizeForm.controls.sizeName.setValue(changes.sizeObject.currentValue.sizeName);
       this.modalTitle = "Edit size";
@@ -45,13 +44,13 @@ export class SizeModalComponent implements OnInit {
 
   submitForm() {
     this.isLoading = true;
-    const sizeName = this.sizeForm.get("sizeName").value.trim();
-    this.sizeService.createSize(sizeName).pipe(
+    let size = { id: null, sizeName: this.sizeForm.get("sizeName").value.trim() };
+    this.sizeService.create(size).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe(res => {
       if (res.code == "OK") {
         this.messageService.create("success", `Create size successfully!`);
-        this.okModalEvent.emit();
+        this.okModalEvent.emit(res.data);
         this.sizeForm.reset();
       }
     });

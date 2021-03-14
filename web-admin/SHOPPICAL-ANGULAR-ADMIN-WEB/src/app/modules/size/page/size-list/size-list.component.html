@@ -1,17 +1,20 @@
 <div class="table-operations">
-  <app-size-modal [sizeObject]="selectedSize" [isVisible]="isShowModal" (cancelModalEvent)="closeModal()"
-    (okModalEvent)="closeModal()">
+  <app-size-modal [sizeObject]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)"
+    (okModalEvent)="closeModal($event)">
   </app-size-modal>
-  <button (click)="showModal()" nzType="primary" nz-button>Add Size</button>
+  <button (click)="showModal()" class="add-btn" nzType="primary" nz-button>
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+  </button>
 </div>
-<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
-  nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)" [nzData]=" listSize"
-  nzTableLayout="fixed">
+<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize"
+  [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)"
+  [nzData]="listData" nzTableLayout="fixed">
   <thead>
     <tr>
       <th nzAlign="center" nzColumnKey="id" [nzSortFn]="true">Id</th>
       <th nzAlign="center">Size Name
-        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+        <nz-filter-trigger [(nzVisible)]="isShowSearchInput" [nzActive]="searchValue.length > 0"
+          [nzDropdownMenu]="menu">
           <i nz-icon nzType="search"></i>
         </nz-filter-trigger>
       </th>
@@ -23,10 +26,10 @@
       <td nzAlign="center">{{ data.id }}</td>
       <td nzAlign="center">{{ data.sizeName }}</td>
       <td nzAlign="center" class="btn-action">
-        <button nz-button nzType="primary" nz-popconfirm nzPopconfirmTitle="Are you sure delete this size?"
-          (nzOnConfirm)="deleteSize(data)" nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete"
-            nzTheme="outline"></i></button>
-        <button nz-button (click)="editSize(data)" [disabled]="true" nzType="primary">Edit<i nz-icon nzType="edit"
+        <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm
+          nzPopconfirmTitle="Are you sure delete this size?" (nzOnConfirm)="delete(data.id)"
+          nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
+        <button nz-button (click)="edit(data)" [disabled]="true" nzType="primary">Edit<i nz-icon nzType="edit"
             nzTheme="outline"></i></button>
       </td>
     </tr>
@@ -36,10 +39,10 @@
   <div class="ant-table-filter-dropdown">
     <div class="search-box">
       <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchBySizeName()" class="search-button">
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+      <button nz-button nzSize="small" nzType="primary" (click)="searchByName()" class="search-button">
         Search
       </button>
-      <!-- <button nz-button nzSize="small" (click)="reset()">Reset</button> -->
     </div>
   </div>
 </nz-dropdown-menu>

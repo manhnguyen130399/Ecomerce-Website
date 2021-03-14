@@ -1,17 +1,20 @@
 <div class="table-operations">
-  <app-category-modal [category]="selectedCategory" [isVisible]="isShowModal" (cancelModalEvent)="closeModal()"
-    (okModalEvent)="closeModal()">
+  <app-category-modal [category]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)"
+    (okModalEvent)="closeModal($event)">
   </app-category-modal>
-  <button (click)="showModal()" nzType="primary" nz-button>Add Category</button>
+  <button (click)="showModal()" class="add-btn" nzType="primary" nz-button>
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+  </button>
 </div>
-<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
-  nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)" [nzData]=" listCategory"
-  nzTableLayout="fixed">
+<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize"
+  [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)"
+  [nzData]="listData" nzTableLayout="fixed">
   <thead>
     <tr>
       <th nzAlign="center" nzColumnKey="id" [nzSortFn]="true">Id</th>
       <th nzAlign="center">Category Name
-        <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+        <nz-filter-trigger [(nzVisible)]="isShowSearchInput" [nzActive]="searchValue.length > 0"
+          [nzDropdownMenu]="menu">
           <i nz-icon nzType="search"></i>
         </nz-filter-trigger>
       </th>
@@ -24,11 +27,11 @@
       <td nzAlign="center">{{ data.id }}</td>
       <td nzAlign="center">{{ data.categoryName }}</td>
 
-      <td nzAlign="center"><img nz-image [nzSrc]="data.image" nz-image></td>
+      <td nzAlign="center"><img height="50" nz-image [nzSrc]="data.image" nz-image></td>
       <td nzAlign="center" class="btn-action">
-        <button nz-button nzType="primary" nz-popconfirm nzPopconfirmTitle="Are you sure delete this category?"
-          (nzOnConfirm)="deleteCategory(data)" nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete"
-            nzTheme="outline"></i></button>
+        <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm
+          nzPopconfirmTitle="Are you sure delete this category?" (nzOnConfirm)="delete(data.id)"
+          nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
       </td>
     </tr>
   </tbody>
@@ -37,7 +40,7 @@
   <div class="ant-table-filter-dropdown">
     <div class="search-box">
       <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
-      <button nz-button nzSize="small" nzType="primary" (click)="searchByCategoryName()" class="search-button">
+      <button nz-button nzSize="small" nzType="primary" (click)="searchByName()" class="search-button">
         Search
       </button>
     </div>

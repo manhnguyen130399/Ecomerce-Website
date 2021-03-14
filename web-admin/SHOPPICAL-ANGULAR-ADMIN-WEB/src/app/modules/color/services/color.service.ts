@@ -1,36 +1,34 @@
+import { Color } from '@modules/color/models/Color';
+import { BaseParams } from '@modules/common/base-params';
+import { BaseService } from '@app/modules/common/base-service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { environment } from '@env';
-import { Color } from '../models/Color';
-import { BaseResponse } from '@app/models/base-response';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { BaseResponse } from '@modules/common/base-response';
+
 @Injectable({
   providedIn: 'root',
 })
-export class ColorService {
-  constructor(private readonly httpClient: HttpClient) {}
 
-  getColors(
-    pageIndex: number,
-    pageSize: number,
-    colorName: string | null,
-    sortField: string | null,
-    sortOrder: string | null
-  ) {
+export class ColorService implements BaseService<Color> {
+  constructor(private readonly httpClient: HttpClient) { }
 
+  getAll(baseParams: BaseParams) {
     let params = new HttpParams()
-      .append('page', `${pageIndex}`)
-      .append('pageSize', `${pageSize}`);
+      .append('page', `${baseParams.pageIndex - 1}`)
+      .append('pageSize', `${baseParams.pageSize}`)
 
-    if (colorName) {
-      params = params.append('colorName', colorName);
+    if (baseParams.sortField != null) {
+      params = params.append('sortField', `${baseParams.sortField}`)
+        .append('sortOrder', `${baseParams.sortOrder}`);
     }
-    if (sortField) {
-      params = params.append('sortField', sortField);
-    }
-    if (sortOrder) {
-      params = params.append('sortOrder', sortOrder);
+
+    if (baseParams.filters.length > 0) {
+      baseParams.filters.forEach(filter => {
+        params = params.append(filter.key, filter.value);
+      });
     }
     return this.httpClient
       .get<BaseResponse<Color>>(`${environment.productServiceUrl}/api/color`, {
@@ -43,27 +41,36 @@ export class ColorService {
       );
   }
 
-  deleteColor(colorId: number) {
+  delete(colorId: number, baseParams: BaseParams) {
+    let params = new HttpParams()
+      .append('page', `${baseParams.pageIndex - 1}`)
+      .append('pageSize', `${baseParams.pageSize}`)
+
+    if (baseParams.sortField != null) {
+      params = params.append('sortField', `${baseParams.sortField}`)
+        .append('sortOrder', `${baseParams.sortOrder}`);
+    }
+
+    if (baseParams.filters.length > 0) {
+      baseParams.filters.forEach(filter => {
+        params = params.append(filter.key, filter.value);
+      });
+    }
+
     return this.httpClient
-      .delete<BaseResponse<Color>>(
-        `${environment.productServiceUrl}/api/color/${colorId}`
-      )
-      .pipe(
+      .delete<BaseResponse<Color>>(`${environment.productServiceUrl}/api/color/${colorId}`, { params }).pipe(
         catchError((error) => {
           return of(error.error);
         })
       );
   }
 
-  createColor(colorName: string) {
+  create(color: Color): Observable<BaseResponse<Color>> {
     const body = {
-      colorName: colorName,
+      colorName: color.colorName,
     };
     return this.httpClient
-      .post<BaseResponse<Color>>(
-        `${environment.productServiceUrl}/api/color/create`,
-        body
-      )
+      .post<BaseResponse<Color>>(`${environment.productServiceUrl}/api/color/create`, body)
       .pipe(
         catchError((error) => {
           return of(error.error);

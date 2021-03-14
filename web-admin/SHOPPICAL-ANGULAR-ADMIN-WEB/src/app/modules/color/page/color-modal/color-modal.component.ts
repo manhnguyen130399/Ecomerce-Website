@@ -16,14 +16,14 @@ export class ColorModalComponent implements OnInit {
   @Input() modalTitle = 'Add color';
   @Input() isVisible = false;
   @Output() cancelModalEvent = new EventEmitter<string>();
-  @Output() okModalEvent = new EventEmitter<string>();
+  @Output() okModalEvent = new EventEmitter<Color>();
   isLoading = false;
   isEditMode = false;
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly colorService: ColorService,
     private readonly messageService: NzMessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -37,14 +37,14 @@ export class ColorModalComponent implements OnInit {
 
   submitForm() {
     this.isLoading = true;
-    const colorName = this.colorForm.get('colorName').value.trim();
+    let color = { id: null, colorName: this.colorForm.get('colorName').value.trim() };
     this.colorService
-      .createColor(colorName)
+      .create(color)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((res) => {
         if (res.code == 'OK') {
-          this.messageService.create('success', `Create size successfully!`);
-          this.okModalEvent.emit();
+          this.messageService.create('success', `Create color successfully!`);
+          this.okModalEvent.emit(res.data);
           this.colorForm.reset();
         }
       });

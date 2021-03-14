@@ -1,3 +1,4 @@
+import { Category } from '@modules/category/models/category';
 import { BrandService } from '@modules/brand/services/brand.service';
 import { Brand } from '@modules/brand/models/brand';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
@@ -16,7 +17,7 @@ export class BrandModalComponent implements OnInit {
   @Input() modalTitle = "Add brand";
   @Input() brandObject: Brand;
   @Output() cancelModalEvent = new EventEmitter<string>();
-  @Output() okModalEvent = new EventEmitter<string>();
+  @Output() okModalEvent = new EventEmitter<Brand>();
   isLoading = false;
   isEditMode = false;
   brandForm: FormGroup;
@@ -46,13 +47,13 @@ export class BrandModalComponent implements OnInit {
 
   submitForm() {
     this.isLoading = true;
-    const brandName = this.brandForm.get("brandName").value.trim();
-    this.brandService.createBrand(brandName).pipe(
+    let brand = { id: null, brandName: this.brandForm.get("brandName").value.trim() };
+    this.brandService.create(brand).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe(res => {
       if (res.code == "OK") {
         this.messageService.create("success", `Create brand successfully!`);
-        this.okModalEvent.emit();
+        this.okModalEvent.emit(res.data);
         this.brandForm.reset();
       }
     });

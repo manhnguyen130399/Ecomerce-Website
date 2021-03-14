@@ -1,29 +1,24 @@
+import { BaseParams } from '@modules/common/base-params';
+import { Category } from './../models/category';
+import { BaseService } from '@app/modules/common/base-service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BaseResponse } from '@app/models/base-response';
+import { BaseResponse } from '@modules/common/base-response';
 import { Observable, of } from 'rxjs';
-import { Category } from '../models/category';
 import { environment } from '@env';
-import { catchError, tap } from 'rxjs/operators';
-import { FormGroup } from '@angular/forms';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CategoryService {
-  constructor(private readonly httpClient: HttpClient) {}
 
-  createCategory(form: FormGroup): Observable<BaseResponse<Category>> {
+export class CategoryService implements BaseService<Category> {
+  constructor(private readonly httpClient: HttpClient) { }
 
-    const body = new FormData();
-    body.append('categoryName', form.get('categoryName').value);
-    body.append('file', form.get('file').value);
+  create(category: Category): Observable<BaseResponse<Category>> {
 
     return this.httpClient
-      .post<BaseResponse<Category>>(
-        `${environment.productServiceUrl}/api/category/create`,
-        body
-      )
+      .post<BaseResponse<Category>>(`${environment.productServiceUrl}/api/category/create`, category)
       .pipe(
         catchError((error) => {
           return of(error.error);
@@ -31,10 +26,26 @@ export class CategoryService {
       );
   }
 
-  deleteCategory(categoryId: number): Observable<BaseResponse<Category>> {
+  delete(categoryId: number, baseParams: BaseParams) {
+    let params = new HttpParams()
+      .append('page', `${baseParams.pageIndex - 1}`)
+      .append('pageSize', `${baseParams.pageSize}`)
+
+    if (baseParams.sortField != null) {
+      params = params.append('sortField', `${baseParams.sortField}`)
+        .append('sortOrder', `${baseParams.sortOrder}`);
+    }
+
+    if (baseParams.filters.length > 0) {
+      baseParams.filters.forEach(filter => {
+        params = params.append(filter.key, filter.value);
+      });
+    }
+
     return this.httpClient
       .delete<BaseResponse<Category>>(
-        `${environment.productServiceUrl}/api/category/${categoryId}`
+        `${environment.productServiceUrl}/api/category/${categoryId}`,
+        { params }
       )
       .pipe(
         catchError((error) => {
@@ -42,25 +53,23 @@ export class CategoryService {
         })
       );
   }
-  getCategories(
-    pageIndex: number | null,
-    pageSize: number | null,
-    categoryName: string,
-    sortField: string,
-    sortOrder: string
-  ) {
+
+  getAll(baseParams: BaseParams) {
     let params = new HttpParams()
-      .append('page', `${pageIndex}`)
-      .append('pageSize', `${pageSize}`);
-    if (categoryName != null) {
-      params = params.append('categoryName', categoryName);
+      .append('page', `${baseParams.pageIndex - 1}`)
+      .append('pageSize', `${baseParams.pageSize}`)
+
+    if (baseParams.sortField != null) {
+      params = params.append('sortField', `${baseParams.sortField}`)
+        .append('sortOrder', `${baseParams.sortOrder}`);
     }
-    if (sortField != null) {
-      params = params.append('sortField', sortField);
+
+    if (baseParams.filters.length > 0) {
+      baseParams.filters.forEach(filter => {
+        params = params.append(filter.key, filter.value);
+      });
     }
-    if (sortOrder != null) {
-      params = params.append('sortOrder', sortOrder);
-    }
+
     return this.httpClient
       .get<BaseResponse<Category>>(
         `${environment.productServiceUrl}/api/category`,
