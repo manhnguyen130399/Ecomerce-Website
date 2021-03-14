@@ -1,7 +1,7 @@
-import { SellerRegister } from './../../../models/users/seller-register';
+import { SellerRegister } from '@app/modules/auth/models/seller-register';
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Subject } from "rxjs";
-import { StoreRegister } from '@app/models/users/store-register';
+import { StoreRegister } from '@app/modules/auth/models/store-register';
 
 @Injectable({
   providedIn: 'root'
