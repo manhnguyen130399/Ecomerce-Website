@@ -54,9 +54,14 @@ public class SizeResource extends BaseResource {
 	}
 
 	@DeleteMapping(URL + "/{id}")
-	public ResponseEntity<Map<String, Object>> deleteSize(@PathVariable final Integer id) {
-		sizeService.deleteSize(id);
-		return success(Constants.SUCCESS);
+	public ResponseEntity<Map<String, Object>> deleteSize(@PathVariable final Integer id,
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String sizeName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+
+		return success(sizeService.deleteSize(id, page, pageSize, sizeName, sortOrder, sortField));
 	}
 
 	@GetMapping(URL + "/search")

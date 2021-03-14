@@ -50,8 +50,11 @@ public class ProductImage extends AbstractAuditingEntity {
 	public ProductImage() {
 		super();
 	}
-	
-	
-	
+
+	public ProductImage(final String image, final Product product) {
+		super();
+		this.image = image;
+		this.product = product;
+	}
 
 }
