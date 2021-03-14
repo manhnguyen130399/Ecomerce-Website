@@ -6,14 +6,12 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    canActivate: [AuthGuard], // Should be replaced with actual auth guard
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('./modules/dashboard/dashboard.module').then(
-            (m) => m.DashboardModule
-          ),
+          import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
       },
       {
         path: 'size',
@@ -23,14 +21,17 @@ export const routes: Routes = [
       {
         path: 'category',
         loadChildren: () =>
-          import('./modules/category/category.module').then(
-            (m) => m.CategoryModule
-          ),
+          import('./modules/category/category.module').then((m) => m.CategoryModule),
       },
       {
         path: 'color',
         loadChildren: () =>
           import('./modules/color/color.module').then((m) => m.ColorModule),
+      },
+      {
+        path: 'brand',
+        loadChildren: () =>
+          import('./modules/brand/brand.module').then((m) => m.BrandModule),
       },
     ],
   },
@@ -45,5 +46,5 @@ export const routes: Routes = [
     pathMatch: 'full',
     redirectTo: '/auth/login',
   },
-  // { path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
+  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
 ];

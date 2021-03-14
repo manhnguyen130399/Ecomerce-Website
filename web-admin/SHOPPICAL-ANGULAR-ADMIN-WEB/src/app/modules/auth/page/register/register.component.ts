@@ -1,6 +1,6 @@
 import { UserService } from '@modules/auth/services/user.service';
-import { StoreRegister } from '@models/users/store-register';
-import { SellerRegister } from '@models/users/seller-register';
+import { StoreRegister } from '@app/modules/auth/models/store-register';
+import { SellerRegister } from '@app/modules/auth/models/seller-register';
 import { ShareService } from '@modules/auth/services/share.service';
 import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';

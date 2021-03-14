@@ -1,0 +1,13 @@
+<nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzClosable]="false" [nzOkDisabled]="brandForm.invalid"
+  [nzOkLoading]="isLoading" (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="brandForm">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="brandName">Brand Name</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your brand name!">
+          <input nz-input type="text" formControlName="brandName">
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

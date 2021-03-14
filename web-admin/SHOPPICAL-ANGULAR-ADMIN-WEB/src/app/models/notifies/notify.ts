@@ -3,6 +3,6 @@ export interface Notify {
   content: string;
   orderId?: number;
   type: string;
-  created_at: Date;
+  created_At: Date;
   isRead: boolean;
 }

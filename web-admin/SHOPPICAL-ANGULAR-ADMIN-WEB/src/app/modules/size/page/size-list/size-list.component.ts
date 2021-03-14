@@ -1,3 +1,4 @@
+import { BaseList } from './../../../BaseList';
 import { finalize } from 'rxjs/operators';
 import { SizeService } from './../../services/size.service';
 import { Component, OnInit } from '@angular/core';
@@ -11,31 +12,17 @@ import { pipe } from 'rxjs';
   templateUrl: './size-list.component.html',
   styleUrls: ['./size-list.component.css']
 })
-export class SizeListComponent implements OnInit {
-
-  isShowModal = false;
+export class SizeListComponent extends BaseList implements OnInit {
   listSize: Size[] = [];
-  isLoading = false;
-  pageSize = 5;
-  pageIndex = 1;
-  total = 1;
-  searchValue = '';
-  visible = false;
   selectedSize: Size;
 
   constructor(
-    private readonly sizeService: SizeService) { }
+    private readonly sizeService: SizeService) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
-  }
-
-  showModal() {
-    this.isShowModal = true;
-  }
-
-  closeModal() {
-    this.isShowModal = false;
+    this.loadDataFromServer(this.pageIndex - 1, this.pageSize, null, null, []);
   }
 
   editSize(data) {
