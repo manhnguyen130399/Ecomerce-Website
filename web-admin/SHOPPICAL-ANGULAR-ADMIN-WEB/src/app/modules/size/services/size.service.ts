@@ -1,31 +1,32 @@
-import { BaseResponse } from '@models/base-response';
+import { BaseParams } from '../../common/base-params';
+import { BaseResponse } from '@app/modules/common/base-response';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Size } from '../models/size';
+import { BaseService } from '@app/modules/common/base-service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SizeService {
+export class SizeService implements BaseService<Size>{
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  getSizes(pageIndex: number, pageSize: number, sortField: string | null,
-    sortOrder: string | null, filters: Array<{ key: string; value: string }>) {
+  getAll(baseParams: BaseParams) {
     let params = new HttpParams()
-      .append('page', `${pageIndex}`)
-      .append('pageSize', `${pageSize}`)
+      .append('page', `${baseParams.pageIndex - 1}`)
+      .append('pageSize', `${baseParams.pageSize}`)
 
-    if (sortField != null) {
-      params = params.append('sortField', `${sortField}`)
-        .append('sortOrder', `${sortOrder}`);
+    if (baseParams.sortField != null) {
+      params = params.append('sortField', `${baseParams.sortField}`)
+        .append('sortOrder', `${baseParams.sortOrder}`);
     }
 
-    if (filters.length > 0) {
-      filters.forEach(filter => {
+    if (baseParams.filters.length > 0) {
+      baseParams.filters.forEach(filter => {
         params = params.append(filter.key, filter.value);
       });
     }
@@ -37,9 +38,9 @@ export class SizeService {
     )
   }
 
-  createSize(sizeName: string): Observable<BaseResponse<Size>> {
+  create(data: Size): Observable<BaseResponse<Size>> {
     const request = {
-      sizeName: sizeName
+      sizeName: data.sizeName
     }
     return this.httpClient.post<BaseResponse<Size>>(`${environment.productServiceUrl}/api/size/create`, request).pipe(
       catchError(error => {
@@ -48,8 +49,22 @@ export class SizeService {
     )
   }
 
-  deleteSize(sizeId: number): Observable<BaseResponse<Size>> {
-    return this.httpClient.delete<BaseResponse<Size>>(`${environment.productServiceUrl}/api/size/${sizeId}`).pipe(
+  delete(sizeId: number, baseParams: BaseParams): Observable<BaseResponse<Size>> {
+    let params = new HttpParams()
+      .append('page', `${baseParams.pageIndex - 1}`)
+      .append('pageSize', `${baseParams.pageSize}`)
+
+    if (baseParams.sortField != null) {
+      params = params.append('sortField', `${baseParams.sortField}`)
+        .append('sortOrder', `${baseParams.sortOrder}`);
+    }
+
+    if (baseParams.filters.length > 0) {
+      baseParams.filters.forEach(filter => {
+        params = params.append(filter.key, filter.value);
+      });
+    }
+    return this.httpClient.delete<BaseResponse<Size>>(`${environment.productServiceUrl}/api/size/${sizeId}`, { params }).pipe(
       catchError(error => {
         return of(error.error);
       })

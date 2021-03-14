@@ -1,5 +1,7 @@
-import { Brand } from './../models/brand';
-import { BaseResponse } from '@models/base-response';
+import { BaseParams } from './../../common/base-params';
+import { BaseService } from '@app/modules/common/base-service';
+import { Brand } from '@modules/brand/models/brand';
+import { BaseResponse } from '@modules/common/base-response';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
@@ -9,23 +11,23 @@ import { catchError, tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class BrandService {
+
+export class BrandService implements BaseService<Brand> {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  getBrands(pageIndex: number, pageSize: number, sortField: string | null,
-    sortOrder: string | null, filters: Array<{ key: string; value: string }>) {
+  getAll(baseParams: BaseParams) {
     let params = new HttpParams()
-      .append('page', `${pageIndex}`)
-      .append('pageSize', `${pageSize}`)
+      .append('page', `${baseParams.pageIndex - 1}`)
+      .append('pageSize', `${baseParams.pageSize}`)
 
-    if (sortField != null) {
-      params = params.append('sortField', `${sortField}`)
-        .append('sortOrder', `${sortOrder}`);
+    if (baseParams.sortField != null) {
+      params = params.append('sortField', `${baseParams.sortField}`)
+        .append('sortOrder', `${baseParams.sortOrder}`);
     }
 
-    if (filters.length > 0) {
-      filters.forEach(filter => {
+    if (baseParams.filters.length > 0) {
+      baseParams.filters.forEach(filter => {
         params = params.append(filter.key, filter.value);
       });
     }
@@ -37,9 +39,9 @@ export class BrandService {
     )
   }
 
-  createBrand(brandName: string): Observable<BaseResponse<Brand>> {
+  create(brand: Brand): Observable<BaseResponse<Brand>> {
     const request = {
-      brandName: brandName
+      brandName: brand.brandName
     }
     return this.httpClient.post<BaseResponse<Brand>>(`${environment.productServiceUrl}/api/brand/create`, request).pipe(
       catchError(error => {
@@ -48,7 +50,22 @@ export class BrandService {
     )
   }
 
-  deleteBrand(brandId: number): Observable<BaseResponse<Brand>> {
+  delete(brandId: number, baseParams: BaseParams) {
+    let params = new HttpParams()
+      .append('page', `${baseParams.pageIndex - 1}`)
+      .append('pageSize', `${baseParams.pageSize}`)
+
+    if (baseParams.sortField != null) {
+      params = params.append('sortField', `${baseParams.sortField}`)
+        .append('sortOrder', `${baseParams.sortOrder}`);
+    }
+
+    if (baseParams.filters.length > 0) {
+      baseParams.filters.forEach(filter => {
+        params = params.append(filter.key, filter.value);
+      });
+    }
+
     return this.httpClient.delete<BaseResponse<Brand>>(`${environment.productServiceUrl}/api/brand/${brandId}`).pipe(
       catchError(error => {
         return of(error.error);

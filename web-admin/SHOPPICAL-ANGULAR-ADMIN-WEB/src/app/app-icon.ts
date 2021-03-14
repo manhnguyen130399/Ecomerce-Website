@@ -5,7 +5,22 @@ import {
   FormOutline,
   DashboardOutline,
   BellOutline,
-  InfoCircleOutline
+  InfoCircleOutline,
+  BgColorsOutline,
+  OrderedListOutline,
+  ExpandAltOutline,
+  SlackOutline
 } from '@ant-design/icons-angular/icons';
 
-export const icons: IconDefinition[] = [MenuFoldOutline, MenuUnfoldOutline, DashboardOutline, FormOutline, BellOutline, InfoCircleOutline];
+export const icons: IconDefinition[] = [
+  MenuFoldOutline,
+  MenuUnfoldOutline,
+  DashboardOutline,
+  FormOutline,
+  BellOutline,
+  InfoCircleOutline,
+  BgColorsOutline,
+  OrderedListOutline,
+  ExpandAltOutline,
+  SlackOutline
+];

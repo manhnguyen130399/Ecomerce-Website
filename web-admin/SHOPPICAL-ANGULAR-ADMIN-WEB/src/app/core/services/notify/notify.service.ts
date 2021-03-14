@@ -1,6 +1,6 @@
 import { catchError } from 'rxjs/operators';
 import { Notify } from '@models/notifies/notify';
-import { BaseResponse } from '@models/base-response';
+import { BaseResponse } from '@app/modules/common/base-response';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UtilitiesService } from '../utilities/utilities.service';

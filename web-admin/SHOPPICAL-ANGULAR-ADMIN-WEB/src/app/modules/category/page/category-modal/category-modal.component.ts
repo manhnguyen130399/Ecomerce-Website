@@ -15,14 +15,14 @@ export class CategoryModalComponent implements OnInit {
   @Input() modalTitle = 'Add Category';
   @Input() category: Category;
   @Output() cancelModalEvent = new EventEmitter<string>();
-  @Output() okModalEvent = new EventEmitter<string>();
+  @Output() okModalEvent = new EventEmitter<Category>();
   isLoading = false;
   categoryForm: FormGroup;
   constructor(
     private readonly categoryService: CategoryService,
     private readonly formBuilder: FormBuilder,
     private readonly messageService: NzMessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -31,7 +31,7 @@ export class CategoryModalComponent implements OnInit {
   buildForm() {
     this.categoryForm = this.formBuilder.group({
       categoryName: [null, Validators.required],
-      file: null,
+      imageUrl: null,
     });
   }
 
@@ -42,8 +42,13 @@ export class CategoryModalComponent implements OnInit {
 
   submitForm() {
     this.isLoading = true;
+    let category = {
+      id: null,
+      categoryName: this.categoryForm.get("categoryName").value,
+      imageUrl: this.categoryForm.get("imageUrl").value,
+    }
     this.categoryService
-      .createCategory(this.categoryForm)
+      .create(category)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((res) => {
         if (res.code == 'OK') {
@@ -51,7 +56,7 @@ export class CategoryModalComponent implements OnInit {
             'success',
             ' Created category successfully!'
           );
-          this.okModalEvent.emit();
+          this.okModalEvent.emit(res.data);
           this.categoryForm.reset();
         }
       });

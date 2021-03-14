@@ -21,24 +21,32 @@
           </li>
         </ul>
       </li> -->
-      <li nz-submenu nzOpen nzTitle="Category" nzIcon="form">
+      <li nz-submenu nzOpen nzTitle="Category" nzIcon="ordered-list">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/category']">List category</a>
           </li>
         </ul>
       </li>
-      <li nz-submenu nzOpen nzTitle="Size" nzIcon="form">
+      <li nz-submenu nzOpen nzTitle="Size" nzIcon="expand-alt">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/size']">List size</a>
           </li>
         </ul>
       </li>
-      <li nz-submenu nzOpen nzTitle="Color" nzIcon="form">
+      <li nz-submenu nzOpen nzTitle="Color" nzIcon="bg-colors">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/color']">List color</a>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzOpen nzTitle="Brand" nzIcon="slack">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/brand']">List brand</a>
           </li>
         </ul>
       </li>
@@ -71,7 +79,7 @@
                     <i nz-icon nzType="info-circle" style="font-size: 30px; color: #08c;" nzTheme="outline"></i>
                   </div>
                   <div class="notify-message">
-                    <h4>{{item.content}}</h4>
+                    <h5>{{item.content}}</h5>
                     <p>{{item.created_At}}</p>
                   </div>
                 </div>

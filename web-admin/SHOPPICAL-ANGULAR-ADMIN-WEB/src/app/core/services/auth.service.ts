@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Login } from '@models/auth/login';
-import { BaseResponse } from '@models/base-response';
+import { BaseResponse } from '@app/modules/common/base-response';
 import { environment } from '@env';
 import { tap, catchError } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';

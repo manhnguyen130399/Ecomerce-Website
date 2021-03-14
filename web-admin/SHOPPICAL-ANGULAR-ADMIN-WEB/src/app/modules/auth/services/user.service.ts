@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { BaseResponse } from '@models/base-response';
+import { BaseResponse } from '@app/modules/common/base-response';
 import { environment } from '@env';
 import { map, tap, catchError } from 'rxjs/operators';
 import { ValidationErrors } from '@angular/forms';

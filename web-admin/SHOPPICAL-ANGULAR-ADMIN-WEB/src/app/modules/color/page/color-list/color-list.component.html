@@ -1,38 +1,46 @@
 <div class="table-operations">
-  <app-color-modal [color]="selectedColor" [isVisible]="isShowModal" (cancelModalEvent)="closeModal()" (okModalEvent)="closeModal()">
+  <app-color-modal [color]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)"
+    (okModalEvent)="closeModal($event)">
   </app-color-modal>
-  <button (click)="showModal()" nzType="primary" nz-button>Add Color</button>
+  <button (click)="showModal()" class="add-btn" nzType="primary" nz-button>
+    <i nz-icon nzType="plus" nzTheme="outline"></i>
+  </button>
 </div>
-<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)" [nzData]=" listColor" nzTableLayout="fixed">
-    <thead>
-        <tr>
-            <th nzAlign="center" nzColumnKey="id" [nzSortFn]="true">Id</th>
-            <th nzAlign="center">Color Name
-                <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-                    <i nz-icon nzType="search"></i>
-                </nz-filter-trigger>
-            </th>
-            <th nzAlign="center">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
-            <td nzAlign="center">{{ data.id }}</td>
-            <td nzAlign="center">{{ data.colorName }}</td>
-            <td nzAlign="center" class="btn-action">
-                <button nz-button nzType="primary" nz-popconfirm nzPopconfirmTitle="Are you sure delete this color?" (nzOnConfirm)="deleteColor(data)" nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete"
-          nzTheme="outline"></i></button>
-            </td>
-        </tr>
-    </tbody>
+<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize"
+  [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)"
+  [nzData]="listData" nzTableLayout="fixed">
+  <thead>
+    <tr>
+      <th nzAlign="center" nzWidth="10%" nzColumnKey="id" [nzSortFn]="true">Id</th>
+      <th nzAlign="center">Color Name
+        <nz-filter-trigger [(nzVisible)]="isShowSearchInput" [nzActive]="searchValue.length > 0"
+          [nzDropdownMenu]="menu">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+      </th>
+      <th nzAlign="center" nzWidth="20%">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
+      <td nzAlign="center">{{ data.id }}</td>
+      <td nzAlign="center">{{ data.colorName }}</td>
+      <td nzAlign="center" class="btn-action">
+        <button nz-button nzPopconfirmOverlayClassName="delete-confirm-card" nzType="primary" nz-popconfirm
+          nzPopconfirmTitle="Are you sure delete this color?" (nzOnConfirm)="delete(data.id)"
+          nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
+      </td>
+    </tr>
+  </tbody>
 </nz-table>
 <nz-dropdown-menu #menu="nzDropdownMenu">
-    <div class="ant-table-filter-dropdown">
-        <div class="search-box">
-            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
-            <button nz-button nzSize="small" nzType="primary" (click)="searchByColorName()" class="search-button">
-      Search
-    </button>
-        </div>
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+      <button nz-button nzSize="small" nzType="primary" (click)="searchByName()" class="search-button">
+        Search
+      </button>
     </div>
+  </div>
 </nz-dropdown-menu>
