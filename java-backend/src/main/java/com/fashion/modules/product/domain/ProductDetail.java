@@ -69,4 +69,19 @@ public class ProductDetail extends AbstractAuditingEntity {
 		this.color = color;
 	}
 
+	public ProductDetail(final Integer quantity, final Product product, final Size size, final Color color) {
+		super();
+		this.quantity = quantity;
+		this.product = product;
+		this.size = size;
+		this.color = color;
+	}
+
+	public ProductDetail() {
+		super();
+	}
+	
+	
+	
+
 }

@@ -11,12 +11,13 @@ public interface CategoryService {
 
 	CategoryVM findById(Integer id);
 
-	Page<CategoryVM> findAllByStore(Integer page, Integer pageSize, String brandName, SortEnum sortOrder,
+	Page<CategoryVM> findAllByStore(Integer page, Integer pageSize, String categoryName, SortEnum sortOrder,
 			String sortField);
 
-	void deleteCategory(Integer id);
+	CategoryVM deleteCategory(Integer id, Integer page, Integer pageSize, String categoryName, SortEnum sortOrder,
+			String sortField);
 
-	Page<CategoryVM> searchCategoryByKeywordAndStore(String brandName, SortEnum sortOrder, String sortField,
+	Page<CategoryVM> searchCategoryByKeywordAndStore(String categoryName, SortEnum sortOrder, String sortField,
 			Integer page, Integer pageSize);
 
 }

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,39 +13,20 @@ import org.springframework.stereotype.Service;
 
 import com.fashion.commons.enums.SortEnum;
 import com.fashion.commons.utils.CommonUtil;
-import com.fashion.domain.UserContext;
 import com.fashion.exception.InvalidArgumentException;
-import com.fashion.modules.seller.domain.Seller;
-import com.fashion.modules.seller.repository.SellerRepository;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.model.StoreVM;
 import com.fashion.modules.store.repository.StoreRepository;
 import com.fashion.modules.store.service.StoreService;
 import com.fashion.service.impl.BaseService;
+import com.google.common.collect.Iterables;
 
 @Service
 public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Autowired
 	private StoreRepository storeRepo;
-
-	@Autowired
-	private SellerRepository sellerRepository;
-
-	@Transactional
-	@Override
-	public StoreVM createStore(final StoreReq vm) {
-		final UserContext context = getUserContext();
-		final Store store = mapper.map(vm, Store.class);
-		final Seller seller = new Seller();
-		seller.setStoreId(storeRepo.save(store).getId());
-		seller.setEmail(context.getEmail());
-		seller.setAccountId(context.getAccountId());
-		seller.setEmail(context.getEmail());
-		sellerRepository.save(seller);
-		return mapper.map(store, StoreVM.class);
-	}
 
 	@Transactional
 	@Override
@@ -70,15 +52,17 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Transactional
 	@Override
-	public void deleteStore(final Integer id) {
-
+	public StoreVM deleteStore(final Integer id, final String storeName, final SortEnum sortOrder,
+			final String sortField, final Integer page, final Integer pageSize) {
 		storeRepo.deleteById(id);
-
+		final List<StoreVM> content = getStores(storeName, sortOrder, sortField, page, pageSize).getContent();
+		final StoreVM last = Iterables.getLast(content);
+		return CollectionUtils.isNotEmpty(content) && id != last.getId() ? last : null;
 	}
 
 	@Override
 	@Transactional
-	public StoreVM createStoreV2(final StoreReq req) {
+	public StoreVM createStore(final StoreReq req) {
 		final Store store = mapper.map(req, Store.class);
 		try {
 			return mapper.map(storeRepo.save(store), StoreVM.class);

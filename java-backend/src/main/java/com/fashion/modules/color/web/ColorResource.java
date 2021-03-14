@@ -51,9 +51,13 @@ public class ColorResource extends BaseResource {
 	}
 
 	@DeleteMapping(URL + "/{id}")
-	public ResponseEntity<Map<String, Object>> deleteColorId(@PathVariable("id") final Integer id) {
-		colorService.deleteColor(id);
-		return success(Constants.SUCCESS);
+	public ResponseEntity<Map<String, Object>> deleteColorId(@PathVariable("id") final Integer id,
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String colorName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+		return success(colorService.deleteColor(id, colorName, sortOrder, sortField, page, pageSize));
 	}
 
 	@GetMapping(URL + "/search")

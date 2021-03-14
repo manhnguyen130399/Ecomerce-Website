@@ -35,6 +35,7 @@ export class ColorListComponent extends BaseList implements OnInit {
     sortField: string,
     sortOrder: string
   ) {
+    this.isLoading = true;
     this.colorService
       .getColors(pageIndex, pageSize, colorName, sortField, sortOrder)
       .pipe(

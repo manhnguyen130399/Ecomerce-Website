@@ -12,8 +12,6 @@ public interface StoreService {
 
 	StoreVM createStore(final StoreReq req);
 
-	StoreVM createStoreV2(final StoreReq req);
-
 	StoreVM getStore(final Integer id);
 
 	Page<StoreVM> getStores(final String storeName, final SortEnum sortOrder, final String sortField,
@@ -21,7 +19,8 @@ public interface StoreService {
 
 	StoreVM updateStore(final StoreReq req, final Integer id);
 
-	void deleteStore(final Integer id);
+	StoreVM deleteStore(final Integer id, final String storeName, final SortEnum sortOrder, final String sortField,
+			final Integer page, final Integer pageSize);
 
 	List<StoreVM> getStoreByIds(final List<Integer> ids);
 
