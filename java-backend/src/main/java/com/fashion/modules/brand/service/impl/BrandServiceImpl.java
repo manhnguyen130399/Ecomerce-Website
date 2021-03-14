@@ -1,11 +1,12 @@
 package com.fashion.modules.brand.service.impl;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import com.fashion.modules.brand.repository.BrandRepository;
 import com.fashion.modules.brand.service.BrandService;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.service.impl.BaseService;
+import com.google.common.collect.Iterables;
 
 @Service
 public class BrandServiceImpl extends BaseService implements BrandService {
@@ -32,10 +34,11 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	@Transactional
 	public BrandVM createBrand(final BrandVM req) {
 		final Store store = getStore(getUserContext());
-		final Set<Brand> brands = store.getBrands();
-		brands.add(mapper.map(req, Brand.class));
-		store.setBrands(brands);
-		return req;
+		final Brand brand = new Brand();
+		brand.setBrandName(req.getBrandName());
+		brand.setStores(Collections.singleton(store));
+		brandRepo.save(brand);
+		return mapper.map(brand, BrandVM.class);
 	}
 
 	@Override
@@ -59,13 +62,16 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	public void deleteBrand(final Integer id) {
+	public BrandVM deleteBrand(final Integer id, final Integer page, final Integer pageSize, final String brandName,
+			final SortEnum sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
 		final Brand brand = brandRepo.findOneByIdAndStoreId(id, store.getId());
 		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
-		final List<Brand> brands = brandRepo.findAllByStoreId(store.getId(),pageable).getContent();
+		final List<Brand> brands = brandRepo.findAllByStoreId(store.getId(), pageable).getContent();
 		store.setBrands(brands.stream().filter(it -> !it.equals(brand)).collect(Collectors.toSet()));
-
+		final List<BrandVM> content = findAllByStore(page, pageSize, brandName, sortOrder, sortField).getContent();
+		final BrandVM last = Iterables.getLast(content);
+		return CollectionUtils.isNotEmpty(content) && id != last.getId() ? last : null;
 	}
 
 	@Override

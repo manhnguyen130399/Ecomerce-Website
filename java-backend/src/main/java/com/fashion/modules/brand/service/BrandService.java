@@ -14,7 +14,8 @@ public interface BrandService {
 	Page<BrandVM> findAllByStore(Integer page, Integer pageSize, String brandName, SortEnum sortOrder,
 			String sortField);
 
-	void deleteBrand(Integer id);
+	BrandVM deleteBrand(Integer id, Integer page, Integer pageSize, String brandName, SortEnum sortOrder,
+			String sortField);
 
 	Page<BrandVM> seachBrandByStoreAndKeyword(String brandName, SortEnum sortOrder, Integer page, Integer pageSize,
 			String sortField);

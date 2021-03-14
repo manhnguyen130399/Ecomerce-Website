@@ -1,10 +1,12 @@
 package com.fashion.modules.color.service.impl;
 
-import java.util.Set;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,13 +23,14 @@ import com.fashion.modules.color.repository.ColorRepository;
 import com.fashion.modules.color.service.ColorService;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.service.impl.BaseService;
+import com.google.common.collect.Iterables;
 
 @Service
-public class ColorServiceImpl extends BaseService implements ColorService{
+public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Autowired
 	private ColorRepository colorRepo;
-	
+
 	@Override
 	@Transactional
 	public ColorVM createColor(final ColorVM vm) {
@@ -36,9 +39,8 @@ public class ColorServiceImpl extends BaseService implements ColorService{
 		final Color color = new Color();
 		color.setColorName(vm.getColorName());
 		color.setCreatedBy(context.getUsername());
-		final Set<Color> colors = store.getColors();
-		colors.add(color);
-		store.setColors(colors);
+		color.setStores(Collections.singleton(store));
+		colorRepo.save(color);
 		return mapper.map(color, ColorVM.class);
 	}
 
@@ -65,12 +67,16 @@ public class ColorServiceImpl extends BaseService implements ColorService{
 
 	@Override
 	@Transactional
-	public void deleteColor(final Integer id) {
+	public ColorVM deleteColor(final Integer id, final String colorName, final SortEnum sortOrder,
+			final String sortField, final Integer page, final Integer pageSize) {
 		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
 		final Color color = colorRepo.findOneByIdAndStore(id, getStore(getUserContext()).getId());
 		final Page<Color> colors = colorRepo.findAllByStore(getStore(getUserContext()).getId(), pageable);
 		final Store store = getStore(getUserContext());
 		store.setColors(colors.getContent().stream().filter(it -> !it.equals(color)).collect(Collectors.toSet()));
+		final List<ColorVM> content = findByAllStore(colorName, sortOrder, sortField, page, pageSize).getContent();
+		final ColorVM last = Iterables.getLast(content);
+		return CollectionUtils.isNotEmpty(content) && id != last.getId() ? last : null;
 
 	}
 

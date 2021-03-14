@@ -14,7 +14,8 @@ public interface ColorService {
 	Page<ColorVM> findByAllStore(String colorName, SortEnum sortOrder, String sortField, Integer page,
 			Integer pageSize);
 
-	void deleteColor(Integer id);
+	ColorVM deleteColor(Integer id, String colorName, SortEnum sortOrder, String sortField, Integer page,
+			Integer pageSize);
 
 	Page<ColorVM> searchColorByKeywordAndStore(String colorName, SortEnum sortOrder, String sortField, Integer page,
 			Integer pageSize);

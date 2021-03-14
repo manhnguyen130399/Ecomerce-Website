@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,19 +18,23 @@ import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.brand.repository.BrandRepository;
 import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.category.repository.CategoryRepository;
+import com.fashion.modules.color.domain.Color;
+import com.fashion.modules.color.repository.ColorRepository;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.product.domain.ProductImage;
+import com.fashion.modules.product.model.ProductDetailVM;
+import com.fashion.modules.product.model.ProductImageVM;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.model.ProductRes;
 import com.fashion.modules.product.model.ProductVM;
 import com.fashion.modules.product.repository.ProductDetailRepository;
 import com.fashion.modules.product.repository.ProductRepository;
 import com.fashion.modules.product.service.ProductService;
+import com.fashion.modules.size.domain.Size;
+import com.fashion.modules.size.repository.SizeRepository;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.service.impl.BaseService;
-
-import io.jsonwebtoken.lang.Collections;
 
 @Service
 public class ProductServiceImpl extends BaseService implements ProductService {
@@ -46,6 +51,12 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@Autowired
 	private ProductDetailRepository productDetailRepo;
 
+	@Autowired
+	private ColorRepository colorRepo;
+
+	@Autowired
+	private SizeRepository sizeRepo;
+
 	@Override
 	@Transactional
 	public ProductVM createProduct(final ProductReq req) {
@@ -59,13 +70,49 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		product.setPrice(req.getPrice());
 		product.setStore(store);
 		product.setProductName(req.getProductName());
-		req.getProductImages().stream().forEach(it -> it.setProduct(product));
-		product.setProductImages(req.getProductImages());
 		product.setBrand(brandRepo.findOneByIdAndStoreId(req.getBrandId(), storeId));
 		product.setCategory(category);
-		req.getProductDetails().stream().forEach(it -> it.setProduct(product));
-		product.setProductDetails(req.getProductDetails());
-		return mapper.map(productRepo.save(product), ProductVM.class);
+		final List<String> productImages = req.getImages();
+		if (CollectionUtils.isNotEmpty(productImages)) {
+			product.setProductImages(req.getImages().parallelStream().map(it -> {
+				return new ProductImage(it, product);
+			}).collect(Collectors.toSet()));
+		}
+		final Set<ProductDetailVM> productDetails = req.getProductDetails();
+
+		if (CollectionUtils.isNotEmpty(productDetails)) {
+			product.setProductDetails(productDetails.parallelStream().map(it -> {
+				final Size size = sizeRepo.findOneByIdAndStoreId(it.getSizeId(), storeId);
+				final Color color = colorRepo.findOneByIdAndStore(it.getColorId(), storeId);
+				if (size == null) {
+					throw new InvalidArgumentException(" Size id doesn't exit ");
+				}
+				if (color == null) {
+					throw new InvalidArgumentException(" Color id doesn't exit ");
+				}
+				return new ProductDetail(it.getQuantity(), product, size, color);
+			}).collect(Collectors.toSet()));
+		}
+		productRepo.save(product);
+		return convertToVM(product);
+	}
+
+	private ProductVM convertToVM(final Product product) {
+		final ProductVM vm = new ProductVM();
+		vm.setId(product.getId());
+		vm.setBrandId(product.getBrand().getId());
+		vm.setCategoryId(product.getCategory().getId());
+		vm.setPrice(product.getPrice());
+		vm.setProductName(product.getProductName());
+		vm.setProductImages(product.getProductImages().stream().map(it -> new ProductImageVM(it.getId(), it.getImage()))
+				.collect(Collectors.toSet()));
+		vm.setProductDetails(product.getProductDetails().stream().map(it -> {
+			final Color color = it.getColor();
+			final Size size = it.getSize();
+			return new ProductDetailVM(size.getId(), size.getSizeName(), color.getId(), color.getColorName(),
+					it.getQuantity());
+		}).collect(Collectors.toSet()));
+		return vm;
 	}
 
 	@Override
@@ -88,20 +135,30 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		product.setPrice(req.getPrice());
 		product.setStore(store);
 		product.setProductName(req.getProductName());
-		final Set<ProductImage> productImages = req.getProductImages();
-		if (!io.jsonwebtoken.lang.Collections.isEmpty(productImages)) {
-			productImages.stream().forEach(it -> it.setProduct(product));
-			product.setProductImages(productImages);
+		final List<String> productImages = req.getImages();
+		if (CollectionUtils.isNotEmpty(productImages)) {
+			product.setProductImages(req.getImages().parallelStream().map(it -> {
+				return new ProductImage(it, product);
+			}).collect(Collectors.toSet()));
 		}
-		final Set<ProductDetail> productDetails = req.getProductDetails();
-		if (Collections.isEmpty(productDetails)) {
-			productDetails.stream().forEach(it -> it.setProduct(product));
-			product.setProductDetails(productDetails);
+		final Set<ProductDetailVM> productDetails = req.getProductDetails();
+		if (CollectionUtils.isNotEmpty(productDetails)) {
+			product.setProductDetails(productDetails.parallelStream().map(it -> {
+				final Size size = sizeRepo.findOneByIdAndStoreId(it.getSizeId(), storeId);
+				final Color color = colorRepo.findOneByIdAndStore(it.getColorId(), storeId);
+				if (size == null) {
+					throw new InvalidArgumentException(" Size id doesn't exit ");
+				}
+				if (color == null) {
+					throw new InvalidArgumentException(" Color id doesn't exit ");
+				}
+				return new ProductDetail(it.getQuantity(), product, size, color);
+			}).collect(Collectors.toSet()));
 		}
 		product.setBrand(brandRepo.findOneByIdAndStoreId(req.getBrandId(), storeId));
 		product.setCategory(category);
 		productRepo.save(product);
-		return mapper.map(product, ProductVM.class);
+		return convertToVM(product);
 	}
 
 	@Override

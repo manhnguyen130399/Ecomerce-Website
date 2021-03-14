@@ -33,14 +33,9 @@ public class StoreResource extends BaseResource {
 	@Autowired
 	private StoreService storeService;
 
-	@PostMapping(value = { URL })
-	public ResponseEntity<Map<String, Object>> createStore(@RequestBody final StoreReq req) {
-		return success(storeService.createStore(req));
-	}
-
 	@PostMapping(value = { URL + "/v2" })
 	public ResponseEntity<Map<String, Object>> createStoreV2(@RequestBody final StoreReq req) {
-		return success(storeService.createStoreV2(req));
+		return success(storeService.createStore(req));
 	}
 
 	@GetMapping(value = { URL + "/{id}" })
@@ -65,9 +60,13 @@ public class StoreResource extends BaseResource {
 	}
 
 	@DeleteMapping(value = { URL + "/{id}" })
-	public ResponseEntity<Map<String, Object>> deleteStore(@PathVariable(name = "id") final Integer id) {
-		storeService.deleteStore(id);
-		return success(Constants.SUCCESS);
+	public ResponseEntity<Map<String, Object>> deleteStore(@PathVariable(name = "id") final Integer id,
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false, defaultValue = Constants.NONE) final String storeName,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+		return success(storeService.deleteStore(id, storeName, sortOrder, sortField, page, pageSize));
 	}
 
 	@PostMapping(URL + "/list")

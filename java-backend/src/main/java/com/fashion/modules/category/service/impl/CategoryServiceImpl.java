@@ -1,10 +1,12 @@
 package com.fashion.modules.category.service.impl;
 
-import java.util.Set;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,7 @@ import com.fashion.modules.category.repository.CategoryRepository;
 import com.fashion.modules.category.service.CategoryService;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.service.impl.BaseService;
+import com.google.common.collect.Iterables;
 
 @Service
 public class CategoryServiceImpl extends BaseService implements CategoryService {
@@ -32,9 +35,10 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	public CategoryVM createCategory(final CategoryVM req) {
 		final Category category = mapper.map(req, Category.class);
 		final Store store = getStore(getUserContext());
-		final Set<Category> categories = store.getCategories();
-		categories.add(category);
-		store.setCategories(categories);
+		category.setStores(Collections.singleton(store));
+		category.setCreatedBy(getUserContext().getUsername());
+		category.setImage(req.getImage());
+		cateRepo.save(category);
 		return mapper.map(category, CategoryVM.class);
 	}
 
@@ -59,13 +63,18 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
-	public void deleteCategory(final Integer id) {
+	public CategoryVM deleteCategory(final Integer id, final Integer page, final Integer pageSize,
+			final String categoryName, final SortEnum sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
 		final Integer storeId = store.getId();
 		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
 		final Category category = cateRepo.findOneByIdAndStoreId(id, storeId);
 		store.setCategories(cateRepo.findAllByStoreId(storeId, pageable).getContent().stream()
 				.filter(it -> !it.equals(category)).collect(Collectors.toSet()));
+		final List<CategoryVM> content = findAllByStore(page, pageSize, categoryName, sortOrder, sortField)
+				.getContent();
+		final CategoryVM last = Iterables.getLast(content);
+		return CollectionUtils.isNotEmpty(content) && last.getId() != id ? last : null;
 
 	}
 
