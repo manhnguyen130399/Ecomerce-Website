@@ -16,12 +16,22 @@
 @import "~ng-zorro-antd/popconfirm/style/index.min.css";
 @import "~ng-zorro-antd/badge/style/index.min.css";
 @import "~ng-zorro-antd/image/style/index.min.css";
+@import "~ng-zorro-antd/upload/style/index.min.css";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
 html,
 body {
   font-family: "Montserrat", sans-serif;
 }
+
+.form-upload-image .ant-upload.ant-upload-select{
+  display: block;
+}
+
+.form-upload-image .ant-upload.ant-upload-select button{
+  width: 100%;
+}
+
 
 /* notify-card */
 .notify-card {

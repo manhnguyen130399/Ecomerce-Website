@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { environment } from '@env';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { finalize } from 'rxjs/operators';
 import { Category } from '../../models/category';
 import { CategoryService } from '../../services/category.service';
@@ -17,6 +19,9 @@ export class CategoryModalComponent implements OnInit {
   @Output() cancelModalEvent = new EventEmitter<string>();
   @Output() okModalEvent = new EventEmitter<Category>();
   isLoading = false;
+  isHaveFile = false;
+  backEndUrl = `${environment.productServiceUrl}/api/upload`;
+  fileList: NzUploadFile[] = [];
   categoryForm: FormGroup;
   constructor(
     private readonly categoryService: CategoryService,
@@ -31,13 +36,13 @@ export class CategoryModalComponent implements OnInit {
   buildForm() {
     this.categoryForm = this.formBuilder.group({
       categoryName: [null, Validators.required],
-      imageUrl: null,
     });
   }
 
   handleCancel(): void {
     this.cancelModalEvent.emit();
     this.categoryForm.reset();
+    this.fileList = [];
   }
 
   submitForm() {
@@ -45,7 +50,7 @@ export class CategoryModalComponent implements OnInit {
     let category = {
       id: null,
       categoryName: this.categoryForm.get("categoryName").value,
-      imageUrl: this.categoryForm.get("imageUrl").value,
+      image: this.fileList[0].response.data[0],
     }
     this.categoryService
       .create(category)
@@ -58,16 +63,19 @@ export class CategoryModalComponent implements OnInit {
           );
           this.okModalEvent.emit(res.data);
           this.categoryForm.reset();
+          this.fileList = [];
         }
       });
   }
 
-  onFileChange(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.categoryForm.patchValue({
-        file: file,
-      });
-    }
+  handleChange = (info: NzUploadChangeParam) => {
+    this.fileList.forEach(x => {
+      if (x.status === 'done') {
+        this.isHaveFile = true;
+      }
+      else {
+        this.isHaveFile = false;
+      }
+    });
   }
 }

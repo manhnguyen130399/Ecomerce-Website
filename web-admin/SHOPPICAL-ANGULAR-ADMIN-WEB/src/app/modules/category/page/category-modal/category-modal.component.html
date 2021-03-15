@@ -1,21 +1,27 @@
 <nz-modal [(nzVisible)]="isVisible" nzOkText="Save Change" nzClassName="form-modal" [nzTitle]="modalTitle"
-  [nzClosable]="false" [nzOkDisabled]="categoryForm.invalid" [nzOkLoading]="isLoading" (nzOnCancel)="handleCancel()"
-  (nzOnOk)="submitForm()">
+  [nzClosable]="false" [nzOkDisabled]="categoryForm.invalid || !isHaveFile" [nzOkLoading]="isLoading"
+  (nzOnCancel)="handleCancel()" (nzOnOk)="submitForm()">
   <ng-container *nzModalContent>
     <form nz-form [formGroup]="categoryForm">
       <nz-form-item>
-        <nz-form-label [nzSpan]="6" nzFor="categoryName">Category Name</nz-form-label>
+        <nz-form-label [nzSpan]="7" nzFor="categoryName">Category Name</nz-form-label>
         <nz-form-control [nzSpan]="14" nzErrorTip="Please input your category name!">
           <input nz-input type="text" formControlName="categoryName">
         </nz-form-control>
       </nz-form-item>
-      <br>
+
       <nz-form-item>
-        <nz-form-label [nzSpan]="6" nzFor="categoryName">Image</nz-form-label>
-        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your category image!">
-          <input type="file" class="form-control" (change)="onFileChange($event)">
+        <nz-form-label [nzSpan]="7">Category Image</nz-form-label>
+        <nz-form-control [nzSpan]="14" class="form-upload-image">
+          <nz-upload [(nzFileList)]="fileList" [nzDisabled]="fileList.length > 0"
+            [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'" nzName="files" [nzSpan]="6"
+            [nzAction]="backEndUrl" (nzChange)="handleChange($event)">
+            <button class="upload-btn" nz-button><i nz-icon nzType="upload"></i>Click to
+              Upload</button>
+          </nz-upload>
         </nz-form-control>
       </nz-form-item>
+
     </form>
   </ng-container>
 </nz-modal>
