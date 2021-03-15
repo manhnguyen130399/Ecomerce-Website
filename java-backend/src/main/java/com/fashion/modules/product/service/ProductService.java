@@ -19,12 +19,14 @@ public interface ProductService {
 
 	ProductVM updateImageProduct(List<MultipartFile> files, Integer productId);
 
-	Page<ProductVM> getAllProductByStore(Integer page, Integer pageSize);
+	Page<ProductVM> getAllProductByStore(Integer page, Integer pageSize, ProductReq req);
 
 	void deleteProduct(Integer id);
 
 	List<ProductRes> getProductDetailInfos(List<Integer> ids);
 
 	Page<ProductVM> searchProductByKeywordAndStore(String keyword, Integer page, Integer pageSize);
+
+	Page<ProductVM> filterProduct(Integer page, Integer pageSize, ProductReq req);
 
 }

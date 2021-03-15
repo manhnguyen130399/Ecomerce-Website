@@ -20,6 +20,7 @@ import com.fashion.commons.constants.Constants;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.promotion.domain.Promotion;
+import com.fashion.modules.promotion.model.PromotionFilterReq;
 import com.fashion.modules.promotion.model.PromotionRequest;
 import com.fashion.modules.promotion.model.PromotionVM;
 import com.fashion.modules.promotion.model.QrVM;
@@ -82,9 +83,13 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
-	public Page<PromotionVM> getAllPromotionByStore(final Integer page, final Integer pageSize) {
-		return promoRepo.findAllByStore(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
-				.map(it -> mapper.map(it, PromotionVM.class));
+	public Page<PromotionVM> getAllPromotionByStore(final Integer page, final Integer pageSize,
+			final PromotionFilterReq req) {
+		if (req == null) {
+			return promoRepo.findAllByStore(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+					.map(it -> mapper.map(it, PromotionVM.class));
+		}
+		return filterPromotion(req, page, pageSize);
 	}
 
 	@Override
@@ -139,6 +144,13 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 			final Integer pageSize) {
 		return promoRepo
 				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, PromotionVM.class));
+	}
+
+	@Override
+	@Transactional
+	public Page<PromotionVM> filterPromotion(final PromotionFilterReq req, final Integer page, final Integer pageSize) {
+		return promoRepo.filterPromotion(req, page, pageSize, getStore(getUserContext()).getId())
 				.map(it -> mapper.map(it, PromotionVM.class));
 	}
 

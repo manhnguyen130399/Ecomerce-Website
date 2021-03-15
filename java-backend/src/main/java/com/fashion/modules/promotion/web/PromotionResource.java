@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.modules.promotion.model.PromotionFilterReq;
 import com.fashion.modules.promotion.model.PromotionRequest;
 import com.fashion.modules.promotion.service.PromotionService;
 import com.fashion.web.BaseResource;
@@ -41,11 +42,12 @@ public class PromotionResource extends BaseResource {
 		return success(promoService.findPromotionById(id));
 	}
 
-	@GetMapping(URL)
+	@PostMapping(URL)
 	public ResponseEntity<Map<String, Object>> getPromotions(
 			@RequestParam(required = true, defaultValue = "0") final Integer page,
-			@RequestParam(required = true, defaultValue = "50") final Integer pageSize) {
-		return success(promoService.getAllPromotionByStore(page, pageSize));
+			@RequestParam(required = true, defaultValue = "50") final Integer pageSize,
+			@RequestBody final PromotionFilterReq req) {
+		return success(promoService.getAllPromotionByStore(page, pageSize, req));
 	}
 	
 	@GetMapping(URL+ "/valid-date")
@@ -70,6 +72,15 @@ public class PromotionResource extends BaseResource {
 			@RequestParam(required = true, defaultValue = "50") final Integer pageSize,
 			@RequestParam final String keyword) {
 		return success(promoService.searchPromotionByKeywordAndStore(keyword, page, pageSize));
+	}
+	
+	@PostMapping(URL + "/filter")
+	public ResponseEntity<Map<String, Object>> filterPromotion(
+			@RequestParam(required = true, defaultValue = "0") final Integer page,
+			@RequestParam(required = true, defaultValue = "50") final Integer pageSize,
+			@RequestBody final PromotionFilterReq req) {
+		return success(promoService.filterPromotion(req, page, pageSize));
+
 	}
 
 }

@@ -70,8 +70,11 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 		final List<Brand> brands = brandRepo.findAllByStoreId(store.getId(), pageable).getContent();
 		store.setBrands(brands.stream().filter(it -> !it.equals(brand)).collect(Collectors.toSet()));
 		final List<BrandVM> content = findAllByStore(page, pageSize, brandName, sortOrder, sortField).getContent();
+		if (CollectionUtils.isEmpty(content)) {
+			return null;
+		}
 		final BrandVM last = Iterables.getLast(content);
-		return CollectionUtils.isNotEmpty(content) && id != last.getId() ? last : null;
+		return id != last.getId() ? last : null;
 	}
 
 	@Override

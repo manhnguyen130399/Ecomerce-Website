@@ -10,11 +10,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fashion.exception.InvalidArgumentException;
+import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.brand.repository.BrandRepository;
 import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.category.repository.CategoryRepository;
@@ -70,7 +70,11 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		product.setPrice(req.getPrice());
 		product.setStore(store);
 		product.setProductName(req.getProductName());
-		product.setBrand(brandRepo.findOneByIdAndStoreId(req.getBrandId(), storeId));
+		final Brand brand = brandRepo.findOneByIdAndStoreId(req.getBrandId(), storeId);
+		if (brand == null) {
+			throw new InvalidArgumentException(" Can't found brand ");
+		}
+		product.setBrand(brand);
 		product.setCategory(category);
 		final List<String> productImages = req.getImages();
 		if (CollectionUtils.isNotEmpty(productImages)) {
@@ -85,10 +89,10 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 				final Size size = sizeRepo.findOneByIdAndStoreId(it.getSizeId(), storeId);
 				final Color color = colorRepo.findOneByIdAndStore(it.getColorId(), storeId);
 				if (size == null) {
-					throw new InvalidArgumentException(" Size id doesn't exit ");
+					throw new InvalidArgumentException(" Size doesn't exit ");
 				}
 				if (color == null) {
-					throw new InvalidArgumentException(" Color id doesn't exit ");
+					throw new InvalidArgumentException(" Color doesn't exit ");
 				}
 				return new ProductDetail(it.getQuantity(), product, size, color);
 			}).collect(Collectors.toSet()));
@@ -100,8 +104,12 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	private ProductVM convertToVM(final Product product) {
 		final ProductVM vm = new ProductVM();
 		vm.setId(product.getId());
-		vm.setBrandId(product.getBrand().getId());
-		vm.setCategoryId(product.getCategory().getId());
+		final Brand brand = product.getBrand();
+		vm.setBrandName(brand.getBrandName());
+		final Category category = product.getCategory();
+		vm.setCategoryName(category.getCategoryName());
+		vm.setBrandId(brand.getId());
+		vm.setCategoryId(category.getId());
 		vm.setPrice(product.getPrice());
 		vm.setProductName(product.getProductName());
 		vm.setProductImages(product.getProductImages().stream().map(it -> new ProductImageVM(it.getId(), it.getImage()))
@@ -118,8 +126,8 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@Override
 	@Transactional
 	public ProductVM findById(final Integer id) {
-		return mapper.map(productRepo.findOneProductByIdAndStore(id, getStore(getUserContext()).getId()),
-				ProductVM.class);
+		return convertToVM(productRepo.findOneProductByIdAndStore(id, getStore(getUserContext()).getId()));
+
 	}
 
 	@Override
@@ -147,10 +155,10 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 				final Size size = sizeRepo.findOneByIdAndStoreId(it.getSizeId(), storeId);
 				final Color color = colorRepo.findOneByIdAndStore(it.getColorId(), storeId);
 				if (size == null) {
-					throw new InvalidArgumentException(" Size id doesn't exit ");
+					throw new InvalidArgumentException(" Size doesn't exit ");
 				}
 				if (color == null) {
-					throw new InvalidArgumentException(" Color id doesn't exit ");
+					throw new InvalidArgumentException(" Color doesn't exit ");
 				}
 				return new ProductDetail(it.getQuantity(), product, size, color);
 			}).collect(Collectors.toSet()));
@@ -175,10 +183,13 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	public Page<ProductVM> getAllProductByStore(final Integer page, final Integer pageSize) {
-		final Pageable pageable = PageRequest.of(page, pageSize);
-		return productRepo.findAllProductStore(getStore(getUserContext()).getId(), pageable)
-				.map(it -> mapper.map(it, ProductVM.class));
+	public Page<ProductVM> getAllProductByStore(final Integer page, final Integer pageSize, final ProductReq req) {
+		if (req == null) {
+			return productRepo.findAllProductStore(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+					.map(it -> convertToVM(it));
+		}
+		return filterProduct(page, pageSize, req);
+
 	}
 
 	@Override
@@ -204,7 +215,14 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			final Integer pageSize) {
 		return productRepo
 				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
-				.map(it -> mapper.map(it, ProductVM.class));
+				.map(it ->convertToVM(it));
+	}
+
+	@Override
+	@Transactional
+	public Page<ProductVM> filterProduct(final Integer page, final Integer pageSize, final ProductReq req) {
+		return productRepo.filterProduct(page, pageSize, getStore(getUserContext()).getId(), req)
+				.map(it -> convertToVM(it));
 	}
 
 }

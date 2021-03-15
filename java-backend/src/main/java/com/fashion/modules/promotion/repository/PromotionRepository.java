@@ -10,8 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.fashion.modules.promotion.domain.Promotion;
+import com.fashion.modules.promotion.repository.custom.PromotionRepositoryCustom;
 
-public interface PromotionRepository extends JpaRepository<Promotion, Integer> {
+public interface PromotionRepository extends JpaRepository<Promotion, Integer>, PromotionRepositoryCustom {
 	
 	Promotion findOneById(Integer id);
 	
