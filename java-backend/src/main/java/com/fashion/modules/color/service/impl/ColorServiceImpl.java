@@ -75,8 +75,11 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 		final Store store = getStore(getUserContext());
 		store.setColors(colors.getContent().stream().filter(it -> !it.equals(color)).collect(Collectors.toSet()));
 		final List<ColorVM> content = findByAllStore(colorName, sortOrder, sortField, page, pageSize).getContent();
+		if (CollectionUtils.isEmpty(content)) {
+			return null;
+		}
 		final ColorVM last = Iterables.getLast(content);
-		return CollectionUtils.isNotEmpty(content) && id != last.getId() ? last : null;
+		return id != last.getId() ? last : null;
 
 	}
 

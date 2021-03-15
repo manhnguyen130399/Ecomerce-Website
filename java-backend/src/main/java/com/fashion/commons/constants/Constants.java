@@ -92,8 +92,8 @@ public final class Constants {
 	public static final String COMPLAIN_TITLE = "REPONSE YOUR COMPLAIN";
 	public static final String PROMOTION_TITLE = "PROMOTION FOR YOU";
 	public static final String THANK_YOU = "  Thanks .";
-	
-	//ORDER
+
+	// ORDER
 	public static final String ORDER = "Order";
 	public static final String CUSTOMER_NAME = "Customer Name : ";
 	public static final String ADDRESS = "Address : ";
@@ -107,7 +107,9 @@ public final class Constants {
 	public static final String QUANTITY = "Quantity : ";
 	public static final String TOTAL_PRICE = "Total price : ";
 	public static final String FIELD_ID = "id";
-	
+	public static final String ASC = "ASC";
+	public static final String DESC = "DESC";
+
 	// NET API
 	public static final String URL = "https://user-service-net.herokuapp.com/api";
 

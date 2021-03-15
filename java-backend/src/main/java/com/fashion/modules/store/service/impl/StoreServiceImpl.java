@@ -56,6 +56,9 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 			final String sortField, final Integer page, final Integer pageSize) {
 		storeRepo.deleteById(id);
 		final List<StoreVM> content = getStores(storeName, sortOrder, sortField, page, pageSize).getContent();
+		if (CollectionUtils.isEmpty(content)) {
+			return null;
+		}
 		final StoreVM last = Iterables.getLast(content);
 		return CollectionUtils.isNotEmpty(content) && id != last.getId() ? last : null;
 	}

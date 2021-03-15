@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.fashion.modules.product.domain.Product;
+import com.fashion.modules.product.repository.custom.ProductRepositoryCustom;
 
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends ProductRepositoryCustom, JpaRepository<Product, Integer> {
 	
 	
 	@Query(" SELECT p " 

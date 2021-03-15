@@ -42,11 +42,12 @@ public class ProductResource extends BaseResource {
 		return success(productService.findById(id));
 	}
 	
-	@GetMapping(URL)
+	@PostMapping(URL)
 	public ResponseEntity<Map<String, Object>> getAllProductByStore(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
-			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
-		return success(productService.getAllProductByStore(page, pageSize));
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestBody final ProductReq req) {
+		return success(productService.getAllProductByStore(page, pageSize, req));
 	}
 	
 	@DeleteMapping(URL + "/{id}")
@@ -56,7 +57,7 @@ public class ProductResource extends BaseResource {
 	}
 	
 	@PutMapping(URL)
-	public ResponseEntity<Map<String, Object>> deleteProduct(@RequestBody final ProductReq req) {
+	public ResponseEntity<Map<String, Object>> updateProduct(@RequestBody final ProductReq req) {
 		return success(productService.updateProduct(req));
 	}
 	
@@ -71,6 +72,14 @@ public class ProductResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam final String keyword) {
 		return success(productService.searchProductByKeywordAndStore(keyword, page, pageSize));
+	}
+	
+	@PostMapping(URL + "/filter")
+	public ResponseEntity<Map<String, Object>> filterProduct(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestBody final ProductReq req) {
+		return success(productService.filterProduct(page, pageSize, req));
 	}
 }
 

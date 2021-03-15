@@ -74,8 +74,12 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 		final Store store = getStore(getUserContext());
 		store.setSizes(sizes.stream().filter(it -> !it.equals(size)).collect(Collectors.toSet()));
 		final List<SizeVM> content = findAllByStore(page, pageSize, sizeName, sortOrder, sortField).getContent();
-		final SizeVM last = Iterables.getLast(content);
-		return CollectionUtils.isNotEmpty(content) && last.getId() != id ? last : null;
+		if (CollectionUtils.isNotEmpty(content)) {
+			final SizeVM last = Iterables.getLast(content);
+			return last.getId() != id ? last : null;
+		}
+		return null;
+
 	}
 
 	@Override

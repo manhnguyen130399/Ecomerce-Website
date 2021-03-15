@@ -73,8 +73,11 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 				.filter(it -> !it.equals(category)).collect(Collectors.toSet()));
 		final List<CategoryVM> content = findAllByStore(page, pageSize, categoryName, sortOrder, sortField)
 				.getContent();
+		if (CollectionUtils.isEmpty(content)) {
+			return null;
+		}
 		final CategoryVM last = Iterables.getLast(content);
-		return CollectionUtils.isNotEmpty(content) && last.getId() != id ? last : null;
+		return last.getId() != id ? last : null;
 
 	}
 

@@ -16,14 +16,18 @@ public class ProductVM {
 	private String productName;
 
 	private BigDecimal price;
-	
+
 	private Integer categoryId;
-	
+
+	private String categoryName;
+
 	private Integer brandId;
+
+	private String brandName;
 
 	private Set<ProductDetailVM> productDetails;
 
 	private Set<ProductImageVM> productImages;
-	
+
 	private List<CommentVM> comments;
 }
