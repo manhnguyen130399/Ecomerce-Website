@@ -28,7 +28,6 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzMessageModule,
     NzPopconfirmModule,
     NzImageModule,
-    NzUploadModule,
     NzIconModule.forChild(shareIcons),
   ],
   exports: [
@@ -42,8 +41,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzDropDownModule,
     NzMessageModule,
     NzPopconfirmModule,
-    NzImageModule,
-    NzUploadModule
+    NzImageModule
   ],
   providers: []
 })

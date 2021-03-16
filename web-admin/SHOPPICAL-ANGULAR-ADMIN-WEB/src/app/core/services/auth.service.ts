@@ -3,7 +3,7 @@ import { StorageService } from './storage/storage.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Login } from '@models/auth/login';
+import { Login } from '@app/modules/auth/models/login';
 import { BaseResponse } from '@app/modules/common/base-response';
 import { environment } from '@env';
 import { tap, catchError } from 'rxjs/operators';
@@ -26,6 +26,11 @@ export class AuthService {
       tap(result => {
         if (result.isSuccessed) {
           const tokenObject = this.jwtHelperService.decodeToken(result.data);
+          if (tokenObject.role != "Admin") {
+            result.isSuccessed = false;
+            result.message = "You do haven't permission to access this page!";
+            return of(result);
+          }
           const user = {
             ...tokenObject,
             token: result.data

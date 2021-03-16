@@ -1,8 +1,8 @@
 <nz-modal [(nzVisible)]="isVisible" nzOkText="Save Change" nzClassName="form-modal" [nzTitle]="modalTitle"
-  [nzClosable]="false" [nzOkDisabled]="sizeForm.invalid" [nzOkLoading]="isLoading" (nzOnCancel)="handleCancel()"
+  [nzClosable]="false" [nzOkDisabled]="baseForm.invalid" [nzOkLoading]="isLoadingButton" (nzOnCancel)="cancelModal()"
   (nzOnOk)="submitForm()">
   <ng-container *nzModalContent>
-    <form nz-form [formGroup]="sizeForm">
+    <form nz-form [formGroup]="baseForm">
       <nz-form-item>
         <nz-form-label [nzSpan]="6" nzFor="sizeName">Size Name</nz-form-label>
         <nz-form-control [nzSpan]="14" nzErrorTip="Please input your size name!">

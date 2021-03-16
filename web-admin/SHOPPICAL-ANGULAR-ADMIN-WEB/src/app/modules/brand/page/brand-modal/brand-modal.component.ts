@@ -1,3 +1,4 @@
+import { BaseModalComponent } from '@app/modules/common/base-modal-component';
 import { Category } from '@modules/category/models/category';
 import { BrandService } from '@modules/brand/services/brand.service';
 import { Brand } from '@modules/brand/models/brand';
@@ -11,22 +12,21 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './brand-modal.component.html',
   styleUrls: ['./brand-modal.component.css']
 })
-export class BrandModalComponent implements OnInit {
+export class BrandModalComponent extends BaseModalComponent<Brand> implements OnInit {
 
   @Input() isVisible = false;
   @Input() modalTitle = "Add brand";
   @Input() brandObject: Brand;
   @Output() cancelModalEvent = new EventEmitter<string>();
   @Output() okModalEvent = new EventEmitter<Brand>();
-  isLoading = false;
-  isEditMode = false;
-  brandForm: FormGroup;
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly brandService: BrandService,
     private readonly messageService: NzMessageService
-  ) { }
+  ) {
+    super(brandService);
+  }
 
   ngOnInit(): void {
     this.buildForm();
@@ -34,33 +34,23 @@ export class BrandModalComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.sizeObject != undefined && changes.sizeObject.currentValue != undefined) {
-      this.brandForm.controls.sizeName.setValue(changes.sizeObject.currentValue.sizeName);
+      this.baseForm.controls.sizeName.setValue(changes.sizeObject.currentValue.sizeName);
       this.modalTitle = "Edit brand";
     }
   }
 
   buildForm() {
-    this.brandForm = this.formBuilder.group({
+    this.baseForm = this.formBuilder.group({
       brandName: [null, [Validators.required]]
     })
   }
 
   submitForm() {
-    this.isLoading = true;
-    let brand = { id: null, brandName: this.brandForm.get("brandName").value.trim() };
-    this.brandService.create(brand).pipe(
-      finalize(() => this.isLoading = false)
-    ).subscribe(res => {
-      if (res.code == "OK") {
-        this.messageService.create("success", `Create brand successfully!`);
-        this.okModalEvent.emit(res.data);
-        this.brandForm.reset();
-      }
-    });
+    let brand = { id: null, brandName: this.baseForm.get("brandName").value.trim() };
+    super.create(brand, this.okModalEvent, this.messageService);
   }
 
   handleCancel(): void {
-    this.cancelModalEvent.emit();
-    this.brandForm.reset();
+    super.cancel(this.cancelModalEvent)
   }
 }

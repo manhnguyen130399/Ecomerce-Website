@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { Login } from '@models/auth/login';
+import { Login } from '@app/modules/auth/models/login';
 import { tap, finalize, catchError } from 'rxjs/operators'
 import { environment } from '@env';
 @Component({
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       .pipe(
         tap(result => {
           if (result.isSuccessed) {
-            this.router.navigate(['/dashboard'])
+            this.router.navigate(['/admin/dashboard'])
           }
           else {
             this.validateForm.setErrors({ "error": result.message });

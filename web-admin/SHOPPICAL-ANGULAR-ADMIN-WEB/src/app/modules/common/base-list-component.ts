@@ -4,7 +4,7 @@ import { BaseModel } from "./base-model";
 import { BaseParams } from "./base-params";
 import { BaseService } from "./base-service";
 
-export class BaseList<T extends BaseModel> {
+export class BaseListComponent<T extends BaseModel> {
   isShowModal = false;
   isLoading = false;
   isShowSearchInput = false;
@@ -65,10 +65,9 @@ export class BaseList<T extends BaseModel> {
     });
   }
 
-  searchByName() {
+  search() {
     this.baseParams.sortField = null;
     this.baseParams.sortOrder = null;
-    this.baseParams.filters = [{ key: "sizeName", value: this.searchValue }];
     this.loadDataFromServer(this.baseParams)
   }
 
@@ -90,7 +89,7 @@ export class BaseList<T extends BaseModel> {
     });
   }
 
-  onQueryParamsChange = (params: NzTableQueryParams) => {
+  onQueryParamsChangeFromParent(params: NzTableQueryParams) {
     const { pageSize, pageIndex, sort } = params;
     const currentSort = sort.find(item => item.value !== null);
 
@@ -98,12 +97,7 @@ export class BaseList<T extends BaseModel> {
     this.baseParams.pageSize = pageSize;
     this.baseParams.sortField = (currentSort && currentSort.key) || null;
     this.baseParams.sortOrder = (currentSort && currentSort.value) || null;
-    this.baseParams.filters = [{ key: "sizeName", value: this.searchValue }];
 
     this.loadDataFromServer(this.baseParams);
-  }
-
-  trackByID(index: number, data: any) {
-    return data.id;
   }
 }

@@ -1,7 +1,7 @@
 <div class="table-operations">
-  <app-brand-modal [brandObject]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)"
-    (okModalEvent)="closeModal($event)">
-  </app-brand-modal>
+  <app-promotion-modal [promotionObject]="selectedData" [isVisible]="isShowModal"
+    (cancelModalEvent)="closeModal($event)" (okModalEvent)="closeModal($event)">
+  </app-promotion-modal>
   <button (click)="showModal()" class="add-btn" nzType="primary" nz-button>
     <i nz-icon nzType="plus" nzTheme="outline"></i>
   </button>
@@ -11,27 +11,34 @@
   [nzData]="listData" nzTableLayout="fixed">
   <thead>
     <tr>
-      <th nzAlign="center" nzColumnKey="id" [nzSortFn]="true">Id</th>
-      <th nzAlign="center">Brand Name
+      <th nzAlign="center" nzWidth="8%" nzColumnKey="id" [nzSortFn]="true">Id</th>
+      <th nzAlign="center">Title
         <nz-filter-trigger [(nzVisible)]="isShowSearchInput" [nzActive]="searchValue.length > 0"
           [nzDropdownMenu]="menu">
           <i nz-icon nzType="search"></i>
         </nz-filter-trigger>
       </th>
-      <th nzAlign="center">Action</th>
+      <th nzAlign="center">Code</th>
+      <th nzAlign="center">Start Date</th>
+      <th nzAlign="center">End Date</th>
+      <th nzAlign="center" nzWidth="10%">Discount</th>
+      <th nzAlign="center">Qr Code</th>
+      <th nzAlign="center" nzWidth="15%">Action</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even; let index  = index ;"
-      [ngClass]="{ odd: odd, even: even }">
-      <td nzAlign="center">{{ index + 1 + ((baseParams.pageIndex - 1) * baseParams.pageSize) }}</td>
-      <td nzAlign="center">{{ data.brandName }}</td>
+    <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
+      <td nzAlign="center">{{ data.id }}</td>
+      <td nzAlign="center">{{ data.title }}</td>
+      <td nzAlign="center">{{ data.code }}</td>
+      <td nzAlign="center">{{ data.startDate }}</td>
+      <td nzAlign="center">{{ data.endDate }}</td>
+      <td nzAlign="center">{{ data.discount }}%</td>
+      <td nzAlign="center"><img height="50" nz-image [nzSrc]="data.qrCode" nz-image></td>
       <td nzAlign="center" class="btn-action">
         <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm
-          nzPopconfirmTitle="Are you sure delete this brand?" (nzOnConfirm)="delete(data.id)"
+          nzPopconfirmTitle="Are you sure delete this size?" (nzOnConfirm)="delete(data.id)"
           nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
-        <button nz-button (click)="edit(data)" [disabled]="true" nzType="primary">Edit<i nz-icon nzType="edit"
-            nzTheme="outline"></i></button>
       </td>
     </tr>
   </tbody>
@@ -40,10 +47,10 @@
   <div class="ant-table-filter-dropdown">
     <div class="search-box">
       <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
       <button nz-button nzSize="small" nzType="primary" (click)="searchByName()" class="search-button">
         Search
       </button>
-      <!-- <button nz-button nzSize="small" (click)="reset()">Reset</button> -->
     </div>
   </div>
 </nz-dropdown-menu>

@@ -1,5 +1,8 @@
-import { NotifyService } from './../../core/services/notify/notify.service';
-import { SignalrService } from './../../core/services/signalr/signalr.service';
+import { Router } from '@angular/router';
+import { environment } from '@env';
+import { StorageService } from '@core/services/storage/storage.service';
+import { NotifyService } from '@core/services/notify/notify.service';
+import { SignalrService } from '@core/services/signalr/signalr.service';
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Notify } from '@app/models/notifies/notify';
 
@@ -17,7 +20,9 @@ export class MainLayoutComponent implements OnInit {
   constructor(
     private readonly signalrService: SignalrService,
     private readonly renderer: Renderer2,
-    private readonly notifyService: NotifyService
+    private readonly notifyService: NotifyService,
+    private readonly storageService: StorageService,
+    private readonly router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -55,5 +60,10 @@ export class MainLayoutComponent implements OnInit {
   }
   log() {
 
+  }
+
+  logout() {
+    this.storageService.remove(environment.tokenKey);
+    this.router.navigate(['/auth/login']);
   }
 }

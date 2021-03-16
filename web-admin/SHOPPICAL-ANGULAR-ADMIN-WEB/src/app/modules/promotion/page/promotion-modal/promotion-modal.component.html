@@ -1,0 +1,81 @@
+<nz-modal [(nzVisible)]="isVisible" [nzCentered]="true" nzOkText="Save Change" nzClassName="form-modal"
+  [nzTitle]="modalTitle" [nzClosable]="false" [nzOkDisabled]="baseForm.invalid" [nzOkLoading]="isLoadingButton"
+  (nzOnCancel)="cancelModal()" (nzOnOk)="submitForm()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="baseForm">
+      <!-- title -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="title">Title</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your title!">
+          <input nz-input type="text" formControlName="title">
+        </nz-form-control>
+      </nz-form-item>
+      <!-- code -->
+      <nz-form-item>
+        <nz-form-label nzFor="code" [nzSpan]="6">Code</nz-form-label>
+        <nz-form-control [nzSpan]="10" nzErrorTip="Please input your code!">
+          <input nz-input formControlName="code" />
+        </nz-form-control>
+        <div class="btn-generate-code">
+          <button (click)="generateCode()" nz-button>Generate
+          </button>
+        </div>
+      </nz-form-item>
+
+      <!-- date -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="title">Date</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your title!">
+          <nz-range-picker formControlName="date"></nz-range-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- discount -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="discount">Discount</nz-form-label>
+        <nz-form-control [nzSpan]="14" [nzErrorTip]="discountErrorTpl">
+          <input nz-input type="number" formControlName="discount">
+          <ng-template #discountErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Please input your discount!
+            </ng-container>
+            <ng-container *ngIf="control.hasError('min')">
+              The min value is 0
+            </ng-container>
+            <ng-container *ngIf="control.hasError('max')">
+              The min value is 100
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- numUse -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="numUse">Number Use</nz-form-label>
+        <nz-form-control [nzSpan]="14" min="0" nzErrorTip="Please input your numUse!">
+          <input nz-input type="number" formControlName="numUse">
+          <ng-template #discountErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              Please input your number use!
+            </ng-container>
+            <ng-container *ngIf="control.hasError('min')">
+              The min value is 0
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- type -->
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="type">Type</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your numUse!">
+          <nz-select formControlName="type">
+            <nz-option nzValue="EVENT" nzLabel="EVENT"></nz-option>
+            <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+    </form>
+  </ng-container>
+</nz-modal>

@@ -1,3 +1,4 @@
+import { BaseModalComponent } from '@app/modules/common/base-modal-component';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { environment } from '@env';
@@ -12,70 +13,56 @@ import { CategoryService } from '../../services/category.service';
   templateUrl: './category-modal.component.html',
   styleUrls: ['./category-modal.component.css'],
 })
-export class CategoryModalComponent implements OnInit {
+export class CategoryModalComponent extends BaseModalComponent<Category> implements OnInit {
   @Input() isVisible = false;
   @Input() modalTitle = 'Add Category';
   @Input() category: Category;
   @Output() cancelModalEvent = new EventEmitter<string>();
   @Output() okModalEvent = new EventEmitter<Category>();
-  isLoading = false;
   isHaveFile = false;
   backEndUrl = `${environment.productServiceUrl}/api/upload`;
   fileList: NzUploadFile[] = [];
-  categoryForm: FormGroup;
+
   constructor(
     private readonly categoryService: CategoryService,
     private readonly formBuilder: FormBuilder,
     private readonly messageService: NzMessageService
-  ) { }
+  ) {
+    super(categoryService);
+  }
 
   ngOnInit(): void {
     this.buildForm();
   }
 
   buildForm() {
-    this.categoryForm = this.formBuilder.group({
+    this.baseForm = this.formBuilder.group({
       categoryName: [null, Validators.required],
     });
   }
 
-  handleCancel(): void {
-    this.cancelModalEvent.emit();
-    this.categoryForm.reset();
+  cancelModal(): void {
+    super.cancel(this.cancelModalEvent);
     this.fileList = [];
   }
 
   submitForm() {
-    this.isLoading = true;
     let category = {
       id: null,
-      categoryName: this.categoryForm.get("categoryName").value,
+      categoryName: this.baseForm.get("categoryName").value,
       image: this.fileList[0].response.data[0],
     }
-    this.categoryService
-      .create(category)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe((res) => {
-        if (res.code == 'OK') {
-          this.messageService.create(
-            'success',
-            ' Created category successfully!'
-          );
-          this.okModalEvent.emit(res.data);
-          this.categoryForm.reset();
-          this.fileList = [];
-        }
-      });
+    super.create(category, this.okModalEvent, this.messageService);
+    this.fileList = [];
   }
 
   handleChange = (info: NzUploadChangeParam) => {
+    this.isHaveFile = false;
     this.fileList.forEach(x => {
       if (x.status === 'done') {
         this.isHaveFile = true;
       }
-      else {
-        this.isHaveFile = false;
-      }
     });
   }
+
 }
