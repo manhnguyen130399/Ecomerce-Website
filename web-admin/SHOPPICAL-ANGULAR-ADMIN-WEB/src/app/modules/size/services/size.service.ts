@@ -39,10 +39,7 @@ export class SizeService implements BaseService<Size>{
   }
 
   create(data: Size): Observable<BaseResponse<Size>> {
-    const request = {
-      sizeName: data.sizeName
-    }
-    return this.httpClient.post<BaseResponse<Size>>(`${environment.productServiceUrl}/api/size/create`, request).pipe(
+    return this.httpClient.post<BaseResponse<Size>>(`${environment.productServiceUrl}/api/size/create`, data).pipe(
       catchError(error => {
         return of(error.error);
       })

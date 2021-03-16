@@ -25,7 +25,8 @@ import { StoreInfoComponent } from './page/store-info/store-info.component';
     LoginComponent,
     RegisterComponent,
     SellerInfoComponent,
-    StoreInfoComponent],
+    StoreInfoComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

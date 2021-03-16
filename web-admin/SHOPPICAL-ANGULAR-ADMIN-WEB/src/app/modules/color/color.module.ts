@@ -7,7 +7,14 @@ import { colorRoutes } from './color.routing';
 import { SharedModule } from '@app/shared/shared.module';
 
 @NgModule({
-  declarations: [ColorListComponent, ColorModalComponent],
-  imports: [CommonModule, SharedModule,  RouterModule.forChild(colorRoutes)],
+  declarations: [
+    ColorListComponent,
+    ColorModalComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    RouterModule.forChild(colorRoutes)
+  ],
 })
-export class ColorModule {}
+export class ColorModule { }

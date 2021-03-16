@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { CategoryListComponent } from './page/category-list/category-list.component';
 import { CategoryModalComponent } from './page/category-modal/category-modal.component';
 import { categoryRoutes } from './category.routing';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 
 
@@ -13,6 +14,7 @@ import { categoryRoutes } from './category.routing';
   imports: [
     CommonModule,
     SharedModule,
+    NzUploadModule,
     RouterModule.forChild(categoryRoutes)
   ]
 })
