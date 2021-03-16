@@ -8,11 +8,13 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.brand.repository.BrandRepository;
@@ -35,6 +37,7 @@ import com.fashion.modules.size.domain.Size;
 import com.fashion.modules.size.repository.SizeRepository;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.service.impl.BaseService;
+import com.google.common.collect.Iterables;
 
 @Service
 public class ProductServiceImpl extends BaseService implements ProductService {
@@ -177,12 +180,6 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	public void deleteProduct(final Integer id) {
-		productRepo.deleteById(id);
-	}
-
-	@Override
-	@Transactional
 	public Page<ProductVM> getAllProductByStore(final Integer page, final Integer pageSize, final ProductReq req) {
 		if (req == null) {
 			return productRepo.findAllProductStore(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
@@ -215,7 +212,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			final Integer pageSize) {
 		return productRepo
 				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
-				.map(it ->convertToVM(it));
+				.map(it -> convertToVM(it));
 	}
 
 	@Override
@@ -223,6 +220,27 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	public Page<ProductVM> filterProduct(final Integer page, final Integer pageSize, final ProductReq req) {
 		return productRepo.filterProduct(page, pageSize, getStore(getUserContext()).getId(), req)
 				.map(it -> convertToVM(it));
+	}
+
+	@Override
+	@Transactional
+	public ProductVM deleteProduct(final Integer id, final Integer page, final Integer pageSize,
+			final SortEnum sortOrder, final String sortField) {
+		try {
+			productRepo.deleteById(id);
+			final Page<ProductVM> products = filterProduct(page, pageSize, new ProductReq(sortOrder, sortField));
+			final List<ProductVM> content = products.getContent();
+			if (CollectionUtils.isEmpty(content)) {
+				return null;
+			}
+			return Iterables.getLast(content);
+		} catch (Exception e) {
+			if (e instanceof DataIntegrityViolationException) {
+				throw new InvalidArgumentException(" Product existed in carts. You can't delete this. ");
+			}
+			throw new InvalidArgumentException("Product not found ");
+
+		}
 	}
 
 }

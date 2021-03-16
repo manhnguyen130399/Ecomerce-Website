@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.modules.promotion.model.PromotionFilterReq;
 import com.fashion.modules.promotion.model.PromotionRequest;
 import com.fashion.modules.promotion.model.PromotionVM;
@@ -20,7 +21,7 @@ public interface PromotionService {
 
 	List<QrVM> getPromotionValidDate() throws ParseException;
 
-	void deletePromotion(Integer id);
+	PromotionVM deletePromotion(Integer id, Integer page, Integer pageSize, SortEnum sortOrder, String sortField);
 
 	String getDiscountPromtion(String code);
 
