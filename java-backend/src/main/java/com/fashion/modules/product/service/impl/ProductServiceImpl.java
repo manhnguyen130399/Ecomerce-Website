@@ -236,7 +236,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			return Iterables.getLast(content);
 		} catch (Exception e) {
 			if (e instanceof DataIntegrityViolationException) {
-				throw new InvalidArgumentException(" Product existed in carts. You can't delete this. ");
+				throw new InvalidArgumentException(" Product existed in carts. You can't delete this.");
 			}
 			throw new InvalidArgumentException("Product not found ");
 

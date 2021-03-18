@@ -3,7 +3,7 @@ import {
   EditOutline,
   DeleteOutline,
   PlusOutline,
-  DownloadOutline
+  DownloadOutline,
 } from '@ant-design/icons-angular/icons';
 
 export const shareIcons: IconDefinition[] = [
