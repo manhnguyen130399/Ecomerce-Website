@@ -53,6 +53,8 @@ public class Store implements Serializable {
 	private String owner;
 
 	private String website;
+	
+	private String logo;
 
 	@CreatedDate
 	@CreationTimestamp
@@ -157,6 +159,15 @@ public class Store implements Serializable {
 
 	public void setUpdatedAt(final Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+	
+	@Column(name = "logo")
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
 	public Integer getId() {
