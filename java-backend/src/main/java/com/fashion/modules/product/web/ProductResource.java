@@ -85,6 +85,11 @@ public class ProductResource extends BaseResource {
 			@RequestBody final ProductReq req) {
 		return success(productService.filterProduct(page, pageSize, req));
 	}
+	
+	@DeleteMapping(URL + "/image/{id}")
+	public ResponseEntity<Map<String, Object>> deleteImageProduct(@PathVariable final Integer id) {
+		return success(productService.deleteImageProduct(id));
+	}
 }
 
 

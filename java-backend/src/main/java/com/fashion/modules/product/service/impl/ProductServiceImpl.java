@@ -12,8 +12,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.fashion.commons.constants.Constants;
+import com.fashion.commons.constants.ErrorMessage;
 import com.fashion.commons.enums.SortType;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.brand.domain.Brand;
@@ -31,6 +32,7 @@ import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.model.ProductRes;
 import com.fashion.modules.product.model.ProductVM;
 import com.fashion.modules.product.repository.ProductDetailRepository;
+import com.fashion.modules.product.repository.ProductImageRepository;
 import com.fashion.modules.product.repository.ProductRepository;
 import com.fashion.modules.product.service.ProductService;
 import com.fashion.modules.size.domain.Size;
@@ -59,6 +61,9 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Autowired
 	private SizeRepository sizeRepo;
+
+	@Autowired
+	private ProductImageRepository imageRepo;
 
 	@Override
 	@Transactional
@@ -173,12 +178,6 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	}
 
 	@Override
-	public ProductVM updateImageProduct(final List<MultipartFile> files, final Integer productId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	@Transactional
 	public Page<ProductVM> getAllProductByStore(final Integer page, final Integer pageSize, final ProductReq req) {
 		if (req == null) {
@@ -240,6 +239,17 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			}
 			throw new InvalidArgumentException("Product not found ");
 
+		}
+	}
+
+	@Override
+	@Transactional
+	public String deleteImageProduct(final Integer productImageId) {
+		try {
+			imageRepo.deleteById(productImageId);
+			return Constants.SUCCESS;
+		} catch (Exception e) {
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND);
 		}
 	}
 
