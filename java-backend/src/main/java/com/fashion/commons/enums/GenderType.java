@@ -1,5 +1,5 @@
 package com.fashion.commons.enums;
 
-public enum GenderEnum {
+public enum GenderType {
 	MALE, FEMALE
 }

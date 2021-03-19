@@ -22,6 +22,8 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
 	
 	Store findByStoreNameLike(String storeName);
 	
+	Store findByStoreName(String storeName);
+	
 	@Query(value = " SELECT s " 
 			+ " FROM Store s " 
 			+ " WHERE s.id IN (:ids) ")

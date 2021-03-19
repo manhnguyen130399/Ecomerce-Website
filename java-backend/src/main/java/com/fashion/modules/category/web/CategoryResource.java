@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.category.model.CategoryVM;
 import com.fashion.modules.category.service.CategoryService;
 import com.fashion.web.BaseResource;
@@ -47,7 +47,7 @@ public class CategoryResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String categoryName,
-			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(categoryService.findAllByStore(page, pageSize, categoryName, sortOrder, sortField));
 	}
@@ -57,7 +57,7 @@ public class CategoryResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String categoryName,
-			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(categoryService.deleteCategory(id, page, pageSize, categoryName, sortOrder, sortField));
 	}
@@ -67,7 +67,7 @@ public class CategoryResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String categoryName,
-			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(
 				categoryService.searchCategoryByKeywordAndStore(categoryName, sortOrder, sortField, page, pageSize));

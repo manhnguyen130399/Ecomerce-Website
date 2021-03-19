@@ -11,11 +11,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import com.fashion.commons.constants.Constants;
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.repository.custom.ProductRepositoryCustom;
-import com.fashion.modules.promotion.domain.Promotion;
 import com.fashion.repository.BaseRepository;
 
 @Repository
@@ -34,7 +33,7 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		final boolean hasPrice = price != null;
 		final String sortField = req.getSortField();
 		final boolean hasSortField = sortField != null;
-		final String sortOrder = SortEnum.descend.equals(req.getSortOrder()) ? Constants.DESC : Constants.ASC;
+		final String sortOrder = SortType.descend.equals(req.getSortOrder()) ? Constants.DESC : Constants.ASC;
 		final StringBuilder builder = new StringBuilder();
 		builder.append(" SELECT p ");
 		builder.append(" FROM Product p ");

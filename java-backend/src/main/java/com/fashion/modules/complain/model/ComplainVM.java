@@ -1,6 +1,6 @@
 package com.fashion.modules.complain.model;
 
-import com.fashion.commons.enums.ComplainEnum;
+import com.fashion.commons.enums.ComplainType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,6 @@ public class ComplainVM extends ComplainRequest {
 
 	private Integer id;
 	
-	private ComplainEnum state;
+	private ComplainType state;
 	
 }

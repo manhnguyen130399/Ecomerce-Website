@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.fashion.commons.enums.ComplainEnum;
+import com.fashion.commons.enums.ComplainType;
 import com.fashion.modules.store.domain.Store;
 
 @Entity
@@ -40,7 +40,7 @@ public class Complain implements Serializable {
 
 	@Column(name = "state")
 	@Enumerated(EnumType.STRING)
-	private ComplainEnum state;
+	private ComplainType state;
 
 	@CreationTimestamp
 	@Column(name = "created_at")
@@ -74,11 +74,11 @@ public class Complain implements Serializable {
 		this.email = email;
 	}
 
-	public ComplainEnum getState() {
+	public ComplainType getState() {
 		return state;
 	}
 
-	public void setState(final ComplainEnum state) {
+	public void setState(final ComplainType state) {
 		this.state = state;
 	}
 

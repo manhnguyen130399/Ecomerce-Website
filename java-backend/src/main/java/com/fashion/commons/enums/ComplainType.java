@@ -1,5 +1,5 @@
 package com.fashion.commons.enums;
 
-public enum ComplainEnum {
+public enum ComplainType {
 	PENDING, RESPONSE
 }

@@ -1,5 +1,5 @@
 package com.fashion.commons.enums;
 
-public enum AccountEnum {
+public enum AccountType {
 	ADMIN, SELLER, CUSTOMER
 }

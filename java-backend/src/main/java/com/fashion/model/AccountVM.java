@@ -2,7 +2,7 @@ package com.fashion.model;
 
 import java.util.Date;
 
-import com.fashion.commons.enums.AccountEnum;
+import com.fashion.commons.enums.AccountType;
 
 import lombok.Data;
 
@@ -17,7 +17,7 @@ public class AccountVM {
 
 	private String password;
 
-	private AccountEnum type;
+	private AccountType type;
 
 	private Boolean isActive;
 

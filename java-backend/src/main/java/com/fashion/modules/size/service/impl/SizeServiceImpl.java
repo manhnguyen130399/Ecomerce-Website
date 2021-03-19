@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.domain.UserContext;
 import com.fashion.modules.size.domain.Size;
@@ -52,7 +52,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 	@Override
 	@Transactional
 	public Page<SizeVM> findAllByStore(final Integer page, final Integer pageSize, final String sizeName,
-			final SortEnum sortOrder, final String sortField) {
+			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(sizeName)) {
 			return sizeRepo
 					.findAllByStoreId(getStore(getUserContext()).getId(),
@@ -67,7 +67,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 	@Override
 	@Transactional
 	public SizeVM deleteSize(final Integer id, final Integer page, final Integer pageSize, final String sizeName,
-			final SortEnum sortOrder, final String sortField) {
+			final SortType sortOrder, final String sortField) {
 		final Integer storeId = getStore(getUserContext()).getId();
 		final List<Size> sizes = sizeRepo.findAllByStoreId(storeId, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
 		final Size size = sizeRepo.findOneByIdAndStoreId(id, storeId);
@@ -85,7 +85,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 	@Override
 	@Transactional
 	public Page<SizeVM> searchByKeyword(final String keyword, final Integer page, final Integer pageSize,
-			final SortEnum sortOrder, final String sortField) {
+			final SortType sortOrder, final String sortField) {
 		return sizeRepo
 				.searchSizeByKeyword(keyword, getStore(getUserContext()).getId(),
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))

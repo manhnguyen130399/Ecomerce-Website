@@ -109,6 +109,8 @@ public final class Constants {
 	public static final String FIELD_ID = "id";
 	public static final String ASC = "ASC";
 	public static final String DESC = "DESC";
+	public static final String EXISTED = "existed";
+	public static final String NOT_EXISTED = "not existed";
 
 	// NET API
 	public static final String URL = "https://user-service-net.herokuapp.com/api";

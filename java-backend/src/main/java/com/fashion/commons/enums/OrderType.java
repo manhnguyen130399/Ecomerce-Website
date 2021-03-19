@@ -1,5 +1,5 @@
 package com.fashion.commons.enums;
 
-public enum OrderEnum {
+public enum OrderType {
 	PENDING, DELIVER, COMPLETE, CANCLE
 }

@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.category.model.CategoryVM;
@@ -51,7 +51,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	@Override
 	@Transactional
 	public Page<CategoryVM> findAllByStore(final Integer page, final Integer pageSize, final String categoryName,
-			final SortEnum sortOrder, final String sortField) {
+			final SortType sortOrder, final String sortField) {
 		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
 		if (StringUtils.isEmpty(categoryName)) {
 			return cateRepo.findAllByStoreId(getStore(getUserContext()).getId(), pageable)
@@ -64,7 +64,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	@Override
 	@Transactional
 	public CategoryVM deleteCategory(final Integer id, final Integer page, final Integer pageSize,
-			final String categoryName, final SortEnum sortOrder, final String sortField) {
+			final String categoryName, final SortType sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
 		final Integer storeId = store.getId();
 		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
@@ -83,7 +83,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
-	public Page<CategoryVM> searchCategoryByKeywordAndStore(final String categoryName, final SortEnum sortOrder,
+	public Page<CategoryVM> searchCategoryByKeywordAndStore(final String categoryName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		return cateRepo
 				.searchByKeywordAndStore(categoryName, getStore(getUserContext()).getId(),

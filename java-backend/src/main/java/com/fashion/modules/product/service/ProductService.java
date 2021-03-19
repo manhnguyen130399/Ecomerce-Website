@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.model.ProductRes;
 import com.fashion.modules.product.model.ProductVM;
@@ -22,7 +22,7 @@ public interface ProductService {
 
 	Page<ProductVM> getAllProductByStore(Integer page, Integer pageSize, ProductReq req);
 
-	ProductVM deleteProduct(Integer id,Integer page, Integer pageSize,SortEnum sortOrder, String sortField);
+	ProductVM deleteProduct(Integer id, Integer page, Integer pageSize, SortType sortOrder, String sortField);
 
 	List<ProductRes> getProductDetailInfos(List<Integer> ids);
 

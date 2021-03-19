@@ -11,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import com.fashion.commons.constants.Constants;
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.promotion.domain.Promotion;
 import com.fashion.modules.promotion.model.PromotionFilterReq;
 import com.fashion.modules.promotion.repository.custom.PromotionRepositoryCustom;
@@ -37,7 +37,7 @@ public class PromotionRepositoryCustomImpl extends BaseRepository implements Pro
 		final boolean hasEndDate = endDate != null;
 		final String sortField = req.getSortField();
 		final boolean hasSortField = sortField != null;
-		final String sortOrder = SortEnum.ascend.equals(req.getSortOrder()) ? Constants.ASC : Constants.DESC;
+		final String sortOrder = SortType.ascend.equals(req.getSortOrder()) ? Constants.ASC : Constants.DESC;
 		builder.append(" SELECT p ");
 		builder.append(" FROM Promotion p ");
 		builder.append(" WHERE p.store.id = :storeId ");
