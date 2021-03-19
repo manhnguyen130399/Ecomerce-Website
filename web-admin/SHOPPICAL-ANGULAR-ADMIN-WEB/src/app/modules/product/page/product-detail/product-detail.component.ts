@@ -162,7 +162,6 @@ export class ProductDetailComponent implements OnInit {
         .subscribe((res) => {
           if (res.code == 'OK') {
             this.messageService.create('success', `Update product successfully!`);
-            this.productForm.reset();
           }
         });
     }
@@ -174,6 +173,8 @@ export class ProductDetailComponent implements OnInit {
         .subscribe((res) => {
           if (res.code == 'OK') {
             this.messageService.create('success', `Create product successfully!`);
+            this.productForm.reset();
+            this.listProductDetail =[];
           }
         });
     }
