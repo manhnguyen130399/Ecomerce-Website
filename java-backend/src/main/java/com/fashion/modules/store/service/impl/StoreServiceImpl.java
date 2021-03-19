@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.constants.ErrorMessage;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
@@ -75,7 +76,7 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 		try {
 			return mapper.map(storeRepo.save(store), StoreVM.class);
 		} catch (Exception e) {
-			throw new InvalidArgumentException("Duplicated store name");
+			throw new InvalidArgumentException(ErrorMessage.DUPLICATE_STORE);
 		}
 
 	}

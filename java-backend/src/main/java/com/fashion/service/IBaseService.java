@@ -8,5 +8,7 @@ public interface IBaseService {
 	UserContext getUserContext();
 
 	Store getStore(final UserContext context);
+	
+	Integer getCurrentStoreId();
 
 }

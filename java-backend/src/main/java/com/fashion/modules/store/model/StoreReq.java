@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class StoreReq {
-	
+
 	private String storeName;
 
 	private String address;
@@ -18,5 +18,7 @@ public class StoreReq {
 	private Time closeTime;
 
 	private String website;
+
+	private String logo;
 
 }

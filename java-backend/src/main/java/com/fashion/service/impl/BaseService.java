@@ -30,7 +30,11 @@ public class BaseService implements IBaseService {
 	@Override
 	public Store getStore(final UserContext context) {
 		return storeRepo.findOneById(sellerRepo.findOneByAccountId(context.getAccountId()).getStoreId());
+	}
 
+	@Override
+	public Integer getCurrentStoreId() {
+		return getStore(getUserContext()).getId();
 	}
 
 }
