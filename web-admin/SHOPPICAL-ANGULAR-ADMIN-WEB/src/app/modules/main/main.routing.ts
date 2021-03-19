@@ -41,6 +41,11 @@ export const mainRoutes: Routes = [
         loadChildren: () =>
           import('../promotion/promotion.module').then((m) => m.PromotionModule),
       },
+      {
+        path: 'product',
+        loadChildren: () =>
+          import('../product/product.module').then((m) => m.ProductModule),
+      },
     ],
   }
 ];

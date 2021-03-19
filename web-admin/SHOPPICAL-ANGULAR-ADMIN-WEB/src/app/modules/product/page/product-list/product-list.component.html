@@ -1,0 +1,71 @@
+<div class="table-operations">
+  <div class="category">
+    <p>Category: </p>
+    <nz-select [nzDisabled]="isLoading" [(ngModel)]="productSearch.categoryName"
+      (ngModelChange)="filterByCategory($event)" (nzFocus)="focusCategorySelect()" [nzLoading]="isLoadCategory"
+      nzShowSearch nzAllowClear nzPlaceHolder="Select a category">
+      <nz-option *ngFor="let item of listCategory" [nzLabel]="item.categoryName" [nzValue]="item.categoryName">
+      </nz-option>
+    </nz-select>
+  </div>
+  <div class="brand">
+    <p>Brand: </p>
+    <nz-select [nzDisabled]="isLoading" [(ngModel)]="productSearch.brandName" [nzAutoClearSearchValue]="false"
+      (ngModelChange)="filterByBrand($event)" (nzFocus)="focusBrandSelect()" [nzLoading]="isLoadBrand" nzShowSearch
+      nzAllowClear nzPlaceHolder="Select a brand">
+      <nz-option *ngFor="let item of listBrand" [nzLabel]="item.brandName" [nzValue]="item.brandName"></nz-option>
+    </nz-select>
+  </div>
+</div>
+
+<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize"
+  [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)"
+  [nzData]="listData" nzTableLayout="fixed">
+  <thead>
+    <tr>
+      <th nzAlign="center" nzWidth="7%" nzColumnKey="id" [nzSortFn]="true">Id</th>
+      <th nzAlign="center">Product Name
+        <nz-filter-trigger [(nzVisible)]="isShowSearchInput" [nzActive]="searchValue.length > 0"
+          [nzDropdownMenu]="menu">
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+      </th>
+      <th nzAlign="center">Category Name</th>
+      <th nzAlign="center">Brand Name</th>
+      <th nzAlign="center">Price</th>
+      <th nzAlign="center">Image</th>
+      <th nzAlign="center" nzWidth="20%">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
+      <td nzAlign="center">{{ data.id }}</td>
+      <td nzAlign="center">{{ data.productName }}</td>
+      <td nzAlign="center">{{ data.brandName }}</td>
+      <td nzAlign="center">{{ data.categoryName }}</td>
+      <td nzAlign="center">{{ data.price }}</td>
+      <!-- <td nzAlign="center">{{ data.discount }}%</td> -->
+      <td nzAlign="center"><img height="50" (click)="showListImage(data.productImages)"
+          src="{{ data.productImages[0].image}}">
+      </td>
+      <td nzAlign="center" class="btn-action">
+        <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm
+          nzPopconfirmTitle="Are you sure delete this size?" (nzOnConfirm)="delete(data.id)"
+          nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
+        <button nz-button (click)="editProduct(data)" nzType="primary">Edit<i nz-icon nzType="edit"
+            nzTheme="outline"></i></button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+      <button nz-button nzSize="small" (click)="reset()">Reset</button>
+      <button nz-button nzSize="small" nzType="primary" (click)="searchByName()" class="search-button">
+        Search
+      </button>
+    </div>
+  </div>
+</nz-dropdown-menu>

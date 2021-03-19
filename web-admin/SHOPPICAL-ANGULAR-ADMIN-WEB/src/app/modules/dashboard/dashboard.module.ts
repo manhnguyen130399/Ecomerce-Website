@@ -1,16 +1,32 @@
+import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from '@modules/dashboard/page/dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { dashboardRoutes } from './dashboard.routing';
-
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { ChartsModule } from 'ng2-charts';
+import { LineChartComponent } from './page/line-chart/line-chart.component';
+import { BarChartComponent } from './page/bar-chart/bar-chart.component';
+import { PieChartComponent } from './page/pie-chart/pie-chart.component';
+import { RadarChartComponent } from './page/radar-chart/radar-chart.component';
+import { CardComponent } from './page/card/card.component';
 
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [
+    DashboardComponent,
+    LineChartComponent,
+    BarChartComponent,
+    PieChartComponent,
+    RadarChartComponent,
+    CardComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(dashboardRoutes),
+    SharedModule,
+    ChartsModule
   ]
 })
 export class DashboardModule {

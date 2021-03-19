@@ -12,8 +12,7 @@ import { shareIcons } from './share-icon';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzImageModule } from 'ng-zorro-antd/image';
-import { NzUploadModule } from 'ng-zorro-antd/upload';
-
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 @NgModule({
   declarations: [],
   imports: [
@@ -28,6 +27,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzMessageModule,
     NzPopconfirmModule,
     NzImageModule,
+    NzSpinModule,
     NzIconModule.forChild(shareIcons),
   ],
   exports: [
@@ -41,7 +41,8 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzDropDownModule,
     NzMessageModule,
     NzPopconfirmModule,
-    NzImageModule
+    NzImageModule,
+    NzSpinModule
   ],
   providers: []
 })

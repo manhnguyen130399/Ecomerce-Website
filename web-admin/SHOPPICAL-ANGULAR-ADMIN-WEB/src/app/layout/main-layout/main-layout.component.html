@@ -8,40 +8,40 @@
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="Category" nzIcon="ordered-list">
+      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="ordered-list">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a [routerLink]="['/admin/category']">List category</a>
+            <a [routerLink]="['/admin/dashboard']">Dashboard</a>
           </li>
         </ul>
       </li>
-      <li nz-submenu nzOpen nzTitle="Size" nzIcon="expand-alt">
+      <li nz-submenu nzOpen nzTitle="Product" nzIcon="shopping-cart">
         <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a [routerLink]="['/admin/size']">List size</a>
+          <li nz-menu-item nzMatchRouter nzMatchRouterExact>
+            <a [routerLink]="['/admin/product']">List Product</a>
           </li>
-        </ul>
-      </li>
-      <li nz-submenu nzOpen nzTitle="Color" nzIcon="bg-colors">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a [routerLink]="['/admin/color']">List color</a>
+          <li nz-menu-item nzMatchRouter nzMatchRouterExact>
+            <a [routerLink]="['/admin/product/create']">Create Product</a>
           </li>
         </ul>
       </li>
 
-      <li nz-submenu nzOpen nzTitle="Brand" nzIcon="slack">
+      <li nz-submenu nzOpen nzTitle="Option" nzIcon="expand-alt">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a [routerLink]="['/admin/brand']">List brand</a>
+            <a [routerLink]="['/admin/category']">Category</a>
           </li>
-        </ul>
-      </li>
-
-      <li nz-submenu nzOpen nzTitle="Promotion" nzIcon="slack">
-        <ul>
           <li nz-menu-item nzMatchRouter>
-            <a [routerLink]="['/admin/promotion']">List Promotion</a>
+            <a [routerLink]="['/admin/size']">Size</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/admin/color']">Color</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/admin/brand']">Brand</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/admin/promotion']">Promotion</a>
           </li>
         </ul>
       </li>
