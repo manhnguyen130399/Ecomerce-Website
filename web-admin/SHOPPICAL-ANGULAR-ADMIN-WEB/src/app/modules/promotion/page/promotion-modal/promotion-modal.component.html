@@ -52,7 +52,7 @@
       <!-- numUse -->
       <nz-form-item>
         <nz-form-label [nzSpan]="6" nzFor="numUse">Number Use</nz-form-label>
-        <nz-form-control [nzSpan]="14" min="0" nzErrorTip="Please input your numUse!">
+        <nz-form-control [nzSpan]="14" [nzErrorTip]="discountErrorTpl">
           <input nz-input type="number" formControlName="numUse">
           <ng-template #discountErrorTpl let-control>
             <ng-container *ngIf="control.hasError('required')">

@@ -24,14 +24,17 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
-.form-upload-image .ant-upload.ant-upload-select{
+.ant-layout-content {
+  position: relative;
+}
+
+.form-upload-image .ant-upload.ant-upload-select {
   display: block;
 }
 
-.form-upload-image .ant-upload.ant-upload-select button{
+.form-upload-image .ant-upload.ant-upload-select button {
   width: 100%;
 }
-
 
 /* notify-card */
 .notify-card {
@@ -83,21 +86,20 @@ body {
   padding-top: 0;
 }
 
-.form-modal .ant-modal-footer button{
+.form-modal .ant-modal-footer button {
   border-radius: 20px;
 }
 
-
 /* table-css */
-.ant-table table{
+.ant-table table {
   border-spacing: 2px;
 }
 
-.ant-table.ant-table-bordered .ant-table-container{
+.ant-table.ant-table-bordered .ant-table-container {
   border: 1px solid #dee2e6;
 }
 
-.ant-table-thead tr th{
+.ant-table-thead tr th {
   font-weight: bold;
   border-bottom: 2px solid #dee2e6;
   background: #fff;
@@ -112,27 +114,24 @@ body {
 }
 
 .ant-table-content tr th,
-.ant-table-content tr td{
+.ant-table-content tr td {
   border: 1px solid #dee2e6 !important;
-  border-left-width: 0  !important;
+  border-left-width: 0 !important;
 }
 
 .ant-table-content tr th:last-child,
-.ant-table-content tr td:last-child{
-  border-right-width: 0  !important;
+.ant-table-content tr td:last-child {
+  border-right-width: 0 !important;
 }
 
 .ant-table-pagination .ant-pagination-prev button,
-.ant-table-pagination .ant-pagination-next button
-{
+.ant-table-pagination .ant-pagination-next button {
   border: none;
 }
 
-.ant-table-pagination .ant-pagination-item
-{
+.ant-table-pagination .ant-pagination-item {
   border-radius: 50%;
 }
-
 
 /*btn-add-css */
 .table-operations {
@@ -173,7 +172,6 @@ body {
   margin-left: 4px;
 }
 
-
 /* search-input-table */
 .search-box {
   padding: 8px;
@@ -194,11 +192,10 @@ body {
 }
 
 /* delete-confirm-card */
-.delete-confirm-card .ant-popover-message-title
-{
+.delete-confirm-card .ant-popover-message-title {
   font-size: 13.5px;
 }
 
-.delete-confirm-card .ant-popover-buttons button{
+.delete-confirm-card .ant-popover-buttons button {
   font-size: 13px;
 }

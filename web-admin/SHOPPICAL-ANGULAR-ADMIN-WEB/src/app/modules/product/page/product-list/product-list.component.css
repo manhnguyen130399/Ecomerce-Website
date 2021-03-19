@@ -1,0 +1,20 @@
+.table-operations {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.table-operations .category,
+.table-operations .brand {
+  display: flex;
+  align-items: center;
+}
+
+.table-operations .category p ,
+.table-operations .brand p{
+  margin: 0 15px 0 0;
+}
+
+nz-select {
+  width: 230px;
+}

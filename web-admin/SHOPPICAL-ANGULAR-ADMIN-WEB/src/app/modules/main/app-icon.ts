@@ -10,7 +10,8 @@ import {
   OrderedListOutline,
   ExpandAltOutline,
   SlackOutline,
-  GifOutline,
+  GiftOutline,
+  ShoppingCartOutline,
   ShopOutline,
   ExclamationCircleOutline
 } from '@ant-design/icons-angular/icons';
@@ -26,7 +27,8 @@ export const icons: IconDefinition[] = [
   OrderedListOutline,
   ExpandAltOutline,
   SlackOutline,
+  GiftOutline,
+  ShoppingCartOutline,
   ShopOutline,
   ExclamationCircleOutline,
-  GifOutline
 ];

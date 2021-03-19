@@ -1,1 +1,38 @@
-<p>dashboard works!</p>
+<div nz-row [nzGutter]="24">
+  <div nz-col [nzSpan]="6">
+    <app-card [iconName]="'dollar-circle'" [iconStyle]="{'color':'#e4e615e3'}" [category]="'Revenue'" [number]="123">
+    </app-card>
+  </div>
+
+  <div nz-col [nzSpan]="6">
+    <app-card [iconName]="'file-protect'" [iconStyle]="{'color':'#677f80'}" [category]="'Orders'" [number]="1232">
+    </app-card>
+  </div>
+
+  <div nz-col [nzSpan]="6">
+    <app-card [iconName]="'like'" [iconStyle]="{'color':'#259ce2'}" [category]="'Reviews'" [number]="20"></app-card>
+  </div>
+
+  <div nz-col [nzSpan]="6">
+    <app-card [iconName]="'user'" [iconStyle]="{'color':'#e25243'}" [category]="'Customers'" [number]="345"></app-card>
+  </div>
+</div>
+
+
+<div class="chart-section" nz-row [nzGutter]="24">
+  <div nz-col [nzSpan]="16" class="line-chart chart">
+    <app-line-chart [chartTitle]="'Sales statistics by month'"></app-line-chart>
+  </div>
+  <div nz-col class="radar-chart chart" [nzSpan]="8">
+    <app-radar-chart [chartTitle]="'Number product by category'"></app-radar-chart>
+  </div>
+</div>
+
+<div class="chart-section" nz-row [nzGutter]="24">
+  <div nz-col class="pie-chart chart" [nzSpan]="8">
+    <app-pie-chart [chartTitle]="'Order state'"></app-pie-chart>
+  </div>
+  <div nz-col [nzSpan]="16" class="bar-chart chart">
+    <app-bar-chart [chartTitle]="'Sales statistics by years'"></app-bar-chart>
+  </div>
+</div>
