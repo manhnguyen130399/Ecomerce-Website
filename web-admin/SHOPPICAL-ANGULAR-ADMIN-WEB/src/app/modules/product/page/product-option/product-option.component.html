@@ -1,0 +1,54 @@
+<div class="option-value section">
+  <h4>Option Value:</h4>
+  <div class="content">
+    <div class="column">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6">Size</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your size!">
+          <nz-select [nzLoading]="isLoadingSizeInSelect" nzMode="multiple" [nzMaxTagCount]="3"
+            [(ngModel)]="listSizeSelected" (ngModelChange)="selectSize($event)" nzAllowClear nzShowSearch
+            nzPlaceHolder="Select a size">
+            <nz-option *ngFor="let item of listSize" [nzLabel]="item.sizeName" [nzValue]="item">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="column">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6">Color</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your color!">
+          <nz-select nzMode="multiple" [nzLoading]="isLoadingColorInSelect" [nzMaxTagCount]="3"
+            [(ngModel)]="listColorSelected" (ngModelChange)="selectColor($event)" nzShowSearch nzAllowClear
+            nzPlaceHolder="Select a color">
+            <nz-option *ngFor="let item of listColor" [nzLabel]="item.colorName" [nzValue]="item">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <nz-table [nzShowPagination]="false" nzBordered [nzData]="listProductDetail">
+    <thead>
+      <tr>
+        <th nzAlign="center">Size</th>
+        <th nzAlign="center">Color</th>
+        <th nzAlign="center">Quantity</th>
+        <th nzAlign="center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of listProductDetail">
+        <td nzAlign="center">{{data.size}}</td>
+        <td nzAlign="center">{{data.color}}</td>
+        <td nzAlign="center"><input type="number" [(ngModel)]="data.quantity" nz-input placeholder="Quantity"></td>
+        <td nzAlign="center">
+          <button nz-button nzDanger nzType="primary" (click)="deleteProductDetail(data)"><i nz-icon nzType="delete"
+              nzTheme="outline"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

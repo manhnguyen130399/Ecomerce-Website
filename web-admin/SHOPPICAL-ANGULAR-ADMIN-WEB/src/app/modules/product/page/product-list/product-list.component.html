@@ -41,8 +41,8 @@
     <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
       <td nzAlign="center">{{ data.id }}</td>
       <td nzAlign="center">{{ data.productName }}</td>
-      <td nzAlign="center">{{ data.brandName }}</td>
       <td nzAlign="center">{{ data.categoryName }}</td>
+      <td nzAlign="center">{{ data.brandName }}</td>
       <td nzAlign="center">{{ data.price }}</td>
       <!-- <td nzAlign="center">{{ data.discount }}%</td> -->
       <td nzAlign="center"><img height="50" (click)="showListImage(data.productImages)"

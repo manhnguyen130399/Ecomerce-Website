@@ -13,7 +13,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="6" nzFor="productName">Category</nz-form-label>
             <nz-form-control [nzSpan]="14" nzErrorTip="Please input your category name!">
-              <nz-select [nzLoading]="isLoadingCategory" formControlName="categoryId" nzShowSearch nzAllowClear
+              <nz-select [nzLoading]="isLoadingCategoryInSelect" formControlName="categoryId" nzShowSearch nzAllowClear
                 nzPlaceHolder="Select a category">
                 <nz-option *ngFor="let item of listCategory" [nzLabel]="item.categoryName" [nzValue]="item.id">
                 </nz-option>
@@ -40,7 +40,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="6" nzFor="price">Brand</nz-form-label>
             <nz-form-control [nzSpan]="14" nzErrorTip="Please input your price!">
-              <nz-select [nzLoading]="isLoadingBrand" formControlName="brandId" nzShowSearch nzAllowClear
+              <nz-select [nzLoading]="isLoadingBrandInSelect" formControlName="brandId" nzShowSearch nzAllowClear
                 nzPlaceHolder="Select a brand">
                 <nz-option *ngFor="let item of listBrand" [nzLabel]="item.brandName" [nzValue]="item.id">
                 </nz-option>
@@ -52,85 +52,14 @@
     </div>
   </form>
 
-  <div class="product-image section">
-    <h4>Product Images:</h4>
-    <nz-form-item>
-      <div class="clearfix">
-        <nz-upload [nzAction]="backEndUrl" [nzMultiple]="true" nzName="files" nzListType="picture-card"
-          [(nzFileList)]="fileList" [nzShowButton]="fileList.length < 8" [nzPreview]="handlePreview">
-          <div>
-            <i nz-icon nzType="plus"></i>
-            <div style="margin-top: 8px">Upload</div>
-          </div>
-        </nz-upload>
-        <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null"
-          (nzOnCancel)="previewVisible = false">
-          <ng-template #modalContent>
-            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
-          </ng-template>
-        </nz-modal>
-      </div>
-    </nz-form-item>
-  </div>
+  <app-product-image [(listImage)]="listImage"></app-product-image>
 
-
-  <div class="option-value section">
-    <h4>Option Value:</h4>
-    <div class="content">
-      <div class="column">
-        <nz-form-item>
-          <nz-form-label [nzSpan]="6">Size</nz-form-label>
-          <nz-form-control [nzSpan]="14" nzErrorTip="Please input your size!">
-            <nz-select [nzLoading]="isLoadingSize" nzMode="multiple" [nzMaxTagCount]="3" [(ngModel)]="listSizeSelected"
-              (ngModelChange)="changeSize($event)" nzAllowClear nzShowSearch nzPlaceHolder="Select a size">
-              <nz-option *ngFor="let item of listSize" [nzLabel]="item.sizeName" [nzValue]="item">
-              </nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-
-      <div class="column">
-        <nz-form-item>
-          <nz-form-label [nzSpan]="6">Color</nz-form-label>
-          <nz-form-control [nzSpan]="14" nzErrorTip="Please input your color!">
-            <nz-select nzMode="multiple" [nzLoading]="isLoadingColor" [nzMaxTagCount]="3"
-              [(ngModel)]="listColorSelected" (ngModelChange)="changeColor($event)" nzShowSearch nzAllowClear
-              nzPlaceHolder="Select a color">
-              <nz-option *ngFor="let item of listColor" [nzLabel]="item.colorName" [nzValue]="item">
-              </nz-option>
-            </nz-select>
-          </nz-form-control>
-        </nz-form-item>
-      </div>
-    </div>
-
-    <nz-table [nzShowPagination]="false" nzBordered [nzData]="listProductDetail">
-      <thead>
-        <tr>
-          <th nzAlign="center">Size</th>
-          <th nzAlign="center">Color</th>
-          <th nzAlign="center">Quantity</th>
-          <th nzAlign="center">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let data of listProductDetail">
-          <td nzAlign="center">{{data.size}}</td>
-          <td nzAlign="center">{{data.color}}</td>
-          <td nzAlign="center"><input type="number" [(ngModel)]="data.quantity" nz-input placeholder="Quantity"></td>
-          <td nzAlign="center">
-            <button nz-button nzDanger nzType="primary" (click)="delete(data)"><i nz-icon nzType="delete"
-                nzTheme="outline"></i></button>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
-  </div>
+  <app-product-option [(listProductDetail)]="listProductDetail"></app-product-option>
 
   <div class="btn-submit">
-    <button nz-button [nzLoading]="isLoadingButton" [disabled]="productForm.invalid" (click)="submitForm()"
+    <button nz-button [nzLoading]="isLoadingButtonSubmit" [disabled]="productForm.invalid" (click)="submitForm()"
       nzType="primary">Save change</button>
   </div>
-  <nz-spin [ngClass]="{'isLoading':isLoadingProduct}" [nzSpinning]="isLoadingProduct" nzSimple></nz-spin>
+
+  <nz-spin [ngClass]="{'isLoading':isLoadingProductEdit}" [nzSpinning]="isLoadingProductEdit" nzSimple></nz-spin>
 </div>
