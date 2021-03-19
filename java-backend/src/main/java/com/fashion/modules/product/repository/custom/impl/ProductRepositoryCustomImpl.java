@@ -15,6 +15,7 @@ import com.fashion.commons.enums.SortEnum;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.repository.custom.ProductRepositoryCustom;
+import com.fashion.modules.promotion.domain.Promotion;
 import com.fashion.repository.BaseRepository;
 
 @Repository
@@ -70,13 +71,13 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		if (hasPrice) {
 			query.setParameter("price", price);
 		}
-		if (page != null && pageSize != null) {
-			query.setMaxResults(pageSize);
-			query.setFirstResult(pageSize * page);
-		}
 		final List<Product> rs = query.getResultList();
-
-		return new PageImpl<Product>(rs, PageRequest.of(page, pageSize), rs.size());
+		if (page != null && pageSize != null) {
+			query.setFirstResult(page * pageSize);
+			query.setMaxResults(pageSize);
+		}
+		final List<Product> rs2 = query.getResultList();
+		return new PageImpl<Product>(rs2, PageRequest.of(page, pageSize), rs.size());
 	}
 
 }

@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgZoroAntdModule } from './ng-zoro-antd.module';
-
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @NgModule({
   declarations: [],
@@ -17,7 +17,8 @@ import { NgZoroAntdModule } from './ng-zoro-antd.module';
   exports: [
     ReactiveFormsModule,
     NgZoroAntdModule,
-    FormsModule
+    FormsModule,
+    NzSelectModule
   ]
 })
 export class SharedModule { }

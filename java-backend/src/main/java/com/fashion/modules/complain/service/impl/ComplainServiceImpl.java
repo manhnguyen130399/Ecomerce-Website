@@ -2,6 +2,7 @@ package com.fashion.modules.complain.service.impl;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.ComplainEnum;
+import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.complain.domain.Complain;
 import com.fashion.modules.complain.model.ComplainRequest;
@@ -59,10 +62,15 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 
 	@Override
 	@Transactional
-	public Page<ComplainVM> getComplainByStore(final Integer page, final Integer pageSize) {
-		final Pageable pageable = PageRequest.of(page, pageSize);
-		return complainRepo.findComplainByStoreId(getStore(getUserContext()).getId(), pageable)
-				.map(it -> mapper.map(it, ComplainVM.class));
+	public Page<ComplainVM> getComplainByStore(final Integer page, final Integer pageSize, final SortEnum sortOrder,
+			final String sortField, final String keyword) {
+		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
+		if (StringUtils.isEmpty(keyword)) {
+			return complainRepo.findComplainByStoreId(getStore(getUserContext()).getId(), pageable)
+					.map(it -> mapper.map(it, ComplainVM.class));
+		} else {
+			return searchComplainByKeyword(keyword, page, pageSize);
+		}
 	}
 
 	@Override

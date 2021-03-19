@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.promotion.domain.Promotion;
@@ -31,6 +33,7 @@ import com.fashion.modules.store.repository.StoreRepository;
 import com.fashion.service.impl.BaseService;
 import com.fashion.service.impl.GoogleDriveService;
 import com.google.api.client.util.Maps;
+import com.google.common.collect.Iterables;
 
 @Service
 public class PromotionServiceImpl extends BaseService implements PromotionService {
@@ -94,12 +97,6 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
-	public void deletePromotion(final Integer id) {
-		promoRepo.deleteById(id);
-	}
-
-	@Override
-	@Transactional
 	public List<QrVM> getPromotionValidDate() throws ParseException {
 		final Calendar from = Calendar.getInstance();
 		from.add(Calendar.DATE, 6);
@@ -152,6 +149,25 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 	public Page<PromotionVM> filterPromotion(final PromotionFilterReq req, final Integer page, final Integer pageSize) {
 		return promoRepo.filterPromotion(req, page, pageSize, getStore(getUserContext()).getId())
 				.map(it -> mapper.map(it, PromotionVM.class));
+	}
+
+	@Override
+	@Transactional
+	public PromotionVM deletePromotion(final Integer id, final Integer page, final Integer pageSize,
+			final SortEnum sortOrder, final String sortField) {
+		try {
+			promoRepo.deleteById(id);
+			final Page<PromotionVM> promotions = filterPromotion(new PromotionFilterReq(sortOrder, sortField), page,
+					pageSize);
+			final List<PromotionVM> content = promotions.getContent();
+			if (CollectionUtils.isEmpty(content)) {
+				return null;
+			}
+			return Iterables.getLast(content);
+		} catch (Exception e) {
+			throw new InvalidArgumentException(" Can't not find promotion ");
+		}
+
 	}
 
 }

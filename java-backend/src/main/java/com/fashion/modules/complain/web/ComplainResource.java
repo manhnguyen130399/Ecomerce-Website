@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.modules.complain.model.ComplainRequest;
 import com.fashion.modules.complain.service.ComplainService;
 import com.fashion.web.BaseResource;
@@ -41,13 +43,16 @@ public class ComplainResource extends BaseResource {
 	@GetMapping(URL)
 	public ResponseEntity<Map<String, Object>> getComplains(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
-			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
-		return success(complainService.getComplainByStore(page, pageSize));
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "id") final String sortField,
+			@RequestParam(required = false, defaultValue = Constants.BLANK) final String keyword) {
+		return success(complainService.getComplainByStore(page, pageSize, sortOrder, sortField, keyword));
 	}
 	
 	@PostMapping(URL + "/reply/{id}")
 	public ResponseEntity<Map<String, Object>> reply(@PathVariable final Integer id,
-			@RequestParam final String message) {
+			@RequestBody final String message) {
 		return success(complainService.reply(id, message));
 	}
 	

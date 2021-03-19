@@ -77,12 +77,13 @@ public class PromotionRepositoryCustomImpl extends BaseRepository implements Pro
 			query.setParameter("startDate", startDate);
 		}
 
+		final List<Promotion> rs = query.getResultList();
 		if (page != null && pageSize != null) {
 			query.setFirstResult(page * pageSize);
 			query.setMaxResults(pageSize);
 		}
-		final List<Promotion> rs = query.getResultList();
-		return new PageImpl<Promotion>(rs, PageRequest.of(page, pageSize), rs.size());
+		final List<Promotion> rs2 = query.getResultList();
+		return new PageImpl<Promotion>(rs2, PageRequest.of(page, pageSize), rs.size());
 	}
 
 }

@@ -45,6 +45,20 @@
           </li>
         </ul>
       </li>
+      <li nz-submenu nzOpen nzTitle="Complain" nzIcon="exclamation-circle">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/admin/complain']">List Complain</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzOpen nzTitle="Store" nzIcon="shop">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/admin/store']">List Store</a>
+          </li>
+        </ul>
+      </li>
     </ul>
   </nz-sider>
   <nz-layout>

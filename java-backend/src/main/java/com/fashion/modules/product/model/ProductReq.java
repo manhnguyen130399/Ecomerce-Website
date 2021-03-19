@@ -4,11 +4,14 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
+import com.fashion.commons.enums.SortEnum;
 import com.fashion.model.BaseReq;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ProductReq extends BaseReq {
 
 	private Integer id;
@@ -28,5 +31,12 @@ public class ProductReq extends BaseReq {
 	private Set<ProductDetailVM> productDetails;
 
 	private List<String> images;
+
+	public ProductReq(final SortEnum sortOrder, final String sortField) {
+		super(sortOrder, sortField);
+	}
+	
+	
+	
 
 }

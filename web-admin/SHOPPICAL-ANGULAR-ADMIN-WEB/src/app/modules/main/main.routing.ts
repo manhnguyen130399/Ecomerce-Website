@@ -5,7 +5,6 @@ import { DashboardComponent } from './../dashboard/page/dashboard/dashboard.comp
 
 export const mainRoutes: Routes = [
   {
-
     path: '',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
@@ -14,7 +13,9 @@ export const mainRoutes: Routes = [
         path: 'dashboard',
         // component: DashboardComponent,
         loadChildren: () =>
-          import('../dashboard/dashboard.module').then((m) => m.DashboardModule),
+          import('../dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
       },
       {
         path: 'size',
@@ -39,7 +40,19 @@ export const mainRoutes: Routes = [
       {
         path: 'promotion',
         loadChildren: () =>
-          import('../promotion/promotion.module').then((m) => m.PromotionModule),
+          import('../promotion/promotion.module').then(
+            (m) => m.PromotionModule
+          ),
+      },
+      {
+        path: 'complain',
+        loadChildren: () =>
+          import('../complain/complain.module').then((m) => m.ComplainModule),
+      },
+      {
+        path: 'store',
+        loadChildren: () =>
+          import('../store/store.module').then((m) => m.StoreModule),
       },
       {
         path: 'product',
@@ -47,5 +60,5 @@ export const mainRoutes: Routes = [
           import('../product/product.module').then((m) => m.ProductModule),
       },
     ],
-  }
+  },
 ];
