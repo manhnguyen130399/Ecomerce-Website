@@ -1,5 +1,5 @@
 package com.fashion.commons.enums;
 
-public enum StateOrderEnum {
+public enum StateOrderType {
 	PENDING, DILIVER, COMPLETE, CANCLE
 }

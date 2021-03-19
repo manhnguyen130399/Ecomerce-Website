@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.domain.UserContext;
 import com.fashion.modules.color.domain.Color;
@@ -53,7 +53,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
-	public Page<ColorVM> findByAllStore(final String colorName, final SortEnum sortOrder, final String sortField,
+	public Page<ColorVM> findByAllStore(final String colorName, final SortType sortOrder, final String sortField,
 			final Integer page, final Integer pageSize) {
 
 		if (StringUtils.isEmpty(colorName)) {
@@ -67,7 +67,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
-	public ColorVM deleteColor(final Integer id, final String colorName, final SortEnum sortOrder,
+	public ColorVM deleteColor(final Integer id, final String colorName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
 		final Color color = colorRepo.findOneByIdAndStore(id, getStore(getUserContext()).getId());
@@ -85,7 +85,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
-	public Page<ColorVM> searchColorByKeywordAndStore(final String colorName, final SortEnum sortOrder,
+	public Page<ColorVM> searchColorByKeywordAndStore(final String colorName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		return colorRepo
 				.searchByKeywordAndStore(colorName, getStore(getUserContext()).getId(),

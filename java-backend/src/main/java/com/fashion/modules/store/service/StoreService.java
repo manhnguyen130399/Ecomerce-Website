@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.model.StoreVM;
 
@@ -14,17 +14,18 @@ public interface StoreService {
 
 	StoreVM getStore(final Integer id);
 
-	Page<StoreVM> getStores(final String storeName, final SortEnum sortOrder, final String sortField,
+	Page<StoreVM> getStores(final String storeName, final SortType sortOrder, final String sortField,
 			final Integer page, final Integer pageSize);
 
 	StoreVM updateStore(final StoreReq req, final Integer id);
 
-	StoreVM deleteStore(final Integer id, final String storeName, final SortEnum sortOrder, final String sortField,
+	StoreVM deleteStore(final Integer id, final String storeName, final SortType sortOrder, final String sortField,
 			final Integer page, final Integer pageSize);
 
 	List<StoreVM> getStoreByIds(final List<Integer> ids);
 
-	Page<StoreVM> searchStore(final String storeName, final SortEnum sortOrder, final String sortField,
+	Page<StoreVM> searchStore(final String storeName, final SortType sortOrder, final String sortField,
 			final Integer page, final Integer pageSize);
+	String existedStoreName(final String storeName);
 
 }

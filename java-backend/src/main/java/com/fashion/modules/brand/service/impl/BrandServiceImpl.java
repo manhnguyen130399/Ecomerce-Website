@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.brand.model.BrandVM;
@@ -50,7 +50,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	@Override
 	@Transactional
 	public Page<BrandVM> findAllByStore(final Integer page, final Integer pageSize, final String brandName,
-			final SortEnum sortOrder, final String sortField) {
+			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(brandName)) {
 			return brandRepo
 					.findAllByStoreId(getStore(getUserContext()).getId(),
@@ -63,7 +63,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	@Override
 	@Transactional
 	public BrandVM deleteBrand(final Integer id, final Integer page, final Integer pageSize, final String brandName,
-			final SortEnum sortOrder, final String sortField) {
+			final SortType sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
 		final Brand brand = brandRepo.findOneByIdAndStoreId(id, store.getId());
 		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
@@ -79,7 +79,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	public Page<BrandVM> seachBrandByStoreAndKeyword(final String brandName, final SortEnum sortOrder,
+	public Page<BrandVM> seachBrandByStoreAndKeyword(final String brandName, final SortType sortOrder,
 			final Integer page, final Integer pageSize, final String sortField) {
 		return brandRepo
 				.searchByKeywordAndStore(brandName, getStore(getUserContext()).getId(),

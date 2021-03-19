@@ -1,5 +1,5 @@
 package com.fashion.commons.enums;
 
-public enum LevelEnum {
+public enum LevelType{
 	STAFF, MANAGER, OWNER
 }

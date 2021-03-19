@@ -12,8 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.fashion.commons.constants.Constants;
-import com.fashion.commons.enums.ComplainEnum;
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.ComplainType;
+import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.complain.domain.Complain;
@@ -50,7 +50,7 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 		final String email = req.getEmail();
 		complain.setEmail(email != null ? email : getUserContext().getUsername());
 		complain.setStore(store);
-		complain.setState(ComplainEnum.PENDING);
+		complain.setState(ComplainType.PENDING);
 		return mapper.map(complainRepo.save(complain), ComplainVM.class);
 	}
 
@@ -62,7 +62,7 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 
 	@Override
 	@Transactional
-	public Page<ComplainVM> getComplainByStore(final Integer page, final Integer pageSize, final SortEnum sortOrder,
+	public Page<ComplainVM> getComplainByStore(final Integer page, final Integer pageSize, final SortType sortOrder,
 			final String sortField, final String keyword) {
 		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
 		if (StringUtils.isEmpty(keyword)) {
@@ -85,7 +85,7 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 		content.setSubject(Constants.COMPLAIN_TITLE);
 		content.setText(message + Constants.THANK_YOU);
 		mailSender.send(content);
-		complain.setState(ComplainEnum.RESPONSE);
+		complain.setState(ComplainType.RESPONSE);
 		return mapper.map(complain, ComplainVM.class);
 	}
 

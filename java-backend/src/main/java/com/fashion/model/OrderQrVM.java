@@ -3,7 +3,7 @@ package com.fashion.model;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.fashion.commons.enums.OrderEnum;
+import com.fashion.commons.enums.OrderType;
 
 import lombok.Data;
 
@@ -20,7 +20,7 @@ public class OrderQrVM {
 
 	private BigDecimal total;
 	
-	private OrderEnum state;
+	private OrderType state;
 
 	private List<OrderDetailQrVM> orderDetails;
 

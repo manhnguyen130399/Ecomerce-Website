@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.promotion.model.PromotionFilterReq;
 import com.fashion.modules.promotion.model.PromotionRequest;
 import com.fashion.modules.promotion.service.PromotionService;
@@ -34,7 +34,8 @@ public class PromotionResource extends BaseResource {
 	private PromotionService promoService;
 
 	@PostMapping(URL + "/create")
-	public ResponseEntity<Map<String, Object>> creatPromotion(@RequestBody final PromotionRequest req) throws Exception {
+	public ResponseEntity<Map<String, Object>> creatPromotion(@RequestBody final PromotionRequest req)
+			throws Exception {
 		return success(promoService.createPromotion(req));
 	}
 
@@ -50,9 +51,9 @@ public class PromotionResource extends BaseResource {
 			@RequestBody final PromotionFilterReq req) {
 		return success(promoService.getAllPromotionByStore(page, pageSize, req));
 	}
-	
-	@GetMapping(URL+ "/valid-date")
-	public ResponseEntity<Map<String,Object>>getValidPromotionDate() throws ParseException{
+
+	@GetMapping(URL + "/valid-date")
+	public ResponseEntity<Map<String, Object>> getValidPromotionDate() throws ParseException {
 		return success(promoService.getPromotionValidDate());
 	}
 
@@ -60,16 +61,16 @@ public class PromotionResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> deletePromotion(@PathVariable final Integer id,
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
-			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(promoService.deletePromotion(id, page, pageSize, sortOrder, sortField));
 	}
-	
+
 	@PostMapping(URL + "/code")
 	public ResponseEntity<Map<String, Object>> getDiscountByCode(@RequestParam final String code) {
 		return success(promoService.getDiscountPromtion(code));
 	}
-	
+
 	@GetMapping(URL + "/search")
 	public ResponseEntity<Map<String, Object>> searchPromotionByKeywordAndStore(
 			@RequestParam(required = true, defaultValue = "0") final Integer page,
@@ -77,7 +78,7 @@ public class PromotionResource extends BaseResource {
 			@RequestParam final String keyword) {
 		return success(promoService.searchPromotionByKeywordAndStore(keyword, page, pageSize));
 	}
-	
+
 	@PostMapping(URL + "/filter")
 	public ResponseEntity<Map<String, Object>> filterPromotion(
 			@RequestParam(required = true, defaultValue = "0") final Integer page,

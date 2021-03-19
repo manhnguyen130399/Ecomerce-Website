@@ -2,7 +2,7 @@ package com.fashion.modules.category.service;
 
 import org.springframework.data.domain.Page;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.category.model.CategoryVM;
 
 public interface CategoryService {
@@ -11,13 +11,13 @@ public interface CategoryService {
 
 	CategoryVM findById(Integer id);
 
-	Page<CategoryVM> findAllByStore(Integer page, Integer pageSize, String categoryName, SortEnum sortOrder,
+	Page<CategoryVM> findAllByStore(Integer page, Integer pageSize, String categoryName, SortType sortOrder,
 			String sortField);
 
-	CategoryVM deleteCategory(Integer id, Integer page, Integer pageSize, String categoryName, SortEnum sortOrder,
+	CategoryVM deleteCategory(Integer id, Integer page, Integer pageSize, String categoryName, SortType sortOrder,
 			String sortField);
 
-	Page<CategoryVM> searchCategoryByKeywordAndStore(String categoryName, SortEnum sortOrder, String sortField,
+	Page<CategoryVM> searchCategoryByKeywordAndStore(String categoryName, SortType sortOrder, String sortField,
 			Integer page, Integer pageSize);
 
 }

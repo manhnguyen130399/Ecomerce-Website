@@ -1,5 +1,5 @@
 package com.fashion.commons.enums;
 
-public enum SortEnum {
+public enum SortType{
 	ascend, descend
 }

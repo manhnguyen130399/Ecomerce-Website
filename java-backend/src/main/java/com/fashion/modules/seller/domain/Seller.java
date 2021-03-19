@@ -15,7 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fashion.commons.enums.GenderEnum;
+import com.fashion.commons.enums.GenderType;
 import com.fashion.domain.PkIdModel;
 
 @Entity
@@ -40,7 +40,7 @@ public class Seller extends PkIdModel {
 
 	@Column(name = "gender")
 	@Enumerated(EnumType.ORDINAL)
-	private GenderEnum gender;
+	private GenderType gender;
 
 	@Column(name = "phone")
 	private String phone;
@@ -88,11 +88,11 @@ public class Seller extends PkIdModel {
 		this.address = address;
 	}
 
-	public GenderEnum getGender() {
+	public GenderType getGender() {
 		return gender;
 	}
 
-	public void setGender(final GenderEnum gender) {
+	public void setGender(final GenderType gender) {
 		this.gender = gender;
 	}
 

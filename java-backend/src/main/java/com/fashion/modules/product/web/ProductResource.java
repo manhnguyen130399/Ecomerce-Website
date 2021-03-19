@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.service.ProductService;
 import com.fashion.web.BaseResource;
@@ -55,7 +55,7 @@ public class ProductResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> deleteProduct(@PathVariable final Integer id,
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
-			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(productService.deleteProduct(id, page, pageSize, sortOrder, sortField));
 	}

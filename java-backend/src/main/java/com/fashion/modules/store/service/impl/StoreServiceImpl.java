@@ -12,7 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.store.domain.Store;
@@ -37,7 +38,7 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Transactional
 	@Override
-	public Page<StoreVM> getStores(final String storeName, final SortEnum sortOrder, final String sortField,
+	public Page<StoreVM> getStores(final String storeName, final SortType sortOrder, final String sortField,
 			final Integer page, final Integer pageSize) {
 		if (StringUtils.isEmpty(storeName)) {
 			return storeRepo.findAll(PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
@@ -56,7 +57,7 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Transactional
 	@Override
-	public StoreVM deleteStore(final Integer id, final String storeName, final SortEnum sortOrder,
+	public StoreVM deleteStore(final Integer id, final String storeName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		storeRepo.deleteById(id);
 		final List<StoreVM> content = getStores(storeName, sortOrder, sortField, page, pageSize).getContent();
@@ -88,12 +89,22 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Override
 	@Transactional
-	public Page<StoreVM> searchStore(final String storeName, final SortEnum sortOrder, final String sortField,
+	public Page<StoreVM> searchStore(final String storeName, final SortType sortOrder, final String sortField,
 			final Integer page, final Integer pageSize) {
 		return storeRepo
 				.seachStoreByKeyWord(storeName,
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, StoreVM.class));
+	}
+
+	@Override
+	@Transactional
+	public String existedStoreName(final String storeName) {
+		final Store store = storeRepo.findByStoreName(storeName);
+		if (store != null) {
+			return Constants.EXISTED;
+		}
+		throw new InvalidArgumentException(Constants.NOT_EXISTED);
 	}
 
 }

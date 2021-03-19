@@ -3,7 +3,7 @@ package com.fashion.modules.promotion.model;
 import java.util.Date;
 
 import com.fashion.commons.constants.Constants;
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.model.BaseReq;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,7 +22,7 @@ public class PromotionFilterReq extends BaseReq {
 	private Date endDate;
 	private Integer discount;
 
-	public PromotionFilterReq(final SortEnum sortOrder, final String sortField, final String title, final String code,
+	public PromotionFilterReq(final SortType sortOrder, final String sortField, final String title, final String code,
 			final Date startDate, final Date endDate, final Integer discount) {
 		super(sortOrder, sortField);
 		this.title = title;
@@ -32,7 +32,7 @@ public class PromotionFilterReq extends BaseReq {
 		this.discount = discount;
 	}
 
-	public PromotionFilterReq(final SortEnum sortOrder, final String sortField) {
+	public PromotionFilterReq(final SortType sortOrder, final String sortField) {
 		super(sortOrder, sortField);
 	}
 

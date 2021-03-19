@@ -2,7 +2,7 @@ package com.fashion.modules.brand.service;
 
 import org.springframework.data.domain.Page;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.brand.model.BrandVM;
 
 public interface BrandService {
@@ -11,13 +11,13 @@ public interface BrandService {
 
 	BrandVM findById(Integer id);
 
-	Page<BrandVM> findAllByStore(Integer page, Integer pageSize, String brandName, SortEnum sortOrder,
+	Page<BrandVM> findAllByStore(Integer page, Integer pageSize, String brandName, SortType sortOrder,
 			String sortField);
 
-	BrandVM deleteBrand(Integer id, Integer page, Integer pageSize, String brandName, SortEnum sortOrder,
+	BrandVM deleteBrand(Integer id, Integer page, Integer pageSize, String brandName, SortType sortOrder,
 			String sortField);
 
-	Page<BrandVM> seachBrandByStoreAndKeyword(String brandName, SortEnum sortOrder, Integer page, Integer pageSize,
+	Page<BrandVM> seachBrandByStoreAndKeyword(String brandName, SortType sortOrder, Integer page, Integer pageSize,
 			String sortField);
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.modules.brand.model.BrandVM;
 import com.fashion.modules.brand.service.BrandService;
 import com.fashion.web.BaseResource;
@@ -46,7 +46,7 @@ public class BrandResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String brandName,
-			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = "id") final String sortField) {
 		return success(brandService.findAllByStore(page, pageSize, brandName, sortOrder, sortField));
 	}
@@ -56,7 +56,7 @@ public class BrandResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String brandName,
-			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = "id") final String sortField) {
 		return success(brandService.deleteBrand(id, page, pageSize, brandName, sortOrder, sortField));
 	}
@@ -66,7 +66,7 @@ public class BrandResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String brandName,
-			@RequestParam(required = false, defaultValue = "ascend") final SortEnum sortOrder,
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = "id") final String sortField) {
 		return success(brandService.seachBrandByStoreAndKeyword(brandName, sortOrder, page, pageSize, sortField));
 	}

@@ -14,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fashion.commons.enums.SortEnum;
+import com.fashion.commons.enums.SortType;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.brand.repository.BrandRepository;
@@ -225,7 +225,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@Override
 	@Transactional
 	public ProductVM deleteProduct(final Integer id, final Integer page, final Integer pageSize,
-			final SortEnum sortOrder, final String sortField) {
+			final SortType sortOrder, final String sortField) {
 		try {
 			productRepo.deleteById(id);
 			final Page<ProductVM> products = filterProduct(page, pageSize, new ProductReq(sortOrder, sortField));
