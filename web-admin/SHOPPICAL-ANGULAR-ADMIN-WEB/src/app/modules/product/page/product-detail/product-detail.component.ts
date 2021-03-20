@@ -79,11 +79,12 @@ export class ProductDetailComponent implements OnInit {
           product.productImages.forEach((productImage, index) => {
             let file = {
               uid: index,
+              id: productImage.id,
               url: productImage.image,
               name: 'image.png',
             };
-            listFile.push(file)
-          })
+            listFile.push(file);
+          });
           this.listImage = listFile;
 
 

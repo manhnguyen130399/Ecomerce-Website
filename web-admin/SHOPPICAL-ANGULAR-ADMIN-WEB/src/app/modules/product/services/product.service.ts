@@ -10,11 +10,10 @@ import { Product } from '../model/product';
 import { BaseResponse } from '@app/modules/common/base-response';
 import { BaseParams } from '@app/modules/common/base-params';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService implements BaseService<Product> {
-
-  constructor(private readonly httpClient: HttpClient) { }
+  constructor(private readonly httpClient: HttpClient) {}
 
   getById(id: number) {
     return this.httpClient
@@ -27,9 +26,11 @@ export class ProductService implements BaseService<Product> {
   }
 
   create(product: Product): Observable<BaseResponse<Product>> {
-
     return this.httpClient
-      .post<BaseResponse<Product>>(`${environment.productServiceUrl}/api/product/create`, product)
+      .post<BaseResponse<Product>>(
+        `${environment.productServiceUrl}/api/product/create`,
+        product
+      )
       .pipe(
         catchError((error) => {
           return of(error.error);
@@ -41,7 +42,10 @@ export class ProductService implements BaseService<Product> {
     console.log(product);
 
     return this.httpClient
-      .put<BaseResponse<Product>>(`${environment.productServiceUrl}/api/product`, product)
+      .put<BaseResponse<Product>>(
+        `${environment.productServiceUrl}/api/product`,
+        product
+      )
       .pipe(
         catchError((error) => {
           return of(error.error);
@@ -52,15 +56,16 @@ export class ProductService implements BaseService<Product> {
   delete(productId: number, baseParams: BaseParams) {
     let params = new HttpParams()
       .append('page', `${baseParams.pageIndex - 1}`)
-      .append('pageSize', `${baseParams.pageSize}`)
+      .append('pageSize', `${baseParams.pageSize}`);
 
     if (baseParams.sortField != null) {
-      params = params.append('sortField', `${baseParams.sortField}`)
+      params = params
+        .append('sortField', `${baseParams.sortField}`)
         .append('sortOrder', `${baseParams.sortOrder}`);
     }
 
     if (baseParams.filters.length > 0) {
-      baseParams.filters.forEach(filter => {
+      baseParams.filters.forEach((filter) => {
         params = params.append(filter.key, filter.value);
       });
     }
@@ -80,30 +85,33 @@ export class ProductService implements BaseService<Product> {
   getAll(baseParams: BaseParams, productSearch?: ProductSearch) {
     let params = new HttpParams()
       .append('page', `${baseParams.pageIndex - 1}`)
-      .append('pageSize', `${baseParams.pageSize}`)
+      .append('pageSize', `${baseParams.pageSize}`);
 
     if (baseParams.sortField != null) {
-      params = params.append('sortField', `${baseParams.sortField}`)
+      params = params
+        .append('sortField', `${baseParams.sortField}`)
         .append('sortOrder', `${baseParams.sortOrder}`);
     }
 
     if (baseParams.filters.length > 0) {
-      baseParams.filters.forEach(filter => {
+      baseParams.filters.forEach((filter) => {
         params = params.append(filter.key, filter.value);
       });
     }
 
     return this.httpClient
       .post<any>(
-        `${environment.productServiceUrl}/api/product`, productSearch != undefined ? productSearch : {},
+        `${environment.productServiceUrl}/api/product`,
+        productSearch != undefined ? productSearch : {},
         { params }
       )
       .pipe(
-        map(res => {
-          res.data.content.forEach(element => {
+        map((res) => {
+          res.data.content.forEach((element) => {
             if (element.productImages.length == 0) {
               element.productImages.push({
-                image: "https://drive.google.com/thumbnail?id=1KXVcuCEi-aYgrJXkUwV_RODDh5cT5qHv"
+                image:
+                  'https://drive.google.com/thumbnail?id=1KXVcuCEi-aYgrJXkUwV_RODDh5cT5qHv',
               });
             }
           });
@@ -111,6 +119,18 @@ export class ProductService implements BaseService<Product> {
         }),
         catchError((err) => {
           return of(err.error);
+        })
+      );
+  }
+
+  deleteImage(id: number) {
+    return this.httpClient
+      .delete<BaseResponse<string>>(
+        `${environment.productServiceUrl}/api/product/image/${id}`
+      )
+      .pipe(
+        catchError((error) => {
+          return of(error.error);
         })
       );
   }
