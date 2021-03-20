@@ -91,6 +91,7 @@ public final class Constants {
 	public static final String PASSWORD = "manh130399";
 	public static final String COMPLAIN_TITLE = "REPONSE YOUR COMPLAIN";
 	public static final String PROMOTION_TITLE = "PROMOTION FOR YOU";
+	public static final String BLOG_ADMIN_TITLE = "BLOG SELLER REQUEST";
 	public static final String THANK_YOU = "  Thanks .";
 
 	// ORDER

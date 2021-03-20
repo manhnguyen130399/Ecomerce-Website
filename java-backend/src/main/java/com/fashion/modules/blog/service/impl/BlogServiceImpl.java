@@ -9,8 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.ErrorMessage;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
@@ -29,12 +32,20 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 	@Autowired
 	private BlogRepository blogRepo;
 
+	@Autowired
+	private JavaMailSender mailSender;
+
 	@Override
 	@Transactional
 	public BlogVM createBlog(final BlogReq req) {
 		final Blog blog = mapper.map(req, Blog.class);
 		blog.setStore(getStore(getUserContext()));
 		final Blog save = blogRepo.save(blog);
+		final SimpleMailMessage content = new SimpleMailMessage();
+		content.setTo(Constants.EMAIL);
+		content.setSubject(Constants.BLOG_ADMIN_TITLE);
+		content.setText("Blog " + blog.getId() + " author :" + blog.getCreatedBy() + " request to you");
+		mailSender.send(content);
 		final BlogVM res = mapper.map(save, BlogVM.class);
 		res.setAuthor(save.getCreatedBy());
 		return res;

@@ -29,7 +29,7 @@ public class SecurityUtils {
 		if (authentication != null) {
 			final UserDetailsCustom userDetails = (UserDetailsCustom) authentication.getPrincipal();
 			final AccountVM acc = userDetails.getAccount();
-			return new UserContext(acc.getUsername(), null, null, acc.getId(), null, null);
+			return new UserContext(acc.getUsername(), null, acc.getStoreId(), acc.getId(), null, null);
 		}
 		return null;
 	}

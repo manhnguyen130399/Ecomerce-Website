@@ -19,7 +19,6 @@ public class BaseService implements IBaseService {
 
 	@Override
 	public UserContext getUserContext() {
-
 		return SecurityUtils.getCurrentUserContext();
 	}
 

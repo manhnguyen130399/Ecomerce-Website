@@ -25,4 +25,6 @@ public class AccountVM {
 
 	private Date updatedAt;
 
+	private Integer storeId;
+
 }

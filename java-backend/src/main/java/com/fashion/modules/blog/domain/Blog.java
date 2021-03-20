@@ -6,12 +6,15 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fashion.commons.enums.BlogType;
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.comment.domain.Comment;
 import com.fashion.modules.store.domain.Store;
@@ -36,6 +39,10 @@ public class Blog extends AbstractAuditingEntity {
 	@ManyToOne
 	@JoinColumn(name = "store_id")
 	private Store store;
+
+	@Column(name = "state")
+	@Enumerated(EnumType.STRING)
+	private BlogType state;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "blog")
 	private Set<Comment> comments = Sets.newHashSet();
@@ -76,8 +83,16 @@ public class Blog extends AbstractAuditingEntity {
 		return comments;
 	}
 
-	public void setComments(Set<Comment> comments) {
+	public void setComments(final Set<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public BlogType getState() {
+		return state;
+	}
+
+	public void setState(final BlogType state) {
+		this.state = state;
 	}
 
 }
