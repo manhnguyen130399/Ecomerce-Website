@@ -44,7 +44,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	@Override
 	@Transactional
 	public BrandVM findById(final Integer id) {
-		return mapper.map(brandRepo.findOneByIdAndStoreId(id, getStore(getUserContext()).getId()), BrandVM.class);
+		return mapper.map(brandRepo.findOneByIdAndStoreId(id, getCurrentStoreId()), BrandVM.class);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(brandName)) {
 			return brandRepo
-					.findAllByStoreId(getStore(getUserContext()).getId(),
+					.findAllByStoreId(getCurrentStoreId(),
 							PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 					.map(it -> mapper.map(it, BrandVM.class));
 		}
@@ -82,7 +82,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	public Page<BrandVM> seachBrandByStoreAndKeyword(final String brandName, final SortType sortOrder,
 			final Integer page, final Integer pageSize, final String sortField) {
 		return brandRepo
-				.searchByKeywordAndStore(brandName, getStore(getUserContext()).getId(),
+				.searchByKeywordAndStore(brandName, getCurrentStoreId(),
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, BrandVM.class));
 	}

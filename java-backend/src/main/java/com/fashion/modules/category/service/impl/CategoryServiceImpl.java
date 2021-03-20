@@ -45,7 +45,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	@Override
 	@Transactional
 	public CategoryVM findById(final Integer id) {
-		return mapper.map(cateRepo.findOneByIdAndStoreId(id, getStore(getUserContext()).getId()), CategoryVM.class);
+		return mapper.map(cateRepo.findOneByIdAndStoreId(id, getCurrentStoreId()), CategoryVM.class);
 	}
 
 	@Override
@@ -54,8 +54,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 			final SortType sortOrder, final String sortField) {
 		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
 		if (StringUtils.isEmpty(categoryName)) {
-			return cateRepo.findAllByStoreId(getStore(getUserContext()).getId(), pageable)
-					.map(it -> mapper.map(it, CategoryVM.class));
+			return cateRepo.findAllByStoreId(getCurrentStoreId(), pageable).map(it -> mapper.map(it, CategoryVM.class));
 		}
 		return searchCategoryByKeywordAndStore(categoryName, sortOrder, sortField, page, pageSize);
 
@@ -86,7 +85,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	public Page<CategoryVM> searchCategoryByKeywordAndStore(final String categoryName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		return cateRepo
-				.searchByKeywordAndStore(categoryName, getStore(getUserContext()).getId(),
+				.searchByKeywordAndStore(categoryName, getCurrentStoreId(),
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, CategoryVM.class));
 	}

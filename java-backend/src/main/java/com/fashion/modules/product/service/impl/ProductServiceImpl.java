@@ -134,8 +134,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@Override
 	@Transactional
 	public ProductVM findById(final Integer id) {
-		return convertToVM(productRepo.findOneProductByIdAndStore(id, getStore(getUserContext()).getId()));
-
+		return convertToVM(productRepo.findOneProductByIdAndStore(id, getCurrentStoreId()));
 	}
 
 	@Override
@@ -181,11 +180,10 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@Transactional
 	public Page<ProductVM> getAllProductByStore(final Integer page, final Integer pageSize, final ProductReq req) {
 		if (req == null) {
-			return productRepo.findAllProductStore(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+			return productRepo.findAllProductStore(getCurrentStoreId(), PageRequest.of(page, pageSize))
 					.map(it -> convertToVM(it));
 		}
 		return filterProduct(page, pageSize, req);
-
 	}
 
 	@Override
@@ -209,16 +207,14 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@Transactional
 	public Page<ProductVM> searchProductByKeywordAndStore(final String keyword, final Integer page,
 			final Integer pageSize) {
-		return productRepo
-				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+		return productRepo.searchByKeywordAndStore(keyword, getCurrentStoreId(), PageRequest.of(page, pageSize))
 				.map(it -> convertToVM(it));
 	}
 
 	@Override
 	@Transactional
 	public Page<ProductVM> filterProduct(final Integer page, final Integer pageSize, final ProductReq req) {
-		return productRepo.filterProduct(page, pageSize, getStore(getUserContext()).getId(), req)
-				.map(it -> convertToVM(it));
+		return productRepo.filterProduct(page, pageSize, getCurrentStoreId(), req).map(it -> convertToVM(it));
 	}
 
 	@Override

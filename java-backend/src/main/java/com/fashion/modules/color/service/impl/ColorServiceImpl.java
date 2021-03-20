@@ -47,18 +47,16 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 	@Override
 	@Transactional
 	public ColorVM findById(final Integer id) {
-
-		return mapper.map(colorRepo.findOneByIdAndStore(id, getStore(getUserContext()).getId()), ColorVM.class);
+		return mapper.map(colorRepo.findOneByIdAndStore(id, getCurrentStoreId()), ColorVM.class);
 	}
 
 	@Override
 	@Transactional
 	public Page<ColorVM> findByAllStore(final String colorName, final SortType sortOrder, final String sortField,
 			final Integer page, final Integer pageSize) {
-
 		if (StringUtils.isEmpty(colorName)) {
 			return colorRepo
-					.findAllByStore(getStore(getUserContext()).getId(),
+					.findAllByStore(getCurrentStoreId(),
 							PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 					.map(it -> mapper.map(it, ColorVM.class));
 		}
@@ -70,8 +68,9 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 	public ColorVM deleteColor(final Integer id, final String colorName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
-		final Color color = colorRepo.findOneByIdAndStore(id, getStore(getUserContext()).getId());
-		final Page<Color> colors = colorRepo.findAllByStore(getStore(getUserContext()).getId(), pageable);
+		final Integer currentStoreId = getCurrentStoreId();
+		final Color color = colorRepo.findOneByIdAndStore(id, currentStoreId);
+		final Page<Color> colors = colorRepo.findAllByStore(currentStoreId, pageable);
 		final Store store = getStore(getUserContext());
 		store.setColors(colors.getContent().stream().filter(it -> !it.equals(color)).collect(Collectors.toSet()));
 		final List<ColorVM> content = findByAllStore(colorName, sortOrder, sortField, page, pageSize).getContent();
@@ -80,7 +79,6 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 		}
 		final ColorVM last = Iterables.getLast(content);
 		return id != last.getId() ? last : null;
-
 	}
 
 	@Override

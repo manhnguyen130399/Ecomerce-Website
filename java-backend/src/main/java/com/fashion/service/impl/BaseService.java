@@ -4,7 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fashion.domain.UserContext;
-import com.fashion.modules.seller.repository.SellerRepository;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.modules.store.repository.StoreRepository;
 import com.fashion.security.SecurityUtils;
@@ -14,9 +13,6 @@ public class BaseService implements IBaseService {
 
 	@Autowired
 	private StoreRepository storeRepo;
-
-	@Autowired
-	private SellerRepository sellerRepo;
 
 	@Autowired
 	protected ModelMapper mapper;
@@ -29,12 +25,12 @@ public class BaseService implements IBaseService {
 
 	@Override
 	public Store getStore(final UserContext context) {
-		return storeRepo.findOneById(sellerRepo.findOneByAccountId(context.getAccountId()).getStoreId());
+		return storeRepo.findOneById(context.getStoreId());
 	}
 
 	@Override
 	public Integer getCurrentStoreId() {
-		return getStore(getUserContext()).getId();
+		return getUserContext().getStoreId();
 	}
 
 }

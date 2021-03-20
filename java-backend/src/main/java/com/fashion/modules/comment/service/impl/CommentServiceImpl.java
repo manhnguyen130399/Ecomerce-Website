@@ -44,7 +44,7 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		comment.setEmail(req.getEmail() != null ? req.getEmail() : account.getUsername());
 		final Integer productId = req.getProductId();
 		final Integer blogId = req.getBlogId();
-		final Integer storeId = getStore(getUserContext()).getId();
+		final Integer storeId = getCurrentStoreId();
 		if (productId != null) {
 			final Product product = productRepo.findOneProductByIdAndStore(productId, storeId);
 			if (product == null) {
@@ -80,7 +80,7 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 			throw new InvalidArgumentException(" You can't owner this comment.");
 		}
 	}
-	
+
 	@Override
 	@Transactional
 	public void deleteComment(final Integer id) {
