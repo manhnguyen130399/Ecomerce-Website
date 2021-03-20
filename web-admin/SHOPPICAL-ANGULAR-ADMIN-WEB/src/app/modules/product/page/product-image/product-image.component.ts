@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { environment } from '@env';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
+import { ProductService } from '../../services/product.service';
 
 function getBase64(file: File): Promise<string | ArrayBuffer | null> {
   return new Promise((resolve, reject) => {
@@ -23,9 +24,10 @@ export class ProductImageComponent implements OnInit {
 
   previewImage: string | undefined = '';
   previewVisible = false;
-  constructor() { }
+  constructor(private readonly productService :ProductService) { }
 
   ngOnInit(): void {
+
   }
 
 
@@ -38,6 +40,11 @@ export class ProductImageComponent implements OnInit {
   };
 
   handleChange = (info: NzUploadChangeParam) => {
+    this.productService
+      .deleteImage(info.file.id)
+      .pipe()
+      .subscribe((data) => {console.log(data);
+      });
     this.listImageChange.emit(this.listImage);
   }
 
