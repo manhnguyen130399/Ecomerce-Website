@@ -45,8 +45,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 	@Override
 	@Transactional
 	public SizeVM findById(final Integer id) {
-
-		return mapper.map(sizeRepo.findOneByIdAndStoreId(id, getStore(getUserContext()).getId()), SizeVM.class);
+		return mapper.map(sizeRepo.findOneByIdAndStoreId(id, getCurrentStoreId()), SizeVM.class);
 	}
 
 	@Override
@@ -55,20 +54,19 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(sizeName)) {
 			return sizeRepo
-					.findAllByStoreId(getStore(getUserContext()).getId(),
+					.findAllByStoreId(getCurrentStoreId(),
 							PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 					.map(it -> mapper.map(it, SizeVM.class));
 		} else {
 			return searchByKeyword(sizeName, page, pageSize, sortOrder, sortField);
 		}
-
 	}
 
 	@Override
 	@Transactional
 	public SizeVM deleteSize(final Integer id, final Integer page, final Integer pageSize, final String sizeName,
 			final SortType sortOrder, final String sortField) {
-		final Integer storeId = getStore(getUserContext()).getId();
+		final Integer storeId = getCurrentStoreId();
 		final List<Size> sizes = sizeRepo.findAllByStoreId(storeId, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
 		final Size size = sizeRepo.findOneByIdAndStoreId(id, storeId);
 		final Store store = getStore(getUserContext());
@@ -87,7 +85,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 	public Page<SizeVM> searchByKeyword(final String keyword, final Integer page, final Integer pageSize,
 			final SortType sortOrder, final String sortField) {
 		return sizeRepo
-				.searchSizeByKeyword(keyword, getStore(getUserContext()).getId(),
+				.searchSizeByKeyword(keyword, getCurrentStoreId(),
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, SizeVM.class));
 	}

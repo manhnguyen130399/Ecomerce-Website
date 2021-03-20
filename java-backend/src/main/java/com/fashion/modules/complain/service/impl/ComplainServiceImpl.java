@@ -27,16 +27,15 @@ import com.fashion.service.impl.BaseService;
 
 @Service
 public class ComplainServiceImpl extends BaseService implements ComplainService {
-	
+
 	@Autowired
 	private ComplainRepository complainRepo;
-	
+
 	@Autowired
 	private StoreRepository storeRepo;
-	
+
 	@Autowired
 	private JavaMailSender mailSender;
-	
 
 	@Override
 	@Transactional
@@ -66,7 +65,7 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 			final String sortField, final String keyword) {
 		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
 		if (StringUtils.isEmpty(keyword)) {
-			return complainRepo.findComplainByStoreId(getStore(getUserContext()).getId(), pageable)
+			return complainRepo.findComplainByStoreId(getCurrentStoreId(), pageable)
 					.map(it -> mapper.map(it, ComplainVM.class));
 		} else {
 			return searchComplainByKeyword(keyword, page, pageSize);
@@ -92,8 +91,9 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 	@Override
 	@Transactional
 	public Page<ComplainVM> searchComplainByKeyword(final String keyword, final Integer page, final Integer pageSize) {
-		return complainRepo.searchComplainByKeywordAndStore(keyword, getStore(getUserContext()).getId(),
-				PageRequest.of(page, pageSize)).map(it -> mapper.map(it, ComplainVM.class));
+		return complainRepo
+				.searchComplainByKeywordAndStore(keyword, getCurrentStoreId(), PageRequest.of(page, pageSize))
+				.map(it -> mapper.map(it, ComplainVM.class));
 	}
 
 }

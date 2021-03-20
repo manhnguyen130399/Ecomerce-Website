@@ -50,7 +50,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 	@Override
 	@Transactional
 	public PromotionVM createPromotion(final PromotionRequest req) throws Exception {
-		final Store store = storeRepo.findOneById(getStore(getUserContext()).getId());
+		final Store store = storeRepo.findOneById(getCurrentStoreId());
 		if (store == null) {
 			throw new InvalidArgumentException(" Can't found store ");
 		}
@@ -89,7 +89,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 	public Page<PromotionVM> getAllPromotionByStore(final Integer page, final Integer pageSize,
 			final PromotionFilterReq req) {
 		if (req == null) {
-			return promoRepo.findAllByStore(getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+			return promoRepo.findAllByStore(getCurrentStoreId(), PageRequest.of(page, pageSize))
 					.map(it -> mapper.map(it, PromotionVM.class));
 		}
 		return filterPromotion(req, page, pageSize);
@@ -139,15 +139,14 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 	@Transactional
 	public Page<PromotionVM> searchPromotionByKeywordAndStore(final String keyword, final Integer page,
 			final Integer pageSize) {
-		return promoRepo
-				.searchByKeywordAndStore(keyword, getStore(getUserContext()).getId(), PageRequest.of(page, pageSize))
+		return promoRepo.searchByKeywordAndStore(keyword, getCurrentStoreId(), PageRequest.of(page, pageSize))
 				.map(it -> mapper.map(it, PromotionVM.class));
 	}
 
 	@Override
 	@Transactional
 	public Page<PromotionVM> filterPromotion(final PromotionFilterReq req, final Integer page, final Integer pageSize) {
-		return promoRepo.filterPromotion(req, page, pageSize, getStore(getUserContext()).getId())
+		return promoRepo.filterPromotion(req, page, pageSize, getCurrentStoreId())
 				.map(it -> mapper.map(it, PromotionVM.class));
 	}
 
