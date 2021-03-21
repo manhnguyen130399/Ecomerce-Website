@@ -19,7 +19,7 @@ public class AccountService implements IAccountService {
 	@Override
 	public AccountVM getAccountByUsername(final String username) {
 		return restTemplate
-				.getForObject(Constants.URL + RestURL.GET_ACCOUNT_INFO_BY_USERNAME + username, AccountRes.class)
+				.getForObject(Constants.USER_URL + RestURL.GET_ACCOUNT_INFO_BY_USERNAME + username, AccountRes.class)
 				.getData();
 	}
 

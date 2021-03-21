@@ -112,8 +112,12 @@ public final class Constants {
 	public static final String DESC = "DESC";
 	public static final String EXISTED = "existed";
 	public static final String NOT_EXISTED = "not existed";
+	
+	// Header
+	public static final String AUTHORIZATION = "Authorization";
 
 	// NET API
-	public static final String URL = "https://user-service-net.herokuapp.com/api";
+	public static final String USER_URL = "https://user-service-net.herokuapp.com/api";
+	public static final String ORDER_URL = "https://order-service-net.herokuapp.com/api";
 
 }
