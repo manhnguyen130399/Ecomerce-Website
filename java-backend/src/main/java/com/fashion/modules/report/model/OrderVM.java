@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.fashion.commons.enums.OrderType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
@@ -15,4 +16,6 @@ public class OrderVM {
 	private BigDecimal total;
 	private Integer discount;
 	private List<OrderDetailVM> orderDetails;
+	@JsonProperty("created_at")
+	private String createdAt;
 }

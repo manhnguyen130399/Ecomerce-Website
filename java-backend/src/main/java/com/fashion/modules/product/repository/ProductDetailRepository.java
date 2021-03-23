@@ -1,5 +1,6 @@
 package com.fashion.modules.product.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,6 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, In
 			+ " LEFT JOIN d.color " 
 			+ " LEFT JOIN p.brand " 
 			+ " WHERE d.id IN (:ids) ")
-	List<ProductDetail> getProductDetailByIds(@Param("ids") List<Integer> ids);
+	List<ProductDetail> getProductDetailByIds(@Param("ids") Collection<Integer> ids);
 
 }
