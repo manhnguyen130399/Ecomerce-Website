@@ -8,7 +8,7 @@ import lombok.Data;
 public class StateOrderReportVM {
 	private Integer complete;
 	private Integer cancle;
-	private Integer peding;
+	private Integer pending;
 	private Integer delivery;
 
 }

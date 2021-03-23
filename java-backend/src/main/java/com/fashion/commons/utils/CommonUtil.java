@@ -4,7 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -71,6 +74,11 @@ public class CommonUtil {
 	
 	public static Sort sortCondition(final SortType sortOrder, final String sortField) {
 		return SortType.ascend.equals(sortOrder) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+	}
+	
+	public static String convertDateToString(final Date date, final String pattern) {
+		final DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD_HYPHEN);
+		return dateFormat.format(date);
 	}
 
 }

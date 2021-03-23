@@ -1,12 +1,15 @@
 package com.fashion.modules.report.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,8 +22,11 @@ import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.RestURL;
 import com.fashion.commons.enums.OrderType;
 import com.fashion.commons.enums.SortType;
-import com.fashion.modules.category.service.CategoryService;
+import com.fashion.commons.utils.CommonUtil;
+import com.fashion.modules.category.model.CategoryEntryMap;
+import com.fashion.modules.category.repository.CategoryRepository;
 import com.fashion.modules.comment.repository.CommentRepository;
+import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.product.repository.ProductDetailRepository;
 import com.fashion.modules.report.model.OrderRes;
 import com.fashion.modules.report.model.OrderVM;
@@ -39,7 +45,10 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 	private HttpServletRequest request;
 
 	@Autowired
-	private CategoryService categoryService;
+	private CategoryRepository cateRepo;
+
+//	@Autowired
+//	private CategoryService cateService;
 
 	@Autowired
 	private ProductDetailRepository productDetailRepo;
@@ -51,15 +60,17 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 	public ReportRes getOrderByDate(final String fromDate, final String toDate, final Integer top,
 			final SortType sortOrder) {
 		final List<OrderVM> orders = getOrderByDateFromRest(fromDate, toDate, top, sortOrder);
-		final List<Integer> productDetailIds = orders.parallelStream()
+		final Set<Integer> productDetailIds = orders.parallelStream()
 				.flatMap(it -> it.getOrderDetails().stream().map(i -> i.getProductDetailId()))
+				.collect(Collectors.toSet());
+		final List<ProductDetail> productDetailByIds = productDetailRepo.getProductDetailByIds(productDetailIds);
+		final List<Integer> productId = productDetailByIds.parallelStream().map(it -> it.getProduct().getId())
 				.collect(Collectors.toList());
-		final List<Integer> productId = productDetailRepo.getProductDetailByIds(productDetailIds).parallelStream()
-				.map(it -> it.getProduct().getId()).collect(Collectors.toList());
+		final List<CategoryEntryMap> categories = cateRepo.getCategoryAndCountProduct(getCurrentStoreId());
 		final ReportRes res = new ReportRes();
-		res.setCategory(
-				categoryService.findAllByStore(0, 50, StringUtils.EMPTY, sortOrder, Constants.FIELD_ID).getContent());
 		int total = orders.size();
+		final Pair<Map<String, Long>, Map<String, Integer>> revenueAndSale = getRevenueReport();
+		res.setCategory(categories);
 		res.setOrder(total);
 		res.setRevenue(orders.parallelStream().map(it -> it.getTotal()).findAny().get());
 		res.setCustomer(orders.size());
@@ -68,6 +79,8 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 				getOrderStateNumber(OrderType.CANCLE, orders, total),
 				getOrderStateNumber(OrderType.PENDING, orders, total),
 				getOrderStateNumber(OrderType.DELIVER, orders, total)));
+		res.setRevenues(revenueAndSale.getLeft());
+		res.setSales(revenueAndSale.getRight());
 		return res;
 	}
 
@@ -90,6 +103,25 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 				.queryParam("toDate", toDate);//
 		return restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, new HttpEntity<String>(headers),
 				OrderRes.class).getBody().getData();
+	}
+
+	private Pair<Map<String, Long>, Map<String, Integer>> getRevenueReport() {
+		final Calendar from = Calendar.getInstance();
+		from.set(Calendar.MONTH, 1);
+		from.set(Calendar.DAY_OF_YEAR, 1);
+		final Calendar to = Calendar.getInstance();
+		to.set(Calendar.MONTH, 11);
+		to.set(Calendar.DAY_OF_MONTH, 31);
+		final List<OrderVM> orderVMs = getOrderByDateFromRest(
+				CommonUtil.convertDateToString(from.getTime(), Constants.DATE_FORMAT_YYYYMMDD_HYPHEN),
+				CommonUtil.convertDateToString(to.getTime(), Constants.DATE_FORMAT_YYYYMMDD_HYPHEN), Integer.MAX_VALUE,
+				SortType.ascend);
+		return Pair.of(
+				orderVMs.stream()
+						.collect(Collectors.groupingBy(it -> it.getCreatedAt().substring(5, 7),
+								Collectors.summingLong(it -> it.getTotal().longValue()))),
+				orderVMs.stream().collect(Collectors.groupingBy(it -> it.getCreatedAt().substring(5, 7),
+						Collectors.summingInt(it -> it.getId()))));
 	}
 
 }
