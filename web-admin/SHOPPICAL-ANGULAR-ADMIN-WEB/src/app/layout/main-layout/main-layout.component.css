@@ -5,6 +5,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.seller-feature li {
+  outline: none;
+}
+
 .menu-sidebar {
   position: relative;
   z-index: 10;

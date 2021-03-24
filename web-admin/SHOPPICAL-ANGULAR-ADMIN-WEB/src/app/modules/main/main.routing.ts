@@ -59,6 +59,11 @@ export const mainRoutes: Routes = [
         loadChildren: () =>
           import('../product/product.module').then((m) => m.ProductModule),
       },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('../profile/profile.module').then(m => m.ProfileModule),
+      }
     ],
   },
 ];

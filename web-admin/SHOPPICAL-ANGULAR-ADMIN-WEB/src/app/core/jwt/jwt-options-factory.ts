@@ -4,6 +4,7 @@ export function jwtOptionsFactory(utilitiesService: UtilitiesService) {
   return {
     tokenGetter: () => {
       return utilitiesService.getToken();
+
     },
     authScheme: "Bearer ",
     allowedDomains: environment.backendDomain,

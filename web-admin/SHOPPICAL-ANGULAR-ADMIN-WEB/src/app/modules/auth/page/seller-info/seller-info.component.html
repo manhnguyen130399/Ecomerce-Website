@@ -43,8 +43,17 @@
   <!-- password -->
   <nz-form-item>
     <nz-form-label [nzLg]="7" [nzSm]="6" [nzXs]="6" nzFor="password">Password</nz-form-label>
-    <nz-form-control [nzLg]="12" [nzSm]="14" [nzXs]="16" nzErrorTip="Please input your password!">
+    <nz-form-control [nzLg]="12" [nzSm]="14" [nzXs]="16" [nzErrorTip]="passwordErrorTpl">
       <input nz-input type="password" formControlName="password">
+      <ng-template #passwordErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          Please input your password!
+        </ng-container>
+        <ng-container *ngIf="control.hasError('invalidPassword')">
+          Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase
+          letter and 1 number
+        </ng-container>
+      </ng-template>
     </nz-form-control>
   </nz-form-item>
   <!-- confirmPassword -->

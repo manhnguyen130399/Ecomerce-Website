@@ -1,6 +1,6 @@
 export interface TokenData {
   nameid: number;
-  fullName: string;
+  name: string;
   sub: string;
   role: string;
   exp: number;

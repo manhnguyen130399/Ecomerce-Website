@@ -1,3 +1,4 @@
+import { UtilitiesService } from './../../core/services/utilities/utilities.service';
 import { Router } from '@angular/router';
 import { environment } from '@env';
 import { StorageService } from '@core/services/storage/storage.service';
@@ -13,6 +14,7 @@ import { Notify } from '@app/models/notifies/notify';
 })
 export class MainLayoutComponent implements OnInit {
   isCollapsed = false;
+  sellerName: string;
   @ViewChild('audioElement', { static: true }) private audioElement;
   listNotify: Notify[] = [];
   numUnRead = 0;
@@ -23,6 +25,7 @@ export class MainLayoutComponent implements OnInit {
     private readonly notifyService: NotifyService,
     private readonly storageService: StorageService,
     private readonly router: Router,
+    private readonly utilitiesService: UtilitiesService
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +42,8 @@ export class MainLayoutComponent implements OnInit {
       this.numUnRead++;
       this.playNotifySound();
     })
+
+    this.sellerName = this.utilitiesService.getName();
   }
 
   updateNumUnread() {

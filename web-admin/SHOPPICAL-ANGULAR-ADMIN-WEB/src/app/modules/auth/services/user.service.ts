@@ -48,4 +48,17 @@ export class UserService {
     localStorage.setItem(environment.verifyKey, btoa(code));
   }
 
+  checkStoreExist(storeName: string): Observable<ValidationErrors> {
+    return this.httpClient.get<BaseResponse<string>>(`${environment.productServiceUrl}/api/store/existed?storeName=${storeName}`).pipe(
+      map(result => {
+        if (result.code == "OK") {
+          return { error: true, duplicated: true };
+        }
+      }),
+      catchError(error => {
+        return of(null);
+      })
+    );
+  }
+
 }

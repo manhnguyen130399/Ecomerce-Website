@@ -199,3 +199,83 @@ body {
 .delete-confirm-card .ant-popover-buttons button {
   font-size: 13px;
 }
+
+/* form section */
+.section {
+  border-bottom: 1px solid #e6e1e1;
+  padding: 10px 0 10px 0;
+}
+
+.section .content {
+  display: flex;
+}
+
+.section .column {
+  width: 50%;
+}
+
+.section h4 {
+  padding: 10px 0 13px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* loading class */
+.isLoading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  padding-top: 250px;
+  justify-content: center;
+  width: 100%;
+  background: #ffffff7a;
+}
+
+/* radio button */
+.radio-btn .ant-form-item-control-input-content {
+  display: flex;
+  justify-content: center;
+}
+
+/* seller-info */
+.content.seller-image {
+  justify-content: center;
+}
+
+.content.seller-image .ant-upload-picture-card-wrapper {
+  width: inherit;
+}
+
+.content.seller-image
+  .ant-upload-picture-card-wrapper
+  .ant-upload.ant-upload-select-picture-card,
+.content.seller-image
+  .ant-upload-picture-card-wrapper
+  .ant-upload-list-picture-card-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: -10px 0 30px 0;
+  border: 1px solid #d9d9d9;
+}
+
+.content.seller-image .ant-upload-list-picture-card .ant-upload-list-item {
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+}
+
+.content.seller-image .ant-upload-list-picture-card .ant-upload-list-item-info {
+  border-radius: 50%;
+}
+
+.content.seller-image .ant-upload-list-item-progress .ng-star-inserted {
+  justify-content: center;
+  display: flex;
+}
+
+.content.seller-image .ant-progress-outer {
+  width: 60%;
+}

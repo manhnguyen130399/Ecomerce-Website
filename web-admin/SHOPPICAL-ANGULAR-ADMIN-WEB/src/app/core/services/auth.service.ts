@@ -26,7 +26,7 @@ export class AuthService {
       tap(result => {
         if (result.isSuccessed) {
           const tokenObject = this.jwtHelperService.decodeToken(result.data);
-          if (tokenObject.role != "Admin") {
+          if (tokenObject.role != "Admin" && tokenObject.role != "Seller") {
             result.isSuccessed = false;
             result.message = "You do haven't permission to access this page!";
             return of(result);

@@ -100,15 +100,18 @@
 
             <span nz-dropdown [nzDropdownMenu]="menu">
               <img src="/assets/images/avatar.jpg" width="34" height="34">
-              hieuvo044@gmail.com
+              {{sellerName}}
               <i nz-icon nzType="down"></i>
             </span>
             <nz-dropdown-menu #menu="nzDropdownMenu">
-              <ul nz-menu>
-                <li nz-menu-item (click)="log()">Change password</li>
-                <li nz-menu-item (click)="log()">Seller info</li>
+              <ul class="seller-feature" nz-menu>
+                <li nz-menu-item [routerLink]="['/admin/profile/change-password']">Change
+                  password</li>
+                <li nz-menu-item [routerLink]="['/admin/profile/seller-info']">Seller Information
+                </li>
+                <li nz-menu-item [routerLink]="['/admin/profile/store-info']">Store Information
+                </li>
                 <li nz-menu-item (click)="logout()">Logout</li>
-                <!-- <li nz-menu-item (click)="log()">3rd menu item</li> -->
               </ul>
             </nz-dropdown-menu>
 

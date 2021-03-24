@@ -1,9 +1,12 @@
+import { tap } from 'rxjs/operators';
 import { ShareService } from '@modules/auth/services/share.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UserService } from '@modules/auth/services/user.service';
 import { of } from 'rxjs';
 import { environment } from '@env';
+import { validPasswordValidator } from '@app/core/directive/valid-password.directive';
+import { existEmailValidator } from '@app/core/directive/exist-email.directive';
 
 @Component({
   selector: 'app-seller-info',
@@ -25,26 +28,22 @@ export class SellerInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.shareService.parentPrevEmitted$.subscribe(formData => {
-      this.sellerRegisterForm.setValue(formData);
+      this.sellerRegisterForm.patchValue(formData);
       if (formData.email != null) {
         this.isValidEmail = true;
       }
     })
+
+    this.sellerRegisterForm.controls.password.valueChanges.subscribe(data => console.log)
   }
 
   buildForm() {
     this.sellerRegisterForm = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.email], this.emailAsyncValidator],
+      email: [null, [Validators.required, Validators.email], existEmailValidator(this.userService)],
       fullName: [null, Validators.required],
       verifyCode: [null, [Validators.required, this.confirmVerifyCode]],
-      // gender: ["Male", Validators.required],
-      // phone: [null, Validators.required],
-      password: [null, Validators.required],
+      password: [null, [Validators.required, validPasswordValidator(new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$'))]],
       confirmPassword: [null, [Validators.required, this.confirmationValidator]],
-      // storeName: [null, Validators.required],
-      // openTime: [null, Validators.required],
-      // closeTime: [new Date(), Validators.required],
-      // webSite: [new Date(), Validators.required],
     })
   }
 
@@ -70,13 +69,6 @@ export class SellerInfoComponent implements OnInit {
       return { error: true, confirm: true }
     }
     return null;
-  }
-
-  emailAsyncValidator = (control: FormControl) => {
-    if (!this.isValidEmail) {
-      return this.userService.checkEmailExist(control.value);
-    }
-    return of(null);
   }
 
   changeToNextStep() {
