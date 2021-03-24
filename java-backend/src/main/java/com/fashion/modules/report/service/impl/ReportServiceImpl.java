@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.beust.jcommander.internal.Lists;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.RestURL;
 import com.fashion.commons.enums.OrderType;
@@ -68,8 +69,8 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 				.collect(Collectors.toList());
 		final List<CategoryEntryMap> categories = cateRepo.getCategoryAndCountProduct(getCurrentStoreId());
 		final ReportRes res = new ReportRes();
+		final Pair<List<Integer>, List<Integer>> revenuesAndSale = appendDataReport(getRevenuesAndSalesReport());
 		int total = orders.size();
-		final Pair<Map<String, Long>, Map<String, Integer>> revenueAndSale = getRevenueReport();
 		res.setCategory(categories);
 		res.setOrder(total);
 		res.setRevenue(orders.parallelStream().map(it -> it.getTotal()).findAny().get());
@@ -79,8 +80,8 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 				getOrderStateNumber(OrderType.CANCLE, orders, total),
 				getOrderStateNumber(OrderType.PENDING, orders, total),
 				getOrderStateNumber(OrderType.DELIVER, orders, total)));
-		res.setRevenues(revenueAndSale.getLeft());
-		res.setSales(revenueAndSale.getRight());
+		res.setRevenues(revenuesAndSale.getLeft());
+		res.setSales(revenuesAndSale.getRight());
 		return res;
 	}
 
@@ -105,7 +106,7 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 				OrderRes.class).getBody().getData();
 	}
 
-	private Pair<Map<String, Long>, Map<String, Integer>> getRevenueReport() {
+	private Pair<Map<Integer, Long>, Map<Integer, Long>> getRevenuesAndSalesReport() {
 		final Calendar from = Calendar.getInstance();
 		from.set(Calendar.MONTH, 1);
 		from.set(Calendar.DAY_OF_YEAR, 1);
@@ -118,10 +119,31 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 				SortType.ascend);
 		return Pair.of(
 				orderVMs.stream()
-						.collect(Collectors.groupingBy(it -> it.getCreatedAt().substring(5, 7),
+						.collect(Collectors.groupingBy(it -> Integer.parseInt(it.getCreatedAt().substring(5, 7)),
 								Collectors.summingLong(it -> it.getTotal().longValue()))),
-				orderVMs.stream().collect(Collectors.groupingBy(it -> it.getCreatedAt().substring(5, 7),
-						Collectors.summingInt(it -> it.getId()))));
+				orderVMs.stream().collect(Collectors
+						.groupingBy(it -> Integer.parseInt(it.getCreatedAt().substring(5, 7)), Collectors.counting())));
+	}
+
+	private Pair<List<Integer>, List<Integer>> appendDataReport(
+			final Pair<Map<Integer, Long>, Map<Integer, Long>> revenuesAndSales) {
+		final Map<Integer, Long> left = revenuesAndSales.getLeft();
+		final Map<Integer, Long> right = revenuesAndSales.getRight();
+		List<Integer> revenues = Lists.newArrayList();
+		List<Integer> sales = Lists.newArrayList();
+		for (int i = 1; i <= 12; i++) {
+			if (left.get(i) == null) {
+				revenues.add(0);
+			} else {
+				revenues.add(left.get(i).intValue());
+			}
+			if (right.get(i) == null) {
+				sales.add(0);
+			} else {
+				sales.add(right.get(i).intValue());
+			}
+		}
+		return Pair.of(revenues, sales);
 	}
 
 }

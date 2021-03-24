@@ -5,26 +5,38 @@ import { Color, Label } from 'ng2-charts';
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
-  styleUrls: ['./bar-chart.component.css']
+  styleUrls: ['./bar-chart.component.css'],
 })
 export class BarChartComponent implements OnInit {
   @Input() chartTitle: string;
-  constructor() { }
+  @Input() revenues: number[];
+  barChartData: ChartDataSets[];
+  constructor() {}
 
   ngOnInit(): void {
+    this.barChartData = [{ data: this.revenues, label: 'Revenue' }];
   }
 
-  barChartLabels: Label[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  barChartLabels: Label[] = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   barChartType: ChartType = 'bar';
   barChartLegend = true;
 
-  barChartData: ChartDataSets[] = [
-    { data: [65, 59, 50, 51, 56, 55, 40, 21], label: 'Series A' },
-  ];
-
-  barChartOptions: (ChartOptions) = {
+  barChartOptions: ChartOptions = {
     maintainAspectRatio: false,
-  }
+  };
 
   barChartColors: Color[] = [
     {
@@ -32,5 +44,4 @@ export class BarChartComponent implements OnInit {
       borderColor: 'blue',
     },
   ];
-
 }

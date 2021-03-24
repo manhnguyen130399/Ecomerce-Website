@@ -1,30 +1,50 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { State } from '../../models/state';
 
 @Component({
   selector: 'app-pie-chart',
   templateUrl: './pie-chart.component.html',
-  styleUrls: ['./pie-chart.component.css']
+  styleUrls: ['./pie-chart.component.css'],
 })
 export class PieChartComponent implements OnInit {
-
   @Input() chartTitle: string;
-  constructor() { }
+  @Input() state: State;
+  pieChartData: number[];
+
+  constructor() {}
 
   ngOnInit(): void {
+    this.pieChartData = [
+      this.state.complete,
+      this.state.pending,
+      this.state.complete,
+      this.state.delivery,
+    ];
   }
 
   pieChartOptions: ChartOptions = {
     maintainAspectRatio: false,
   };
-  pieChartLabels: Label[] = [['Completed'], ['Progressing'], 'Cancel'];
-  pieChartData: number[] = [300, 500, 100];
+  pieChartLabels: Label[] = [
+    ['Completed'],
+    ['Pending'],
+    ['Cancel'],
+    ['Delivery'],
+  ];
+
+  // pieChartData: number[] = [300, 200, 500, 100];
   pieChartType: ChartType = 'pie';
   pieChartLegend = true;
   pieChartColors = [
     {
-      backgroundColor: ['rgba(56, 229, 73, 0.98)', 'rgba(72, 132, 222, 0.89)', 'rgba(215, 84, 69, 0.89)'],
+      backgroundColor: [
+        'rgba(56, 229, 73, 0.98)',
+        'rgba(72, 132, 222, 0.89)',
+        'rgba(215, 84, 69, 0.89)',
+        'rgba(211,33,54,0.98)',
+      ],
     },
   ];
 }
