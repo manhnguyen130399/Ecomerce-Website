@@ -15,6 +15,10 @@ namespace ORDER_SERVICE_NET.Utilities
 
         public const string OrderNotify = "You have a new order";
 
+        public const string SortASC = "ascend";
+
+        public const string SortDESC = "descend";
+
         //OrderStatus
         public const string PENDING = "PENDING";
         public const string DELIVER = "DELIVER";

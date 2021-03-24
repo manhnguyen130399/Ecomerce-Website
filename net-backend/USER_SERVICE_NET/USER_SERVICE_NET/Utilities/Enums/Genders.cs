@@ -8,6 +8,7 @@ namespace USER_SERVICE_NET.Utilities.Enums
     public enum Genders
     {
         Male,
-        Female
+        Female,
+        Other
     }
 }

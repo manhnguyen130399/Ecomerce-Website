@@ -11,10 +11,12 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 {
     public interface IOrderService
     {
-        Task<APIResult<List<OrderDetailView>>> GetOrderDetails(int orderId);
+        Task<APIResult<OrderView>> GetOrderDetails(int orderId, int storeId);
         Task<APIResult<OrderView>> GetById(int orderId);
         Task<APIResult<List<OrderView>>> GetAllByUser(string email);
-        Task<APIResult<PaggingView<OrderView>>> GetAll(PaggingRequest request);
+        Task<APIResult<PaggingView<OrderView>>> GetAll(PaggingRequest request,int storeId, string customerName, string state);
+
+        Task<APIResult<List<OrderView>>> GetByDate(OrderRequestByDate request);
         Task<APIResult<string>> Create(OrderCreateRequest request);
         Task<APIResult<bool>> UpdateStatus(string state, int orderId);
         Task<APIResult<bool>> Delete(int orderId);

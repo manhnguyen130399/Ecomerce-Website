@@ -14,7 +14,8 @@ namespace USER_SERVICE_NET.ViewModels.Customers
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Image { get; set; }
-        public string Gender { get; set; }
+        public Genders Gender { get; set; }
+        public DateTime? Created_at { get; set; }
 
     }
 }

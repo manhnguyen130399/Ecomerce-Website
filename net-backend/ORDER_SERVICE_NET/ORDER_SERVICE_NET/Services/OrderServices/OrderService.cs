@@ -13,6 +13,7 @@ using ORDER_SERVICE_NET.ViewModels.OrderDetails;
 using ORDER_SERVICE_NET.ViewModels.Orders;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -51,8 +52,8 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         QrCode = qrCodeData.Message == "OK" ? qrCodeData.Data : null,
                         Total = orderStore.Total,
                         Discount = orderStore.Discount,
-                        CreateAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
-                        StoreId = orderStore.StoreId,
+                        Created_at = DateTime.Now,
+                        StoreId = orderStore.StoreId
                     };
 
                     foreach (var item in orderStore.OrderDetails)
@@ -62,6 +63,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                             ProductDetailId = item.ProductDetailId,
                             Quantity = item.Quantity,
                             TotalPriceProduct = item.TotalPriceProduct,
+                            Created_at = DateTime.Now,
                         };
                         order.OrderDetail.Add(orderDetail);
                     }
@@ -76,7 +78,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 
                         var promotion = new CustomerPromo()
                         {
-                            UsedAt = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss"),
+                            Used_at = DateTime.Now,
                             CustomerPhone = request.Phone,
                             PromotionId = orderStore.PromotionId
                         };
@@ -96,7 +98,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         OrderId = item.Id,
                         Type = "Info",
                         IsRead = 0,
-                        Created_At = DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")
+                        Created_at = DateTime.Now
                     };
 
                     _context.Notify.Add(notify);
@@ -127,9 +129,26 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
             return new APIResultSuccess<bool>();
         }
 
-        public async Task<APIResult<PaggingView<OrderView>>> GetAll(PaggingRequest request)
+        public async Task<APIResult<PaggingView<OrderView>>> GetAll(PaggingRequest request, int storeId, string customerName, string state)
         {
-            var listOrder = await _context.Orders.ToListAsync();
+            var listOrder = await _context.Orders.Where(o => o.StoreId == storeId).ToListAsync();
+
+            if(customerName != null)
+            {
+                listOrder = listOrder.Where(o => o.CustomerName.Contains(customerName)).ToList();
+            }
+
+            if (state != null)
+            {
+                var listState = state.Split(",");
+                listOrder = listOrder.Where(o => listState.FirstOrDefault(ls => ls == o.State) !=null).ToList();
+            }
+
+
+            if (request.sortField =="id" && request.sortOrder== Constant.SortDESC)
+            {
+                listOrder = listOrder.OrderByDescending(o => o.Id).ToList();
+            }
 
             int totalRow = listOrder.Count();
 
@@ -142,17 +161,19 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                     CustomerName = x.CustomerName,
                     State = x.State,
                     Total = x.Total,
-                    CreateAt = x.CreateAt,
+                    Created_at = x.Created_at,
                     Notes = x.Notes,
-                    Discount = x.Discount
+                    QrCode = x.QrCode,
+                    Discount = x.Discount,
+                    ShippingCost = x.ShippingCost
                 }).ToList();
 
             var result = new PaggingView<OrderView>()
             {
                 Pageindex = request.pageIndex,
                 PageSize = request.pageSize,
-                Datas = data,
-                TotalRecord = totalRow
+                Content = data,
+                TotalElements = totalRow
             };
 
             return new APIResultSuccess<PaggingView<OrderView>>(result);
@@ -168,7 +189,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                 .Select(x => new OrderView()
                 {
                     Id = x.Id,
-                    CreateAt = x.CreateAt,
+                    Created_at = x.Created_at,
                     Notes = x.Notes,
                     Email = x.Email,
                     Phone = x.Phone,
@@ -179,6 +200,44 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                     Total = x.Total,
                     Discount = x.Discount,
                 }).ToListAsync();
+
+            return new APIResultSuccess<List<OrderView>>(data);
+        }
+
+        public async Task<APIResult<List<OrderView>>> GetByDate(OrderRequestByDate request)
+        {
+            var listOrder = from o in _context.Orders.Include(o => o.OrderDetail)
+                            where o.StoreId == request.StoreId && o.Created_at.CompareTo(request.FromDate) > 0 && o.Created_at.CompareTo(request.ToDate) < 0
+                            select o;
+
+
+            var data = await listOrder
+                .OrderByDescending(x => x.Created_at)
+                .Take(request.Top)
+                .Select(x => new OrderView()
+            {
+                Id = x.Id,
+                CustomerName = x.CustomerName,
+                State = x.State,
+                Total = x.Total,
+                Created_at = x.Created_at,
+                Notes = x.Notes,
+                Discount = x.Discount,
+                OrderDetails = x.OrderDetail.Select(od =>  new OrderDetailView
+                {
+                    Id = od.Id,
+                    ProductDetailId = od.ProductDetailId,
+                    TotalPriceProduct = od.TotalPriceProduct,
+                    Quantity =od.Quantity,
+
+                }).ToList(),
+                ShippingCost = x.ShippingCost
+            }).ToListAsync();
+
+            if(request.SortOrder == Constant.SortASC)
+            {
+                data = data.OrderBy(x => x.Created_at).ToList();
+            }
 
             return new APIResultSuccess<List<OrderView>>(data);
         }
@@ -195,43 +254,66 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
             var orderView = new OrderView()
             {
                 Id = order.Id,
-                CreateAt = order.CreateAt,
+                Created_at = order.Created_at,
                 Notes = order.Notes,
                 Email = order.Email,
                 Phone = order.Phone,
-                Address = JsonConvert.DeserializeObject<AddressInfo>(order.Address),
+                Address = order.Address!=null? JsonConvert.DeserializeObject<AddressInfo>(order.Address):null,
                 CustomerName = order.CustomerName,
                 QrCode = order.QrCode,
                 State = order.State,
                 Total = order.Total,
-                Discount = order.Discount
+                Discount = order.Discount,
+                ShippingCost = order.ShippingCost
             };
 
             return new APIResultSuccess<OrderView>(orderView);
         }
 
-        public async Task<APIResult<List<OrderDetailView>>> GetOrderDetails(int orderId)
+        public async Task<APIResult<OrderView>> GetOrderDetails(int orderId, int storeId)
         {
-            var listOrderDetail = await _context.OrderDetail.Where(x=>x.OrderId == orderId).ToListAsync();
+            var order = await _context.Orders.Include(o => o.OrderDetail)
+                .FirstOrDefaultAsync(o => o.Id == orderId && o.StoreId == storeId);
 
-            var listProductDetailId = listOrderDetail.Select(x => x.ProductDetailId).ToList();
+            if(order == null)
+            {
+                return new APIResultErrors<OrderView>("not found");
+            }
+            var listProductDetailId = order.OrderDetail.Select(x => x.ProductDetailId).ToList();
 
             var listProductDetailInfo = await _productService.GetListProduct(listProductDetailId);
 
-            var listData = from q in listOrderDetail
+            var listData = from q in order.OrderDetail
                            join p in listProductDetailInfo.Data on q.ProductDetailId equals p.ProductDetailId
                            select new { q, p };
 
-            var data = listData
+            var data = new OrderView()
+            {
+                Id = order.Id,
+                Created_at = order.Created_at,
+                Notes = order.Notes,
+                Email = order.Email,
+                Phone = order.Phone,
+                Address = order.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(order.Address) : null,
+                CustomerName = order.CustomerName,
+                QrCode = order.QrCode,
+                State = order.State,
+                Total = order.Total,
+                Discount = order.Discount,
+                ShippingCost = order.ShippingCost
+            };
+
+            data.OrderDetails = listData
              .Select(x => new OrderDetailView()
              {
                  ProductName = x.p.ProductName,
                  ProductDetailId = x.p.ProductDetailId,
                  Quantity = x.q.Quantity,
+
                  TotalPriceProduct = x.q.TotalPriceProduct,
              }).ToList();
 
-            return new APIResultSuccess<List<OrderDetailView>>(data);
+            return new APIResultSuccess<OrderView>(data);
         }
 
         public async Task<APIResult<bool>> UpdateStatus(string state, int orderId)
@@ -243,6 +325,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
             }
 
             order.State = state;
+            order.Updated_at = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

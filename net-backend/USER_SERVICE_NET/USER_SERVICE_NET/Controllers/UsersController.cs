@@ -26,14 +26,12 @@ namespace USER_SERVICE_NET.Controllers
     {
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
-        private readonly IStorageService _storageService;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UsersController(IUserService userService, IEmailService emailService, IStorageService storageService, IWebHostEnvironment webHostEnvironment)
+        public UsersController(IUserService userService, IEmailService emailService, IWebHostEnvironment webHostEnvironment)
         {
             _userService = userService;
             _emailService = emailService;
-            _storageService = storageService;
             _webHostEnvironment = webHostEnvironment;
         }
 
@@ -61,6 +59,40 @@ namespace USER_SERVICE_NET.Controllers
             }
 
             var result = await _userService.GetAccountInfoByUserName(userName);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetSellerById")]
+        [Authorize]
+        public async Task<IActionResult> GetSellerById()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var accountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
+            var result = await _userService.GetSellerById(accountId);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetCutomerById")]
+        [Authorize]
+        public async Task<IActionResult> GetCutomerById()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var accountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
+
+            var result = await _userService.GetCustomerById(accountId);
 
             if (!result.IsSuccessed) return BadRequest(result);
 
@@ -148,7 +180,7 @@ namespace USER_SERVICE_NET.Controllers
                 return BadRequest(ModelState);
             }
 
-            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
 
             var result = await _userService.ChangePassword(request);
 
@@ -219,18 +251,36 @@ namespace USER_SERVICE_NET.Controllers
             return Ok(result);
         }
 
-        [HttpPatch("UpdateInfo")]
+        [HttpPatch("UpdateInfoForSeller")]
         [Authorize]
-        public async Task<IActionResult> UpdateInfo(UpdateInfoRequest request)
+        public async Task<IActionResult> UpdateInfoForSeller(SellerUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
 
-            var result = await _userService.UpdateInfo(request);
+            var result = await _userService.UpdateInfoForSeller(request);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpPatch("UpdateInfoForCustomer")]
+        [Authorize]
+        public async Task<IActionResult> UpdateInfoForCustomer(CustomerUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
+
+            var result = await _userService.UpdateInfoForCustomer(request);
 
             if (!result.IsSuccessed) return BadRequest(result);
 

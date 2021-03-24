@@ -62,6 +62,14 @@ namespace USER_SERVICE_NET.Models
                 entity.Property(e => e.Username)
                     .HasColumnName("username")
                     .HasMaxLength(45);
+
+                entity.Property(e => e.Created_at)
+                    .HasColumnName("created_at")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Updated_at)
+                      .HasColumnName("updated_at")
+                      .HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -103,6 +111,14 @@ namespace USER_SERVICE_NET.Models
                 entity.Property(e => e.Phone)
                     .HasColumnName("phone")
                     .HasMaxLength(12);
+
+                entity.Property(e => e.Created_at)
+                    .HasColumnName("created_at")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Updated_at)
+                      .HasColumnName("updated_at")
+                      .HasColumnType("datetime");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Customer)
@@ -157,6 +173,14 @@ namespace USER_SERVICE_NET.Models
                 entity.Property(e => e.SellerName)
                     .HasColumnName("seller_name")
                     .HasMaxLength(45);
+
+                entity.Property(e => e.Updated_at)
+                      .HasColumnName("updated_at")
+                      .HasColumnType("datetime");
+
+                entity.Property(e => e.Created_at)
+                      .HasColumnName("created_at")
+                      .HasColumnType("datetime");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Seller)

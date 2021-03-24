@@ -11,7 +11,9 @@ namespace ORDER_SERVICE_NET.Models
     {
         public int Id { get; set; }
         public string CustomerPhone { get; set; }
-        public string UsedAt { get; set; }
+        public DateTime Used_at { get; set; }
         public int PromotionId { get; set; }
+        public DateTime? Created_at { get; set; }
+        public DateTime? Updated_at { get; set; }
     }
 }

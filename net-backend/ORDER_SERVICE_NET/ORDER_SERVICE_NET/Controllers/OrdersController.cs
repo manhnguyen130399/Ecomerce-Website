@@ -7,6 +7,7 @@ using ORDER_SERVICE_NET.ViewModels.Orders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ORDER_SERVICE_NET.Controllers
@@ -37,14 +38,36 @@ namespace ORDER_SERVICE_NET.Controllers
 
         [HttpGet("GetAll")]
         [Authorize]
-        public async Task<IActionResult> GetAll([FromQuery] PaggingRequest request)
+        public async Task<IActionResult> GetAll([FromQuery] PaggingRequest request, string customerName, string state)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await _orderService.GetAll(request);
+            var storeId = Convert.ToInt32(HttpContext.User.FindFirstValue("storeId"));
+
+            var result = await _orderService.GetAll(request, storeId, customerName, state);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetByDate")]
+        [Authorize]
+        public async Task<IActionResult> GetByDate([FromQuery] OrderRequestByDate request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var storeId = Convert.ToInt32(HttpContext.User.FindFirstValue("storeId"));
+
+            request.StoreId = storeId;
+
+            var result = await _orderService.GetByDate(request);
 
             if (!result.IsSuccessed) return BadRequest(result);
 
@@ -93,9 +116,27 @@ namespace ORDER_SERVICE_NET.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await _orderService.GetOrderDetails(orderId);
+            var storeId = Convert.ToInt32(HttpContext.User.FindFirstValue("storeId"));
+
+            var result = await _orderService.GetOrderDetails(orderId, storeId);
 
             if(!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("UpdateState/{orderId}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateStatus(int orderId,string state)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _orderService.UpdateStatus(state, orderId);
+
+            if (!result.IsSuccessed) return BadRequest(result);
 
             return Ok(result);
         }

@@ -25,6 +25,8 @@ namespace USER_SERVICE_NET.Models
         public string Provider { get; set; }
         public string ProviderKey { get; set; }
         public string TokenResetPassword { get; set; }
+        public DateTime? Created_at { get; set; }
+        public DateTime? Updated_at { get; set; }
 
         public virtual ICollection<Customer> Customer { get; set; }
         public virtual ICollection<Seller> Seller { get; set; }

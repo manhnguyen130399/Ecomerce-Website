@@ -30,5 +30,5 @@ export const shareIcons: IconDefinition[] = [
   ClockCircleOutline,
   ReloadOutline,
   DashboardOutline,
-  EyeOutline
+  EyeOutline,
 ];

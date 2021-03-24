@@ -23,7 +23,10 @@ namespace ORDER_SERVICE_NET.Services.NotifyServices
         {
             var listNotify = await _context.Notify.Where(x => x.StoreId == storeId).ToListAsync();
 
-            listNotify.ForEach(x => x.IsRead = 1);
+            listNotify.ForEach(x => {
+                    x.IsRead = 1;
+                    x.Updated_at = DateTime.Now;
+                });
 
             await _context.SaveChangesAsync();
 
@@ -48,7 +51,7 @@ namespace ORDER_SERVICE_NET.Services.NotifyServices
                 {
                     Id = x.Id,
                     Content = x.Content,
-                    Created_At = x.Created_At,
+                    Created_at = x.Created_at,
                     Type = x.Type,
                     StoreId = x.StoreId,
                     IsRead = x.IsRead
@@ -58,8 +61,8 @@ namespace ORDER_SERVICE_NET.Services.NotifyServices
             {
                 Pageindex = request.pageIndex,
                 PageSize = request.pageSize,
-                Datas = data,
-                TotalRecord = totalRow
+                Content = data,
+                TotalElements = totalRow
             };
 
             return new APIResultSuccess<PaggingView<NotifyView>>(result);

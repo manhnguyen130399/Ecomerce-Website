@@ -19,7 +19,7 @@ namespace USER_SERVICE_NET.ViewModels.Customers
         [Required]
         public Genders Gender { get; set; }
 
-        public IFormFile ImageFile { get; set; }
+        public string ImageUrl { get; set; }
 
         [Phone]
         public string Phone { get; set; }
