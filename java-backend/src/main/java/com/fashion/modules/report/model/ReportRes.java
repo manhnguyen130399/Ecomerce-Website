@@ -2,7 +2,6 @@ package com.fashion.modules.report.model;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 import com.fashion.modules.category.model.CategoryEntryMap;
 
@@ -16,6 +15,6 @@ public class ReportRes {
 	private Integer customer;
 	private List<CategoryEntryMap> category;
 	private StateOrderReportVM state;
-	private Map<String, Long> revenues;
-	private Map<String, Integer> sales;
+	private List<Integer> revenues;
+	private List<Integer> sales;
 }
