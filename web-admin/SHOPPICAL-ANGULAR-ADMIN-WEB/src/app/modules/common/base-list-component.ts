@@ -51,7 +51,6 @@ export class BaseListComponent<T extends BaseModel> {
 
   delete(id: number) {
     this.isLoading = true;
-    this.baseParams.filters = [{ key: "sizeName", value: this.searchValue }];
     this.baseService.delete(id, this.baseParams).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe(res => {
@@ -90,13 +89,14 @@ export class BaseListComponent<T extends BaseModel> {
   }
 
   onQueryParamsChangeFromParent(params: NzTableQueryParams) {
-    const { pageSize, pageIndex, sort } = params;
+    const { pageSize, pageIndex, sort, filter } = params;
     const currentSort = sort.find(item => item.value !== null);
 
     this.baseParams.pageIndex = pageIndex;
     this.baseParams.pageSize = pageSize;
     this.baseParams.sortField = (currentSort && currentSort.key) || null;
     this.baseParams.sortOrder = (currentSort && currentSort.value) || null;
+    this.baseParams.filters = this.baseParams.filters.concat(filter);
 
     this.loadDataFromServer(this.baseParams);
   }

@@ -56,6 +56,14 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'NULL'");
 
+                entity.Property(e => e.Created_at)
+                  .HasColumnName("created_at")
+                  .HasColumnType("datetime");
+
+                entity.Property(e => e.Updated_at)
+                    .HasColumnName("updated_at")
+                    .HasColumnType("datetime");
+
                 entity.HasOne(d => d.Cart)
                     .WithMany(p => p.CartDetail)
                     .HasForeignKey(d => d.CartId)
@@ -82,6 +90,14 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnName("total")
                     .HasColumnType("decimal(10,0)")
                     .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.Created_at)
+                  .HasColumnName("created_at")
+                  .HasColumnType("datetime");
+
+                entity.Property(e => e.Updated_at)
+                    .HasColumnName("updated_at")
+                    .HasColumnType("datetime");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
@@ -131,6 +147,14 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnName("updated_by")
                     .HasMaxLength(45)
                     .HasDefaultValueSql("'NULL'");
+
+                entity.Property(e => e.Created_at)
+                  .HasColumnName("created_at")
+                  .HasColumnType("datetime");
+
+                entity.Property(e => e.Updated_at)
+                    .HasColumnName("updated_at")
+                    .HasColumnType("datetime");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetail)
@@ -218,9 +242,13 @@ namespace ORDER_SERVICE_NET.Models
                     .HasMaxLength(45)
                     .HasDefaultValueSql("'NULL'");
 
-                entity.Property(e => e.CreateAt)
+                entity.Property(e => e.Created_at)
                  .HasColumnName("created_at")
                  .HasColumnType("datetime");
+
+                entity.Property(e => e.Updated_at)
+                .HasColumnName("updated_at")
+                .HasColumnType("datetime");
             });
 
             modelBuilder.Entity<CustomerPromo>(entity =>
@@ -242,9 +270,17 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnName("promotion_id")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.UsedAt)
+                entity.Property(e => e.Used_at)
                   .HasColumnName("used_at")
                   .HasColumnType("datetime");
+
+                entity.Property(e => e.Created_at)
+                  .HasColumnName("created_at")
+                  .HasColumnType("datetime");
+
+                entity.Property(e => e.Updated_at)
+                    .HasColumnName("updated_at")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.CustomerPhone)
                     .IsRequired()
@@ -275,8 +311,12 @@ namespace ORDER_SERVICE_NET.Models
                     .HasColumnName("order_id")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.Created_At)
+                entity.Property(e => e.Created_at)
                     .HasColumnName("created_at")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Updated_at)
+                    .HasColumnName("updated_at")
                     .HasColumnType("datetime");
             });
 

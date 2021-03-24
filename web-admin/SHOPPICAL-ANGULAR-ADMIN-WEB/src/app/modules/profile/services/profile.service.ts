@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Store } from '../model/store';
+
 @Injectable({
   providedIn: 'root'
 })

@@ -14,7 +14,8 @@ namespace ORDER_SERVICE_NET.Models
         public int StoreId { get; set; }
         public int OrderId { get; set; }
         public string Type { get; set; }
-        public string Created_At { get; set; }
+        public DateTime? Created_at { get; set; }
+        public DateTime? Updated_at { get; set; }
         public int IsRead { get; set; }
     }
 }

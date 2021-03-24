@@ -63,6 +63,11 @@ export const mainRoutes: Routes = [
         path: 'profile',
         loadChildren: () =>
           import('../profile/profile.module').then(m => m.ProfileModule),
+      },
+      {
+        path: 'order',
+        loadChildren: () =>
+          import('../order/order.module').then(m => m.OrderModule),
       }
     ],
   },

@@ -8,14 +8,21 @@
       </a>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="ordered-list">
+      <li nz-submenu nzTitle="Dashboard" nzIcon="bar-chart">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/admin/dashboard']">Dashboard</a>
           </li>
         </ul>
       </li>
-      <li nz-submenu nzOpen nzTitle="Product" nzIcon="shopping-cart">
+      <li nz-submenu nzTitle="Order" nzIcon="ordered-list">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="['/admin/order']">Order list</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Product" nzIcon="shopping-cart">
         <ul>
           <li nz-menu-item nzMatchRouter nzMatchRouterExact>
             <a [routerLink]="['/admin/product']">List Product</a>
@@ -26,7 +33,7 @@
         </ul>
       </li>
 
-      <li nz-submenu nzOpen nzTitle="Option" nzIcon="expand-alt">
+      <li nz-submenu nzTitle="Option" nzIcon="expand-alt">
         <ul>
           <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/admin/category']">Category</a>

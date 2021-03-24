@@ -27,7 +27,8 @@ namespace ORDER_SERVICE_NET.Models
         public decimal Discount { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
-        public string CreateAt { get; set; }
+        public DateTime Created_at { get; set; }
+        public DateTime Updated_at { get; set; }
         public int? PromotionId { get; set; }
         public int StoreId { set; get; }
 

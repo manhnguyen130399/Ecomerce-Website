@@ -1,0 +1,71 @@
+.order-section {
+  border: 1px solid #dee2e6;
+}
+
+.order-section .title {
+  text-align: center;
+  font-size: 17px;
+  font-weight: 800;
+  background: #fafafa;
+  padding: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.order-section .title p {
+  margin: 0;
+}
+
+.order-section .content {
+  padding: 10px 15px;
+}
+
+.order-section .content p {
+  margin-bottom: 5px;
+}
+
+.order-section.order-items {
+  border-bottom: none;
+}
+
+.order-section.order-items .title {
+  border-bottom: none;
+}
+
+.notes .content {
+  height: 150px;
+}
+
+.general-detail {
+  margin-bottom: 32px;
+}
+
+.general-detail .content p:first-child span,
+.update-status span {
+  color: white;
+  font-size: 13px;
+  padding: 4px 8px;
+}
+
+.update-status {
+  margin-bottom: 5px;
+}
+
+.update-status span:hover {
+  cursor: pointer;
+}
+
+span.pending {
+  background: #efe143;
+}
+
+span.cancel {
+  background: #e64646;
+}
+
+span.deliver {
+  background: #4380ef;
+}
+
+span.complete {
+  background: #5ede3e;
+}

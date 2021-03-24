@@ -12,7 +12,7 @@ namespace USER_SERVICE_NET.ViewModels.Accounts
 
         [Required]
         [DataType(DataType.Password)]
-        public string CurentPassword { get; set; }
+        public string CurrentPassword { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

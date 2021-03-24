@@ -16,6 +16,8 @@ namespace ORDER_SERVICE_NET.Models
         public string UpdatedBy { get; set; }
         public int OrderId { get; set; }
         public int ProductDetailId { get; set; }
+        public DateTime? Created_at { get; set; }
+        public DateTime? Updated_at { get; set; }
 
         public virtual Orders Order { get; set; }
     }

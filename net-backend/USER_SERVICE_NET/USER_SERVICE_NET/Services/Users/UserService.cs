@@ -1,16 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
 using USER_SERVICE_NET.Services.Communicates;
@@ -31,14 +24,12 @@ namespace USER_SERVICE_NET.Services.Users
     {
         private readonly ShopicaContext _context;
         private readonly IConfiguration _configuration;
-        private readonly IStorageService _storageService;
         private readonly ICommunicateService _communicateService;
 
-        public UserService(ShopicaContext context, IConfiguration configuration, IStorageService storageService, ICommunicateService communicateService)
+        public UserService(ShopicaContext context, IConfiguration configuration, ICommunicateService communicateService)
         {
             _context = context;
             _configuration = configuration;
-            _storageService = storageService;
             _communicateService = communicateService;
         }
         public async Task<APIResult<string>> Authencate(LoginRequest request)
@@ -58,17 +49,14 @@ namespace USER_SERVICE_NET.Services.Users
 
         public async Task<APIResult<string>> RegisterForCustomer(CustomerRegisterRequest request)
         {
-            if (await _context.Account.FirstOrDefaultAsync(ac => ac.Username == request.Email) != null)
-            {
-                return new APIResultErrors<string>("Email is already");
-            }
-
             var account = new Account()
             {
                 Username = request.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 IsActive = 1,
                 Type = AccountTypes.Customer,
+                ImageUrl = request.ImageUrl,
+                Created_at = DateTime.Now,
                 Customer = new List<Customer>()
                 {
                     new Customer()
@@ -78,14 +66,10 @@ namespace USER_SERVICE_NET.Services.Users
                         Phone = request.Phone,
                         Email = request.Email,
                         Gender = request.Gender,
+                        Created_at = DateTime.Now,
                     }
                 }
             };
-
-            if (request.ImageFile != null)
-            {
-                account.ImageUrl = await _storageService.UploadFileAsync(request.ImageFile);
-            }
 
             _context.Account.Add(account);
 
@@ -102,7 +86,7 @@ namespace USER_SERVICE_NET.Services.Users
             storeRequest.StoreName = request.StoreName;
             storeRequest.OpenTime = request.OpenTime;
             storeRequest.CloseTime = request.CloseTime;
-            storeRequest.Website = Helpers.ConverToSlug(request.StoreName);
+            storeRequest.Website = request.Website;
 
             var store = await _communicateService.CreateStoreForSeller(storeRequest);
 
@@ -112,6 +96,7 @@ namespace USER_SERVICE_NET.Services.Users
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 IsActive = 1,
                 Type = AccountTypes.Seller,
+                Created_at = DateTime.Now,
                 Seller = new List<Seller>()
                 {
                     new Seller()
@@ -120,15 +105,11 @@ namespace USER_SERVICE_NET.Services.Users
                         Phone = request.Phone,
                         Email = request.Email,
                         Gender = request.Gender,
-                        StoreId = store.Data.Id
+                        StoreId = store.Data.Id,
+                        Created_at = DateTime.Now,
                     }
                 }
             };
-
-            if (request.ImageFile != null)
-            {
-                account.ImageUrl = await _storageService.UploadFileAsync(request.ImageFile);
-            }
 
             _context.Account.Add(account);
             await _context.SaveChangesAsync();
@@ -144,12 +125,13 @@ namespace USER_SERVICE_NET.Services.Users
                 return new APIResultErrors<string>("Can not found user");
             }
 
-            if(!BCrypt.Net.BCrypt.Verify(request.CurentPassword, user.Password))
+            if(!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password))
             {
                 return new APIResultErrors<string>("Current password is incorrect");
             }
 
             user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            user.Updated_at = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
@@ -168,6 +150,7 @@ namespace USER_SERVICE_NET.Services.Users
             var token = Helpers.Base64Encode(Helpers.GetCurrentTime());
 
             user.TokenResetPassword = token;
+            user.Updated_at = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
@@ -197,6 +180,7 @@ namespace USER_SERVICE_NET.Services.Users
             {
                 user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
                 user.TokenResetPassword = String.Empty;
+                user.Updated_at = DateTime.Now;
 
                 await _context.SaveChangesAsync();
                 return new APIResultSuccess<bool>();
@@ -221,12 +205,14 @@ namespace USER_SERVICE_NET.Services.Users
                     ImageUrl = request.ImageUrl,
                     IsActive = 1,
                     Type = AccountTypes.Customer,
+                    Created_at = DateTime.Now,
                     Customer = new List<Customer>()
                 {
                     new Customer()
                     {
                         CustomerName = request.FullName,
                         Email = request.Email,
+                        Created_at = DateTime.Now,
                     }
                 }
                 };
@@ -243,39 +229,51 @@ namespace USER_SERVICE_NET.Services.Users
 
         }
 
-        public async Task<APIResult<bool>> UpdateInfo(UpdateInfoRequest request)
+        public async Task<APIResult<bool>> UpdateInfoForSeller(SellerUpdateRequest request)
         {
-            dynamic user;
+            var seller = await _context.Seller.Include(x => x.Account).FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
 
-            if (request.IsCustomer)
+            if (seller == null)
             {
-               user = await _context.Customer.FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
-            }
-            else
-            {
-                user = await _context.Seller.FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
-            }
-            
-            if (user == null)
-            {
-                return new APIResultErrors<bool>("Can not found user");
+                return new APIResultErrors<bool>("Can not found seller");
             }
 
-            if (request.ImageFile != null)
-            {
-                user.Account.ImageUrl = await _storageService.UploadFileAsync(request.ImageFile);
-            }
-
-            user.CustomerName = (!String.IsNullOrEmpty(request.Fullname) && user.CustomerName != request.Fullname) ? request.Fullname : user.CustomerName;
-            user.Gender = (!String.IsNullOrEmpty(request.Gender.ToString()) && user.Gender != request.Gender) ? request.Gender : user.Gender;
-            user.Phone = (!String.IsNullOrEmpty(request.Phone) && user.Phone != request.Phone) ? request.Phone : user.Phone;
-            user.Address = (request.Address == null && user.Address != request.Address) ? JsonConvert.SerializeObject(request.Address) : user.Address;
-         
+            var account = seller.Account;
+            account.Username = (request.Email != null && account.Username != request.Email) ? request.Email : account.Username;
+            account.ImageUrl = (request.Image != null && account.ImageUrl != request.Image) ? request.Image : account.ImageUrl;
+            seller.SellerName = (!String.IsNullOrEmpty(request.Sellername) && seller.SellerName != request.Sellername) ? request.Sellername : seller.SellerName;
+            seller.Gender = (!String.IsNullOrEmpty(request.Gender.ToString()) && seller.Gender != request.Gender) ? request.Gender : seller.Gender;
+            seller.Phone = (!String.IsNullOrEmpty(request.Phone) && seller.Phone != request.Phone) ? request.Phone : seller.Phone;
+            seller.Address = (request.Address != null) ? JsonConvert.SerializeObject(request.Address) : seller.Address;
+            seller.Updated_at = DateTime.Now;
             await _context.SaveChangesAsync();
 
             return new APIResultSuccess<bool>();
 
         }
+
+        public async Task<APIResult<bool>> UpdateInfoForCustomer(CustomerUpdateRequest request)
+        {
+            var customer = await _context.Customer.Include(x => x.Account).FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
+
+            if (customer == null)
+            {
+                return new APIResultErrors<bool>("Can not found customer");
+            }
+
+            var account = customer.Account;
+            account.Username = (request.Email != null && account.Username != request.Email) ? request.Email : account.Username;
+            account.ImageUrl = (request.Image != null && account.ImageUrl != request.Image) ? request.Image : account.ImageUrl;
+            customer.CustomerName = (!String.IsNullOrEmpty(request.CustomerName) && customer.CustomerName != request.CustomerName) ? request.CustomerName : customer.CustomerName;
+            customer.Gender = (!String.IsNullOrEmpty(request.Gender.ToString()) && customer.Gender != request.Gender) ? request.Gender : customer.Gender;
+            customer.Phone = (!String.IsNullOrEmpty(request.Phone) && customer.Phone != request.Phone) ? request.Phone : customer.Phone;
+            customer.Address = (request.Address != null) ? JsonConvert.SerializeObject(request.Address) : customer.Address;
+            customer.Updated_at = DateTime.Now;
+            await _context.SaveChangesAsync();
+
+            return new APIResultSuccess<bool>();
+        }
+
 
         public async Task<APIResult<PaggingView<CustomerView>>> GetAllCustomer(PaggingRequest request)
         {
@@ -294,8 +292,9 @@ namespace USER_SERVICE_NET.Services.Users
                     Address = x.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(x.Address) : null,
                     Phone = x.Phone,
                     Email = x.Email,
-                    Gender = x.Gender == Genders.Male ? "Male" : "Female",
-                    Image = x.Account.ImageUrl
+                    Gender = x.Gender,
+                    Image = x.Account.ImageUrl,
+                    Created_at = x.Created_at
                 }).ToList();
 
             var customerView = new PaggingView<CustomerView>()
@@ -335,10 +334,11 @@ namespace USER_SERVICE_NET.Services.Users
                 Address = x.s.Address!=null? JsonConvert.DeserializeObject<AddressInfo>(x.s.Address):null,
                 Phone = x.s.Phone,
                 Email = x.s.Email,
-                Gender = x.s.Gender == Genders.Male ? "Male" : "Female",
+                Gender = x.s.Gender,
                 Image = x.s.Account.ImageUrl,
                 StoreName = x.st.StoreName,
-                Website = x.st.Website
+                Website = x.st.Website,
+                Created_at = x.s.Created_at
             }).ToList();
 
             var sellerView = new PaggingView<SellerView>()
@@ -354,7 +354,7 @@ namespace USER_SERVICE_NET.Services.Users
 
         public async Task<APIResult<AccountView>> GetAccountInfoByUserName(string userName)
         {
-            var account = await _context.Account.FirstOrDefaultAsync(a => a.Username == userName);
+            var account = await _context.Account.Include(x => x.Seller).FirstOrDefaultAsync(a => a.Username == userName);
             if(account == null)
             {
                 return new APIResultErrors<AccountView>("Not found");
@@ -366,7 +366,8 @@ namespace USER_SERVICE_NET.Services.Users
                 Password = account.Password,
                 Type = account.Type,
                 ImageUrl = account.ImageUrl,
-                IsActive = account.IsActive
+                IsActive = account.IsActive,
+                StoreId = account.Seller.Count > 0 ? account.Seller.FirstOrDefault().StoreId : -1,
             };
 
             return new APIResultSuccess<AccountView>(accountView);
@@ -382,6 +383,46 @@ namespace USER_SERVICE_NET.Services.Users
             }
 
             return new APIResultSuccess<string>();
+        }
+
+        public async Task<APIResult<SellerView>> GetSellerById(int accountId)
+        {
+            var seller = await _context.Seller.Include(x => x.Account).FirstOrDefaultAsync(a => a.AccountId == accountId);
+            if (seller == null)
+            {
+                return new APIResultErrors<SellerView>("Not found");
+            }
+            var data = new SellerView()
+            {
+                SellerName = seller.SellerName,
+                Address = seller.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(seller.Address) : null,
+                Phone = seller.Phone,
+                Email = seller.Email,
+                Gender = seller.Gender,
+                Image = seller.Account.ImageUrl,
+            };
+
+            return new APIResultSuccess<SellerView>(data);
+        }
+
+        public async Task<APIResult<CustomerView>> GetCustomerById(int accountId)
+        {
+            var customer = await _context.Customer.Include(x => x.Account).FirstOrDefaultAsync(a => a.AccountId == accountId);
+            if (customer == null)
+            {
+                return new APIResultErrors<CustomerView>("Not found");
+            }
+            var data = new CustomerView()
+            {
+                CustomerName = customer.CustomerName,
+                Address = customer.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(customer.Address) : null,
+                Phone = customer.Phone,
+                Email = customer.Email,
+                Gender = customer.Gender,
+                Image = customer.Account.ImageUrl,
+            };
+
+            return new APIResultSuccess<CustomerView>(data);
         }
     }
 }

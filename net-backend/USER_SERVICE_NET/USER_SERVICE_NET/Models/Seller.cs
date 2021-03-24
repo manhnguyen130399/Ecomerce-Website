@@ -18,6 +18,8 @@ namespace USER_SERVICE_NET.Models
         public string Email { get; set; }
         public int StoreId { get; set; }
         public int AccountId { get; set; }
+        public DateTime? Created_at { get; set; }
+        public DateTime? Updated_at { get; set; }
 
         public virtual Account Account { get; set; }
     }

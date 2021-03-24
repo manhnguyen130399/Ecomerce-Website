@@ -21,12 +21,12 @@ namespace USER_SERVICE_NET.Utilities
 
             var claims = new[]
            {
-                new Claim("sub", user.Username),
                 new Claim(ClaimTypes.Role, user.Type.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("accountId", user.Id.ToString()),
+                new Claim("sub", user.Username),
                 new Claim("isSocial", isSocial.ToString()),
                 new Claim("storeId",  user.Seller.Count != 0 ? user.Seller.FirstOrDefault().StoreId.ToString() : "-1"),
-                new Claim("name",  user.Seller.Count != 0 ? user.Seller.FirstOrDefault().SellerName : ""),
+                new Claim("name",  user.Seller.Count != 0 ? user.Seller.FirstOrDefault().SellerName??"" : ""),
             };
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("SecretKey").Value);
             var tokenDescriptor = new SecurityTokenDescriptor

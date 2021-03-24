@@ -108,7 +108,6 @@ export class ProductListComponent extends BaseListComponent<Product> implements 
   }
 
   showListImage(listImages: ProductImage[]) {
-    console.log(listImages)
     let listNzImages: NzImage[] = [];
     listImages.forEach(item => {
       listNzImages.push({

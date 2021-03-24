@@ -1,5 +1,6 @@
 ﻿using ORDER_SERVICE_NET.Models;
 using ORDER_SERVICE_NET.ViewModels.Address;
+using ORDER_SERVICE_NET.ViewModels.OrderDetails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace ORDER_SERVICE_NET.ViewModels.Orders
         public string Notes { get; set; }
         public decimal Total { get; set; }
         public decimal Discount { get; set; }
-        public string CreateAt { get; set; }
+        public decimal ShippingCost { get; set; }
+        public DateTime? Created_at { get; set; }
+
+        public List<OrderDetailView> OrderDetails { get; set; }
     }
 }
