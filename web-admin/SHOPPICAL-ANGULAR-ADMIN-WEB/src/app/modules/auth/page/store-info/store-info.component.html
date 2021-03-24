@@ -15,13 +15,6 @@
       </ng-template>
     </nz-form-control>
   </nz-form-item>
-  <!-- storeAddress -->
-  <nz-form-item>
-    <nz-form-label [nzLg]="7" [nzSm]="7" [nzXs]="9" nzRequired nzFor="storeAddress">StoreAddress</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzLg]="12" [nzXs]="14" nzErrorTip="Please input your storeAddress!">
-      <input nz-input type="text" formControlName="storeAddress">
-    </nz-form-control>
-  </nz-form-item>
   <!-- website -->
   <nz-form-item>
     <nz-form-label [nzLg]="7" [nzSm]="7" [nzXs]="9" nzRequired nzFor="website">WebSite</nz-form-label>
@@ -48,8 +41,8 @@
       <i nz-icon nzType="backward" nzTheme="fill"></i>
       Previous
     </button>
-    <button nz-button nzShape="round" [disabled]="storeRegisterForm.invalid || !isValidSellerForm" nzType="primary"
-      (click)="submitForm()">
+    <button nz-button nzShape="round" [nzLoading]="isLoadingSubmitForm"
+      [disabled]="storeRegisterForm.invalid || !isValidSellerForm" nzType="primary" (click)="submitForm()">
       <span>
         Done
         <i nz-icon nzType="check" nzTheme="outline"></i>

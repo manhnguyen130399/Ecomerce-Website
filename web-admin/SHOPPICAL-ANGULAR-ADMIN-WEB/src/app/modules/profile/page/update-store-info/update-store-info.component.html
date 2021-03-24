@@ -1,0 +1,97 @@
+<div class="container">
+  <form nz-form [formGroup]="storeUpdateForm">
+    <div class="store-info section">
+      <div class="content">
+        <div class="column">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="storeName">Store Name</nz-form-label>
+            <nz-form-control nzValidatingTip="Validating..." nzHasFeedback [nzSpan]="14" [nzErrorTip]="userErrorTpl">
+              <input nz-input type="text" formControlName="storeName">
+              <ng-template #userErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">
+                  Please input your store Name!
+                </ng-container>
+                <ng-container *ngIf="control.hasError('duplicated')">
+                  The store Name is already in use!
+                </ng-container>
+              </ng-template>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="owner">Owner</nz-form-label>
+            <nz-form-control [nzSpan]="14">
+              <input nz-input formControlName="owner" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="website">Website</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="Please input your website!">
+              <input nz-input type="text" formControlName="website">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="province">Province</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="Please select your province!">
+              <nz-select (ngModelChange)="provinceChange($event)" formControlName="province" nzShowSearch
+                nzPlaceHolder="Select a province">
+                <nz-option *ngFor="let item of listProvince" [nzLabel]="item.ProvinceName" [nzValue]="item">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="district">District</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="Please select your district!">
+              <nz-select (ngModelChange)="districtChange($event)" formControlName="district" nzShowSearch
+                nzPlaceHolder="Select a district">
+                <nz-option *ngFor="let item of listDistrict" [nzLabel]="item.DistrictName" [nzValue]="item">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+
+        </div>
+        <div class="column">
+          <div class="content seller-image">
+            <nz-upload [nzAction]="backendUrl" nzName="files" nzListType="picture-card" [(nzFileList)]="fileList"
+              [nzShowButton]="fileList.length < 1">
+            </nz-upload>
+          </div>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzFor="ward">Ward</nz-form-label>
+            <nz-form-control [nzSpan]="14" nzErrorTip="Please select your ward!">
+              <nz-select formControlName="ward" nzShowSearch nzPlaceHolder="Select a ward">
+                <nz-option *ngFor="let item of listWard" [nzLabel]="item.WardName" [nzValue]="item">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" nzRequired>Open Time</nz-form-label>
+            <nz-form-control [nzSpan]="4">
+              <nz-time-picker nzFormat="HH:mm" formControlName="openTime"></nz-time-picker>
+            </nz-form-control>
+
+            <nz-form-label [nzSpan]="6" nzRequired>Close Time</nz-form-label>
+            <nz-form-control [nzSpan]="4">
+              <nz-time-picker nzFormat="HH:mm" formControlName="closeTime"></nz-time-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+      <div class="btn-submit">
+        <button nz-button [routerLink]="['/admin/dashboard']" nzType="default">Cancel</button>
+        <button nz-button [nzLoading]="isLoadingSubmit" [disabled]="storeUpdateForm.invalid" (click)="submitForm()"
+          nzType="primary">Save Information</button>
+      </div>
+    </div>
+
+  </form>
+
+  <nz-spin [ngClass]="{'isLoading':isLoadingSellerDetail}" [nzSpinning]="isLoadingSellerDetail" nzSimple></nz-spin>
+</div>

@@ -1,3 +1,4 @@
+import { SlugifyPipe } from './../../core/pipe/slugify.pipe';
 import { routes } from './auth.routing';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -11,8 +12,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzIconModule } from 'ng-zorro-antd/icon'
 
 import { LoginComponent } from '@modules/auth/page/login/login.component';
 import { RegisterComponent } from '@modules/auth/page/register/register.component';
@@ -20,6 +20,7 @@ import { RegisterComponent } from '@modules/auth/page/register/register.componen
 import { icons } from './auth-icon';
 import { SellerInfoComponent } from './page/seller-info/seller-info.component';
 import { StoreInfoComponent } from './page/store-info/store-info.component';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -38,9 +39,12 @@ import { StoreInfoComponent } from './page/store-info/store-info.component';
     NzGridModule,
     NzStepsModule,
     NzTimePickerModule,
-    NzRadioModule,
+    NzMessageModule,
     NzIconModule.forChild(icons)
   ],
-  providers: [DatePipe]
+  providers: [
+    DatePipe,
+    SlugifyPipe
+  ]
 })
 export class AuthModule { }

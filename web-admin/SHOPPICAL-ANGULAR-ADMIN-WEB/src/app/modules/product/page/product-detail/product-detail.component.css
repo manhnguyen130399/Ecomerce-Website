@@ -7,43 +7,8 @@
   height: 100%;
 }
 
-.section {
-  border-bottom: 1px solid #e6e1e1;
-  padding: 10px 0 10px 0;
-}
-
-.section .content {
-  display: flex;
-}
-
-.section .column {
-  width: 50%;
-}
-
-.section h4 {
-  padding: 10px 0 13px 0;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.option-value.section {
-  border: none;
-}
-
 .btn-submit {
   float: right;
   margin: 20px;
   margin-right: 0;
-}
-
-.isLoading {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  display: flex;
-  padding-top: 250px;
-  justify-content: center;
-  width: 100%;
-  background: #ffffff7a;
 }

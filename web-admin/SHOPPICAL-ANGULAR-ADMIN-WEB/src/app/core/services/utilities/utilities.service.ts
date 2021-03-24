@@ -42,4 +42,29 @@ export class UtilitiesService {
     }
     return null;
   }
+
+  getName(): string {
+    this.user = this.storageService.getValue<TokenData>(environment.tokenKey);
+    if (this.user != null) {
+      return this.user.name;
+    }
+    return null;
+  }
+
+  getUserName(): string {
+    this.user = this.storageService.getValue<TokenData>(environment.tokenKey);
+    if (this.user != null) {
+      return this.user.sub;
+    }
+    return null;
+  }
+
+
+  getAccountId(): number {
+    this.user = this.storageService.getValue<TokenData>(environment.tokenKey);
+    if (this.user != null) {
+      return this.user.nameid;
+    }
+    return null;
+  }
 }

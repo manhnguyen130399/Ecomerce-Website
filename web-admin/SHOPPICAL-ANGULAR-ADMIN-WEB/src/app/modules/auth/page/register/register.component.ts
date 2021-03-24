@@ -1,3 +1,4 @@
+import { SlugifyPipe } from './../../../../core/pipe/slugify.pipe';
 import { UserService } from '@modules/auth/services/user.service';
 import { StoreRegister } from '@app/modules/auth/models/store-register';
 import { SellerRegister } from '@app/modules/auth/models/seller-register';
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '@env';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +21,9 @@ export class RegisterComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly shareService: ShareService,
-    private readonly UserService: UserService,
+    private readonly userService: UserService,
+    private readonly slugifyPipe: SlugifyPipe,
+    private readonly messageService: NzMessageService
   ) {
 
   }
@@ -56,12 +60,12 @@ export class RegisterComponent implements OnInit {
           ...this.sellerRegisterObject,
           ...formData
         };
-
-        this.UserService.sellerRegister(data).pipe(
+        console.log(data);
+        this.userService.sellerRegister(data).pipe(
           tap(result => {
             if (result.isSuccessed) {
+              this.messageService.create("success", "Register successfully");
               this.router.navigate(['/auth/login'])
-
               localStorage.removeItem(environment.verifyKey);
             }
           }),
