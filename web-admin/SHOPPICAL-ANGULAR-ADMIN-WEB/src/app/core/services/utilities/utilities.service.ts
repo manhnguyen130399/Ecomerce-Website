@@ -1,6 +1,5 @@
 import { StorageService } from './../storage/storage.service';
 import { Injectable } from '@angular/core';
-import { User } from '@app/models/users/user';
 import { environment } from '@env';
 import { TokenData } from '@app/models/token-data';
 
