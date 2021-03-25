@@ -18,6 +18,7 @@ export class MainLayoutComponent implements OnInit {
   @ViewChild('audioElement', { static: true }) private audioElement;
   listNotify: Notify[] = [];
   numUnRead = 0;
+  isAdmin: boolean;
 
   constructor(
     private readonly signalrService: SignalrService,
@@ -32,7 +33,7 @@ export class MainLayoutComponent implements OnInit {
 
     this.notifyService.getAllNotify().subscribe(res => {
       if (res.isSuccessed) {
-        this.listNotify = res.data.datas;
+        this.listNotify = res.data.content;
         this.numUnRead = this.listNotify.filter(x => !x.isRead).length;
       }
     })
@@ -44,6 +45,7 @@ export class MainLayoutComponent implements OnInit {
     })
 
     this.sellerName = this.utilitiesService.getName();
+    this.isAdmin = this.utilitiesService.getRole() === "Admin";
   }
 
   updateNumUnread() {

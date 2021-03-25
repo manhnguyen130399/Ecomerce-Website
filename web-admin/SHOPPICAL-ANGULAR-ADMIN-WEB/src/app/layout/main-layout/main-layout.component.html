@@ -50,7 +50,7 @@
           <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/admin/promotion']">Promotion</a>
           </li>
-          <li nz-menu-item nzMatchRouter>
+          <li *ngIf="isAdmin" nz-menu-item nzMatchRouter>
             <a [routerLink]="['/admin/store']">Store</a>
           </li>
           <li nz-menu-item nzMatchRouter>
@@ -114,9 +114,9 @@
               <ul class="seller-feature" nz-menu>
                 <li nz-menu-item [routerLink]="['/admin/profile/change-password']">Change
                   password</li>
-                <li nz-menu-item [routerLink]="['/admin/profile/seller-info']">Seller Information
+                <li *ngIf="!isAdmin" nz-menu-item [routerLink]="['/admin/profile/seller-info']">Seller Information
                 </li>
-                <li nz-menu-item [routerLink]="['/admin/profile/store-info']">Store Information
+                <li *ngIf="!isAdmin" nz-menu-item [routerLink]="['/admin/profile/store-info']">Store Information
                 </li>
                 <li nz-menu-item (click)="logout()">Logout</li>
               </ul>
