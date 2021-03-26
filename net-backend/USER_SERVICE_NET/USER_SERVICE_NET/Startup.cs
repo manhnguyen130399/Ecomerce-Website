@@ -39,13 +39,11 @@ namespace USER_SERVICE_NET
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "admin-app",
-                                  builder =>
-                                  {
-                                      builder.AllowAnyOrigin()
-                                      .AllowAnyHeader()
-                                      .AllowAnyMethod();
-                                  });
+                options.AddPolicy("CorsPolicy", builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                );
             });
 
             services.AddControllers();
@@ -106,7 +104,7 @@ namespace USER_SERVICE_NET
 
             app.UseRouting();
 
-            app.UseCors("admin-app");
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 

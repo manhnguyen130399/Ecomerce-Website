@@ -2,26 +2,22 @@
   <nz-sider class="menu-sidebar" nzCollapsible="true" nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null">
     <div class="sidebar-logo">
-      <a href="https://ng.ant.design/" target="_blank">
+      <a href="http://localhost:4200/admin" target="_blank">
         <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
         <h1>Shopica Seller Center</h1>
       </a>
     </div>
-    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-submenu nzTitle="Dashboard" nzIcon="bar-chart">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a [routerLink]="['/admin/dashboard']">Dashboard</a>
-          </li>
-        </ul>
+    <ul class="main-menu" nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li [routerLink]="['/admin/dashboard']" nz-menu-item>
+        <i nz-icon nzType="bar-chart"></i>
+        <span>Dashboard</span>
       </li>
-      <li nz-submenu nzTitle="Order" nzIcon="ordered-list">
-        <ul>
-          <li nz-menu-item nzMatchRouter>
-            <a [routerLink]="['/admin/order']">Order list</a>
-          </li>
-        </ul>
+
+      <li [routerLink]="['/admin/order']" nz-menu-item>
+        <i nz-icon nzType="ordered-list"></i>
+        <span>Order</span>
       </li>
+
       <li nz-submenu nzTitle="Product" nzIcon="shopping-cart">
         <ul>
           <li nz-menu-item nzMatchRouter nzMatchRouterExact>

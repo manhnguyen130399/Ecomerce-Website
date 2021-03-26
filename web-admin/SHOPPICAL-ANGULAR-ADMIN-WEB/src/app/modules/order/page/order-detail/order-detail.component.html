@@ -51,14 +51,13 @@
             'pending':order.state == 'PENDING'
           }">{{order.state}}</span>
         </p>
-        <div class="update-status">
+        <div *ngIf="order.state != 'COMPLETE' && order.state != 'CANCEL'" class="update-status">
           <b>Update State: </b>
           <span (click)="updateState(order.id,'DELIVER')" *ngIf="order.state == 'PENDING'"
             class="deliver">DELIVER</span>
           <span (click)="updateState(order.id,'COMPLETE')" *ngIf="order.state == 'DELIVER'"
             class="complete">COMPLETE</span>
-          | <span (click)="updateState(order.id,'CANCEL')" *ngIf="order.state != 'COMPLETE' && order.state != 'CANCEL'"
-            class="cancel">CANCEL</span>
+          | <span (click)="updateState(order.id,'CANCEL')" class="cancel">CANCEL</span>
         </div>
         <p><b>Time : </b> {{order.created_at | date:'medium'}} </p>
         <p><b>Total : </b> {{order.total |currency:'$':'symbol':'3.0' }} </p>

@@ -195,3 +195,7 @@ nz-content {
     transparent
   );
 }
+
+.main-menu li {
+  outline: none;
+}

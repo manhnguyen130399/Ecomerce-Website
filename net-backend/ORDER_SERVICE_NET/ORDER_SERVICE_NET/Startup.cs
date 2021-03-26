@@ -39,7 +39,7 @@ namespace ORDER_SERVICE_NET
             services.AddCors(option =>
             {
                 option.AddPolicy("CorsPolicy", builder => builder
-                .WithOrigins("http://localhost:4200", "http://localhost:49384")
+                .WithOrigins("http://localhost:4200", "https://shopica.herokuapp.com")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
