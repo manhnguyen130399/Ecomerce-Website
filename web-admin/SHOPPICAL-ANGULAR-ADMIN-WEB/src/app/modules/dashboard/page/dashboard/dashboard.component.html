@@ -1,38 +1,43 @@
-<div *ngIf="isLoading == false">
-    <div nz-row [nzGutter]="24">
-        <div nz-col [nzSpan]="6">
-            <app-card [iconName]="'dollar-circle'" [iconStyle]="{'color':'#e4e615e3'}" [category]="'Revenue'" [time]="time" [number]="revenue|currency:'$':'symbol':'3.0'">
-            </app-card>
-        </div>
-
-        <div nz-col [nzSpan]="6">
-            <app-card [iconName]="'file-protect'" [iconStyle]="{'color':'#677f80'}" [category]="'Orders'" [number]="order" [time]="time">
-            </app-card>
-        </div>
-
-        <div nz-col [nzSpan]="6">
-            <app-card [iconName]="'like'" [iconStyle]="{'color':'#259ce2'}" [category]="'Reviews'" [number]="reviews" [time]="time"></app-card>
-        </div>
-
-        <div nz-col [nzSpan]="6">
-            <app-card [iconName]="'user'" [iconStyle]="{'color':'#e25243'}" [category]="'Customers'" [number]="customer" [time]="time"></app-card>
-        </div>
+<div *ngIf="!isLoading">
+  <div nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="6">
+      <app-card [iconName]="'dollar-circle'" [iconStyle]="{'color':'#e4e615e3'}" [category]="'Revenue'" [time]="time"
+        [number]="revenue|currency:'$':'symbol':'3.0'">
+      </app-card>
     </div>
 
-    <div class="chart-section" nz-row [nzGutter]="24">
-        <div nz-col [nzSpan]="16" class="line-chart chart">
-            <app-line-chart [sales]="sales" [chartTitle]="'Sales statistics by month'"></app-line-chart>
-        </div>
-        <div nz-col class="radar-chart chart" [nzSpan]="8">
-            <app-radar-chart  [category]="category" [chartTitle]="'Number product by category'"></app-radar-chart>
-        </div>
+    <div nz-col [nzSpan]="6">
+      <app-card [iconName]="'file-protect'" [iconStyle]="{'color':'#677f80'}" [category]="'Orders'" [number]="order"
+        [time]="time">
+      </app-card>
     </div>
-    <div class="chart-section" nz-row [nzGutter]="24">
-        <div nz-col class="pie-chart chart" [nzSpan]="12">
-            <app-pie-chart [state]="state" [chartTitle]="'Order state'"></app-pie-chart>
-        </div>
-        <div nz-col [nzSpan]="12" class="bar-chart chart">
-            <app-bar-chart [revenues]="revenues" [chartTitle]="'Sales statistics by month'"></app-bar-chart>
-        </div>
+
+    <div nz-col [nzSpan]="6">
+      <app-card [iconName]="'like'" [iconStyle]="{'color':'#259ce2'}" [category]="'Reviews'" [number]="reviews"
+        [time]="time"></app-card>
     </div>
+
+    <div nz-col [nzSpan]="6">
+      <app-card [iconName]="'user'" [iconStyle]="{'color':'#e25243'}" [category]="'Customers'" [number]="customer"
+        [time]="time"></app-card>
+    </div>
+  </div>
+
+  <div class="chart-section" nz-row [nzGutter]="24">
+    <div nz-col [nzSpan]="16" class="line-chart chart">
+      <app-line-chart [sales]="sales" [chartTitle]="'Sales statistics by month'"></app-line-chart>
+    </div>
+    <div nz-col class="radar-chart chart" [nzSpan]="8">
+      <app-radar-chart [category]="category" [chartTitle]="'Number product by category'"></app-radar-chart>
+    </div>
+  </div>
+  <div class="chart-section" nz-row [nzGutter]="24">
+    <div nz-col class="pie-chart chart" [nzSpan]="12">
+      <app-pie-chart [state]="state" [chartTitle]="'Order state'"></app-pie-chart>
+    </div>
+    <div nz-col [nzSpan]="12" class="bar-chart chart">
+      <app-bar-chart [revenues]="revenues" [chartTitle]="'Sales statistics by month'"></app-bar-chart>
+    </div>
+  </div>
 </div>
+<nz-spin [ngClass]="{'isLoading':isLoading}" [nzSpinning]="isLoading" nzSimple></nz-spin>

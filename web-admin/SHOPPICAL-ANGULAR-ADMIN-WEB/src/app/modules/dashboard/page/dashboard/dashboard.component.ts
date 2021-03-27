@@ -24,11 +24,11 @@ export class DashboardComponent implements OnInit {
   customer: number;
   time: string;
   state: State;
-  isLoading = true;
+  isLoading = false;
   category: CategoryReport[];
   revenues: number[];
   sales: number[];
-  constructor(private readonly dashboardService: DashboardService) {}
+  constructor(private readonly dashboardService: DashboardService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit {
 
   loadData() {
     // const currentMonth = moment().format('M');
+    this.isLoading = true;
     const fromDate = moment().startOf('month').format('YYYY-MM-DD');
     const toDate = moment().endOf('month').format('YYYY-MM-DD');
     this.dashboardService
@@ -51,7 +52,7 @@ export class DashboardComponent implements OnInit {
         this.state = data.state;
         this.category = data.category;
         this.revenues = data.revenues;
-        this.sales= data.sales;
+        this.sales = data.sales;
       });
   }
 }
