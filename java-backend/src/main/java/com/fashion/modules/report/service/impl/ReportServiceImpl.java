@@ -77,7 +77,7 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 		res.setCustomer(orders.size());
 		res.setReviews(commentRepo.getCommentInProductIds(getCurrentStoreId(), productId));
 		res.setState(new StateOrderReportVM(getOrderStateNumber(OrderType.COMPLETE, orders, total),
-				getOrderStateNumber(OrderType.CANCLE, orders, total),
+				getOrderStateNumber(OrderType.CANCEL, orders, total),
 				getOrderStateNumber(OrderType.PENDING, orders, total),
 				getOrderStateNumber(OrderType.DELIVER, orders, total)));
 		res.setRevenues(revenuesAndSale.getLeft());
