@@ -1,5 +1,7 @@
 package com.fashion.domain;
 
+import com.fashion.commons.enums.AccountType;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +16,6 @@ public class UserContext {
 	private Integer accountId;
 	private String email;
 	private String gender;
+	private AccountType type;
 
 }

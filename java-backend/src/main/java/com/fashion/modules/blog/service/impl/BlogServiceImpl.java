@@ -15,11 +15,14 @@ import org.springframework.stereotype.Service;
 
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.ErrorMessage;
+import com.fashion.commons.enums.AccountType;
+import com.fashion.commons.enums.BlogState;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.blog.domain.Blog;
 import com.fashion.modules.blog.model.BlogReq;
+import com.fashion.modules.blog.model.BlogUpdateReq;
 import com.fashion.modules.blog.model.BlogVM;
 import com.fashion.modules.blog.repository.BlogRepository;
 import com.fashion.modules.blog.service.BlogService;
@@ -40,15 +43,21 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 	public BlogVM createBlog(final BlogReq req) {
 		final Blog blog = mapper.map(req, Blog.class);
 		blog.setStore(getStore(getUserContext()));
+		blog.setState(BlogState.PENDING);
 		final Blog save = blogRepo.save(blog);
-		final SimpleMailMessage content = new SimpleMailMessage();
-		content.setTo(Constants.EMAIL);
-		content.setSubject(Constants.BLOG_ADMIN_TITLE);
-		content.setText("Blog " + blog.getId() + " author :" + blog.getCreatedBy() + " request to you");
-		mailSender.send(content);
+		final String message = "Blog " + blog.getId() + " author :" + blog.getCreatedBy() + " request to you";
+		sendMail(Constants.EMAIL, Constants.BLOG_ADMIN_TITLE, message);
 		final BlogVM res = mapper.map(save, BlogVM.class);
 		res.setAuthor(save.getCreatedBy());
 		return res;
+	}
+
+	private void sendMail(final String email, final String subject, final String message) {
+		final SimpleMailMessage content = new SimpleMailMessage();
+		content.setTo(email);
+		content.setSubject(subject);
+		content.setText(message);
+		mailSender.send(content);
 	}
 
 	@Override
@@ -99,6 +108,26 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 			return null;
 		}
 		return Iterables.getLast(content);
+	}
+
+	@Override
+	@Transactional
+	public BlogVM updateBlog(final Integer id, final BlogUpdateReq req) {
+		final Blog blog = blogRepo.findOneByIdAndStoreId(id, getCurrentStoreId());
+		if (blog == null) {
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND);
+		}
+		if (AccountType.ADMIN.equals(getUserContext().getType())) {
+			final BlogState state = req.getState();
+			blog.setState(state);
+			sendMail(blog.getCreatedBy(), Constants.BLOG_ADMIN_REPLY,
+					BlogState.COMPLETE.equals(state) ? Constants.BLOG_COMPLETE : Constants.BLOG_CANCEL);
+		} else {
+			blog.setContent(req.getContent());
+			blog.setSummary(req.getSummary());
+			blog.setTitle(req.getTitle());
+		}
+		return mapper.map(blog, BlogVM.class);
 	}
 
 }

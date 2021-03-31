@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.modules.blog.model.BlogReq;
+import com.fashion.modules.blog.model.BlogUpdateReq;
 import com.fashion.modules.blog.service.BlogService;
 import com.fashion.web.BaseResource;
 
@@ -27,7 +29,7 @@ import io.swagger.annotations.Api;
 public class BlogResource extends BaseResource {
 
 	private static final String URL = "blog";
-	
+
 	@Autowired
 	private BlogService blogService;
 
@@ -40,7 +42,13 @@ public class BlogResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> getBlogById(@PathVariable final Integer id) {
 		return success(blogService.getBlogById(id));
 	}
-	
+
+	@PutMapping(URL + "/{id}")
+	public ResponseEntity<Map<String, Object>> updateBlog(@RequestBody final BlogUpdateReq req,
+			@PathVariable final Integer id) {
+		return success(blogService.updateBlog(id, req));
+	}
+
 	@GetMapping(URL)
 	public ResponseEntity<Map<String, Object>> getAllBlog(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
@@ -50,7 +58,7 @@ public class BlogResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String title) {
 		return success(blogService.getAllBlog(page, pageSize, sortOrder, sortField, title));
 	}
-	
+
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deleteBlog(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,

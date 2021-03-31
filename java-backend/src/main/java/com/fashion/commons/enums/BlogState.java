@@ -1,5 +1,5 @@
 package com.fashion.commons.enums;
 
-public enum BlogType {
+public enum BlogState {
 	PENDING, COMPLETE, CANCLE
 }
