@@ -1,5 +1,6 @@
 package com.fashion.modules.product.web;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
+import com.fashion.commons.utils.CommonUtil;
 import com.fashion.modules.product.model.ProductReq;
+import com.fashion.modules.product.model.ProductRes;
 import com.fashion.modules.product.service.ProductService;
 import com.fashion.web.BaseResource;
 
@@ -29,7 +33,7 @@ import io.swagger.annotations.Api;
 public class ProductResource extends BaseResource {
 
 	private static final String URL = "/product";
-	
+
 	@Autowired
 	private ProductService productService;
 
@@ -42,7 +46,7 @@ public class ProductResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> getProductById(@PathVariable final Integer id) {
 		return success(productService.findById(id));
 	}
-	
+
 	@PostMapping(URL)
 	public ResponseEntity<Map<String, Object>> getAllProductByStore(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
@@ -50,7 +54,7 @@ public class ProductResource extends BaseResource {
 			@RequestBody final ProductReq req) {
 		return success(productService.getAllProductByStore(page, pageSize, req));
 	}
-	
+
 	@DeleteMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> deleteProduct(@PathVariable final Integer id,
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
@@ -59,17 +63,17 @@ public class ProductResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(productService.deleteProduct(id, page, pageSize, sortOrder, sortField));
 	}
-	
+
 	@PutMapping(URL)
 	public ResponseEntity<Map<String, Object>> updateProduct(@RequestBody final ProductReq req) {
 		return success(productService.updateProduct(req));
 	}
-	
+
 	@PostMapping(URL + "/detail")
 	public ResponseEntity<Map<String, Object>> getProductDetailInfos(@RequestBody final List<Integer> req) {
 		return success(productService.getProductDetailInfos(req));
 	}
-	
+
 	@GetMapping(URL + "/search")
 	public ResponseEntity<Map<String, Object>> searchProductByStoreAndKeyword(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
@@ -77,7 +81,7 @@ public class ProductResource extends BaseResource {
 			@RequestParam final String keyword) {
 		return success(productService.searchProductByKeywordAndStore(keyword, page, pageSize));
 	}
-	
+
 	@PostMapping(URL + "/filter")
 	public ResponseEntity<Map<String, Object>> filterProduct(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
@@ -85,11 +89,19 @@ public class ProductResource extends BaseResource {
 			@RequestBody final ProductReq req) {
 		return success(productService.filterProduct(page, pageSize, req));
 	}
-	
+
 	@DeleteMapping(URL + "/image/{id}")
 	public ResponseEntity<Map<String, Object>> deleteImageProduct(@PathVariable final Integer id) {
 		return success(productService.deleteImageProduct(id));
 	}
+
+	@PostMapping(URL + "/import")
+	public ResponseEntity<Map<String, Object>> importProducts(@RequestParam final MultipartFile file) {
+		CommonUtil.checkExcelFiles(file);
+		final List<ProductRes> productVMs = productService.readExcelFile(file);
+		if (org.apache.commons.collections.CollectionUtils.isNotEmpty(productVMs)) {
+			return success(productService.createProducts(productVMs));
+		}
+		return success(Collections.emptyList());
+	}
 }
-
-

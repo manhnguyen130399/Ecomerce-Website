@@ -71,4 +71,14 @@ public class Category extends AbstractAuditingEntity {
 		this.stores = stores;
 	}
 
+	public Category(final String categoryName, final Set<Store> stores) {
+		super();
+		this.categoryName = categoryName;
+		this.stores = stores;
+	}
+
+	public Category() {
+		super();
+	}
+	
 }
