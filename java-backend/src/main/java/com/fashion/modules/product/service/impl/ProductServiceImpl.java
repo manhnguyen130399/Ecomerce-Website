@@ -1,18 +1,32 @@
 package com.fashion.modules.product.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.beust.jcommander.internal.Lists;
+import com.beust.jcommander.internal.Maps;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.ErrorMessage;
 import com.fashion.commons.enums.SortType;
@@ -64,6 +78,17 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Autowired
 	private ProductImageRepository imageRepo;
+
+	private static final String PRODUCT_NAME = "Product Name";
+	private static final String PRICE = "Price";
+	private static final String COLOR = "Color";
+	private static final String SIZE = "Size";
+	private static final String BRAND = "Brand";
+	private static final String CATEGORY = "Category";
+	private static final String QUANTITY = "Quantity";
+
+	private static final List<String> HEADER = Lists.newArrayList(PRODUCT_NAME, PRICE, COLOR, SIZE, BRAND, CATEGORY,
+			QUANTITY);
 
 	@Override
 	@Transactional
@@ -199,6 +224,8 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			res.setSizeName(it.getSize().getSizeName());
 			res.setPrice(product.getPrice());
 			res.setProductName(product.getProductName());
+			res.setQuantity(it.getQuantity());
+			res.setCategoryName(product.getCategory().getCategoryName());
 			return res;
 		}).collect(Collectors.toList());
 	}
@@ -247,6 +274,114 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		} catch (Exception e) {
 			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND);
 		}
+	}
+
+	@Override
+	public List<ProductRes> readExcelFile(final MultipartFile file) {
+		final List<ProductRes> products = Lists.newArrayList();
+		try {
+			final InputStream stream = file.getInputStream();
+			final Workbook wb = getCorrectWorkbook(file.getName(), stream);
+			final org.apache.poi.ss.usermodel.Sheet datatypeSheet = wb.getSheetAt(0);
+			final Iterator<Row> iterator = datatypeSheet.iterator();
+			iterator.next();
+			final Row headerRow = iterator.next();
+			final Map<String, Integer> colIndexs = getColIndex(headerRow, HEADER);
+			while (iterator.hasNext()) {
+				final Row row = iterator.next();
+				products.add(transferToProduct(colIndexs, row));
+			}
+			stream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return products;
+	}
+
+	private ProductRes transferToProduct(final Map<String, Integer> colIndexs, final Row row) {
+		final ProductRes vm = new ProductRes();
+		vm.setProductName(row.getCell(colIndexs.get(PRODUCT_NAME)).getStringCellValue());
+		vm.setPrice(BigDecimal.valueOf(row.getCell(colIndexs.get(PRICE)).getNumericCellValue()));
+		vm.setBrandName(row.getCell(colIndexs.get(BRAND)).getStringCellValue());
+		vm.setCategoryName(row.getCell(colIndexs.get(CATEGORY)).getStringCellValue());
+		vm.setColorName(row.getCell(colIndexs.get(COLOR)).getStringCellValue());
+		vm.setSizeName(row.getCell(colIndexs.get(SIZE)).getStringCellValue());
+		vm.setQuantity((int) row.getCell(colIndexs.get(QUANTITY)).getNumericCellValue());
+		return vm;
+	}
+
+	private Map<String, Integer> getColIndex(final Row row, final Collection<String> headerTexts) {
+		final Map<String, Integer> map = Maps.newHashMap();
+		row.forEach(it -> {
+			if (headerTexts.contains(it.getStringCellValue())) {
+				map.put(it.getStringCellValue(), it.getColumnIndex());
+			}
+		});
+		if (headerTexts.size() != map.keySet().size()) {
+			throw new InvalidArgumentException("Please take a check header row.");
+		}
+		return map;
+	}
+
+	private Workbook getCorrectWorkbook(final String fileName, final InputStream stream) throws IOException {
+		return WorkbookFactory.create(stream);
+	}
+
+	@Override
+	@Transactional
+	public List<ProductVM> createProducts(final List<ProductRes> products) {
+		final Integer storeId = getCurrentStoreId();
+		final PageRequest page = PageRequest.of(0, Integer.MAX_VALUE);
+		final List<Color> colors = colorRepo.findAllByStore(storeId, page).getContent();
+		final List<Size> sizes = sizeRepo.findAllByStoreId(storeId, page).getContent();
+		final List<Brand> brands = brandRepo.findAllByStoreId(storeId, page).getContent();
+		final List<Category> categories = categoryRepo.findAllByStoreId(storeId, page).getContent();
+		final Pair<List<Color>, Set<String>> colorPair = Pair.of(colors,
+				colors.stream().map(it -> it.getColorName()).collect(Collectors.toSet()));
+		final Pair<List<Size>, Set<String>> sizePair = Pair.of(sizes,
+				sizes.stream().map(it -> it.getSizeName()).collect(Collectors.toSet()));
+		final Pair<List<Category>, Set<String>> categoryPair = Pair.of(categories,
+				categories.stream().map(it -> it.getCategoryName()).collect(Collectors.toSet()));
+		final Pair<List<Brand>, Set<String>> brandPair = Pair.of(brands,
+				brands.stream().map(it -> it.getBrandName()).collect(Collectors.toSet()));
+		final List<Product> res = products.stream()
+				.map(it -> buildProductInternal(it, colorPair, sizePair, categoryPair, brandPair))
+				.collect(Collectors.toList());
+		return productRepo.saveAll(res).stream().map(it -> convertToVM(it)).collect(Collectors.toList());
+	}
+
+	private Product buildProductInternal(final ProductRes input, final Pair<List<Color>, Set<String>> colorPair,
+			final Pair<List<Size>, Set<String>> sizePair, final Pair<List<Category>, Set<String>> categoryPair,
+			final Pair<List<Brand>, Set<String>> brandPair) {
+		Product product = productRepo.findByProductName(input.getProductName());
+		if (product == null) {
+			product = new Product();
+			final Store store = getStore(getUserContext());
+			final Set<Store> stores = Collections.singleton(store);
+			product.setStore(store);
+			product.setPrice(input.getPrice());
+			product.setProductName(input.getProductName());
+			final String brandName = input.getBrandName();
+			final String sizeName = input.getSizeName();
+			final String colorName = input.getColorName();
+			final String categoryName = input.getCategoryName();
+			product.setBrand(brandPair.getRight().contains(brandName)
+					? brandPair.getLeft().stream().filter(it -> it.getBrandName().equals(brandName)).findFirst().get()
+					: brandRepo.save(new Brand(brandName, stores)));
+			product.setCategory(categoryPair.getRight().contains(categoryName)
+					? categoryPair.getLeft().stream().filter(it -> it.getCategoryName().equals(categoryName))
+							.findFirst().get()
+					: categoryRepo.save(new Category(categoryName, stores)));
+			final Color color = colorPair.getRight().contains(colorName)
+					? colorPair.getLeft().stream().filter(it -> it.getColorName().equals(colorName)).findFirst().get()
+					: colorRepo.save(new Color(colorName, stores));
+			final Size size = sizePair.getRight().contains(sizeName)
+					? sizePair.getLeft().stream().filter(it -> it.getSizeName().equals(sizeName)).findFirst().get()
+					: sizeRepo.save(new Size(sizeName, stores));
+			product.setProductDetails(
+					Collections.singleton(new ProductDetail(input.getQuantity(), product, size, color)));
+		}
+		return product;
 	}
 
 }

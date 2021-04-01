@@ -71,4 +71,10 @@ public class Color extends AbstractAuditingEntity {
 		super();
 	}
 
+	public Color(final String colorName, final Set<Store> stores) {
+		super();
+		this.colorName = colorName;
+		this.stores = stores;
+	}
+
 }

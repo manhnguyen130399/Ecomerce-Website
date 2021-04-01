@@ -39,5 +39,7 @@ public interface ProductRepository extends ProductRepositoryCustom, JpaRepositor
 			+ " OR brand.brandName LIKE %:keyword% " )
 	Page<Product> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("storeId") Integer storeId,
 			Pageable page);
+	
+	Product findByProductName(String productName);
 
 }

@@ -13,12 +13,14 @@ import java.util.Map.Entry;
 
 import javax.xml.bind.DatatypeConverter;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.text.StrBuilder;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
+import com.fashion.exception.InvalidArgumentException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -79,6 +81,12 @@ public class CommonUtil {
 	public static String convertDateToString(final Date date, final String pattern) {
 		final DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD_HYPHEN);
 		return dateFormat.format(date);
+	}
+	
+	public static void checkExcelFiles(final MultipartFile file) {
+		if (!FilenameUtils.isExtension(file.getOriginalFilename(), Constants.EXCEL_VALID_FORMATS)) {
+			throw new InvalidArgumentException("Only excel format is valid.");
+		}
 	}
 
 }

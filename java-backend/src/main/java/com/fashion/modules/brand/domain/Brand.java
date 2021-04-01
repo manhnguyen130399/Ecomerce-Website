@@ -59,4 +59,14 @@ public class Brand extends AbstractAuditingEntity {
 		this.stores = stores;
 	}
 
+	public Brand(final String brandName, final Set<Store> stores) {
+		super();
+		this.brandName = brandName;
+		this.stores = stores;
+	}
+
+	public Brand() {
+		super();
+	}
+
 }

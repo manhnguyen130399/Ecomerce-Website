@@ -3,8 +3,11 @@ package com.fashion.commons.constants;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
+
+import com.google.common.collect.Lists;
 
 public final class Constants {
 	public static final String DATE_FORMAT_YYYYMMDDHHMM = "yyyyMMddhhmm";
@@ -124,5 +127,8 @@ public final class Constants {
 	// NET API
 	public static final String USER_URL = "https://user-service-net.herokuapp.com/api";
 	public static final String ORDER_URL = "https://order-service-net.herokuapp.com/api";
+	
+	// EXCEL
+	public static final List<String> EXCEL_VALID_FORMATS = Lists.newArrayList("xls", "xlsx");
 
 }

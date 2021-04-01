@@ -40,9 +40,10 @@ public class Size extends AbstractAuditingEntity {
 		super();
 	}
 
-	public Size(final String sizeName) {
+	public Size(final String sizeName, final Set<Store> stores) {
 		super();
 		this.sizeName = sizeName;
+		this.stores = stores;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY)
