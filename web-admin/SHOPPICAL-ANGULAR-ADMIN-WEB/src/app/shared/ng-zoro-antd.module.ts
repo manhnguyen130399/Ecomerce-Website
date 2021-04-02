@@ -13,6 +13,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 @NgModule({
   declarations: [],
   imports: [
@@ -26,6 +27,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     NzDropDownModule,
     NzMessageModule,
     NzPopconfirmModule,
+    NzDatePickerModule,
     NzImageModule,
     NzSpinModule,
     NzIconModule.forChild(shareIcons),
@@ -41,6 +43,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
     NzDropDownModule,
     NzMessageModule,
     NzPopconfirmModule,
+    NzDatePickerModule,
     NzImageModule,
     NzSpinModule
   ],

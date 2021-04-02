@@ -28,19 +28,31 @@ export class DashboardComponent implements OnInit {
   category: CategoryReport[];
   revenues: number[];
   sales: number[];
-  constructor(private readonly dashboardService: DashboardService) { }
+  date = null;
+  constructor(private readonly dashboardService: DashboardService) {}
 
   ngOnInit(): void {
     this.loadData();
   }
 
+  onChange(result: Date[]): void {
+    this.isLoading = true;
+    this.getData(
+      moment(result[0]).format('YYYY-MM-DD'),
+      moment(result[1]).format('YYYY-MM-DD')
+    );
+  }
+
   loadData() {
-    // const currentMonth = moment().format('M');
     this.isLoading = true;
     const fromDate = moment().startOf('month').format('YYYY-MM-DD');
     const toDate = moment().endOf('month').format('YYYY-MM-DD');
+    this.getData(fromDate, toDate);
+  }
+
+  private getData(from, to) {
     this.dashboardService
-      .getData(fromDate, toDate, 1000)
+      .getData(from, to, 1000)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((res) => {
         const data = res.data;
