@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from '@modules/dashboard/page/dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { dashboardRoutes } from './dashboard.routing';
-import { NzGridModule } from 'ng-zorro-antd/grid';
 import { ChartsModule } from 'ng2-charts';
 import { LineChartComponent } from './page/line-chart/line-chart.component';
 import { BarChartComponent } from './page/bar-chart/bar-chart.component';

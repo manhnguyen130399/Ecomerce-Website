@@ -1,0 +1,12 @@
+<nz-drawer [nzClosable]="true" [nzVisible]="isOpenMenuDrawer" nzPlacement="left" nzTitle="Menu"
+  (nzOnClose)="closeMenu()" [nzWrapClassName]="'menu-mobile'">
+  <ng-container *nzDrawerContent>
+    <ul>
+      <li>Home</li>
+      <li>About</li>
+      <li>Product</li>
+      <li>Blog</li>
+      <li>Contact</li>
+    </ul>
+  </ng-container>
+</nz-drawer>

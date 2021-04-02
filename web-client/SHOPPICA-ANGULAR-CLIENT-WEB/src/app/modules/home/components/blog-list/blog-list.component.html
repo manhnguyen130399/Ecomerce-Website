@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="list-blog">
+    <app-section-title [title]="'LATE FROM BLOG'" [subTitle]="'
+    The freshest and most exciting news'"></app-section-title>
+    <div class="content">
+
+      <owl-carousel-o [options]="customOptions">
+        <ng-template carouselSlide>
+          <div class="column">
+            <app-blog-card [blog]="listBlog[0]"></app-blog-card>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="column">
+            <app-blog-card [blog]="listBlog[0]"></app-blog-card>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="column">
+            <app-blog-card [blog]="listBlog[0]"></app-blog-card>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="column">
+            <app-blog-card [blog]="listBlog[0]"></app-blog-card>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="column">
+            <app-blog-card [blog]="listBlog[0]"></app-blog-card>
+          </div>
+        </ng-template>
+        <ng-template carouselSlide>
+          <div class="column">
+            <app-blog-card [blog]="listBlog[0]"></app-blog-card>
+          </div>
+        </ng-template>
+      </owl-carousel-o>
+    </div>
+  </div>
+</div>

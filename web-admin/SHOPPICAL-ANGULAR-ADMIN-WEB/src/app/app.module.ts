@@ -14,6 +14,8 @@ import { AuthLayoutComponent } from '@layout/auth-layout/auth-layout.component';
 import { routes } from '@app/app.routing';
 import { NZ_DATE_LOCALE, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { jwtOptionsFactory } from './core/jwt/jwt-options-factory';
 import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
@@ -25,6 +27,7 @@ const ngZorroConfig: NzConfig = {
   }
 };
 
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
@@ -38,6 +41,7 @@ const ngZorroConfig: NzConfig = {
     NzButtonModule,
     NzLayoutModule,
     RouterModule.forRoot(routes),
+    // jwt
     JwtModule.forRoot({
       jwtOptionsProvider: {
         provide: JWT_OPTIONS,
