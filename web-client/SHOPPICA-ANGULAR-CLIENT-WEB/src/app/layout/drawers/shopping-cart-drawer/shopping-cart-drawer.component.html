@@ -1,0 +1,28 @@
+<nz-drawer [nzWidth]="340" [nzClosable]="true" [nzVisible]="isOpenShoppingCartDrawer" nzPlacement="right"
+  nzTitle="SHOPPING CART" (nzOnClose)="closeMenu()">
+  <ng-container *nzDrawerContent>
+    <div class="shopping-cart-content">
+      <div class="cart-items">
+        <app-cart-item *ngFor="let item of listCartItem" (deleteItemEvent)="deleteItem($event)" [item]="item">
+        </app-cart-item>
+      </div>
+      <div class="cart-footer">
+        <div class="total">
+          <p class="title">Subtotal:</p>
+          <p class="price">{{ totalPrice | currency}}</p>
+        </div>
+        <label nz-checkbox>I agree with the terms and conditions.</label>
+        <div class="action">
+          <button nzShape="round" [nzLoading]="isLoading" nzSize="large" nz-button [nzType]="'default'">VIEW
+            CART</button>
+          <button nzShape="round" [nzLoading]="isLoading" nzSize="large" nz-button class="drawer-form-button "
+            [nzType]="'primary'" nz-button>CHECK OUT</button>
+        </div>
+        <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
+      </div>
+    </div>
+
+
+
+  </ng-container>
+</nz-drawer>

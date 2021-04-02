@@ -1,0 +1,27 @@
+<div class="product-card">
+  <div class="product-image">
+    <div class="background-image" [ngStyle]="{'background-image':'url('+product.image+')'}"></div>
+    <div class="hover-btn">
+      <button>
+        <span>Quick View</span>
+        <i nz-icon nzType="eye" nzTheme="outline"></i>
+      </button>
+      <button>
+        <span>Quick Shop</span>
+        <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
+      </button>
+    </div>
+    <div class="add-wishlist">
+      <i nz-tooltip nzTooltipPlacement="right" nzTooltipTitle="Add to wishlist" nz-icon nzType="heart"
+        nzTheme="outline"></i>
+    </div>
+    <div class="list-size">
+      <span *ngFor="let size of product.sizes">{{size}}, </span>
+    </div>
+  </div>
+  <div class="product-info">
+    <p class="product-name">{{product.productName}}</p>
+    <span class="product-price">{{product.price |currency}}</span>
+    <div class="list-color"></div>
+  </div>
+</div>

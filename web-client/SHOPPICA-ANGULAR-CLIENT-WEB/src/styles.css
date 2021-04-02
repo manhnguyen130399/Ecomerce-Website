@@ -1,1 +1,173 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~ng-zorro-antd/style/index.min.css";
+@import "~ng-zorro-antd/grid/style/index.min.css";
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&display=swap");
+html,
+body {
+  font-family: "Poppins", sans-serif;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body,
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1140px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.flex {
+  display: flex;
+}
+
+.al-center {
+  align-items: center;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.social-btns .ant-btn-icon-only {
+  width: 35px;
+  height: 35px;
+}
+
+/* drawer */
+.ant-drawer-body {
+  padding: 0;
+}
+
+.ant-drawer-header {
+  box-shadow: 0 0 10px 0 rgb(129 129 129 / 20%);
+}
+
+.menu-mobile .ant-drawer-body ul li {
+  padding: 15px 30px;
+  border-bottom: 1px solid rgba(129, 129, 129, 0.2);
+  outline: none;
+  transition: 0.7s;
+}
+
+.menu-mobile .ant-drawer-body ul li:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+}
+
+.ant-drawer-title div {
+  font-size: 16px;
+  font-weight: 500;
+  color: black;
+}
+
+.ant-drawer-close i {
+  transform: rotate(0);
+  transition: 0.5s;
+}
+
+.ant-drawer-close i:hover {
+  transform: rotate(180deg);
+}
+
+.drawer-form {
+  padding: 20px;
+}
+
+.drawer-form input {
+  height: 40px;
+}
+
+.drawer-form .options {
+  margin-top: 30px;
+}
+
+.drawer-form-button {
+  width: 100%;
+  background-color: #56cfe1;
+  border-color: #56cfe1;
+}
+
+/* cart-item hidden number type */
+.actions .quantity .ant-input-affix-wrapper-focused,
+.actions .quantity .ant-input-affix-wrapper:focus {
+  box-shadow: none;
+}
+
+/* category - home*/
+.category-item:hover .background-image {
+  transform: scale(1.1);
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    max-width: 95%;
+  }
+}
+
+.owl-theme .owl-nav .owl-prev,
+.owl-theme .owl-nav .owl-next {
+  position: absolute;
+  top: 35%;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 1px 1px 9px 4px rgb(0 0 0 / 10%);
+}
+
+.top-trending .content .owl-theme .owl-nav .owl-prev,
+.top-trending .content .owl-theme .owl-nav .owl-next {
+  transform: scale(0);
+  transition: 0.3s;
+}
+
+.top-trending .content:hover .owl-theme .owl-nav .owl-prev,
+.top-trending .content:hover .owl-theme .owl-nav .owl-next {
+  transform: scale(1);
+}
+
+.owl-theme .owl-nav .owl-prev {
+  left: -12px;
+}
+
+.owl-theme .owl-nav .owl-next {
+  right: -12px;
+}
+
+.owl-item.active .content.banner-2 .background {
+  transform: scale(1);
+}

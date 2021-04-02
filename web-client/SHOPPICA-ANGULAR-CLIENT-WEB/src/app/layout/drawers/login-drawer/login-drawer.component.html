@@ -1,0 +1,37 @@
+<nz-drawer [nzWidth]="340" [nzClosable]="true" [nzVisible]="isOpenLoginDrawer" nzPlacement="right" nzTitle="LOGIN"
+  (nzOnClose)="closeMenu()">
+
+  <ng-container *nzDrawerContent>
+    <div class="drawer-form">
+      <form [nzLayout]="'vertical'" nz-form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+        <!-- email -->
+        <nz-form-item>
+          <nz-form-label nzSpan="10" nzRequired nzFor="email">Email:</nz-form-label>
+          <nz-form-control nzSpan="24" nzErrorTip="The input is not valid E-mail!">
+            <input nz-input formControlName="email" />
+          </nz-form-control>
+        </nz-form-item>
+        <!-- password -->
+        <nz-form-item>
+          <nz-form-label nzSpan="10" nzFor="password" nzRequired>Password</nz-form-label>
+          <nz-form-control nzSpan="24" nzErrorTip="Please input your password!">
+            <input nz-input type="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
+          </nz-form-control>
+        </nz-form-item>
+        <!-- form error -->
+        <div class="form-error" *ngIf="loginForm.errors">
+          <p>{{loginForm.errors.error}}</p>
+        </div>
+        <!-- submit button -->
+        <button nzShape="round" [nzLoading]="isLoading" nzSize="large" nz-button
+          class="drawer-form-button login-form-margin" [nzType]="'primary'">Log
+          in</button>
+      </form>
+      <div class="options">
+        <p>New customer? <a (click)="openRegisterDrawer()">Create your account</a></p>
+        <p>Lost password? <a (click)="openResetPasswordDrawer()">Reset password</a></p>
+      </div>
+
+    </div>
+  </ng-container>
+</nz-drawer>

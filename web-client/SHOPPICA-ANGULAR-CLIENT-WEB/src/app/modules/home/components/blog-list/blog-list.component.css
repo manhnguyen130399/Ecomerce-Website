@@ -1,0 +1,24 @@
+.list-blog {
+  margin-top: 30px;
+}
+
+.column {
+  padding: 0 12px;
+  margin-top: 30px;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 992px) {
+}
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 600px) {
+}

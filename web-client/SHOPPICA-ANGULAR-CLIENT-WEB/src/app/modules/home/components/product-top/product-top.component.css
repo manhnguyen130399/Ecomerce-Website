@@ -1,0 +1,45 @@
+.our-products {
+  margin-top: 30px;
+}
+
+.column {
+  margin-top: 30px;
+  padding: 0 12px;
+}
+
+.content {
+  position: relative;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 30px;
+  }
+
+  .column {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .content {
+    height: 380px;
+  }
+
+  .column {
+    padding: 0 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    height: 530px;
+  }
+  .column {
+    padding: 5px 5px;
+  }
+}
+
+@media (max-width: 600px) {
+}

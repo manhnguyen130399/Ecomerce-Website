@@ -19,7 +19,6 @@ describe('AppComponent', () => {
   it(`should have as title 'SHOPPICA-ANGULAR-CLIENT-WEB'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('SHOPPICA-ANGULAR-CLIENT-WEB');
   });
 
   it('should render title', () => {

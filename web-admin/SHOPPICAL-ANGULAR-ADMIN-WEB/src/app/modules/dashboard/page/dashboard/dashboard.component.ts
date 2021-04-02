@@ -1,16 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ChartDataSets,
-  ChartOptions,
-  ChartType,
-  RadialChartOptions,
-} from 'chart.js';
-import { Color, Label, MultiDataSet } from 'ng2-charts';
 import { DashboardService } from '../../services/dashboard-service';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 import { State } from '../../models/state';
-import { Category } from '@app/modules/category/models/category';
 import { CategoryReport } from '../../models/category';
 @Component({
   selector: 'app-dashboard',

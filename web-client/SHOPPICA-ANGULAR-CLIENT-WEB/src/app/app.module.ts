@@ -1,16 +1,65 @@
+import { BlogCardModule } from './shared/modules/blog-card/blog-card.module';
+import { CartItemModule } from './shared/modules/cart-item/cart-item.module';
+import { JwtService } from './core/services/jwt/jwt.service';
+import { SharedModule } from './shared/shared.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { FooterComponent } from './layout/footer/footer.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { routes } from './app.routing';
+import { ScrollToTopComponent } from './layout/scroll-to-top/scroll-to-top.component';
+import { MenuDrawerComponent } from './layout/drawers/menu-drawer/menu-drawer.component';
+import { LoginDrawerComponent } from './layout/drawers/login-drawer/login-drawer.component';
+import { CoreModule } from './core/core.module';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { jwtOptionsFactory } from './core/interceptor/jwt-options-factory';
+import { RegisterDrawerComponent } from './layout/drawers/register-drawer/register-drawer.component';
+import { ResetPasswordDrawerComponent } from './layout/drawers/reset-password-drawer/reset-password-drawer.component';
+import { ShoppingCartDrawerComponent } from './layout/drawers/shopping-cart-drawer/shopping-cart-drawer.component';
+
+registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    ScrollToTopComponent,
+    MenuDrawerComponent,
+    LoginDrawerComponent,
+    RegisterDrawerComponent,
+    ResetPasswordDrawerComponent,
+    ShoppingCartDrawerComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    CoreModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    RouterModule.forRoot(routes),
+    // jwt
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+        deps: [JwtService]
+      }
+    })
   ],
-  providers: [],
+  providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

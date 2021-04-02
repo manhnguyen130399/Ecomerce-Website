@@ -1,0 +1,58 @@
+.service-section {
+  margin-top: 35px;
+}
+
+.section {
+  display: flex;
+  padding: 0 15px;
+  margin-bottom: 25px;
+  margin-top: 25px;
+}
+
+.shipping-icon {
+  margin-right: 10px;
+}
+
+.shipping-icon i {
+  font-size: 55px;
+  margin-top: -8px;
+  color: #878787;
+}
+
+.support-icon,
+.return-icon,
+.payment-icon {
+  margin-right: 15px;
+}
+
+.support-icon i,
+.return-icon i,
+.payment-icon i {
+  font-size: 40px;
+  color: #878787;
+}
+
+.content .title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.content .description {
+  color: #878787;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 992px) {
+}
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 600px) {
+}
