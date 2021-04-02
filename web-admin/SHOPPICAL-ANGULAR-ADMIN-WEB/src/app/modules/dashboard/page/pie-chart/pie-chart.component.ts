@@ -16,12 +16,16 @@ export class PieChartComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.pieChartData = [
-      this.state.complete,
-      this.state.pending,
-      this.state.complete,
-      this.state.delivery,
-    ];
+    if (this.state != null) {
+      this.pieChartData = [
+        this.state.complete,
+        this.state.pending,
+        this.state.complete,
+        this.state.delivery,
+      ];
+    } else {
+      this.pieChartData = [0, 0, 0, 0];
+    }
   }
 
   pieChartOptions: ChartOptions = {

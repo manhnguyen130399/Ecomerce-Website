@@ -1,5 +1,6 @@
 package com.fashion.modules.report.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -60,26 +61,31 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 	@Override
 	public ReportRes getOrderByDate(final String fromDate, final String toDate, final Integer top,
 			final SortType sortOrder) {
-		final List<OrderVM> orders = getOrderByDateFromRest(fromDate, toDate, top, sortOrder);
-		final Set<Integer> productDetailIds = orders.parallelStream()
-				.flatMap(it -> it.getOrderDetails().stream().map(i -> i.getProductDetailId()))
-				.collect(Collectors.toSet());
-		final List<ProductDetail> productDetailByIds = productDetailRepo.getProductDetailByIds(productDetailIds);
-		final List<Integer> productId = productDetailByIds.parallelStream().map(it -> it.getProduct().getId())
-				.collect(Collectors.toList());
-		final List<CategoryEntryMap> categories = cateRepo.getCategoryAndCountProduct(getCurrentStoreId());
 		final ReportRes res = new ReportRes();
-		final Pair<List<Integer>, List<Integer>> revenuesAndSale = appendDataReport(getRevenuesAndSalesReport());
+		final List<OrderVM> orders = getOrderByDateFromRest(fromDate, toDate, top, sortOrder);
 		int total = orders.size();
+		if (CollectionUtils.isNotEmpty(orders)) {
+			final Set<Integer> productDetailIds = orders.parallelStream()
+					.flatMap(it -> it.getOrderDetails().stream().map(i -> i.getProductDetailId()))
+					.collect(Collectors.toSet());
+			final List<ProductDetail> productDetailByIds = productDetailRepo.getProductDetailByIds(productDetailIds);
+			final List<Integer> productId = productDetailByIds.parallelStream().map(it -> it.getProduct().getId())
+					.collect(Collectors.toList());
+			res.setRevenue(orders.parallelStream().map(it -> it.getTotal()).findAny().get());
+			res.setReviews(commentRepo.getCommentInProductIds(getCurrentStoreId(), productId));
+			res.setState(new StateOrderReportVM(getOrderStateNumber(OrderType.COMPLETE, orders, total),
+					getOrderStateNumber(OrderType.CANCEL, orders, total),
+					getOrderStateNumber(OrderType.PENDING, orders, total),
+					getOrderStateNumber(OrderType.DELIVER, orders, total)));
+		} else {
+			res.setRevenue(BigDecimal.ZERO);
+			res.setReviews(0);
+		}
+		final List<CategoryEntryMap> categories = cateRepo.getCategoryAndCountProduct(getCurrentStoreId());
 		res.setCategory(categories);
-		res.setOrder(total);
-		res.setRevenue(orders.parallelStream().map(it -> it.getTotal()).findAny().get());
 		res.setCustomer(orders.size());
-		res.setReviews(commentRepo.getCommentInProductIds(getCurrentStoreId(), productId));
-		res.setState(new StateOrderReportVM(getOrderStateNumber(OrderType.COMPLETE, orders, total),
-				getOrderStateNumber(OrderType.CANCEL, orders, total),
-				getOrderStateNumber(OrderType.PENDING, orders, total),
-				getOrderStateNumber(OrderType.DELIVER, orders, total)));
+		res.setOrder(total);
+		final Pair<List<Integer>, List<Integer>> revenuesAndSale = appendDataReport(getRevenuesAndSalesReport());
 		res.setRevenues(revenuesAndSale.getLeft());
 		res.setSales(revenuesAndSale.getRight());
 		return res;
