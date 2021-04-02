@@ -11,7 +11,7 @@ import { Brand } from '@modules/brand/models/brand';
 import { Category } from '@modules/category/models/category';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ActivatedRoute } from '@angular/router';
-
+import { environment } from '@env';
 
 
 @Component({
@@ -21,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductDetailComponent implements OnInit {
 
+  backEndUrl = `${environment.productServiceUrl}/api/product/import`;
   isLoadingCategoryInSelect = true;
   isLoadingBrandInSelect = true;
   isLoadingProductEdit = false;
