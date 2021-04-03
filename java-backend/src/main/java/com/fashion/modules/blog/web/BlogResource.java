@@ -69,5 +69,10 @@ public class BlogResource extends BaseResource {
 			@PathVariable Integer id) {
 		return success(blogService.deleteBlog(id, page, pageSize, sortOrder, sortField, title));
 	}
+	
+	@GetMapping(URL + "/blog-state")
+	public ResponseEntity<Map<String, Object>> getBlogState() {
+		return success(blogService.getBlogStates());
+	}
 
 }

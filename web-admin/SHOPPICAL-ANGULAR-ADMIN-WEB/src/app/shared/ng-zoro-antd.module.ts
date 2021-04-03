@@ -14,6 +14,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 @NgModule({
   declarations: [],
   imports: [
@@ -29,6 +30,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     NzPopconfirmModule,
     NzDatePickerModule,
     NzImageModule,
+    NzToolTipModule,
     NzSpinModule,
     NzIconModule.forChild(shareIcons),
   ],
@@ -45,6 +47,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     NzPopconfirmModule,
     NzDatePickerModule,
     NzImageModule,
+    NzToolTipModule,
     NzSpinModule
   ],
   providers: []

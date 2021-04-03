@@ -86,9 +86,10 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	private static final String BRAND = "Brand";
 	private static final String CATEGORY = "Category";
 	private static final String QUANTITY = "Quantity";
+	private static final String COLOR_HEX = "ColorHex";
 
-	private static final List<String> HEADER = Lists.newArrayList(PRODUCT_NAME, PRICE, COLOR, SIZE, BRAND, CATEGORY,
-			QUANTITY);
+	private static final List<String> HEADER = Lists.newArrayList(PRODUCT_NAME, PRICE, COLOR, COLOR_HEX, SIZE, BRAND,
+			CATEGORY, QUANTITY);
 
 	@Override
 	@Transactional
@@ -151,7 +152,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			final Color color = it.getColor();
 			final Size size = it.getSize();
 			return new ProductDetailVM(size.getId(), size.getSizeName(), color.getId(), color.getColorName(),
-					it.getQuantity());
+					color.getColorHex(), it.getQuantity());
 		}).collect(Collectors.toSet()));
 		return vm;
 	}
@@ -217,15 +218,17 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		return productDetailRepo.getProductDetailByIds(ids).stream().map(it -> {
 			final ProductRes res = new ProductRes();
 			final Product product = it.getProduct();
+			final Color color = it.getColor();
 			res.setProductId(product.getId());
 			res.setBrandName(product.getBrand().getBrandName());
 			res.setProductDetailId(it.getId());
-			res.setColorName(it.getColor().getColorName());
+			res.setColorName(color.getColorName());
 			res.setSizeName(it.getSize().getSizeName());
 			res.setPrice(product.getPrice());
 			res.setProductName(product.getProductName());
 			res.setQuantity(it.getQuantity());
 			res.setCategoryName(product.getCategory().getCategoryName());
+			res.setColorHex(color.getColorHex());
 			return res;
 		}).collect(Collectors.toList());
 	}
@@ -307,6 +310,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		vm.setColorName(row.getCell(colIndexs.get(COLOR)).getStringCellValue());
 		vm.setSizeName(row.getCell(colIndexs.get(SIZE)).getStringCellValue());
 		vm.setQuantity((int) row.getCell(colIndexs.get(QUANTITY)).getNumericCellValue());
+		vm.setColorHex(row.getCell(colIndexs.get(COLOR_HEX)).getStringCellValue());
 		return vm;
 	}
 
@@ -374,7 +378,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 					: categoryRepo.save(new Category(categoryName, stores)));
 			final Color color = colorPair.getRight().contains(colorName)
 					? colorPair.getLeft().stream().filter(it -> it.getColorName().equals(colorName)).findFirst().get()
-					: colorRepo.save(new Color(colorName, stores));
+					: colorRepo.save(new Color(colorName, stores, input.getColorHex()));
 			final Size size = sizePair.getRight().contains(sizeName)
 					? sizePair.getLeft().stream().filter(it -> it.getSizeName().equals(sizeName)).findFirst().get()
 					: sizeRepo.save(new Size(sizeName, stores));

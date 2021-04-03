@@ -40,6 +40,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 		color.setColorName(vm.getColorName());
 		color.setCreatedBy(context.getUsername());
 		color.setStores(Collections.singleton(store));
+		color.setColorHex(vm.getColorHex());
 		colorRepo.save(color);
 		return mapper.map(color, ColorVM.class);
 	}
