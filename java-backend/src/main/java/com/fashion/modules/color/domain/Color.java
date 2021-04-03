@@ -29,6 +29,9 @@ public class Color extends AbstractAuditingEntity {
 	@Column(name = "color_name")
 	private String colorName;
 
+	@Column(name = "color_hex")
+	private String colorHex;
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_color", joinColumns = @JoinColumn(name = "color_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private Set<Store> stores = Sets.newHashSet();
@@ -71,10 +74,18 @@ public class Color extends AbstractAuditingEntity {
 		super();
 	}
 
-	public Color(final String colorName, final Set<Store> stores) {
+	public Color(final String colorName, final Set<Store> stores, final String colorHex) {
 		super();
 		this.colorName = colorName;
 		this.stores = stores;
+		this.colorHex = colorHex;
 	}
 
+	public String getColorHex() {
+		return colorHex;
+	}
+
+	public void setColorHex(final String colorHex) {
+		this.colorHex = colorHex;
+	}
 }

@@ -13,6 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.beust.jcommander.internal.Lists;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.ErrorMessage;
 import com.fashion.commons.enums.AccountType;
@@ -128,6 +129,11 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 			blog.setTitle(req.getTitle());
 		}
 		return mapper.map(blog, BlogVM.class);
+	}
+
+	@Override
+	public List<BlogState> getBlogStates() {
+		return Lists.newArrayList(BlogState.COMPLETE, BlogState.CANCLE, BlogState.PENDING);
 	}
 
 }

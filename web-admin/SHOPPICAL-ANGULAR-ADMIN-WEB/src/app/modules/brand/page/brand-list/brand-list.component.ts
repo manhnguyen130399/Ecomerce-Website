@@ -24,7 +24,7 @@ export class BrandListComponent extends BaseListComponent<Brand> implements OnIn
   }
 
   onQueryParamsChange = (params: NzTableQueryParams) => {
-    this.baseParams.filters = [{ key: "sizeName", value: this.searchValue }];
+    this.baseParams.filters = [{ key: "brandName", value: this.searchValue }];
     super.onQueryParamsChangeFromParent(params);
   }
 }

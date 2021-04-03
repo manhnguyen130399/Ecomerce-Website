@@ -22,7 +22,7 @@ export class ComplainModalComponent
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly complainService: ComplainService,
-    private readonly chileMessageService: NzMessageService
+    private readonly messageService: NzMessageService
   ) {
     super(complainService);
   }
@@ -38,7 +38,8 @@ export class ComplainModalComponent
       .replyComplain(this.id, this.baseForm.get('message').value)
       .subscribe((res) => {
         if (res.code == 'OK') {
-         this.cancelModal()
+          this.cancelModal();
+          this.messageService.create('success', 'Reply complain successfully!');
         }
       });
   }

@@ -2,6 +2,7 @@ import { AuthGuard } from '@core/guards/auth.guard';
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from '@layout/main-layout/main-layout.component';
 import { DashboardComponent } from './../dashboard/page/dashboard/dashboard.component';
+import { blogRoutes } from '../blog/blog.routing';
 
 export const mainRoutes: Routes = [
   {
@@ -62,13 +63,18 @@ export const mainRoutes: Routes = [
       {
         path: 'profile',
         loadChildren: () =>
-          import('../profile/profile.module').then(m => m.ProfileModule),
+          import('../profile/profile.module').then((m) => m.ProfileModule),
       },
       {
         path: 'order',
         loadChildren: () =>
-          import('../order/order.module').then(m => m.OrderModule),
-      }
+          import('../order/order.module').then((m) => m.OrderModule),
+      },
+      {
+        path: 'blog',
+        loadChildren: () =>
+          import('../blog/blog.module').then((m) => m.BlogModule),
+      },
     ],
   },
 ];
