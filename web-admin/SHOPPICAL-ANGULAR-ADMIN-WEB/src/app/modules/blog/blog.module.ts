@@ -6,10 +6,11 @@ import { SharedModule } from '@shared/shared.module';
 import { blogRoutes } from './blog.routing';
 import { RouterModule } from '@angular/router';
 import { BlogFormComponent } from './page/blog-form/blog-form.component';
-import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill';
+import { BlogViewComponent } from './page/blog-view/blog-view.component'
 
 @NgModule({
-  declarations: [BlogListComponent, BlogModalComponent, BlogFormComponent],
+  declarations: [BlogListComponent, BlogModalComponent, BlogFormComponent, BlogViewComponent],
   imports: [
     CommonModule,
     SharedModule,

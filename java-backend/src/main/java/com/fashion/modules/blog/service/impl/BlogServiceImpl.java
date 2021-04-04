@@ -79,7 +79,11 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 			final String sortField, final String title) {
 		if (StringUtils.isEmpty(title)) {
 			return blogRepo.findAll(PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
-					.map(it -> mapper.map(it, BlogVM.class));
+					.map(it -> {
+						final BlogVM blog = mapper.map(it, BlogVM.class);
+						blog.setAuthor(it.getCreatedBy());
+						return blog;
+					});
 		}
 		return searchByTitle(page, pageSize, sortOrder, sortField, title);
 	}
@@ -87,10 +91,12 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 	@Transactional
 	public Page<BlogVM> searchByTitle(final Integer page, final Integer pageSize, final SortType sortOrder,
 			final String sortField, final String title) {
-		return blogRepo
-				.findAllByTitleLike(title,
-						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
-				.map(it -> mapper.map(it, BlogVM.class));
+		return blogRepo.findAllByTitleLike(title,
+				PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField))).map(it -> {
+					final BlogVM blog = mapper.map(it, BlogVM.class);
+					blog.setAuthor(it.getCreatedBy());
+					return blog;
+				});
 	}
 
 	@Override

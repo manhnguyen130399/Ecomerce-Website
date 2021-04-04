@@ -1,0 +1,17 @@
+.title{
+  text-align: center;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #1b1b1b;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-size: 2.5rem;
+}
+
+.right{
+  text-align: right;
+  font-size: 10px;
+  color:darkcyan;
+  margin: 40px;
+}
+
