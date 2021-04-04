@@ -10,11 +10,13 @@ import { ColorService } from '../../services/color.service';
   templateUrl: './color-modal.component.html',
   styleUrls: ['./color-modal.component.css'],
 })
-export class ColorModalComponent extends BaseModalComponent<Color> implements OnInit {
-
+export class ColorModalComponent
+  extends BaseModalComponent<Color>
+  implements OnInit {
   @Input() color: Color;
   @Input() modalTitle: string;
   @Input() isVisible = false;
+  colorHex: string = '#fbfbfb';
   @Output() cancelModalEvent = new EventEmitter<string>();
   @Output() okModalEvent = new EventEmitter<Color>();
 
@@ -27,23 +29,29 @@ export class ColorModalComponent extends BaseModalComponent<Color> implements On
   }
 
   ngOnInit(): void {
-    this.modalTitle = "Create color";
+    this.modalTitle = 'Create color';
     this.buildForm();
   }
 
   buildForm() {
     this.baseForm = this.formBuilder.group({
-      colorName: [null, [Validators.required]],
+      colorName: [null],
     });
   }
 
   submitForm() {
-    let color = { id: null, colorName: this.baseForm.get('colorName').value.trim() };
+    let color = {
+      id: null,
+      colorName: this.baseForm.get('colorName').value.trim(),
+      colorHex: this.colorHex,
+    };
     super.create(color, this.okModalEvent, this.chileMessageService);
   }
 
   cancelModal() {
     super.cancel(this.cancelModalEvent);
   }
-
+  updateColor(event) {
+    this.colorHex = event;
+  }
 }

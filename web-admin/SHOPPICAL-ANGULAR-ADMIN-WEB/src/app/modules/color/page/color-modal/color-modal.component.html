@@ -1,14 +1,18 @@
-<nz-modal [(nzVisible)]="isVisible" nzOkText="Save Change" nzClassName="form-modal" [nzTitle]="modalTitle"
-  [nzClosable]="false" [nzOkDisabled]="baseForm.invalid" [nzOkLoading]="isLoadingButton" (nzOnCancel)="cancelModal()"
-  (nzOnOk)="submitForm()">
-  <ng-container *nzModalContent>
-    <form nz-form [formGroup]="baseForm">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="6" nzFor="sizeName">Color Name</nz-form-label>
-        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your color name!">
-          <input nz-input type="text" formControlName="colorName">
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  </ng-container>
+<nz-modal [(nzVisible)]="isVisible" nzOkText="Save Change" nzClassName="form-modal" [nzTitle]="modalTitle" [nzClosable]="false" [nzOkDisabled]="baseForm.invalid" [nzOkLoading]="isLoadingButton" (nzOnCancel)="cancelModal()" (nzOnOk)="submitForm()">
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="baseForm">
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" nzFor="colorName">Color Name</nz-form-label>
+                <nz-form-control [nzSpan]="14" nzErrorTip="Please input your color name!">
+                    <input nz-input type="text" formControlName="colorName">
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6">ColorHex</nz-form-label>
+                <nz-form-control [nzSpan]="4">
+                    <input nz-input class="form-control ml-2 mr-2" [value]="colorHex" [style.background]="colorHex" [(colorPicker)]="colorHex" (colorPickerClose)="updateColor($event)" />
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
 </nz-modal>

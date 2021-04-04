@@ -5,6 +5,7 @@ import { ColorListComponent } from './page/color-list/color-list.component';
 import { ColorModalComponent } from './page/color-modal/color-modal.component';
 import { colorRoutes } from './color.routing';
 import { SharedModule } from '@app/shared/shared.module';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { SharedModule } from '@app/shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
+    ColorPickerModule,
     RouterModule.forChild(colorRoutes)
   ],
 })
