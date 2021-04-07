@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="category-sections custom-scroll-bar">
+    <ul *ngIf="listCategory.length > 0" class="flex jc-center">
+      <li (click)="selectCategory(category)" [class.active]="selectedId === category.id" class="text-hover"
+        *ngFor="let category of listCategory">
+        {{category.categoryName}}</li>
+    </ul>
+  </div>
+
+</div>

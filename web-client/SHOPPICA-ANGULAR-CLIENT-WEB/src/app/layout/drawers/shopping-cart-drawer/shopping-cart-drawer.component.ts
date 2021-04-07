@@ -1,3 +1,4 @@
+import { CartItemOptions } from './../../../shared/modules/cart-item/models/cart-item-options.model';
 import { CartItem } from './../../../core/model/cart-item';
 import { AuthService } from './../../../core/services/auth/auth.service';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
@@ -15,27 +16,35 @@ export class ShoppingCartDrawerComponent implements OnInit {
   totalPrice: number = 123213;
   listCartItem: CartItem[] = [
     {
-      productId: 1,
+      id: 1,
       productName: "T-shirt product",
       price: 99,
-      productImage: '/assets/images/products/product-2.jpg',
+      image: '/assets/images/products/product-2.jpg',
       quantity: 12,
     },
     {
-      productId: 2,
+      id: 2,
       productName: "T-shirt product",
       price: 99,
-      productImage: '/assets/images/products/product-3.jpg',
+      image: '/assets/images/products/product-3.jpg',
       quantity: 12,
     },
     {
-      productId: 3,
+      id: 3,
       productName: "T-shirt Top",
       price: 99,
-      productImage: '/assets/images/products/product-1.jpg',
+      image: '/assets/images/products/product-1.jpg',
       quantity: 12,
     }
   ]
+
+  cartItemOptions: CartItemOptions = {
+    showActions: true,
+    showBorder: true,
+    showInput: true,
+    showPrice: true,
+    size: 'large'
+  }
   constructor(
     private readonly authService: AuthService,
   ) { }
@@ -48,6 +57,6 @@ export class ShoppingCartDrawerComponent implements OnInit {
   }
 
   deleteItem(productId: number) {
-    this.listCartItem = this.listCartItem.filter(c => c.productId != productId);
+    this.listCartItem = this.listCartItem.filter(c => c.id != productId);
   }
 }

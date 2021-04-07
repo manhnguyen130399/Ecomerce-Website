@@ -1,3 +1,4 @@
+import { CartItemModule } from './../cart-item/cart-item.module';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { shareIcons } from './../../share-icon';
@@ -11,7 +12,8 @@ import { ProductCardComponent } from './product-card.component';
   imports: [
     CommonModule,
     NzIconModule,
-    NzToolTipModule
+    NzToolTipModule,
+    CartItemModule
   ],
   exports: [ProductCardComponent]
 })

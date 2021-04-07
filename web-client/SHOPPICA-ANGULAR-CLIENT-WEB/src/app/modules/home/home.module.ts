@@ -1,3 +1,4 @@
+import { ProductCarouselModule } from './../../shared/modules/product-carousel/product-carousel.module';
 import { BlogCardModule } from './../../shared/modules/blog-card/blog-card.module';
 import { CartItemModule } from './../../shared/modules/cart-item/cart-item.module';
 import { SectionTitleModule } from './../../shared/modules/section-title/section-title.module';
@@ -45,9 +46,9 @@ import { ShippingComponent } from './components/shipping/shipping.component';
     TabModule,
     SectionTitleModule,
     CartItemModule,
-    ProductCardModule,
     CategoryCardModule,
     BlogCardModule,
+    ProductCarouselModule,
 
     //carousel
     CarouselModule,

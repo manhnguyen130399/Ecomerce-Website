@@ -44,8 +44,6 @@
 }
 
 .hover-btn {
-  display: flex;
-  flex-direction: column;
   position: absolute;
   top: 40%;
   width: 60%;
@@ -122,7 +120,7 @@
   width: 100%;
   color: white;
   text-align: center;
-  font-size: 15px;
+  font-size: 14px;
   transition: 0.5s;
   opacity: 0;
 }
@@ -138,7 +136,6 @@
 .add-wishlist i {
   color: white;
   font-size: 20px;
-  transition: 0.5s;
 }
 
 .product-info {
@@ -147,19 +144,33 @@
 
 .product-name {
   color: black;
-  transition: 0.5s;
   margin-bottom: 0;
-}
-
-.product-name:hover,
-.add-wishlist i:hover {
-  cursor: pointer;
-  color: #56cfe1;
 }
 
 .product-price {
   font-size: 14px;
   color: #696969;
+}
+
+.labels {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 4;
+}
+
+.labels .new,
+.labels .discount {
+  height: 60px;
+  width: 60px;
+  font-size: 14px;
+  border-radius: 50%;
+  background: #109533;
+  color: white;
+}
+
+.labels .discount {
+  background: #ff4e00;
 }
 
 @media (max-width: 1200px) {

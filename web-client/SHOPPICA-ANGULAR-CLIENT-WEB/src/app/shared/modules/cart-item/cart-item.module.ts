@@ -11,11 +11,19 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { CartItemComponent } from './cart-item.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SelectColorComponent } from './components/select-color/select-color.component';
+import { SelectSizeComponent } from './components/select-size/select-size.component';
+import { InputQuantityComponent } from './components/input-quantity/input-quantity.component';
 
 
 
 @NgModule({
-  declarations: [CartItemComponent],
+  declarations: [
+    CartItemComponent,
+    SelectColorComponent,
+    SelectSizeComponent,
+    InputQuantityComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -23,6 +31,11 @@ import { CommonModule } from '@angular/common';
     NzToolTipModule,
     NzIconModule.forChild(shareIcons),
   ],
-  exports: [CartItemComponent]
+  exports: [
+    CartItemComponent,
+    SelectColorComponent,
+    SelectSizeComponent,
+    InputQuantityComponent
+  ]
 })
 export class CartItemModule { }

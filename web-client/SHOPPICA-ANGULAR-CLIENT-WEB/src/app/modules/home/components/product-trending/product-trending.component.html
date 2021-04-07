@@ -2,39 +2,7 @@
   <div class="top-trending">
     <app-section-title [title]="'TRENDING'" [subTitle]="'Top view in this week'"></app-section-title>
     <div class="content">
-
-      <owl-carousel-o [options]="customOptions">
-        <ng-template carouselSlide>
-          <div class="column">
-            <app-product-card [product]="listProduct[0]"></app-product-card>
-          </div>
-        </ng-template>
-        <ng-template carouselSlide>
-          <div class="column">
-            <app-product-card [product]="listProduct[0]"></app-product-card>
-          </div>
-        </ng-template>
-        <ng-template carouselSlide>
-          <div class="column">
-            <app-product-card [product]="listProduct[0]"></app-product-card>
-          </div>
-        </ng-template>
-        <ng-template carouselSlide>
-          <div class="column">
-            <app-product-card [product]="listProduct[0]"></app-product-card>
-          </div>
-        </ng-template>
-        <ng-template carouselSlide>
-          <div class="column">
-            <app-product-card [product]="listProduct[0]"></app-product-card>
-          </div>
-        </ng-template>
-        <ng-template carouselSlide>
-          <div class="column">
-            <app-product-card [product]="listProduct[0]"></app-product-card>
-          </div>
-        </ng-template>
-      </owl-carousel-o>
+      <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
     </div>
   </div>
 </div>

@@ -1,3 +1,4 @@
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../layout/header/header.component';
 import { NgModule } from '@angular/core';
@@ -10,10 +11,12 @@ import { NgZorroAntdModule } from './ng-zorro-antd.module';
   imports: [
     CommonModule,
     FormsModule,
+    CarouselModule,
     NgZorroAntdModule
   ],
   exports: [
     NgZorroAntdModule,
+    CarouselModule
   ]
 })
 export class SharedModule { }

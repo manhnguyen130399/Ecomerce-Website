@@ -26,3 +26,9 @@
   font-family: "Libre Baskerville", serif;
   color: #878787;
 }
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 20px;
+  }
+}

@@ -1,0 +1,27 @@
+.category-description {
+  height: 150px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.background-color {
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  opacity: 0.5;
+  position: relative;
+}
+
+.category-name {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  color: white;
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  transform: translateY(-50%);
+}

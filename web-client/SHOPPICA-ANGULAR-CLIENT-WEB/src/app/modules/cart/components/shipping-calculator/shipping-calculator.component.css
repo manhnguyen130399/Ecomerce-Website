@@ -1,0 +1,65 @@
+.shipping-section {
+  position: relative;
+  border: 1px solid #e3e3e3;
+  padding: 50px 10px;
+  margin-bottom: 60px;
+}
+
+.shipping-section h3 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0 14px 0 18px;
+  background-color: white;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.calculator-btn {
+  width: auto;
+  min-width: 240px;
+  float: right;
+  background-color: #56cfe1;
+  border-color: #56cfe1;
+  height: 40px;
+  margin: 10px 20px;
+}
+
+.address {
+  margin: 10px 20px;
+}
+
+.address p {
+  margin-bottom: 2px;
+}
+
+.address nz-select {
+  min-width: 240px;
+}
+
+.result {
+  margin-top: 30px;
+}
+
+.result li span {
+  font-weight: bold;
+}
+
+@media (max-width: 992px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .address nz-select,
+  .calculator-btn {
+    min-width: 340px;
+  }
+}
+
+@media (max-width: 768px) {
+  .shipping-section h3 {
+    font-size: 20px;
+  }
+}

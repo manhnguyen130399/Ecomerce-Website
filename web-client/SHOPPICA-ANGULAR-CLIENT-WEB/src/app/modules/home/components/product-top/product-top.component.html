@@ -4,79 +4,13 @@
 
     <app-ng-tabs>
       <app-tab-content tabTitle="Best Seller">
-        <owl-carousel-o [options]="customOptions">
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-
-        </owl-carousel-o>
+        <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
       </app-tab-content>
       <app-tab-content tabTitle="Top Rate">
-        <owl-carousel-o [options]="customOptions">
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-
-        </owl-carousel-o>
+        <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
       </app-tab-content>
       <app-tab-content tabTitle="Sale">
-        <owl-carousel-o [options]="customOptions">
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-          <ng-template carouselSlide>
-            <div class="column">
-              <app-product-card [product]="listProduct[0]"></app-product-card>
-            </div>
-          </ng-template>
-
-        </owl-carousel-o>
+        <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
       </app-tab-content>
     </app-ng-tabs>
   </div>

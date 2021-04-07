@@ -2,9 +2,9 @@
   (nzOnClose)="closeMenu()" [nzWrapClassName]="'menu-mobile'">
   <ng-container *nzDrawerContent>
     <ul>
-      <li>Home</li>
+      <li [routerLink]="['/home']">Home</li>
       <li>About</li>
-      <li>Product</li>
+      <li [routerLink]="['/product']">Product</li>
       <li>Blog</li>
       <li>Contact</li>
     </ul>

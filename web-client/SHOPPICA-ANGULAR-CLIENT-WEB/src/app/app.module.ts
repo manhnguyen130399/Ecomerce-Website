@@ -26,6 +26,9 @@ import { jwtOptionsFactory } from './core/interceptor/jwt-options-factory';
 import { RegisterDrawerComponent } from './layout/drawers/register-drawer/register-drawer.component';
 import { ResetPasswordDrawerComponent } from './layout/drawers/reset-password-drawer/reset-password-drawer.component';
 import { ShoppingCartDrawerComponent } from './layout/drawers/shopping-cart-drawer/shopping-cart-drawer.component';
+import { QuickViewComponent } from './layout/modals/quick-view/quick-view.component';
+import { QuickShopComponent } from './layout/modals/quick-shop/quick-shop.component';
+import { SearchDrawerComponent } from './layout/drawers/search-drawer/search-drawer.component';
 
 registerLocaleData(en);
 
@@ -39,13 +42,17 @@ registerLocaleData(en);
     LoginDrawerComponent,
     RegisterDrawerComponent,
     ResetPasswordDrawerComponent,
-    ShoppingCartDrawerComponent
+    ShoppingCartDrawerComponent,
+    QuickViewComponent,
+    QuickShopComponent,
+    SearchDrawerComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    CartItemModule,
     CoreModule,
     HttpClientModule,
     BrowserAnimationsModule,
