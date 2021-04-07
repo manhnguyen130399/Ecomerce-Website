@@ -1,0 +1,17 @@
+<div nz-row class="cart-row">
+  <div nz-col [nzSpan]="10">
+    <app-cart-item [cartItemOptions]="cartItemOptions" [item]="item"></app-cart-item>
+  </div>
+
+  <div class="price jc-center al-center flex" nz-col [nzSpan]="6">
+    <span>15</span>
+  </div>
+
+  <div class="quantity jc-center al-center flex" nz-col [nzSpan]="4">
+    <app-input-quantity [(quantity)]="item.quantity"></app-input-quantity>
+  </div>
+
+  <div class="total jc-flex-end al-center flex" nz-col [nzSpan]="4">
+    <span>{{item.quantity}}</span>
+  </div>
+</div>

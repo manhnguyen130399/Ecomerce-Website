@@ -1,5 +1,5 @@
 <div class="tab-header">
-  <ul class="header-title">
+  <ul class="header-title flex jc-center">
     <li class="header-item" *ngFor="let tab of tabs" (click)="selectTab(tab)" [class.active]="tab.active">
       <a>{{tab.title}}</a>
     </li>

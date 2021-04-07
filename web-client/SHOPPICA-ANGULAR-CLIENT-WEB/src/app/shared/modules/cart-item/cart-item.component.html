@@ -1,36 +1,21 @@
-<div class="cart-item">
+<div [class.large]="cartItemOptions.size==='large'" [class.hiddenBorder]="!cartItemOptions.showBorder"
+  class="cart-item flex">
   <div class="product-image">
-    <a href=""><img src={{item.productImage}} alt=""></a>
+    <a href=""><img src={{item.image}} alt=""></a>
   </div>
   <div class="cart-info">
-    <div class="product-name">{{item.productName}}</div>
-    <div class="price">{{item.price | currency}}</div>
+    <div class="info">
+      <div class="product-name text-hover">{{item.productName}}</div>
+      <div *ngIf="cartItemOptions.showPrice" class="price">{{item.price | currency}}</div>
+      <div *ngIf="cartItemOptions.showColor" class="color">Color: <span>black</span> </div>
+      <div *ngIf="cartItemOptions.showSize" class="size">Size: <span>L</span></div>
+    </div>
+
     <div class="actions">
-      <div class="quantity">
-        <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
-          <input type="number" [(ngModel)]="item.quantity" nz-input />
-        </nz-input-group>
-        <ng-template #prefixTemplateUser>
-          <i class="minus" (click)="item.quantity = item.quantity - 1" nz-icon>
-            <svg t="1617116392871" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-              p-id="69925">
-              <path
-                d="M900.524293 575.143109 121.429095 575.143109c-74.505901 0-74.505901-179.790806 0-179.790806l779.095197 0C975.028147 395.352303 975.028147 575.143109 900.524293 575.143109z"
-                p-id="69926"></path>
-            </svg>
-          </i>
-        </ng-template>
-        <ng-template #suffixTemplateInfo>
-          <i class="plus" (click)="item.quantity = item.quantity + 1" nz-icon>
-            <svg>
-              <path
-                d="M938.666667 426.666667H597.333333V85.333333H426.666667v341.333334H85.333333v170.666666h341.333334v341.333334h170.666666V597.333333h341.333334z"
-                p-id="60641"></path>
-            </svg>
-          </i>
-        </ng-template>
-      </div>
-      <i class="edit-item" (click)="editItem(item.productId)" nz-tooltip nzTooltipTitle="Edit this item" nz-icon>
+      <!-- quantity -->
+      <app-input-quantity *ngIf="cartItemOptions.showInput" [(quantity)]="item.quantity"></app-input-quantity>
+      <i *ngIf="cartItemOptions.showActions" class="edit-item text-hover" (click)="editItem(item.id)" nz-tooltip
+        nzTooltipTitle="Edit this item" nz-icon>
         <svg t="1617116448552" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
           p-id="70707">
           <path
@@ -40,7 +25,8 @@
             d="M1001.101994 107.107885L916.546547 22.552438c-29.965881-29.965881-78.805388-29.749954-108.763271 0.215927l-423.536975 423.536975a34.100485 34.100485 0 0 0-7.25355 10.876327L270.572688 708.184906c-5.965985 14.075247-1.80739 28.262456 7.25355 37.427361 9.06094 9.172902 23.352114 13.331498 37.531326 7.357515l251.115201-106.308101c4.054631-1.703425 7.677407-4.158596 10.876327-7.25355l423.536975-423.536975c29.965881-29.957883 30.181808-78.797391 0.215927-108.763271zM528.837474 579.164475l-146.510525 62.059043 62.059043-146.510525L741.669602 197.429384l84.451481 84.451481L528.837474 579.164475z m417.666957-417.674955l-66.105677 66.113674-84.451481-84.451481 66.105677-66.113674 0.215927-0.20793 84.451481 84.451482-0.215927 0.207929z"
             p-id="70709"></path>
         </svg></i>
-      <i class="delete-item" (click)="deleteItem(item.productId)" nz-tooltip nzTooltipTitle="Remove this item" nz-icon>
+      <i *ngIf="cartItemOptions.showActions" class="delete-item text-hover" (click)="deleteItem(item.id)" nz-tooltip
+        nzTooltipTitle="Remove this item" nz-icon>
         <svg t="1617116525850" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
           p-id="71465">
           <path

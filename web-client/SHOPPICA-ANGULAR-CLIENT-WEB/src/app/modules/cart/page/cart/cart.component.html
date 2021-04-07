@@ -1,0 +1,29 @@
+<div class="title mt-70">
+  <div class="background"></div>
+  <p class="flex al-center jc-center">SHOPPING CART</p>
+</div>
+<div class="container">
+  <div class="cart mt-70">
+    <div class="cart-header">
+      <div nz-row class="">
+        <div class="flex al-center" nz-col [nzSpan]="10">PRODUCT</div>
+        <div class="flex al-center jc-center" nz-col [nzSpan]="6">PRICE</div>
+        <div class="flex al-center jc-center" nz-col [nzSpan]="4">QUANTITY</div>
+        <div class="flex al-center jc-flex-end" nz-col [nzSpan]="4">TOTAL</div>
+      </div>
+    </div>
+    <div class="cart-content">
+      <app-cart-row></app-cart-row>
+      <app-cart-row></app-cart-row>
+      <app-cart-row></app-cart-row>
+      <app-cart-row></app-cart-row>
+    </div>
+  </div>
+
+  <app-cart-footer></app-cart-footer>
+  <app-shipping-calculator></app-shipping-calculator>
+  <div class="recently-view">
+    <app-section-title [title]="'Recently viewed products'"></app-section-title>
+    <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<app-categories (selectCategoryEvent)="selectCategory($event)" [selectedId]="categorySelected.id"
+  [listCategory]="listCategory"></app-categories>
+<app-descriptions [categorySelected]="categorySelected"></app-descriptions>
+<app-toolbars (changeNumberProductEvent)="changeNumProduct($event)" (openFilterDrawerEvent)="openFilterDrawer()">
+</app-toolbars>
+<app-filter-drawer (closeFilterEvent)="closeFilterDrawer()" [isShowFilter]="isShowFilter"></app-filter-drawer>
+<app-content [productCol]="productCol"></app-content>
+<app-pagination></app-pagination>

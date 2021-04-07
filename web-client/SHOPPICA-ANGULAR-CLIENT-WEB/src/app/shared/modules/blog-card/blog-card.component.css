@@ -59,11 +59,6 @@
   color: #878787;
 }
 
-.blog-info .title:hover {
-  color: #56cfe1;
-  cursor: pointer;
-}
-
 .blog-info .author-name,
 .create-at {
   color: #222;

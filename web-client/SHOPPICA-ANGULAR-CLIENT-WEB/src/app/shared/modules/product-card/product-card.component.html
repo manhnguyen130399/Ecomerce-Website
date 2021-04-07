@@ -1,7 +1,11 @@
 <div class="product-card">
   <div class="product-image">
+    <span class="labels">
+      <span class="new flex al-center jc-center" *ngIf="product.isNew && product.discount == 0">New</span>
+      <span class="discount flex al-center jc-center" *ngIf="product.discount > 0">-{{product.discount}}%</span>
+    </span>
     <div class="background-image" [ngStyle]="{'background-image':'url('+product.image+')'}"></div>
-    <div class="hover-btn">
+    <div class="hover-btn flex fd-column">
       <button>
         <span>Quick View</span>
         <i nz-icon nzType="eye" nzTheme="outline"></i>
@@ -12,16 +16,16 @@
       </button>
     </div>
     <div class="add-wishlist">
-      <i nz-tooltip nzTooltipPlacement="right" nzTooltipTitle="Add to wishlist" nz-icon nzType="heart"
-        nzTheme="outline"></i>
+      <i class="text-hover" nz-tooltip nzTooltipPlacement="right" nzTooltipTitle="Add to wishlist" nz-icon
+        nzType="heart" nzTheme="outline"></i>
     </div>
     <div class="list-size">
-      <span *ngFor="let size of product.sizes">{{size}}, </span>
+      <span>{{sizes}}</span>
     </div>
   </div>
   <div class="product-info">
-    <p class="product-name">{{product.productName}}</p>
+    <p class="product-name text-hover">{{product.productName}}</p>
     <span class="product-price">{{product.price |currency}}</span>
-    <div class="list-color"></div>
+    <app-select-color [showTitle]="false" [(listColor)]="product.colors"></app-select-color>
   </div>
 </div>

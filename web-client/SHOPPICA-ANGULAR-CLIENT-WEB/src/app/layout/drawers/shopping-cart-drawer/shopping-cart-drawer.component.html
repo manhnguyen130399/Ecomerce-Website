@@ -1,13 +1,14 @@
-<nz-drawer [nzWidth]="340" [nzClosable]="true" [nzVisible]="isOpenShoppingCartDrawer" nzPlacement="right"
-  nzTitle="SHOPPING CART" (nzOnClose)="closeMenu()">
+<nz-drawer [nzWidth]="340" [nzWrapClassName]="'shopping-cart-modal'" [nzClosable]="true"
+  [nzVisible]="isOpenShoppingCartDrawer" nzPlacement="right" nzTitle="SHOPPING CART" (nzOnClose)="closeMenu()">
   <ng-container *nzDrawerContent>
-    <div class="shopping-cart-content">
-      <div class="cart-items">
-        <app-cart-item *ngFor="let item of listCartItem" (deleteItemEvent)="deleteItem($event)" [item]="item">
+    <div class="shopping-cart-content flex fd-column">
+      <div class="cart-items custom-scroll-bar">
+        <app-cart-item [cartItemOptions]="cartItemOptions" *ngFor="let item of listCartItem"
+          (deleteItemEvent)="deleteItem($event)" [item]="item">
         </app-cart-item>
       </div>
       <div class="cart-footer">
-        <div class="total">
+        <div class="total flex">
           <p class="title">Subtotal:</p>
           <p class="price">{{ totalPrice | currency}}</p>
         </div>
@@ -21,8 +22,5 @@
         <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
       </div>
     </div>
-
-
-
   </ng-container>
 </nz-drawer>

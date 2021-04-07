@@ -1,0 +1,49 @@
+<nz-modal nzClassName="quick-view-modal" [nzWidth]="850" [(nzVisible)]="isVisible" nzCentered [nzFooter]="null"
+  nzTitle="" [nzClosable]="true" (nzOnCancel)="handleCancel()">
+  <ng-container *nzModalContent>
+    <div nz-row class="quick-view">
+
+      <div nz-col [nzSpan]="13" class="product-image">
+        <owl-carousel-o [options]="customOptions">
+          <ng-template *ngFor="let image of listProductImage" carouselSlide>
+            <div class="content" [ngStyle]="{'background-image':'url('+image+')'}">
+            </div>
+          </ng-template>
+        </owl-carousel-o>
+      </div>
+      <div nz-col [nzSpan]="11" class="product-info">
+        <div class="product-name">
+          <p class="name">{{product.productName}}</p>
+
+        </div>
+        <div class="product-price flex al-center">
+          <p class="price">{{product.price | currency}}</p>
+          <nz-rate [ngModel]="2" nzDisabled></nz-rate>
+        </div>
+        <div class="product-description">
+          <p>{{product.description}}</p>
+        </div>
+        <div class="color">
+          <app-select-color [size]="'large'" [showTitle]="true" [(listColor)]="product.colors"></app-select-color>
+        </div>
+        <div class="size">
+          <app-select-size [(listSize)]="product.sizes"></app-select-size>
+        </div>
+        <div class="actions flex al-center">
+          <app-input-quantity [(quantity)]="cartItem.quantity"></app-input-quantity>
+          <button class="add-to-cart-btn" nz-button [nzType]="'primary'" [nzShape]="'round'">ADD TO CART</button>
+          <button nz-tooltip [nzTooltipTitle]="'Add to wishlist'" class="add-to-wishlist" nz-button nzSize="large"
+            nzShape="circle"><i nz-icon nzType="heart" nzTheme="outline"></i></button>
+        </div>
+        <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
+        <div class="view-detail flex al-center jc-center">
+          <p>View full detail</p>
+          <i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+        </div>
+      </div>
+    </div>
+
+
+  </ng-container>
+</nz-modal>
+<button (click)="isVisible = true">Add</button>

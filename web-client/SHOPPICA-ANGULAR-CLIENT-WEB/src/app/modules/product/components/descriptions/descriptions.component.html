@@ -1,0 +1,7 @@
+<div *ngIf="categorySelected !== undefined" class="category-description"
+  [ngStyle]="{'background-image': 'url('+ categorySelected.image +')'}">
+  <div class="background-color">
+    <div class="category-name">{{categorySelected.categoryName}}</div>
+  </div>
+
+</div>

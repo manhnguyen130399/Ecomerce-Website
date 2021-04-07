@@ -1,3 +1,4 @@
+import { CartItemOptions } from './models/cart-item-options.model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CartItem } from '@core/model/cart-item';
 
@@ -9,10 +10,12 @@ import { CartItem } from '@core/model/cart-item';
 export class CartItemComponent implements OnInit {
 
   @Input() item: CartItem;
+  @Input() cartItemOptions: CartItemOptions;
   @Output() deleteItemEvent = new EventEmitter<number>();
   @Output() editItemEvent = new EventEmitter<number>();
   constructor() { }
   ngOnInit(): void {
+
   }
 
   changeQuantity(quantity: number) {

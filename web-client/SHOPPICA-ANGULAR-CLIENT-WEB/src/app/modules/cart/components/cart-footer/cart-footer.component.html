@@ -1,0 +1,23 @@
+<div class="footer-section">
+  <div nz-row class="footer-row">
+    <div nz-col [nzMd]="12" [nzXs]="24" class="order-coupon">
+      <div class="coupon">
+        <p>Coupon:</p>
+        <input placeholder="Coupon code" nz-input type="text">
+      </div>
+    </div>
+    <div nz-col [nzMd]="12" [nzXs]="24" class="order-total">
+      <div class="money flex jc-flex-end">$300.00</div>
+      <div class="discount money flex jc-flex-end">-$20.00</div>
+      <div class="total flex  jc-flex-end">
+        <div [class.hasBorder]="true" class="title">
+          TOTAL PRICE:
+        </div>
+        <div [class.hasBorder]="true" class="money">
+          $281.00
+        </div>
+      </div>
+      <button class="checkout-btn" nz-button nzShape="round" nzType="primary">CHECK OUT</button>
+    </div>
+  </div>
+</div>

@@ -2,8 +2,8 @@
   <div class="container">
     <div nz-row class="header">
       <div nz-col [nzXl]="0" [nzLg]="0" [nzMd]="6" [nzSm]="6" [nzXs]="6">
-        <div class="push-menu">
-          <i (click)="isShowMenuDrawer = true" [nzRotate]="180" nz-icon>
+        <div class="push-menu flex al-center">
+          <i class="text-hover" (click)="isShowMenuDrawer = true" [nzRotate]="180" nz-icon>
             <svg>
               <path
                 d="M127.9 168.9h768v46h-768z m-0.7 640.2h768v46h-768z m280.9-313.6h488.7v46H408.1z m-90.5-149.2L130.1 522.6l187.5 176.3V346.3z m-46 246.2l-74.3-69.9 74.3-69.9v139.8z"
@@ -13,22 +13,22 @@
         </div>
       </div>
       <div nz-col [nzXl]="6" [nzLg]="6" [nzMd]="12" [nzSm]="12" [nzXs]="12">
-        <div class="logo">
+        <div class="logo flex al-center">
           <img [routerLink]="['/home']" height="70" src="/assets/images/logo.PNG" alt="">
         </div>
       </div>
       <div nz-col [nzXl]="12" [nzLg]="12" [nzMd]="0" [nzSm]="0" [nzXs]="0" class="navigation-options">
-        <ul>
-          <li>Home</li>
-          <li>About</li>
-          <li>Product</li>
-          <li>Blog</li>
-          <li>Contact</li>
+        <ul class="flex jc-center">
+          <li class="text-hover flex al-center" [routerLink]="['/home']">Home</li>
+          <li class="text-hover flex al-center">About</li>
+          <li class="text-hover flex al-center" [routerLink]="['/product']">Product</li>
+          <li class="text-hover flex al-center">Blog</li>
+          <li class="text-hover flex al-center">Contact</li>
         </ul>
       </div>
       <div nz-col nzSpan="6" class="icon-btns">
-        <ul>
-          <li>
+        <ul class="flex jc-flex-end">
+          <li class="text-hover flex al-center" (click)="isShowSearchDrawer = true">
             <i nz-icon class="search">
               <svg>
                 <path
@@ -37,7 +37,7 @@
               </svg>
             </i>
           </li>
-          <li (click)="isShowLoginDrawer = true">
+          <li class="text-hover flex al-center" (click)="isShowLoginDrawer = true">
             <i class="user" nz-icon>
               <svg t="1617112133350" class="icon" viewBox="0 0 1024 1024" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" p-id="52371">
@@ -47,7 +47,7 @@
               </svg>
             </i>
           </li>
-          <li>
+          <li class="text-hover flex al-center">
             <i class="wishlist" nz-icon>
               <svg height="1em" width="1.3em">
                 <path
@@ -56,7 +56,7 @@
               </svg>
             </i>
           </li>
-          <li (click)="isShowShoppingCartDrawer = true">
+          <li class="text-hover flex al-center" (click)="isShowShoppingCartDrawer = true">
             <i nz-icon class="shopping-cart">
               <svg width="1.4em" height="1em">
                 <path
@@ -97,3 +97,6 @@
 <!-- shopping cart -->
 <app-shopping-cart-drawer [isOpenShoppingCartDrawer]="isShowShoppingCartDrawer"
   (closeShoppingCartDrawerEvent)="isShowShoppingCartDrawer = false"></app-shopping-cart-drawer>
+<!-- search -->
+<app-search-drawer [isOpenSearchDrawer]="isShowSearchDrawer" (closeSearchDrawerEvent)="isShowSearchDrawer = false">
+</app-search-drawer>

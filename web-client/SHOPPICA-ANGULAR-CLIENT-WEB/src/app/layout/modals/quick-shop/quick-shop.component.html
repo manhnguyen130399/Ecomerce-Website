@@ -1,0 +1,16 @@
+<nz-modal [nzWidth]="340" [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzCentered [nzFooter]="null"
+  [nzMaskClosable]="true" nzTitle="">
+  <ng-container *nzModalContent>
+    <app-cart-item [item]="cartItem"></app-cart-item>
+    <app-select-color class="flex fd-column al-center" [size]="'large'" [showTitle]="true"
+      [(listColor)]="product.colors"></app-select-color>
+    <app-select-size class="flex fd-column al-center" [(listSize)]="product.sizes"></app-select-size>
+    <app-input-quantity class="flex fd-column al-center" [(quantity)]="cartItem.quantity"></app-input-quantity>
+    <button class="add-to-cart-btn" nz-button [nzType]="'primary'" [nzShape]="'round'">ADD TO CART</button>
+    <div class="view-detail flex jc-center al-center">
+      <p>View full detail</p>
+      <i nz-icon nzType="arrow-right" nzTheme="outline"></i>
+    </div>
+
+  </ng-container>
+</nz-modal>

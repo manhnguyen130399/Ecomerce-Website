@@ -38,11 +38,6 @@
   background-color: #f6f6f8;
 }
 
-.footer-end ul.payment,
-.footer-end ul.social-btns {
-  display: flex;
-}
-
 .footer-end ul.payment li,
 .footer-end ul.social-btns li {
   margin-right: 5px;
@@ -61,12 +56,6 @@
 
 .footer-end .copyright_text {
   margin-bottom: 0;
-}
-
-.footer-end .section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .content.has-animation ul li::before {
@@ -88,12 +77,12 @@
 .content.has-animation ul li {
   position: relative;
   transition: all 0.5s ease;
-  cursor: pointer;
 }
 
 .content.has-animation ul li:hover {
   padding-left: 25px;
   color: #56cfe1;
+  cursor: pointer;
 }
 
 .letter .content input,
