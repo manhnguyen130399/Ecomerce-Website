@@ -1,17 +1,15 @@
-<div class="container">
-  <div class="our-products">
-    <app-section-title [title]="'OUR PRODUCTS'" [subTitle]="'Top sale in this week'"></app-section-title>
+<div class="our-products">
+  <app-section-title [title]="'OUR PRODUCTS'" [subTitle]="'Top sale in this week'"></app-section-title>
 
-    <app-ng-tabs>
-      <app-tab-content tabTitle="Best Seller">
-        <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
-      </app-tab-content>
-      <app-tab-content tabTitle="Top Rate">
-        <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
-      </app-tab-content>
-      <app-tab-content tabTitle="Sale">
-        <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
-      </app-tab-content>
-    </app-ng-tabs>
-  </div>
+  <app-ng-tabs>
+    <app-tab-content tabTitle="Best Seller">
+      <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
+    </app-tab-content>
+    <app-tab-content tabTitle="Top Rate">
+      <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
+    </app-tab-content>
+    <app-tab-content tabTitle="Sale">
+      <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>
+    </app-tab-content>
+  </app-ng-tabs>
 </div>

@@ -1,0 +1,80 @@
+.store-header {
+  background-image: url("https://salt.tikicdn.com/ts/tmp/38/fc/4d/70c667e7ed1962b38bade309807c45a2.jpg");
+  margin-top: 70px;
+  padding: 30px 30px 20px 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.background {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(36, 36, 36);
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -3;
+}
+
+.store-header .content {
+  margin-bottom: 10px;
+}
+
+.store-header_info {
+  padding-right: 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.store-header_follow {
+  padding-left: 20px;
+}
+
+.info-logo {
+  margin-right: 20px;
+}
+
+.info-logo img {
+  border-radius: 50%;
+}
+
+.info p {
+  margin-bottom: 0;
+  color: white;
+}
+
+.info .number-follow {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.store-header_menu .menu ul li {
+  padding: 10px 40px 0px;
+  color: white;
+  position: relative;
+  font-size: 13px;
+}
+
+.store-header_menu .menu ul li:hover {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.store-header_menu .menu ul li::after {
+  content: "";
+  transition: 0.3s;
+  position: absolute;
+  bottom: -10px;
+  background-color: rgb(255, 255, 255);
+  width: 0;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0px;
+  right: 0px;
+  text-align: center;
+  height: 4px;
+  border-radius: 4px;
+}
+
+.store-header_menu .menu ul li:hover::after {
+  width: 24px;
+}

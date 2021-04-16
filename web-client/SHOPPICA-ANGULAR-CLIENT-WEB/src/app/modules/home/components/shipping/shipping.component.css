@@ -1,5 +1,7 @@
 .service-section {
-  margin-top: 35px;
+  padding: 50px 0 20px;
+  border-top: 1px solid #ddd;
+  font-family: "Raleway", sans-serif;
 }
 
 .section {
@@ -38,20 +40,4 @@
 
 .content .description {
   color: #878787;
-}
-
-@media (max-width: 1200px) {
-  .container {
-    max-width: 100%;
-    padding: 0 15px;
-  }
-}
-
-@media (max-width: 992px) {
-}
-
-@media (max-width: 768px) {
-}
-
-@media (max-width: 600px) {
 }

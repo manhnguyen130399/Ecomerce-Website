@@ -5,9 +5,10 @@ export interface Product {
   productName: string;
   image: string;
   price: number;
-  isNew: boolean;
-  discount: number;
+  isNew?: boolean;
+  discount?: number;
   description?: string;
+  inWishList?: boolean;
   sizes: Size[];
   colors: Color[];
 }

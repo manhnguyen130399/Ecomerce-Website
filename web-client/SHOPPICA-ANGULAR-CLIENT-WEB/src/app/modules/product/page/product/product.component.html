@@ -1,6 +1,9 @@
 <app-categories (selectCategoryEvent)="selectCategory($event)" [selectedId]="categorySelected.id"
   [listCategory]="listCategory"></app-categories>
-<app-descriptions [categorySelected]="categorySelected"></app-descriptions>
+<div *ngIf="categorySelected !== undefined">
+  <app-header-page [image]="categorySelected.image" [pageName]="categorySelected.categoryName"></app-header-page>
+</div>
+
 <app-toolbars (changeNumberProductEvent)="changeNumProduct($event)" (openFilterDrawerEvent)="openFilterDrawer()">
 </app-toolbars>
 <app-filter-drawer (closeFilterEvent)="closeFilterDrawer()" [isShowFilter]="isShowFilter"></app-filter-drawer>

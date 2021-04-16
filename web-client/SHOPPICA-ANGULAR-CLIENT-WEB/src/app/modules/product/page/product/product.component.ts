@@ -70,6 +70,7 @@ export class ProductComponent implements OnInit {
       this.productCol = 6;
     }
 
+
     this.getCategorySelected();
   }
 

@@ -1,0 +1,22 @@
+.checkout {
+  margin-top: 30px;
+}
+
+.order-summary {
+  padding-left: 4em;
+  border-left: 1px solid rgba(175, 175, 175, 0.34);
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+}

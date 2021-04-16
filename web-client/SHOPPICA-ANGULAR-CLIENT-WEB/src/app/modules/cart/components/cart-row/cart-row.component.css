@@ -1,5 +1,9 @@
 .cart-row {
-  padding-top: 1.875rem;
-  padding-bottom: 1.875rem;
-  border-top: 1px solid #ddd;
+  border-bottom: 1px solid rgb(244, 244, 244);
+}
+
+@media (max-width: 768px) {
+  .product {
+    padding-bottom: 30px;
+  }
 }

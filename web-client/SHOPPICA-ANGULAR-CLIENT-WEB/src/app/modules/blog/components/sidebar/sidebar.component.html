@@ -1,0 +1,59 @@
+<div class="blog-sidebar">
+  <div class="filter-section">
+    <div class="title">
+      Blog Categories
+    </div>
+    <div class="content">
+      <ul>
+        <li class="text-hover">+ Life Style (10)</li>
+        <li class="text-hover">+ Electric (7)</li>
+        <li class="text-hover">+ Electronics (6)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="title">
+      Recent Post
+    </div>
+    <div class="content">
+      <div *ngFor="let blog of listBlog" class="single-post flex">
+        <div class="post_image">
+          <img [src]="blog.image" alt="">
+        </div>
+        <div class="post_info">
+          <div class="info_title text-hover">{{blog.title}}</div>
+          <div class="info_date">{{blog.created_at | date:'medium'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="title">
+      Sale Products
+    </div>
+    <div class="content">
+      <div *ngFor="let item of listCartItem" class="cart-item">
+        <app-cart-item [cartItemOptions]="cartItemOptions" (deleteItemEvent)="deleteItem($event)" [item]="item">
+        </app-cart-item>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="title">
+      Blog Tags
+    </div>
+    <div class="content blog-tag">
+      <ul>
+        <li><a>Beauty (3)</a></li>
+        <li><a>Fashion (5)</a></li>
+        <li><a>Life (1)</a></li>
+        <li><a>Electric (7)</a></li>
+        <li><a>Travel (5)</a></li>
+        <li><a>Life Style (5)</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -14,10 +14,11 @@
         </div>
         <label nz-checkbox>I agree with the terms and conditions.</label>
         <div class="action">
-          <button nzShape="round" [nzLoading]="isLoading" nzSize="large" nz-button [nzType]="'default'">VIEW
+          <button [routerLink]="['/cart']" nzShape="round" [nzLoading]="isLoading" nzSize="large" nz-button
+            [nzType]="'default'">VIEW
             CART</button>
-          <button nzShape="round" [nzLoading]="isLoading" nzSize="large" nz-button class="drawer-form-button "
-            [nzType]="'primary'" nz-button>CHECK OUT</button>
+          <button [routerLink]="['/checkout/information']" nzShape="round" [nzLoading]="isLoading" nzSize="large"
+            nz-button class="drawer-form-button " [nzType]="'primary'" nz-button>CHECK OUT</button>
         </div>
         <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
       </div>

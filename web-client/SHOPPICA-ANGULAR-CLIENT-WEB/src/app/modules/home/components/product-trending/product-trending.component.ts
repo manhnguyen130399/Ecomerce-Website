@@ -11,9 +11,6 @@ import { throwError } from 'rxjs';
   styleUrls: ['./product-trending.component.css']
 })
 export class ProductTrendingComponent implements OnInit {
-
-  @ViewChild('productTrending', { static: false }) private productTrending: NzCarouselComponent;
-
   product = {
     id: 1,
     productName: "Cream women pants",

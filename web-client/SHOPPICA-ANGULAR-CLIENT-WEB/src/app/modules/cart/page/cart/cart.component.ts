@@ -1,3 +1,4 @@
+import { Cart } from './../../../../core/model/cart';
 import { Product } from '@core/model/product';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit } from '@angular/core';
@@ -52,6 +53,21 @@ export class CartComponent implements OnInit {
     this.product,
     this.product,
     this.product,
+  ]
+
+  item = {
+    id: 1,
+    productName: "T-shirt product",
+    price: 99,
+    image: '/assets/images/products/product-2.jpg',
+    quantity: 12,
+  };
+
+  listCartItem = [
+    this.item,
+    this.item,
+    this.item,
+    this.item,
   ]
 
   customOptions: OwlOptions = {

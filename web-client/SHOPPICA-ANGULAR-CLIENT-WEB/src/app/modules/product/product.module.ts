@@ -1,3 +1,13 @@
+import { HeaderPageModule } from './../../shared/modules/header-page/header-page.module';
+import { TabModule } from './../../shared/modules/tab/tab.module';
+import { ProductCarouselModule } from './../../shared/modules/product-carousel/product-carousel.module';
+import { SectionTitleModule } from './../../shared/modules/section-title/section-title.module';
+import { FormsModule } from '@angular/forms';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { CartItemModule } from './../../shared/modules/cart-item/cart-item.module';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { ProductCardModule } from './../../shared/modules/product-card/product-card.module';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -8,7 +18,6 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoriesComponent } from './components/categories/categories.component';
-import { DescriptionsComponent } from './components/descriptions/descriptions.component';
 import { ToolbarsComponent } from './components/toolbars/toolbars.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { ProductComponent } from './page/product/product.component';
@@ -16,15 +25,31 @@ import { FilterDrawerComponent } from './components/filter-drawer/filter-drawer.
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { ContentComponent } from './components/content/content.component';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { ProductDetailComponent } from './page/product-detail/product-detail.component';
+import { ProductDetailImageComponent } from './components/product-detail/product-detail-image/product-detail-image.component';
+import { ProductDetailSummaryComponent } from './components/product-detail/product-detail-summary/product-detail-summary.component';
+import { NzImageModule } from 'ng-zorro-antd/image';
+import { ReviewComponent } from './components/product-detail/review/review.component';
+import { WarrantyShippingComponent } from './components/product-detail/warranty-shipping/warranty-shipping.component';
+import { DescriptionComponent } from './components/product-detail/description/description.component';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { WishListComponent } from './wish-list/wish-list.component';
 @NgModule({
   declarations: [
     CategoriesComponent,
-    DescriptionsComponent,
     ToolbarsComponent,
     PaginationComponent,
     ProductComponent,
     FilterDrawerComponent,
     ContentComponent,
+    ProductDetailComponent,
+    ProductDetailImageComponent,
+    ProductDetailSummaryComponent,
+    ReviewComponent,
+    WarrantyShippingComponent,
+    DescriptionComponent,
+    WishListComponent,
   ],
   imports: [
     CommonModule,
@@ -32,9 +57,22 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     NzGridModule,
     NzDrawerModule,
     NzPaginationModule,
+    NzRateModule,
+    NzToolTipModule,
+    NzButtonModule,
+    NzImageModule,
+    NzCommentModule,
+    NzAvatarModule,
+    FormsModule,
     // custom modules
+    ProductCarouselModule,
     ProductCardModule,
+    CartItemModule,
+    TabModule,
+    SectionTitleModule,
+    HeaderPageModule,
 
+    CarouselModule,
     NzIconModule.forChild(shareIcons),
     RouterModule.forChild(productRoutes)
   ]

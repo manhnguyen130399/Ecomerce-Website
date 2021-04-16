@@ -1,0 +1,22 @@
+.product-detail {
+  margin-top: 120px;
+}
+
+.product-detail-image {
+  position: relative;
+}
+
+.recently-view {
+  margin: 60px 0;
+}
+
+.description {
+  margin-top: 60px;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+}

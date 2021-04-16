@@ -1,5 +1,5 @@
-<div [class.large]="cartItemOptions.size==='large'" [class.hiddenBorder]="!cartItemOptions.showBorder"
-  class="cart-item flex">
+<div [class.large]="cartItemOptions.size === 'large'" [class.small]="cartItemOptions.size === 'small'"
+  [class.hiddenBorder]="!cartItemOptions.showBorder" class="cart-item flex">
   <div class="product-image">
     <a href=""><img src={{item.image}} alt=""></a>
   </div>

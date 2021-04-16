@@ -13,6 +13,7 @@ export class SearchDrawerComponent implements OnInit {
   @Output() closeSearchDrawerEvent = new EventEmitter<boolean>();
   searchForm: FormGroup;
   isLoading = false;
+
   listCartItem: CartItem[] = [
     {
       id: 1,
@@ -43,9 +44,9 @@ export class SearchDrawerComponent implements OnInit {
       quantity: 12,
     }
   ]
-
   cartItemOptions: CartItemOptions = {
-    showPrice: true
+    showPrice: true,
+    size: 'small'
   }
   constructor(
     private readonly formBuilder: FormBuilder,

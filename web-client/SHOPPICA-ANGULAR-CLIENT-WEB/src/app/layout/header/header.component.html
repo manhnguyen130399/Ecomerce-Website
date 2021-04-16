@@ -20,15 +20,15 @@
       <div nz-col [nzXl]="12" [nzLg]="12" [nzMd]="0" [nzSm]="0" [nzXs]="0" class="navigation-options">
         <ul class="flex jc-center">
           <li class="text-hover flex al-center" [routerLink]="['/home']">Home</li>
-          <li class="text-hover flex al-center">About</li>
+          <li class="text-hover flex al-center" [routerLink]="['/about']">About</li>
           <li class="text-hover flex al-center" [routerLink]="['/product']">Product</li>
-          <li class="text-hover flex al-center">Blog</li>
-          <li class="text-hover flex al-center">Contact</li>
+          <li class="text-hover flex al-center" [routerLink]="['/blog']">Blog</li>
+          <li class="text-hover flex al-center" [routerLink]="['/contact']">Contact</li>
         </ul>
       </div>
       <div nz-col nzSpan="6" class="icon-btns">
         <ul class="flex jc-flex-end">
-          <li class="text-hover flex al-center" (click)="isShowSearchDrawer = true">
+          <li class="text-hover flex al-center" (click)="isShowSearchModal = true">
             <i nz-icon class="search">
               <svg>
                 <path
@@ -47,7 +47,7 @@
               </svg>
             </i>
           </li>
-          <li class="text-hover flex al-center">
+          <li [routerLink]="['/product/wishlist']" class="text-hover flex al-center">
             <i class="wishlist" nz-icon>
               <svg height="1em" width="1.3em">
                 <path
@@ -98,5 +98,5 @@
 <app-shopping-cart-drawer [isOpenShoppingCartDrawer]="isShowShoppingCartDrawer"
   (closeShoppingCartDrawerEvent)="isShowShoppingCartDrawer = false"></app-shopping-cart-drawer>
 <!-- search -->
-<app-search-drawer [isOpenSearchDrawer]="isShowSearchDrawer" (closeSearchDrawerEvent)="isShowSearchDrawer = false">
-</app-search-drawer>
+<app-search-modal [isVisible]="isShowSearchModal" (closeSearchModalEvent)="isShowSearchModal = false">
+</app-search-modal>

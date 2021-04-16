@@ -20,10 +20,14 @@
       <a (click)="viewProduct(4)" [class.active]="numOnePage === 4" class="view-page view_4"></a>
     </div>
     <div nz-col [nzSpan]="6" class="sort-by">
-      <nz-select nzPlaceHolder="Select a sort by">
-        <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
-        <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
-        <nz-option nzValue="disabled" nzLabel="Disabled"></nz-option>
+      <nz-select class="select-none-border" nzPlaceHolder="Select a sort by">
+        <nz-option nzValue="best-selling" nzLabel="BEST SELLING"></nz-option>
+        <nz-option nzValue="price-ascending" nzLabel="PRICE LOW TO HIGHT"></nz-option>
+        <nz-option nzValue="price-descending" nzLabel="PRICE HIGHT TO LOW"></nz-option>
+        <nz-option nzValue="title-ascending" nzLabel="ALPHABETICALLY, A-Z"></nz-option>
+        <nz-option nzValue="title-descending" nzLabel="ALPHABETICALLY, Z-A"></nz-option>
+        <nz-option nzValue="created-descending" nzLabel="DATE OLD TO NEW"></nz-option>
+        <nz-option nzValue="created-ascending" nzLabel="DATE NEW TO OLD"></nz-option>
       </nz-select>
     </div>
   </div>

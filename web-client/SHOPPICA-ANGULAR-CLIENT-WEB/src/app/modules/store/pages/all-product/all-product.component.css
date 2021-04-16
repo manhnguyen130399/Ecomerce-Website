@@ -1,0 +1,25 @@
+.side-bar .title {
+  line-height: 20px;
+  display: block;
+  color: rgb(36, 36, 36);
+  font-size: 14px;
+  padding: 18px 0px 10px 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgb(244, 244, 244);
+}
+
+.side-bar ul li {
+  padding: 10px 25px 10px 30px;
+  cursor: pointer;
+  border-bottom: 1px solid rgb(244, 244, 244);
+}
+
+.side-bar ul li:hover {
+  background: rgb(244, 244, 244);
+}
+
+.side-bar ul li.active {
+  font-weight: bold;
+  background: rgb(244, 244, 244);
+}

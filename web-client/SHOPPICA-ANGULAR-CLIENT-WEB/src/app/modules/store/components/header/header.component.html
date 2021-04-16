@@ -1,0 +1,36 @@
+<div class="store-header">
+  <div class="background"></div>
+  <div class="flex al-center content">
+    <div class="store-header_info flex al-center">
+      <div class="info-logo">
+        <img height="60" width="60" src="/assets/images/tiki.png" alt="">
+      </div>
+      <div class="info">
+        <p class="name">Tiki Trading</p>
+        <p class="number-follow">175438 người theo dõi </p>
+      </div>
+    </div>
+    <div class="store-header_follow">
+      <button nz-button nzType="primary">+ Follow</button>
+    </div>
+  </div>
+
+
+  <div class="store-header_menu jc-space-between flex al-center">
+    <div class="menu">
+      <ul class="flex">
+        <li>Store</li>
+        <li>All product</li>
+        <li>Store profile</li>
+      </ul>
+    </div>
+    <div class="store-header_search">
+      <nz-input-group class="product-name" [nzSuffix]="suffixIconSearch">
+        <input placeholder="Search for products" nz-input />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i nz-icon nzType="search"></i>
+      </ng-template>
+    </div>
+  </div>
+</div>
