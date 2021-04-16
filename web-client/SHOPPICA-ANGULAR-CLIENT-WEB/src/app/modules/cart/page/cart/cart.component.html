@@ -13,15 +13,33 @@
       </div>
     </div>
     <div class="cart-content">
-      <app-cart-row></app-cart-row>
-      <app-cart-row></app-cart-row>
-      <app-cart-row></app-cart-row>
-      <app-cart-row></app-cart-row>
+      <div *ngFor="let item of listCartItem" class="cart-item">
+        <app-cart-row [mode]="'cart'" [item]="item"></app-cart-row>
+      </div>
+    </div>
+
+    <div class="cart-footer flex  jc-flex-end">
+      <div>
+        <div class="price flex jc-flex-end">
+          <div class="price_text">Subtotal:</div>
+          <div class="price_value">{{20 | currency}}</div>
+        </div>
+        <div class="policy">
+          <p>Taxes, shipping and discounts codes calculated at checkout</p>
+          <label nz-checkbox>I agree with the terms and conditions.</label>
+        </div>
+        <div class="flex  al-flex-end fd-column">
+          <button [routerLink]="['/checkout/information']" class="checkout-btn" nz-button nzType="primary">CHECK
+            OUT</button>
+          <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
+        </div>
+
+
+      </div>
+
     </div>
   </div>
 
-  <app-cart-footer></app-cart-footer>
-  <app-shipping-calculator></app-shipping-calculator>
   <div class="recently-view">
     <app-section-title [title]="'Recently viewed products'"></app-section-title>
     <app-product-carousel [listProduct]="listProduct" [carouselOptions]="customOptions"></app-product-carousel>

@@ -1,6 +1,6 @@
-import { CartItemOptions } from './../../../../shared/modules/cart-item/models/cart-item-options.model';
-import { CartItem } from './../../../../core/model/cart-item';
-import { Component, OnInit } from '@angular/core';
+import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
+import { CartItem } from '@core/model/cart-item';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-cart-row',
@@ -9,23 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CartRowComponent implements OnInit {
 
-  item = {
-    id: 1,
-    productName: "T-shirt product",
-    price: 99,
-    image: '/assets/images/products/product-2.jpg',
-    quantity: 12,
-  }
+  @Input() item: CartItem;
+  @Input() mode: string;
 
   cartItemOptions: CartItemOptions = {
-    showActions: true,
+    showActions: false,
     showSize: true,
     showColor: true,
-    size: 'large'
   }
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes): void {
+    if (changes.mode !== undefined && changes.mode.currentValue === "cart") {
+      this.cartItemOptions.showActions = true;
+      this.cartItemOptions.size = "large";
+    }
   }
 
 }

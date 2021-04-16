@@ -1,0 +1,15 @@
+.wish-list-page {
+  margin-bottom: 70px;
+}
+
+.column {
+  padding: 0 12px;
+  margin-top: 30px;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+}

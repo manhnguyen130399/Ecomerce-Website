@@ -1,0 +1,23 @@
+<div class="store-discount">
+  <div class="discounts">
+    <owl-carousel-o [options]="customOptions">
+      <ng-template *ngFor="let discount of listDiscount" carouselSlide>
+        <div class="coupon">
+          <img class="background" src="https://frontend.tikicdn.com/_desktop-next/static/img/coupon_bg.svg">
+          <div class="content">
+            <div class="left">
+              <div>
+                <p class="percent">Discount {{discount.percent}} %</p>
+                <p class="apply">Apply for receipt more than $ 20</p>
+              </div>
+              <p class="expire">Expire: {{discount.expire | date:'shortDate'}}</p>
+            </div>
+            <div class="right">
+              <a href="">SAVE</a>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </owl-carousel-o>
+  </div>
+</div>

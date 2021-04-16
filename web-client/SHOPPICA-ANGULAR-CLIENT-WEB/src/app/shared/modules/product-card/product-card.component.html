@@ -16,8 +16,10 @@
       </button>
     </div>
     <div class="add-wishlist">
-      <i class="text-hover" nz-tooltip nzTooltipPlacement="right" nzTooltipTitle="Add to wishlist" nz-icon
-        nzType="heart" nzTheme="outline"></i>
+      <i *ngIf="!product.inWishList" class="text-hover" nz-tooltip nzTooltipPlacement="right"
+        nzTooltipTitle="Add to wishlist" nz-icon nzType="heart" nzTheme="outline"></i>
+      <i *ngIf="product.inWishList" nz-tooltip nzTooltipPlacement="right" nzTooltipTitle="Remove wishlist" nz-icon
+        nzType="delete" nzTheme="outline"></i>
     </div>
     <div class="list-size">
       <span>{{sizes}}</span>

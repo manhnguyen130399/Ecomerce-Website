@@ -22,6 +22,8 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CategoryCardModule } from '@shared/modules/category-card/category-card.module';
 import { BlogListComponent } from './components/blog-list/blog-list.component';
 import { ShippingComponent } from './components/shipping/shipping.component';
+import { DealOfDayComponent } from './components/deal-of-day/deal-of-day.component';
+import { SummerSaleComponent } from './components/summer-sale/summer-sale.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { ShippingComponent } from './components/shipping/shipping.component';
     ProductTrendingComponent,
     BannerComponent,
     BlogListComponent,
-    ShippingComponent
+    ShippingComponent,
+    DealOfDayComponent,
+    SummerSaleComponent
   ],
   imports: [
     CommonModule,

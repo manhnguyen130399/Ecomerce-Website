@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   isShowRegisterDrawer = false;
   isShowResetPasswordDrawer = false;
   isShowShoppingCartDrawer = false;
-  isShowSearchDrawer = false;
+  isShowSearchModal = false;
   constructor(
     @Inject(DOCUMENT) private document: NzSafeAny,
   ) { }

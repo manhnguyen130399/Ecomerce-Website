@@ -1,3 +1,5 @@
+import { Blog } from './core/model/blog';
+import { StorageService } from './core/services/storage/storage.service';
 import { HomeComponent } from './modules/home/page/home/home.component';
 import { Routes } from '@angular/router';
 export const routes: Routes = [
@@ -20,6 +22,31 @@ export const routes: Routes = [
     path: 'cart',
     loadChildren: () =>
       import('./modules/cart/cart.module').then(m => m.CartModule)
+  },
+  {
+    path: 'checkout',
+    loadChildren: () =>
+      import('./modules/checkout/checkout.module').then(m => m.CheckoutModule)
+  },
+  {
+    path: 'store',
+    loadChildren: () =>
+      import('./modules/store/store.module').then(m => m.StoreModule)
+  },
+  {
+    path: 'contact',
+    loadChildren: () =>
+      import('./modules/contact/contact.module').then(m => m.ContactModule)
+  },
+  {
+    path: 'blog',
+    loadChildren: () =>
+      import('./modules/blog/blog.module').then(m => m.BlogModule)
+  },
+  {
+    path: 'account',
+    loadChildren: () =>
+      import('./modules/account/account.module').then(m => m.AccountModule)
   },
   {
     path: '',

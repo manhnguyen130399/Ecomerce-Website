@@ -91,21 +91,6 @@
   cursor: pointer;
 }
 
-.next-image,
-.prev-image {
-  position: absolute;
-  top: 50%;
-  z-index: 2;
-}
-
-.prev-image {
-  left: 0;
-}
-
-.next-image {
-  right: 0;
-}
-
 .add-to-cart-btn {
   height: 40px;
   margin-bottom: 15px;

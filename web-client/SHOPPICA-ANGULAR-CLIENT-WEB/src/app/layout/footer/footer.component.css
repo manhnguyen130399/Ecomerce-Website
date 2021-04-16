@@ -1,10 +1,13 @@
-.footer {
-  border-bottom: 1px solid #dbdbdb;
-  background-color: #f6f6f8;
+.footer-top {
+  padding-top: 80px;
+  background-color: #111111;
+  color: #ffffff;
+  padding-bottom: 30px;
+  font-family: "Raleway", sans-serif;
 }
 
-.footer .container,
-.footer-end .container {
+.footer-top .container,
+.footer-bot .container {
   padding: 20px 15px;
 }
 
@@ -12,49 +15,50 @@
   margin: 5px 0;
 }
 
-.footer .title {
-  margin-bottom: 10px;
+.footer-top .title {
+  margin-bottom: 30px;
   font-size: 19px;
-  font-weight: 700;
 }
 
-.footer .content ul {
+.footer-top .content ul {
   width: 79%;
 }
 
-.footer .content ul li {
-  font-size: 14.5px;
+.footer-top .content ul li {
+  font-size: 14px;
   margin-bottom: 10px;
-  word-break: break-all;
+  line-height: 30px;
 }
 
-.footer .content li i {
+.footer-top .content li i {
   margin-right: 5px;
+  font-size: 20px;
 }
 
 /* footer-end */
 
-.footer-end {
-  background-color: #f6f6f8;
+.footer-bot {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "Raleway", sans-serif;
 }
 
-.footer-end ul.payment li,
-.footer-end ul.social-btns li {
+.footer-bot .social-btns ul li {
   margin-right: 5px;
 }
 
-.footer-end ul.social-btns li i {
+.footer-bot .social-btns ul li i {
   font-size: 20px;
   margin: 0 5px;
   transition: 0.4s;
 }
 
-.footer-end ul.social-btns li i:hover {
+.footer-bot .social-btns ul li i:hover {
   cursor: pointer;
   transform: translateY(-4px) scale(1.1);
 }
 
-.footer-end .copyright_text {
+.footer-bot .copyright_text {
   margin-bottom: 0;
 }
 
@@ -87,23 +91,64 @@
 
 .letter .content input,
 .letter .content button {
-  height: 38px;
+  height: 40px;
 }
 
 .letter .content button {
   padding: 4px 5px;
+  background-color: #c39d62;
+  border: none;
+  color: #ffffff;
+  border-radius: 0;
 }
 
 .letter .content input {
-  margin-right: 3px;
+  border: 1px solid #878787;
+  background-color: transparent;
+  color: #ffffff;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+
+.payment li {
+  height: 30px;
+  padding: 2.5px;
+}
+
+.payment {
+  margin-top: 1rem;
+}
+
+.footer-menu li {
+  padding: 5px 15px;
+  outline: none;
+}
+
+.linkedin {
+  background: white;
+  border-radius: 12px;
+}
+
+.facebook {
+  background: white;
+  border-radius: 50%;
 }
 
 @media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 15px;
+  }
 }
 
 @media (max-width: 992px) {
-  .footer-end .section {
+  .footer-bot .section {
     padding: 7px 0;
+  }
+
+  .footer-menu,
+  .social-btns {
+    justify-content: center;
   }
 }
 

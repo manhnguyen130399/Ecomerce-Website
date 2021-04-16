@@ -1,17 +1,18 @@
-<div nz-row class="cart-row">
-  <div nz-col [nzSpan]="10">
+<div nz-row class="cart-row" [ngStyle]="{'padding': (mode === 'cart') ? '30px 0': '15px 0'}">
+  <div nz-col class="product" [nzMd]="10" [nzXs]="24">
     <app-cart-item [cartItemOptions]="cartItemOptions" [item]="item"></app-cart-item>
   </div>
 
-  <div class="price jc-center al-center flex" nz-col [nzSpan]="6">
-    <span>15</span>
+  <div class="price jc-center al-center flex" nz-col [nzMd]="6" [nzXs]="8">
+    <span>{{item.price |currency}}</span>
   </div>
 
-  <div class="quantity jc-center al-center flex" nz-col [nzSpan]="4">
-    <app-input-quantity [(quantity)]="item.quantity"></app-input-quantity>
+  <div class="quantity jc-center al-center flex" nz-col [nzMd]="4" [nzXs]="8">
+    <span *ngIf="mode === 'checkout'">x{{item.quantity }}</span>
+    <app-input-quantity *ngIf="mode === 'cart'" [(quantity)]="item.quantity"></app-input-quantity>
   </div>
 
-  <div class="total jc-flex-end al-center flex" nz-col [nzSpan]="4">
-    <span>{{item.quantity}}</span>
+  <div class="total jc-flex-end al-center flex" nz-col [nzMd]="4" [nzXs]="8">
+    <span>{{item.quantity*item.price |currency}}</span>
   </div>
 </div>

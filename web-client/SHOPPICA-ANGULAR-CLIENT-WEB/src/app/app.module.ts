@@ -29,6 +29,7 @@ import { ShoppingCartDrawerComponent } from './layout/drawers/shopping-cart-draw
 import { QuickViewComponent } from './layout/modals/quick-view/quick-view.component';
 import { QuickShopComponent } from './layout/modals/quick-shop/quick-shop.component';
 import { SearchDrawerComponent } from './layout/drawers/search-drawer/search-drawer.component';
+import { SearchModalComponent } from './layout/modals/search-modal/search-modal.component';
 
 registerLocaleData(en);
 
@@ -46,6 +47,7 @@ registerLocaleData(en);
     QuickViewComponent,
     QuickShopComponent,
     SearchDrawerComponent,
+    SearchModalComponent,
   ],
   imports: [
     BrowserModule,

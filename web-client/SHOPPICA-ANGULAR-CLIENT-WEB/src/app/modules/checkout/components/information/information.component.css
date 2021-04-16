@@ -1,0 +1,30 @@
+.contact-info {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.tittle {
+  margin-bottom: 24px;
+}
+
+.tittle h3 {
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.tittle p {
+  font-size: 13px;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .tittle h3 {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 600px) {
+  .tittle h3 {
+    font-size: 16px;
+  }
+}

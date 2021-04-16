@@ -17,17 +17,20 @@ export class InputQuantityComponent implements OnInit {
 
   increaseOne() {
     this.quantity++;
+    this.quantityChange.emit(this.quantity);
   }
 
   decreaseOne() {
     if (this.quantity > 1) {
       this.quantity--;
+      this.quantityChange.emit(this.quantity);
     }
   }
 
   focusOut() {
     if (this.quantity < 1) {
       this.quantity = 1;
+      this.quantityChange.emit(this.quantity);
     }
   }
 }
