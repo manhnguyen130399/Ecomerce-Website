@@ -9,6 +9,6 @@ public class ColorVM {
 
 	private String colorName;
 
-	private String colorHex;
+	private String colorCode;
 
 }
