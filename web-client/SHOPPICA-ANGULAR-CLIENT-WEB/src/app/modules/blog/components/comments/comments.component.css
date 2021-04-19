@@ -1,0 +1,14 @@
+.blog-comments {
+  padding: 60px 0 30px;
+  border-bottom: 1px solid #e8e9eb;
+}
+
+.blog-comments h2 {
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  letter-spacing: 0px;
+  line-height: 1.428;
+  margin-bottom: 20px;
+}

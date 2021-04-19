@@ -12,7 +12,6 @@
           <p class="title">Subtotal:</p>
           <p class="price">{{ totalPrice | currency}}</p>
         </div>
-        <label nz-checkbox>I agree with the terms and conditions.</label>
         <div class="action">
           <button [routerLink]="['/cart']" nzShape="round" [nzLoading]="isLoading" nzSize="large" nz-button
             [nzType]="'default'">VIEW

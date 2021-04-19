@@ -27,7 +27,7 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
     NzSelectModule,
     NzCarouselModule,
     NzRateModule,
-    NzIconModule.forChild(shareIcons),
+    NzIconModule.forRoot(shareIcons)
   ],
   exports: [
     CommonModule,

@@ -42,7 +42,6 @@ import { CheckoutSummaryComponent } from './components/checkout-summary/checkout
 
     NzInputModule,
     NzGridModule,
-    NzBreadCrumbModule,
     NzFormModule,
     NzSelectModule,
     NzButtonModule,

@@ -1,6 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-zorro-antd/style/index.min.css";
+@import "~ng-zorro-antd/layout/style/index.min.css";
+@import "~ng-zorro-antd/form/style/index.min.css";
+@import "~ng-zorro-antd/input/style/index.min.css";
 @import "~ng-zorro-antd/grid/style/index.min.css";
+@import "~ng-zorro-antd/button/style/index.min.css";
+@import "~ng-zorro-antd/steps/style/index.min.css";
+@import "~ng-zorro-antd/modal/style/index.min.css";
+@import "~ng-zorro-antd/image/style/index.min.css";
+@import "~ng-zorro-antd/drawer/style/index.min.css";
+@import "~ng-zorro-antd/tooltip/style/index.min.css";
+@import "~ng-zorro-antd/comment/style/index.min.css";
+@import "~ng-zorro-antd/rate/style/index.min.css";
+@import "~ng-zorro-antd/carousel/style/index.min.css";
+@import "~ng-zorro-antd/select/style/index.min.css";
+@import "~ng-zorro-antd/pagination/style/index.min.css";
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
@@ -93,6 +108,7 @@ ul {
 
 .custom-scroll-bar::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
   background-color: #f5f5f5;
 }
 
@@ -151,7 +167,7 @@ ul {
 /* pagination  custom*/
 
 .ant-pagination-item {
-  border-radius: 50%;
+  border: none;
 }
 
 .ant-pagination-next .ant-pagination-item-link,
@@ -183,6 +199,7 @@ ul {
   border: none !important;
   box-shadow: none !important;
   width: 190px;
+  height: 27px;
 }
 
 /* drawer */
@@ -416,6 +433,10 @@ ul {
   .container {
     max-width: 960px;
   }
+
+  .ant-drawer-content-wrapper {
+    width: 320px !important;
+  }
 }
 
 @media (max-width: 992px) {
@@ -454,6 +475,10 @@ ul {
 
   .ant-steps-item-title {
     font-size: 14px;
+  }
+
+  .ant-drawer-content-wrapper {
+    width: 300px !important;
   }
 
   .ant-steps-item-custom

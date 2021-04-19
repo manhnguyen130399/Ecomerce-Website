@@ -1,3 +1,4 @@
+import { formatDistance } from 'date-fns';
 import { Blog } from '@core/model/blog';
 import { Component, OnInit } from '@angular/core';
 
@@ -22,5 +23,7 @@ export class BlogDetailComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+
 
 }

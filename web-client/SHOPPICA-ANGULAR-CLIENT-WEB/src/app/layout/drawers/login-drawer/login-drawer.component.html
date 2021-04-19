@@ -27,6 +27,35 @@
           class="drawer-form-button login-form-margin" [nzType]="'primary'">Log
           in</button>
       </form>
+      <div class="social-login flex al-center fd-column">
+        <p>or Sign Up using</p>
+        <div class="btns">
+          <button class="google-login-btn" nzShape="circle" nzSize="large" nz-button [nzType]="'primary'">
+            <i nz-icon>
+              <svg t="1618583365898" class="icon" viewBox="0 0 1610 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" p-id="2971" width="1em" height="1em">
+                <path
+                  d="M512.045935 438.849261l0 175.543383L802.423564 614.392644c-11.696762 75.403653-87.762496 220.895921-290.377629 220.895921-174.807737 0-317.430988-144.830187-317.430988-323.29776S337.238198 188.711435 512.045935 188.711435c99.477649 0 166.035166 42.428348 204.141597 79.08188l138.963415-133.85068c-89.233787-83.385406-204.803678-133.85068-343.031448-133.85068C228.969587 0-4.3e-05 228.932847-4.3e-05 511.990804S228.969587 1024 512.045935 1024c295.490364 0 491.521471-207.727869 491.521471-500.238869 0-33.637386-3.678227-59.237846-8.036926-84.838305L512.045935 438.922825Z"
+                  p-id="2972"></path>
+                <path
+                  d="M1609.224261 438.849261 1462.886 438.849261 1462.886 292.566174 1316.602913 292.566174l0 146.283087L1170.319826 438.849261l0 146.283087 146.283087 0L1316.602913 731.433826l146.283087 0L1462.886 585.132348 1609.224261 585.132348"
+                  p-id="2973"></path>
+              </svg>
+            </i>
+          </button>
+          <button class="facebook-login-btn" nzShape="circle" nzSize="large" nz-button [nzType]="'primary'">
+            <i nz-icon>
+              <svg t="1618583206579" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" p-id="1500" width="1em" height="1em">
+                <path
+                  d="M710.355 6.617v175.34c-52.46 4.726-128.788-13.942-153.6 18.59-4.49 43.323-5.75 86.882-3.86 130.363a1516.308 1516.308 0 0 0 161.32 3.702 6950.518 6950.518 0 0 1-18.669 182.43H552.423V1024H339.116V517.12h-97.753a1754.348 1754.348 0 0 1-4.332-182.35h98.304C310.522 68.53 427.889-27.413 710.355 6.616z"
+                  p-id="1501"></path>
+              </svg>
+            </i>
+          </button>
+        </div>
+
+      </div>
       <div class="options">
         <p>New customer? <a (click)="openRegisterDrawer()">Create your account</a></p>
         <p>Lost password? <a (click)="openResetPasswordDrawer()">Reset password</a></p>

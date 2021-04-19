@@ -12,14 +12,30 @@
             <div class="blog-title text-hover">
               {{blog.title}}
             </div>
-            <div class="blog-date">
-              <i nz-icon nzType="calendar" nzTheme="outline"></i>
-              {{blog.created_at | date:'medium'}}
+            <div class="sub-info flex">
+              <div class="blog-date">
+                <i nz-icon nzType="calendar" nzTheme="outline"></i>
+                {{blog.created_at | date:'medium'}}
+              </div>
+              <div class="num-comment">
+                <i nz-icon nzType="comment" nzTheme="outline"></i>
+                2 Comments
+              </div>
             </div>
           </div>
           <div class="blog-content">
             {{blog.content}}
           </div>
+          <div class="blog-tag">
+
+          </div>
+        </div>
+
+        <div class="blog-comment">
+          <app-comments></app-comments>
+        </div>
+        <div class="leave-comment">
+          <app-leave-comment></app-leave-comment>
         </div>
       </div>
 

@@ -1,5 +1,7 @@
 .blog-detail {
   margin-top: 50px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid #e8e9eb;
 }
 
 .blog-image img {
@@ -15,5 +17,10 @@
 }
 
 .blog-date {
+  color: #6d6d6d;
+  margin-right: 20px;
+}
+
+.num-comment {
   color: #6d6d6d;
 }
