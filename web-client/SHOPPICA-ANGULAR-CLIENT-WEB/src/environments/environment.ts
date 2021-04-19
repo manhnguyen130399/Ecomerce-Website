@@ -19,7 +19,15 @@ export const environment = {
     "backend-java-api.herokuapp.com",
     "localhost:5001",
     "localhost:5002"
-  ]
+  ],
+  social: {
+    google: {
+      clientId: "775013219718-ctvm42dg7sg8m0p0ceocd0eg7msqof3h.apps.googleusercontent.com"
+    },
+    facebook: {
+      clientID: "4903591429710865"
+    }
+  }
 };
 
 /*

@@ -30,6 +30,8 @@ import { QuickViewComponent } from './layout/modals/quick-view/quick-view.compon
 import { QuickShopComponent } from './layout/modals/quick-shop/quick-shop.component';
 import { SearchDrawerComponent } from './layout/drawers/search-drawer/search-drawer.component';
 import { SearchModalComponent } from './layout/modals/search-modal/search-modal.component';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
+import { environment } from '@env';
 
 registerLocaleData(en);
 
@@ -59,6 +61,8 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes),
+    //socialLogin
+    SocialLoginModule,
     // jwt
     JwtModule.forRoot({
       jwtOptionsProvider: {
@@ -68,7 +72,28 @@ registerLocaleData(en);
       }
     })
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              environment.social.google.clientId
+            )
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider(
+              environment.social.facebook.clientID
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

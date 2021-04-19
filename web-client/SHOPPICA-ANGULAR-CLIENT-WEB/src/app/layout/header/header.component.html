@@ -37,7 +37,8 @@
               </svg>
             </i>
           </li>
-          <li class="text-hover flex al-center" (click)="isShowLoginDrawer = true">
+          <li nz-dropdown [nzDisabled]="!isLogged" [nzOverlayStyle]="{'width':'150px'}" [nzDropdownMenu]="menu"
+            nzPlacement="bottom" class="text-hover flex al-center" (click)="openLogin()">
             <i class="user" nz-icon>
               <svg t="1617112133350" class="icon" viewBox="0 0 1024 1024" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" p-id="52371">
@@ -46,6 +47,13 @@
                   p-id="52372"></path>
               </svg>
             </i>
+            <nz-dropdown-menu #menu>
+              <ul nz-menu>
+                <li [routerLink]="['/account']" nz-menu-item>Dashboard</li>
+                <li [routerLink]="['/account/addresses']" nz-menu-item>Addresses</li>
+                <li (click)="logout()" nz-menu-item>Log out</li>
+              </ul>
+            </nz-dropdown-menu>
           </li>
           <li [routerLink]="['/product/wishlist']" class="text-hover flex al-center">
             <i class="wishlist" nz-icon>
@@ -83,8 +91,9 @@
 <app-menu-drawer (closeMenuDrawer)="isShowMenuDrawer = false" [isOpenMenuDrawer]="isShowMenuDrawer">
 </app-menu-drawer>
 <!-- login -->
-<app-login-drawer (openRegisterDrawerEvent)="openRegister()" (openResetPasswordDrawerEvent)="openResetPassword()"
-  (closeLoginDrawer)="isShowLoginDrawer = false" [isOpenLoginDrawer]="isShowLoginDrawer">
+<app-login-drawer (loginSucceededEvent)="isLogged = true" (openRegisterDrawerEvent)="openRegister()"
+  (openResetPasswordDrawerEvent)="openResetPassword()" (closeLoginDrawer)="isShowLoginDrawer = false"
+  [isOpenLoginDrawer]="isShowLoginDrawer">
 </app-login-drawer>
 <!-- register -->
 <app-register-drawer (closeRegisterDrawerEvent)="isShowRegisterDrawer = false" (openLoginDrawerEvent)="openLogin()"

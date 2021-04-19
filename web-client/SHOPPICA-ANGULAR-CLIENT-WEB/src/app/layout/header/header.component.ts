@@ -1,6 +1,8 @@
+import { AuthService } from './../../core/services/auth/auth.service';
 import { Component, HostListener, Inject, OnInit, Optional } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -9,7 +11,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export class HeaderComponent implements OnInit {
   prevPosition = 0;
   isScrollUp = false;
-
+  isLogged = false;
   isShowMenuDrawer = false;
   isShowLoginDrawer = false;
   isShowRegisterDrawer = false;
@@ -17,13 +19,14 @@ export class HeaderComponent implements OnInit {
   isShowShoppingCartDrawer = false;
   isShowSearchModal = false;
   constructor(
-    @Inject(DOCUMENT) private document: NzSafeAny,
+    private readonly authService: AuthService,
+    private readonly router: Router
+
   ) { }
 
   ngOnInit(): void {
+    this.isLogged = this.authService.isAuthenticated();
 
-    const html = this.document.getElementsByTagName("html");
-    html[0].classList.add("text");
   }
 
   openRegister() {
@@ -39,9 +42,19 @@ export class HeaderComponent implements OnInit {
   }
 
   openLogin() {
-    this.isShowLoginDrawer = true;
-    this.isShowRegisterDrawer = false;
-    this.isShowResetPasswordDrawer = false;
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['/account']);
+    }
+    else {
+      this.isShowLoginDrawer = true;
+      this.isShowRegisterDrawer = false;
+      this.isShowResetPasswordDrawer = false;
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.isLogged = false;
   }
 
   @HostListener('window:scroll', ['$event']) // for window scroll events

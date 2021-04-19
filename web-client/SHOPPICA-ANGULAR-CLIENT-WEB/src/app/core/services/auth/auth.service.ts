@@ -1,3 +1,4 @@
+import { SocialLogin } from './../../model/social-login';
 import { environment } from './../../../../environments/environment';
 import { Login } from './../../model/login';
 import { JwtService } from './../jwt/jwt.service';
@@ -39,6 +40,28 @@ export class AuthService {
         return of(error.error);
       })
     );
+  }
+
+  socialLogin(request: SocialLogin): Observable<BaseResponse<string>> {
+    return this.httpClient.post<BaseResponse<string>>(`${environment.userServiceUrl}/api/users/socialLogin`, request).pipe(
+      tap(result => {
+        if (result.isSuccessed) {
+          const tokenObject = this.jwtHelperService.decodeToken(result.data);
+          const user = {
+            ...tokenObject,
+            token: result.data
+          };
+          this.storageService.setObject(environment.tokenKey, user);
+        }
+      }),
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+  logout() {
+    this.storageService.remove(environment.tokenKey);
   }
 
   isAuthenticated() {
