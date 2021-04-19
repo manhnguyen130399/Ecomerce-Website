@@ -16,7 +16,7 @@ export class ColorModalComponent
   @Input() color: Color;
   @Input() modalTitle: string;
   @Input() isVisible = false;
-  colorHex: string = '#fbfbfb';
+  colorCode: string = '#fbfbfb';
   @Output() cancelModalEvent = new EventEmitter<string>();
   @Output() okModalEvent = new EventEmitter<Color>();
 
@@ -43,7 +43,7 @@ export class ColorModalComponent
     let color = {
       id: null,
       colorName: this.baseForm.get('colorName').value.trim(),
-      colorHex: this.colorHex,
+      colorCode: this.colorCode,
     };
     super.create(color, this.okModalEvent, this.chileMessageService);
   }
@@ -52,6 +52,6 @@ export class ColorModalComponent
     super.cancel(this.cancelModalEvent);
   }
   updateColor(event) {
-    this.colorHex = event;
+    this.colorCode = event;
   }
 }

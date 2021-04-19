@@ -14,7 +14,7 @@
                     <i nz-icon nzType="search"></i>
                 </nz-filter-trigger>
             </th>
-            <th nzAlign="center">Color Hex</th>
+            <th nzAlign="center">Color Code</th>
             <th nzAlign="center" nzWidth="20%">Action</th>
         </tr>
     </thead>
@@ -22,7 +22,7 @@
         <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
             <td nzAlign="center">{{ data.id }}</td>
             <td nzAlign="center">{{ data.colorName }}</td>
-            <td nzAlign="center"><span [style.background]="data.colorHex">{{data.colorHex}}</span></td>
+            <td nzAlign="center"><span [style.background]="data.colorCode">{{data.colorCode}}</span></td>
             <td nzAlign="center" class="btn-action">
                 <button nz-button nzPopconfirmOverlayClassName="delete-confirm-card" nzType="primary" nz-popconfirm nzPopconfirmTitle="Are you sure delete this color?" (nzOnConfirm)="delete(data.id)" nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
             </td>
