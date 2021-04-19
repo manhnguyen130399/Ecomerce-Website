@@ -1,5 +1,7 @@
 package com.fashion.modules.size.service;
 
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 
 import com.fashion.commons.enums.SortType;
@@ -17,5 +19,7 @@ public interface SizeService {
 			String sortField);
 
 	Page<SizeVM> searchByKeyword(String keyword, Integer page, Integer pageSize, SortType sortOrder, String sortField);
+	
+	Set<SizeVM>getAllSize();
 
 }

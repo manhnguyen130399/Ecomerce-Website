@@ -2,6 +2,7 @@ package com.fashion.modules.category.service.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -88,6 +89,12 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 				.searchByKeywordAndStore(categoryName, getCurrentStoreId(),
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, CategoryVM.class));
+	}
+
+	@Override
+	@Transactional
+	public Set<CategoryVM> getAll() {
+		return cateRepo.findAll().stream().map(it -> mapper.map(it, CategoryVM.class)).collect(Collectors.toSet());
 	}
 
 }

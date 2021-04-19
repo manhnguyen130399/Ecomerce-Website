@@ -69,4 +69,10 @@ public class ColorResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(colorService.searchColorByKeywordAndStore(colorName, sortOrder, sortField, page, pageSize));
 	}
+	
+	@GetMapping(URL + "/color-all-store")
+	public ResponseEntity<Map<String, Object>> getAllColor() {
+		return success(colorService.getAllColor());
+
+	}
 }

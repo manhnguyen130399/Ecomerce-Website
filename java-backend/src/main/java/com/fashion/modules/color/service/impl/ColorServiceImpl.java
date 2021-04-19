@@ -2,6 +2,7 @@ package com.fashion.modules.color.service.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -90,6 +91,12 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 				.searchByKeywordAndStore(colorName, getStore(getUserContext()).getId(),
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, ColorVM.class));
+	}
+
+	@Override
+	@Transactional
+	public Set<ColorVM> getAllColor() {
+		return colorRepo.findAll().stream().map(it -> mapper.map(it, ColorVM.class)).collect(Collectors.toSet());
 	}
 
 }

@@ -41,6 +41,7 @@ import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.product.domain.ProductImage;
 import com.fashion.modules.product.model.ProductDetailVM;
+import com.fashion.modules.product.model.ProductFilterRequest;
 import com.fashion.modules.product.model.ProductImageVM;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.model.ProductRes;
@@ -386,6 +387,12 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 					Collections.singleton(new ProductDetail(input.getQuantity(), product, size, color)));
 		}
 		return product;
+	}
+
+	@Override
+	@Transactional
+	public Page<ProductVM> getAllOrFilterProduct(final ProductFilterRequest req, final Integer page,final Integer pageSize) {
+		return productRepo.filterProduct(req, page, pageSize).map(it -> convertToVM(it));
 	}
 
 }

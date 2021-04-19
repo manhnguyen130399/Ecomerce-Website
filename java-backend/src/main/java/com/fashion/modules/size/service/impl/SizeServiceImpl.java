@@ -2,6 +2,7 @@ package com.fashion.modules.size.service.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -88,6 +89,12 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 				.searchSizeByKeyword(keyword, getCurrentStoreId(),
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, SizeVM.class));
+	}
+
+	@Override
+	@Transactional
+	public Set<SizeVM> getAllSize() {
+		return sizeRepo.findAll().stream().map(it -> mapper.map(it, SizeVM.class)).collect(Collectors.toSet());
 	}
 
 }

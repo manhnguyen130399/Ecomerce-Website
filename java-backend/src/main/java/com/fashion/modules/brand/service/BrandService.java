@@ -1,5 +1,8 @@
 package com.fashion.modules.brand.service;
 
+
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 
 import com.fashion.commons.enums.SortType;
@@ -19,5 +22,6 @@ public interface BrandService {
 
 	Page<BrandVM> seachBrandByStoreAndKeyword(String brandName, SortType sortOrder, Integer page, Integer pageSize,
 			String sortField);
+	Set<BrandVM>getAllBrand();
 
 }

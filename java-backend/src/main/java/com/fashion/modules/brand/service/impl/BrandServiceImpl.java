@@ -2,6 +2,7 @@ package com.fashion.modules.brand.service.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -85,6 +86,12 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 				.searchByKeywordAndStore(brandName, getCurrentStoreId(),
 						PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField)))
 				.map(it -> mapper.map(it, BrandVM.class));
+	}
+
+	@Override
+	@Transactional
+	public Set<BrandVM> getAllBrand() {
+		return brandRepo.findAll().stream().map(it -> mapper.map(it, BrandVM.class)).collect(Collectors.toSet());
 	}
 
 }

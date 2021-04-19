@@ -72,4 +72,9 @@ public class CategoryResource extends BaseResource {
 		return success(
 				categoryService.searchCategoryByKeywordAndStore(categoryName, sortOrder, sortField, page, pageSize));
 	}
+	
+	@GetMapping(URL + "/category-all-store")
+	public ResponseEntity<Map<String, Object>> getAllCategory() {
+		return success(categoryService.getAll());
+	}
 }

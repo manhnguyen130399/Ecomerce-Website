@@ -54,17 +54,14 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
-
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and().authorizeRequests()
-				.antMatchers("/api/auth/**").permitAll()
-				.antMatchers("/api/complain/create").permitAll()
-				.antMatchers("/api/promotion/valid-date").permitAll()
-				.antMatchers("/api/store/v2").permitAll()
-				.antMatchers("/api/store/existed").permitAll()
-				.antMatchers("/api/**").authenticated();
-
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+				.antMatchers("/api/auth/**").permitAll().antMatchers("/api/complain/create").permitAll()
+				.antMatchers("/api/promotion/valid-date").permitAll().antMatchers("/api/store/v2").permitAll()
+				.antMatchers("/api/store/existed").permitAll().antMatchers("/api/product/product-all-store").permitAll()
+				.antMatchers("/api/size/size-all-store").permitAll().antMatchers("/api/category/category-all-store")
+				.permitAll().antMatchers("/api/color/color-all-store").permitAll()
+				.antMatchers("/api/brand/brand-all-store").permitAll().antMatchers("/api/**").authenticated();
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 }

@@ -1,5 +1,7 @@
 package com.fashion.modules.color.service;
 
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 
 import com.fashion.commons.enums.SortType;
@@ -19,5 +21,7 @@ public interface ColorService {
 
 	Page<ColorVM> searchColorByKeywordAndStore(String colorName, SortType sortOrder, String sortField, Integer page,
 			Integer pageSize);
+
+	Set<ColorVM> getAllColor();
 
 }

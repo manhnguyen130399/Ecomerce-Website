@@ -73,5 +73,10 @@ public class SizeResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(sizeService.searchByKeyword(sizeName, page, pageSize, sortOrder, sortField));
 	}
+	
+	@GetMapping(URL + "/size-all-store")
+	public ResponseEntity<Map<String, Object>> getAllSize() {
+		return success(sizeService.getAllSize());
+	}
 
 }

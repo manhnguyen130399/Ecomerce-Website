@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
+import com.fashion.modules.product.model.ProductFilterRequest;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.model.ProductRes;
 import com.fashion.modules.product.service.ProductService;
@@ -103,5 +104,13 @@ public class ProductResource extends BaseResource {
 			return success(productService.createProducts(productVMs));
 		}
 		return success(Collections.emptyList());
+	}
+	
+	@PostMapping(URL + "/product-all-store")
+	public ResponseEntity<Map<String, Object>> getAllProductOrFilter(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestBody final ProductFilterRequest req) {
+		return success(productService.getAllOrFilterProduct(req, page, pageSize));
 	}
 }

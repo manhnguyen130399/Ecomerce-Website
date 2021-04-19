@@ -1,5 +1,7 @@
 package com.fashion.modules.category.service;
 
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 
 import com.fashion.commons.enums.SortType;
@@ -19,5 +21,7 @@ public interface CategoryService {
 
 	Page<CategoryVM> searchCategoryByKeywordAndStore(String categoryName, SortType sortOrder, String sortField,
 			Integer page, Integer pageSize);
+	
+	Set<CategoryVM> getAll();
 
 }

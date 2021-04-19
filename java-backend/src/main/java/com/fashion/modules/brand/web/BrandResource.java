@@ -70,5 +70,10 @@ public class BrandResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "id") final String sortField) {
 		return success(brandService.seachBrandByStoreAndKeyword(brandName, sortOrder, page, pageSize, sortField));
 	}
+	
+	@GetMapping(URL + "/brand-all-store")
+	public ResponseEntity<Map<String, Object>> getAllBrands() {
+		return success(brandService.getAllBrand());
+	}
 
 }

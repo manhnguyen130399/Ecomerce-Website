@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fashion.commons.enums.SortType;
+import com.fashion.modules.product.model.ProductFilterRequest;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.model.ProductRes;
 import com.fashion.modules.product.model.ProductVM;
@@ -33,5 +34,7 @@ public interface ProductService {
 	List<ProductRes> readExcelFile(MultipartFile file);
 
 	List<ProductVM> createProducts(List<ProductRes> products);
+	
+	Page<ProductVM> getAllOrFilterProduct(ProductFilterRequest req, Integer page, Integer pageSize);
 
 }
