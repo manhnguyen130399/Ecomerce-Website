@@ -153,7 +153,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			final Color color = it.getColor();
 			final Size size = it.getSize();
 			return new ProductDetailVM(size.getId(), size.getSizeName(), color.getId(), color.getColorName(),
-					color.getColorHex(), it.getQuantity());
+					color.getcolorCode(), it.getQuantity());
 		}).collect(Collectors.toSet()));
 		return vm;
 	}
@@ -229,7 +229,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			res.setProductName(product.getProductName());
 			res.setQuantity(it.getQuantity());
 			res.setCategoryName(product.getCategory().getCategoryName());
-			res.setColorHex(color.getColorHex());
+			res.setColorHex(color.getcolorCode());
 			return res;
 		}).collect(Collectors.toList());
 	}
@@ -391,7 +391,8 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	public Page<ProductVM> getAllOrFilterProduct(final ProductFilterRequest req, final Integer page,final Integer pageSize) {
+	public Page<ProductVM> getAllOrFilterProduct(final ProductFilterRequest req, final Integer page,
+			final Integer pageSize) {
 		return productRepo.filterProduct(req, page, pageSize).map(it -> convertToVM(it));
 	}
 
