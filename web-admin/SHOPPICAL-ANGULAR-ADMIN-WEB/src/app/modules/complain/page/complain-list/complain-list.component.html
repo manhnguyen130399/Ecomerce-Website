@@ -1,37 +1,80 @@
 <div>
-    <nz-input-group [nzSuffix]="suffixIconSearch">
-        <input type="text" nz-input (keyup.enter)="search()" placeholder="Search" [(ngModel)]="searchValue " />
-    </nz-input-group>
-    <ng-template #suffixIconSearch>
-        <i nz-icon nzType="search" (click)="search()"></i>
-    </ng-template>
+  <nz-input-group [nzSuffix]="suffixIconSearch">
+    <input
+      type="text"
+      nz-input
+      (keyup.enter)="search()"
+      placeholder="Search"
+      [(ngModel)]="searchValue"
+    />
+  </nz-input-group>
+  <ng-template #suffixIconSearch>
+    <i nz-icon nzType="search" (click)="search()"></i>
+  </ng-template>
 </div>
-<br>
-<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize" [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)" [nzData]="listData" nzTableLayout="fixed">
-    <thead>
-        <tr>
-            <th nzAlign="center" nzWidth="10%" nzColumnKey="id" [nzSortFn]="true">Id</th>
-            <th nzAlign="center">Content</th>
-            <th nzAlign="center">Store Name</th>
-            <th nzAlign="center">Email</th>
-            <th nzAlign="center">State </th>
-            <th nzAlign="center" nzWidth="20%">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even; let index  = index" [ngClass]="{ odd: odd, even: even }">
-            <td nzAlign="center">{{ index + 1 + ((baseParams.pageIndex - 1) * baseParams.pageSize) }}</td>
-            <td nzAlign="center">{{ data.content }}</td>
-            <td nzAlign="center">{{ data.storeName }}</td>
-            <td nzAlign="center">{{ data.email }}</td>
-            <td nzAlign="center">{{ data.state }}</td>
-            <td nzAlign="center" class="btn-action">
-                <button nz-button (click)="replyComplain(data.id)" nzType="primary" nzPrimary>Response<i  nzType="edit" nzTheme="outline" nz-icon></i></button>
-            </td>
-        </tr>
-    </tbody>
+<br />
+<nz-table
+  #sortTable
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="baseParams.pageSize"
+  [nzPageIndex]="baseParams.pageIndex"
+  nzBordered
+  [nzLoading]="isLoading"
+  (nzQueryParams)="onQueryParamsChange($event)"
+  [nzData]="listData"
+  nzTableLayout="fixed"
+>
+  <thead>
+    <tr>
+      <th nzAlign="center" nzWidth="10%" nzColumnKey="id" [nzSortFn]="true">
+        Id
+      </th>
+      <th nzAlign="center">Content</th>
+      <th nzAlign="center">Customer</th>
+      <th nzAlign="center">Email</th>
+      <th nzAlign="center">Phone</th>
+      <th nzAlign="center">State</th>
+      <th nzAlign="center" nzWidth="20%">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="
+        let data of sortTable.data;
+        let odd = odd;
+        let even = even;
+        let index = index
+      "
+      [ngClass]="{ odd: odd, even: even }"
+    >
+      <td nzAlign="center">
+        {{ index + 1 + (baseParams.pageIndex - 1) * baseParams.pageSize }}
+      </td>
+      <td nzAlign="center">{{ data.content }}</td>
+      <td nzAlign="center">{{ data.name }}</td>
+      <td nzAlign="center">{{ data.email }}</td>
+      <td nzAlign="center">{{ data.phone }}</td>
+      <td nzAlign="center">{{ data.state }}</td>
+      <td nzAlign="center" class="btn-action">
+        <button
+          nz-button
+          (click)="replyComplain(data.id)"
+          nzType="primary"
+          nzPrimary
+        >
+          Response<i nzType="edit" nzTheme="outline" nz-icon></i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
 </nz-table>
 <div class="table-operations">
-    <app-complain-modal [complain]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)" (okModalEvent)="closeModal($event)">
-    </app-complain-modal>
+  <app-complain-modal
+    [complain]="selectedData"
+    [isVisible]="isShowModal"
+    (cancelModalEvent)="closeModal($event)"
+    (okModalEvent)="closeModal($event)"
+  >
+  </app-complain-modal>
 </div>
