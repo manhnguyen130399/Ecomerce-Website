@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ContactComponent implements OnInit {
   isLoading: true;
-  contactForm: FormGroup;
+  contactForm!: FormGroup;
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly contactService: ContactService,
@@ -26,12 +26,15 @@ export class ContactComponent implements OnInit {
       name: [null, Validators.required],
       email: [null, Validators.required],
       phone: [null],
-      message: [null, Validators.required],
+      content: [null, Validators.required],
     });
   }
 
   submitForm() {
-    this.contactService
+    this.checkInput();
+    const value = this.contactForm.value;
+    if(value.email&& value.content&& value.name){
+      this.contactService
       .createContact(this.contactForm.value)
       .subscribe((res) => {
         if (res.code == 'OK') {
@@ -39,5 +42,13 @@ export class ContactComponent implements OnInit {
           this.router.navigate(['/home']);
         }
       });
+    }
+  }
+
+  checkInput() {
+    for (const i in this.contactForm.controls) {
+      this.contactForm.controls[i].markAsDirty();
+      this.contactForm.controls[i].updateValueAndValidity();
+    }
   }
 }

@@ -1,6 +1,6 @@
 export interface Complain {
   name: string;
-  message: string;
+  content: string;
   email: string;
   phone: string;
   state: string;
