@@ -12,14 +12,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fashion.commons.enums.ComplainType;
-import com.fashion.modules.store.domain.Store;
 
 @Entity
 @Table(name = "complain")
@@ -35,6 +32,12 @@ public class Complain implements Serializable {
 	@Column(name = "content")
 	private String content;
 
+	@Column(name = "name")
+	private String name;
+
+	@Column(name = "phone")
+	private String phone;
+
 	@Column(name = "email")
 	private String email;
 
@@ -45,10 +48,6 @@ public class Complain implements Serializable {
 	@CreationTimestamp
 	@Column(name = "created_at")
 	private Date createdAt;
-
-	@ManyToOne
-	@JoinColumn(name = "store_id")
-	private Store store;
 
 	public Integer getId() {
 		return id;
@@ -90,12 +89,20 @@ public class Complain implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public Store getStore() {
-		return store;
+	public String getName() {
+		return name;
 	}
 
-	public void setStore(final Store store) {
-		this.store = store;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(final String phone) {
+		this.phone = phone;
+	}
+	
 }

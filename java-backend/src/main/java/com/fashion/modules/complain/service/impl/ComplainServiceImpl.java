@@ -21,8 +21,6 @@ import com.fashion.modules.complain.model.ComplainRequest;
 import com.fashion.modules.complain.model.ComplainVM;
 import com.fashion.modules.complain.repository.ComplainRepository;
 import com.fashion.modules.complain.service.ComplainService;
-import com.fashion.modules.store.domain.Store;
-import com.fashion.modules.store.repository.StoreRepository;
 import com.fashion.service.impl.BaseService;
 
 @Service
@@ -32,24 +30,18 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 	private ComplainRepository complainRepo;
 
 	@Autowired
-	private StoreRepository storeRepo;
-
-	@Autowired
 	private JavaMailSender mailSender;
 
 	@Override
 	@Transactional
 	public ComplainVM complain(final ComplainRequest req) {
-		final Store store = storeRepo.findByStoreNameLike(req.getStoreName());
-		if (store == null) {
-			throw new InvalidArgumentException(" Can't found store. Try again. ");
-		}
 		final Complain complain = new Complain();
 		complain.setContent(req.getContent());
 		final String email = req.getEmail();
 		complain.setEmail(email != null ? email : getUserContext().getUsername());
-		complain.setStore(store);
 		complain.setState(ComplainType.PENDING);
+		complain.setName(req.getName());
+		complain.setPhone(req.getPhone());
 		return mapper.map(complainRepo.save(complain), ComplainVM.class);
 	}
 
@@ -65,8 +57,7 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 			final String sortField, final String keyword) {
 		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
 		if (StringUtils.isEmpty(keyword)) {
-			return complainRepo.findComplainByStoreId(getCurrentStoreId(), pageable)
-					.map(it -> mapper.map(it, ComplainVM.class));
+			return complainRepo.findAll(pageable).map(it -> mapper.map(it, ComplainVM.class));
 		} else {
 			return searchComplainByKeyword(keyword, page, pageSize);
 		}
@@ -91,8 +82,7 @@ public class ComplainServiceImpl extends BaseService implements ComplainService 
 	@Override
 	@Transactional
 	public Page<ComplainVM> searchComplainByKeyword(final String keyword, final Integer page, final Integer pageSize) {
-		return complainRepo
-				.searchComplainByKeywordAndStore(keyword, getCurrentStoreId(), PageRequest.of(page, pageSize))
+		return complainRepo.searchComplainByKeyword(keyword, PageRequest.of(page, pageSize))
 				.map(it -> mapper.map(it, ComplainVM.class));
 	}
 

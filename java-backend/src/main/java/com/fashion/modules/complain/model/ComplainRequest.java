@@ -9,6 +9,8 @@ public class ComplainRequest {
 
 	private String email;
 	
-	private String storeName;
+	private String phone;
+	
+	private String name;
 
 }

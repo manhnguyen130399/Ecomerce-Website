@@ -27,7 +27,6 @@ import com.fashion.modules.blog.domain.Blog;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.color.domain.Color;
-import com.fashion.modules.complain.domain.Complain;
 import com.fashion.modules.promotion.domain.Promotion;
 import com.fashion.modules.size.domain.Size;
 import com.google.common.collect.Sets;
@@ -66,9 +65,6 @@ public class Store implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	private Set<Promotion> promotions = Sets.newHashSet();
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
-	private Set<Complain> complains = Sets.newHashSet();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	private Set<Blog> blogs = Sets.newHashSet();
@@ -184,14 +180,6 @@ public class Store implements Serializable {
 
 	public void setPromotions(final Set<Promotion> promotions) {
 		this.promotions = promotions;
-	}
-
-	public Set<Complain> getComplains() {
-		return complains;
-	}
-
-	public void setComplains(final Set<Complain> complains) {
-		this.complains = complains;
 	}
 
 	public Set<Blog> getBlogs() {
