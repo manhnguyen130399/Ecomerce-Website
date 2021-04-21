@@ -32,7 +32,6 @@ import { SearchDrawerComponent } from './layout/drawers/search-drawer/search-dra
 import { SearchModalComponent } from './layout/modals/search-modal/search-modal.component';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { environment } from '@env';
-
 registerLocaleData(en);
 
 @NgModule({

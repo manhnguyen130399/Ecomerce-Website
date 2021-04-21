@@ -196,27 +196,11 @@ namespace USER_SERVICE_NET.Controllers
                 return BadRequest(ModelState);
             }
 
-            var emailToken = Helpers.GenerateRandomString();
-
-            string contentTemplate = Helpers.GetStringFromHtml(_webHostEnvironment.WebRootPath, "ResetPassword.html");
-
-            var emailRequest = new EmailRequest()
-            {
-                To = email,
-                Subject = "Veritify code",
-                Content = String.Format(contentTemplate,emailToken)
-            };
-
-            _emailService.SendEmailAsync(emailRequest);
-
             var result = await _userService.GenerateTokenResetPassword(email);
 
-            if (result.IsSuccessed) {
-                result.Data.EmailToken = emailToken;
-                return Ok(result);
+            if (!result.IsSuccessed) return BadRequest(result);
 
-            } 
-            return BadRequest(result);
+            return Ok(result);
         }
 
         [HttpPost("resetPassword")]

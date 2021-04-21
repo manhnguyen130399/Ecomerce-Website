@@ -1,3 +1,6 @@
+import { Customer } from './../../model/customer';
+import { ResetPasswordRequest } from './../../model/reset-password-request';
+import { RegisterRequest } from './../../model/register-request';
 import { SocialLogin } from './../../model/social-login';
 import { environment } from './../../../../environments/environment';
 import { Login } from './../../model/login';
@@ -60,8 +63,18 @@ export class AuthService {
     );
   }
 
+  register(request: RegisterRequest): Observable<BaseResponse<string>> {
+    return this.httpClient.post<BaseResponse<string>>(`${environment.userServiceUrl}/api/users/cusomerRegister`, request).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+
   logout() {
     this.storageService.remove(environment.tokenKey);
+    this.storageService.remove(environment.loginMethod);
   }
 
   isAuthenticated() {
@@ -80,4 +93,45 @@ export class AuthService {
       })
     );
   }
+
+  sendVerifyCode(email: string) {
+    return this.httpClient.get(`${environment.userServiceUrl}/api/users/generateTokenResetPassword?email=${email}`).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+  resetPassword(request: ResetPasswordRequest) {
+    return this.httpClient.post<BaseResponse<string>>(`${environment.userServiceUrl}/api/users/resetPassword`, request).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+  getUserById() {
+    return this.httpClient.get(`${environment.userServiceUrl}/api/users/GetCutomerById`).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+  updateInfo(request) {
+    return this.httpClient.patch(`${environment.userServiceUrl}/api/users/updateInfoForCustomer`, request).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+  changePassword(request) {
+    return this.httpClient.post(`${environment.userServiceUrl}/api/users/changePassword`, request).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
 }

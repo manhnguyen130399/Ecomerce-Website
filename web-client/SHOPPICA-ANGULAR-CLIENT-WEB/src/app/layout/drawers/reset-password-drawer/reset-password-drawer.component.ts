@@ -1,5 +1,9 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { StorageService } from './../../../core/services/storage/storage.service';
+import { environment } from '@env';
+import { tap, finalize } from 'rxjs/operators';
 import { AuthService } from './../../../core/services/auth/auth.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -11,11 +15,14 @@ export class ResetPasswordDrawerComponent implements OnInit {
   @Input() isOpenResetPasswordDrawer: boolean = false;
   @Output() closeResetPasswordDrawerEvent = new EventEmitter<boolean>();
   @Output() openLoginDrawerEvent = new EventEmitter<boolean>();
-  resetPasswordForm: FormGroup;
+  firstForm: FormGroup;
+
   isLoading = false;
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly authService: AuthService,
+    private readonly storageService: StorageService,
+    private readonly messageService: NzMessageService,
   ) { }
 
   ngOnInit(): void {
@@ -23,10 +30,30 @@ export class ResetPasswordDrawerComponent implements OnInit {
   }
 
   buildForm() {
-    this.resetPasswordForm = this.formBuilder.group({
+    this.firstForm = this.formBuilder.group({
       email: [null, Validators.required],
     })
   }
+
+  sendCode() {
+    this.isLoading = true;
+    const email = this.firstForm.controls.email.value;
+    this.authService.sendVerifyCode(email).pipe(
+      tap(result => {
+        if (result.isSuccessed) {
+          this.storageService.set(environment.emailToken, email)
+          this.messageService.success("To reset password, please check you email!");
+          this.closeMenu();
+          this.firstForm.reset();
+        }
+        else {
+          this.firstForm.setErrors({ "error": result.message });
+        }
+      }),
+      finalize(() => this.isLoading = false)
+    ).subscribe();
+  }
+
 
   closeMenu(): void {
     this.closeResetPasswordDrawerEvent.emit(false);

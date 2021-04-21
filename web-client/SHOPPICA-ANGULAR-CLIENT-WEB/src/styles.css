@@ -17,6 +17,7 @@
 @import "~ng-zorro-antd/pagination/style/index.min.css";
 @import "~ng-zorro-antd/message/style/index.min.css";
 @import "~ng-zorro-antd/dropdown/style/index.min.css";
+@import "~ng-zorro-antd/radio/style/index.min.css";
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&display=swap");
@@ -97,9 +98,40 @@ ul {
   cursor: pointer;
 }
 
+.custom-btn {
+  cursor: pointer;
+  border: 1px solid #7b7878;
+  padding: 7px 25px;
+  background: #fff;
+  color: #222;
+  border-radius: 40px;
+  font-size: 14px;
+  min-height: 40px;
+  transition: 0.5s;
+}
+
+.custom-btn:hover {
+  color: white;
+  background-color: #56cfe1;
+  border-color: #56cfe1;
+}
+
+.form-error {
+  color: red;
+}
+
 .social-btns .ant-btn-icon-only {
   width: 35px;
   height: 35px;
+}
+
+.radio-btn .ant-form-item-control-input-content {
+  display: flex;
+  justify-content: center;
+}
+
+.radio-btn .ant-form-item-control-input-content .ant-radio-wrapper {
+  margin-right: 20px;
 }
 
 /* custom scroll bar */
@@ -254,6 +286,7 @@ ul {
 
 .drawer-form-button {
   width: 100%;
+  height: 40px;
   background-color: #56cfe1;
   border-color: #56cfe1;
 }

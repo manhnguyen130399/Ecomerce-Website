@@ -1,3 +1,6 @@
+import { ShareService } from './../../core/services/share/share.service';
+import { environment } from '@env';
+import { StorageService } from './../../core/services/storage/storage.service';
 import { AuthService } from './../../core/services/auth/auth.service';
 import { Component, HostListener, Inject, OnInit, Optional } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -18,15 +21,19 @@ export class HeaderComponent implements OnInit {
   isShowResetPasswordDrawer = false;
   isShowShoppingCartDrawer = false;
   isShowSearchModal = false;
+
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly shareService: ShareService
 
   ) { }
 
   ngOnInit(): void {
+    this.shareService.loginSuccessEmitted$.subscribe((loginStatus) => {
+      this.isLogged = loginStatus;
+    })
     this.isLogged = this.authService.isAuthenticated();
-
   }
 
   openRegister() {
@@ -42,10 +49,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openLogin() {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/account']);
-    }
-    else {
+    if (!this.authService.isAuthenticated()) {
       this.isShowLoginDrawer = true;
       this.isShowRegisterDrawer = false;
       this.isShowResetPasswordDrawer = false;
@@ -55,9 +59,10 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.isLogged = false;
+    this.router.navigate(['/home']);
   }
 
-  @HostListener('window:scroll', ['$event']) // for window scroll events
+  @HostListener('window:scroll', ['$event'])
   onScroll() {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
