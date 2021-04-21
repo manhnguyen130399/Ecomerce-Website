@@ -1,21 +1,23 @@
 <div class="blog-page mt-70">
-  <app-header-page [image]="'/assets/images/blogs/blog-background.jpg'" [pageName]="'BLOGS DETAIL'"></app-header-page>
+  <app-header-page
+    [image]="'/assets/images/blogs/blog-background.jpg'"
+    [pageName]="'BLOGS DETAIL'"
+  ></app-header-page>
   <div class="container">
     <div class="content" [nzGutter]="24" nz-row>
-
       <div nz-col [nzLg]="18" [nzXs]="24">
         <div class="blog-detail">
           <div class="blog-image">
-            <img [src]="blog.image" alt="">
+            <img [src]="blog.image" alt="" />
           </div>
           <div class="blog-info">
             <div class="blog-title text-hover">
-              {{blog.title}}
+              {{ blog.title }}
             </div>
             <div class="sub-info flex">
               <div class="blog-date">
                 <i nz-icon nzType="calendar" nzTheme="outline"></i>
-                {{blog.created_at | date:'medium'}}
+                {{ blog.createdAt | date: "medium" }}
               </div>
               <div class="num-comment">
                 <i nz-icon nzType="comment" nzTheme="outline"></i>
@@ -24,11 +26,10 @@
             </div>
           </div>
           <div class="blog-content">
-            {{blog.content}}
+            <quill-view-html [content]="blog.content" theme=" snow ">
+            </quill-view-html>
           </div>
-          <div class="blog-tag">
-
-          </div>
+          <div class="blog-tag"></div>
         </div>
 
         <div class="blog-comment">
@@ -40,7 +41,7 @@
       </div>
 
       <div nz-col [nzLg]="6" [nzSm]="18" [nzXs]="24">
-        <app-sidebar></app-sidebar>
+        <app-sidebar (newItemEvent)="viewBlogByCategory($event)"></app-sidebar>
       </div>
     </div>
   </div>

@@ -7,13 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.fashion.modules.blog.domain.Blog;
+import com.fashion.modules.blog.repository.custom.BlogRepositoryCustom;
 
-public interface BlogRepository extends JpaRepository<Blog, Integer> {
-	
+public interface BlogRepository extends BlogRepositoryCustom, JpaRepository<Blog, Integer> {
+
 	@Query(" SELECT b "//
 			+ " FROM Blog b "//
-			+ " WHERE b.id = :id AND b.store.id = :storeId ") //
-	Blog findOneByIdAndStoreId(@Param("id") Integer id, @Param("storeId") Integer storeId);
+			+ " LEFT JOIN FETCH b.comments "//
+			+ " WHERE b.id = :id ") //
+	Blog findOneById(@Param("id") Integer id);
 
 	@Query(" SELECT b "//
 			+ " FROM Blog b "//

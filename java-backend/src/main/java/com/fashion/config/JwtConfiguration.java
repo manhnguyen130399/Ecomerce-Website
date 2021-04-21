@@ -3,6 +3,7 @@ package com.fashion.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -61,7 +62,8 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/store/existed").permitAll().antMatchers("/api/product/product-all-store").permitAll()
 				.antMatchers("/api/size/size-all-store").permitAll().antMatchers("/api/category/category-all-store")
 				.permitAll().antMatchers("/api/color/color-all-store").permitAll()
-				.antMatchers("/api/brand/brand-all-store").permitAll().antMatchers("/api/**").authenticated();
+				.antMatchers(HttpMethod.GET, "/api/blog/**").permitAll().antMatchers("/api/brand/brand-all-store")
+				.permitAll().antMatchers("/api/**").authenticated();
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 }

@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fashion.commons.enums.BlogState;
+import com.fashion.commons.enums.BlogType;
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.comment.domain.Comment;
 import com.fashion.modules.store.domain.Store;
@@ -46,6 +47,30 @@ public class Blog extends AbstractAuditingEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "blog")
 	private Set<Comment> comments = Sets.newHashSet();
+	
+	@Column(name = "image")
+	private String image;
+
+	@Column(name = "category")
+	@Enumerated(EnumType.STRING)
+	private BlogType category;
+
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(final String image) {
+		this.image = image;
+	}
+
+	public BlogType getCategory() {
+		return category;
+	}
+
+	public void setCategory(final BlogType category) {
+		this.category = category;
+	}
 
 	public String getTitle() {
 		return title;

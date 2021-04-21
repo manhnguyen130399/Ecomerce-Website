@@ -1,49 +1,125 @@
-<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize" [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)" [nzData]="listData" nzTableLayout="fixed">
-    <thead>
-        <tr>
-            <th nzAlign="center" nzColumnKey="id" [nzSortFn]="true">Id</th>
-            <th nzAlign="center">Title
-                <nz-filter-trigger [(nzVisible)]="isShowSearchInput" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
-                    <i nz-icon nzType="search"></i>
-                </nz-filter-trigger>
-            </th>
-            <th nzAlign="center">Content</th>
-            <th nzAlign="center">Summary</th>
-            <th nzAlign="center">Author</th>
-            <th nzAlign="center">State</th>
-            <th nzAlign="center">Created At</th>
-            <th nzAlign="center">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even; let index  = index ;" [ngClass]="{ odd: odd, even: even }">
-            <td nzAlign="center">{{data.id}}</td>
-            <td nzAlign="center">{{data.title }}</td>
-            <td nzAlign="center">{{data.content |slice:0:30}}</td>
-            <td nzAlign="center">{{data.summary}}</td>
-            <td nzAlign="center">{{data.author}}</td>
-            <td nzAlign="center">{{data.state}}</td>
-            <td nzAlign="center">{{data.createdAt|slice:1:11}}</td>
-            <td nzAlign="center" class="btn-action">
-                <button nz-button nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm nzPopconfirmTitle="Are you sure delete this blog?" (nzOnConfirm)="delete(data.id)" nzPopconfirmPlacement="left" nz-icon nzType="delete" nzDanger nzTooltipTitle="Delete"
-                    nzTooltipPlacement="topLeft" nz-tooltip></button>
-                <button nz-button (click)="edit(data)" nZPrimary nz-icon nzType="edit" nzTheme="outline" nzTooltipTitle="Edit" nzTooltipPlacement="topLeft" nz-tooltip></button>
-                <button nz-button (click)="viewBlog(data)" nz-icon nzType="eye" nzTheme="outline" nzTooltipTitle="View" nzTooltipPlacement="topLeft" nz-tooltip></button>
-            </td>
-        </tr>
-    </tbody>
+<nz-table
+  #sortTable
+  [nzFrontPagination]="false"
+  [nzTotal]="total"
+  [nzPageSize]="baseParams.pageSize"
+  [nzPageIndex]="baseParams.pageIndex"
+  nzBordered
+  [nzLoading]="isLoading"
+  (nzQueryParams)="onQueryParamsChange($event)"
+  [nzData]="listData"
+  nzTableLayout="fixed"
+>
+  <thead>
+    <tr>
+      <th nzAlign="center" nzWidth="50px" nzColumnKey="id" [nzSortFn]="true">Id</th>
+      <th nzAlign="center">
+        Title
+        <nz-filter-trigger
+          [(nzVisible)]="isShowSearchInput"
+          [nzActive]="searchValue.length > 0"
+          [nzDropdownMenu]="menu"
+        >
+          <i nz-icon nzType="search"></i>
+        </nz-filter-trigger>
+      </th>
+      <th nzAlign="center">Content</th>
+      <th nzAlign="center">Summary</th>
+      <th nzAlign="center">Author</th>
+      <th nzAlign="center">State</th>
+      <th nzAlign="center">Created At</th>
+      <th nzAlign="center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="
+        let data of sortTable.data;
+        let odd = odd;
+        let even = even;
+        let index = index
+      "
+      [ngClass]="{ odd: odd, even: even }"
+    >
+      <td nzWidth="50px" nzAlign="center">{{ data.id }}</td>
+      <td nzAlign="center">{{ data.title }}</td>
+      <td nzAlign="center">{{ data.content | slice: 0:30 }}</td>
+      <td nzAlign="center">{{ data.summary }}</td>
+      <td nzAlign="center">{{ data.author }}</td>
+      <td nzAlign="center">{{ data.state }}</td>
+      <td nzAlign="center">{{ data.createdAt | date: "mediumDate" }}</td>
+      <td nzAlign="center" class="btn-action">
+        <button
+          nz-button
+          nzPopconfirmOverlayClassName="delete-confirm-card"
+          nz-popconfirm
+          nzPopconfirmTitle="Are you sure delete this blog?"
+          (nzOnConfirm)="delete(data.id)"
+          nzPopconfirmPlacement="left"
+          nz-icon
+          nzType="delete"
+          nzDanger
+          nzTooltipTitle="Delete"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+        ></button>
+        <button
+          nz-button
+          (click)="edit(data)"
+          nZPrimary
+          nz-icon
+          nzType="edit"
+          nzTheme="outline"
+          nzTooltipTitle="Edit"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+        ></button>
+        <button
+          nz-button
+          (click)="viewBlog(data)"
+          nz-icon
+          nzType="eye"
+          nzTheme="outline"
+          nzTooltipTitle="View"
+          nzTooltipPlacement="topLeft"
+          nz-tooltip
+        ></button>
+      </td>
+    </tr>
+  </tbody>
 </nz-table>
 <nz-dropdown-menu #menu="nzDropdownMenu">
-    <div class="ant-table-filter-dropdown">
-        <div class="search-box">
-            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
-            <button nz-button nzSize="small" nzType="primary" (click)="searchByTitle()" class="search-button">
+  <div class="ant-table-filter-dropdown">
+    <div class="search-box">
+      <input
+        type="text"
+        nz-input
+        placeholder="Search name"
+        [(ngModel)]="searchValue"
+      />
+      <button
+        nz-button
+        nzSize="small"
+        nzType="primary"
+        (click)="searchByTitle()"
+        class="search-button"
+      >
         Search
       </button>
-        </div>
     </div>
+  </div>
 </nz-dropdown-menu>
-<app-blog-modal [blog]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)" (okModalEvent)="closeModal($event)">
+<app-blog-modal
+  [blog]="selectedData"
+  [isVisible]="isShowModal"
+  (cancelModalEvent)="closeModal($event)"
+  (okModalEvent)="closeModal($event)"
+>
 </app-blog-modal>
-<app-blog-view [blog]="selectedData" [isVisible]="isShowView" (cancelModalEvent)="cancelViewBlog($event)" (okModalEvent)="cancelViewBlog($event)">
+<app-blog-view
+  [blog]="selectedData"
+  [isVisible]="isShowView"
+  (cancelModalEvent)="cancelViewBlog($event)"
+  (okModalEvent)="cancelViewBlog($event)"
+>
 </app-blog-view>

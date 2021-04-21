@@ -1,7 +1,9 @@
 import { CartItem } from './../../../../core/model/cart-item';
 import { CartItemOptions } from './../../../../shared/modules/cart-item/models/cart-item-options.model';
 import { Blog } from './../../../../core/model/blog';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { BlogService } from '@modules/blog/services/blog.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,21 +12,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  blog =
-    {
-      id: 1,
-      image: "/assets/images/blogs/blog-2.jpg",
-      content: "Typography is the work of typesetters, compositors, typographers, graphic designers, art directors, manga artists, ",
-      author: "Admin",
-      created_at: new Date(),
-      title: "The Easiest Way to Break Out on Top"
-    }
-
-  listBlog: Blog[] = [
-    this.blog,
-    this.blog,
-    this.blog,
-  ]
+  listBlog: Blog[];
+  categories: string[];
+  @Output() newItemEvent = new EventEmitter<string>();
 
   listCartItem: CartItem[] = [
     {
@@ -53,9 +43,25 @@ export class SidebarComponent implements OnInit {
     showPrice: true,
     size: 'small'
   }
-  constructor() { }
+  constructor(private readonly blogService: BlogService, private readonly router: Router) { }
 
   ngOnInit(): void {
+    this.loadDataForSideBar()
+  }
+
+  loadDataForSideBar() {
+    this.blogService.getDataForSideBlog().subscribe((res) => {
+      this.listBlog = res.data.blogRecents;
+      this.categories = res.data.categories;
+    })
+  }
+
+  viewItem(id: number) {
+    this.router.navigate(['/blog/detail/', id]);
+  }
+
+  addNewItem(value: string) {
+    this.newItemEvent.emit(value);
   }
 
 }
