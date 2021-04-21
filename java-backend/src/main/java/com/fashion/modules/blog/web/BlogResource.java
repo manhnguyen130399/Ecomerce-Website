@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.enums.BlogType;
 import com.fashion.commons.enums.SortType;
 import com.fashion.modules.blog.model.BlogReq;
 import com.fashion.modules.blog.model.BlogUpdateReq;
@@ -73,6 +74,23 @@ public class BlogResource extends BaseResource {
 	@GetMapping(URL + "/blog-state")
 	public ResponseEntity<Map<String, Object>> getBlogState() {
 		return success(blogService.getBlogStates());
+	}
+	
+	@GetMapping(URL + "/blog-type")
+	public ResponseEntity<Map<String, Object>> getBlogType() {
+		return success(blogService.getBlogTypes());
+	}
+	
+	@GetMapping(URL + "/blog-all-store")
+	public ResponseEntity<Map<String, Object>> getAllBlog() {
+		return success(blogService.getBlogRecentAndCategories());
+	}
+	
+	@GetMapping(URL + "/complete")
+	public ResponseEntity<Map<String, Object>> getAllBlogComplete(@RequestParam(required = false) final BlogType type,
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize) {
+		return success(blogService.getAllBlogComplete(page, pageSize, type));
 	}
 
 }

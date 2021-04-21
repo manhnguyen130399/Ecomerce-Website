@@ -101,4 +101,15 @@ export class BlogService implements BaseService<Blog> {
         })
       );
   }
+
+  getBlogTypes() {
+    return this.httpClient
+      .get(`${environment.productServiceUrl}/api/blog/blog-type`)
+      .pipe(
+        catchError((error) => {
+          return of(error.error);
+        })
+      );
+
+  }
 }

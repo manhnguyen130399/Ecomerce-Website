@@ -19,6 +19,8 @@ import { BlogListComponent } from './page/blog-list/blog-list.component';
 import { BlogDetailComponent } from './page/blog-detail/blog-detail.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { LeaveCommentComponent } from './components/leave-comment/leave-comment.component';
+import { QuillModule } from 'ngx-quill';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 
 
@@ -30,15 +32,15 @@ import { LeaveCommentComponent } from './components/leave-comment/leave-comment.
     BlogCardModule,
     HeaderPageModule,
     CartItemModule,
-
     NzGridModule,
     NzCommentModule,
     NzAvatarModule,
+    NzPaginationModule,
     NzInputModule,
     NzFormModule,
     NzButtonModule,
     NzIconModule.forChild(shareIcons),
-
+    QuillModule.forRoot(),
     RouterModule.forChild(blogRoutes)
   ]
 })

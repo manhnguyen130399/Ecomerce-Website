@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.fashion.commons.enums.BlogState;
+import com.fashion.commons.enums.BlogType;
 import com.fashion.commons.enums.SortType;
 import com.fashion.modules.blog.model.BlogReq;
+import com.fashion.modules.blog.model.BlogRes;
 import com.fashion.modules.blog.model.BlogUpdateReq;
 import com.fashion.modules.blog.model.BlogVM;
 
@@ -23,5 +25,11 @@ public interface BlogService {
 	BlogVM updateBlog(Integer id, BlogUpdateReq req);
 
 	List<BlogState> getBlogStates();
+	
+	List<BlogType> getBlogTypes();
+	
+	BlogRes getBlogRecentAndCategories();
+	
+	Page<BlogVM> getAllBlogComplete(Integer page, Integer pageSize, BlogType type);
 
 }

@@ -7,10 +7,12 @@ export const blogRoutes: Routes = [
     component: BlogListComponent,
     children: [
 
+
     ]
   },
   {
-    path: 'detail',
+    path: 'detail/:id',
     component: BlogDetailComponent
   }
+
 ]

@@ -52,7 +52,7 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 			}
 			comment.setProduct(product);
 		} else if (blogId != null) {
-			final Blog blog = blogRepo.findOneByIdAndStoreId(blogId, storeId);
+			final Blog blog = blogRepo.findOneById(blogId);
 			if (blog == null) {
 				throw new InvalidArgumentException(" Can't found blog ");
 			}
