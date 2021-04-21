@@ -19,11 +19,11 @@
       </div>
       <div nz-col [nzXl]="12" [nzLg]="12" [nzMd]="0" [nzSm]="0" [nzXs]="0" class="navigation-options">
         <ul class="flex jc-center">
-          <li class="text-hover flex al-center" [routerLink]="['/home']">Home</li>
-          <li class="text-hover flex al-center" [routerLink]="['/about']">About</li>
-          <li class="text-hover flex al-center" [routerLink]="['/product']">Product</li>
-          <li class="text-hover flex al-center" [routerLink]="['/blog']">Blog</li>
-          <li class="text-hover flex al-center" [routerLink]="['/contact']">Contact</li>
+          <li class="text-hover flex al-center" [routerLinkActive]="['active']" [routerLink]="['/home']">Home</li>
+          <li class="text-hover flex al-center" [routerLinkActive]="['active']" [routerLink]="['/about']">About</li>
+          <li class="text-hover flex al-center" [routerLinkActive]="['active']" [routerLink]="['/product']">Product</li>
+          <li class="text-hover flex al-center" [routerLinkActive]="['active']" [routerLink]="['/blog']">Blog</li>
+          <li class="text-hover flex al-center" [routerLinkActive]="['active']" [routerLink]="['/contact']">Contact</li>
         </ul>
       </div>
       <div nz-col nzSpan="6" class="icon-btns">
@@ -37,7 +37,8 @@
               </svg>
             </i>
           </li>
-          <li class="text-hover flex al-center" (click)="isShowLoginDrawer = true">
+          <li nz-dropdown [nzDisabled]="!isLogged" [nzOverlayStyle]="{'width':'170px'}" [nzDropdownMenu]="menu"
+            nzPlacement="bottom" class="text-hover flex al-center" (click)="openLogin()">
             <i class="user" nz-icon>
               <svg t="1617112133350" class="icon" viewBox="0 0 1024 1024" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" p-id="52371">
@@ -46,6 +47,14 @@
                   p-id="52372"></path>
               </svg>
             </i>
+            <nz-dropdown-menu #menu>
+              <ul class="user-option" nz-menu>
+                <li [routerLink]="['/account']" nz-menu-item>Account detail</li>
+                <li [routerLink]="['/account/addresses']" nz-menu-item>Shipping address</li>
+                <li [routerLink]="['/account/change-password']" nz-menu-item>Change password</li>
+                <li (click)="logout()" nz-menu-item>Logout</li>
+              </ul>
+            </nz-dropdown-menu>
           </li>
           <li [routerLink]="['/product/wishlist']" class="text-hover flex al-center">
             <i class="wishlist" nz-icon>

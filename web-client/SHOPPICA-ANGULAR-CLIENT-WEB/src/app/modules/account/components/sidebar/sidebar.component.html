@@ -1,8 +1,13 @@
 <div class="account-sidebar">
   <ul>
-    <li [routerLink]="['/account']" class="active">Dashboard</li>
-    <li [routerLink]="['/account/addresses']">addresses</li>
-    <li [routerLink]="['/product/wishlist']">Wishlist</li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:
+      true}" [routerLink]="['/account']">Dashboard</li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:
+      true}" [routerLink]="['/account/addresses']">Addresses</li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:
+      true}" [routerLink]="['/account/change-password']">Change password</li>
+    <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:
+      true}" [routerLink]="['/product/wishlist']">Wishlist</li>
     <li>Logout</li>
   </ul>
 </div>

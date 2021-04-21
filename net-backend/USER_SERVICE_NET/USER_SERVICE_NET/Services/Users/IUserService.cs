@@ -26,6 +26,6 @@ namespace USER_SERVICE_NET.Services.Users
         Task<APIResult<SellerView>> GetSellerById(int accountId);
         Task<APIResult<CustomerView>> GetCustomerById(int accountId);
         Task<APIResult<string>> ChangePassword(ChangePasswordRequest request);
-        Task<APIResult<TokenResetPassword>> GenerateTokenResetPassword(string email);
+        Task<APIResult<string>> GenerateTokenResetPassword(string email);
     }
 }

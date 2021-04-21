@@ -7,13 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Utilities;
-using USER_SERVICE_NET.ViewModels.Commons;
 
 namespace USER_SERVICE_NET.Services.StorageServices
 {

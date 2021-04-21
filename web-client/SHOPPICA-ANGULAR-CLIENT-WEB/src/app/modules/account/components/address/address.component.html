@@ -1,0 +1,77 @@
+<div class="address-header">
+  <div class="title">
+    <p><strong> Shipping address :</strong></p>
+  </div>
+  <div class="address-form">
+    <form nz-col class="custom-form" nz-form [formGroup]="addressForm" (ngSubmit)="updateAddress()"
+      [nzLayout]="'vertical'">
+      <div class="contact-info">
+        <div class="content">
+          <nz-form-item nz-col>
+            <nz-form-label nzRequired nzFor="customerName">Customer Name</nz-form-label>
+            <nz-form-control nzErrorTip="Please input your seller name!">
+              <input nz-input type="text" formControlName="customerName">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div class="shipping-address">
+        <div class="content">
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="12" [nzXs]="24">
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="province">Province</nz-form-label>
+                <nz-form-control nzErrorTip="Please select your province!">
+                  <nz-select nzSize="large" (ngModelChange)="provinceChange($event)" formControlName="province"
+                    nzShowSearch nzPlaceHolder="Select a province">
+                    <nz-option *ngFor="let item of listProvince" [nzLabel]="item.ProvinceName" [nzValue]="item">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="12" [nzXs]="24">
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="district">District</nz-form-label>
+                <nz-form-control nzErrorTip="Please select your district!">
+                  <nz-select nzSize="large" (ngModelChange)="districtChange($event)" formControlName="district"
+                    nzShowSearch nzPlaceHolder="Select a district">
+                    <nz-option *ngFor="let item of listDistrict" [nzLabel]="item.DistrictName" [nzValue]="item">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+
+          <div nz-row [nzGutter]="24">
+            <div nz-col [nzSm]="12" [nzXs]="24">
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="ward">Ward</nz-form-label>
+                <nz-form-control nzErrorTip="Please select your ward!">
+                  <nz-select nzSize="large" formControlName="ward" nzShowSearch nzPlaceHolder="Select a ward">
+                    <nz-option *ngFor="let item of listWard" [nzLabel]="item.WardName" [nzValue]="item">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col [nzSm]="12" [nzXs]="24">
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="phone">Phone</nz-form-label>
+                <nz-form-control nzErrorTip="Please input your seller name!">
+                  <input nz-input type="text" formControlName="phone">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer flex jc-center">
+        <button class="custom-btn" [nzLoading]="isLoading" nz-button nzType="primary">Save Change</button>
+      </div>
+    </form>
+
+  </div>
+
+</div>

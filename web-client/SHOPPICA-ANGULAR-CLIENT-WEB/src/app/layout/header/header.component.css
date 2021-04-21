@@ -50,6 +50,10 @@
   font-size: 15.5px;
 }
 
+.navigation-options ul li.active {
+  color: #56cfe1;
+}
+
 .navigation-options ul li,
 .icon-btns ul li {
   height: 70px;
@@ -59,6 +63,10 @@
 .icon-btns ul li i {
   font-size: 19px;
   padding: 0 10px;
+}
+
+.user-option li {
+  font-family: "Raleway", sans-serif;
 }
 
 @media (max-width: 1200px) {

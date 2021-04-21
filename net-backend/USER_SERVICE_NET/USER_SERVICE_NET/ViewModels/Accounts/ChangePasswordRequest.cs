@@ -10,7 +10,6 @@ namespace USER_SERVICE_NET.ViewModels.Accounts
     {
         public int AccountId { get; set; }
 
-        [Required]
         [DataType(DataType.Password)]
         public string CurrentPassword { get; set; }
 
@@ -21,5 +20,7 @@ namespace USER_SERVICE_NET.ViewModels.Accounts
         [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "Password and ConfirmPassword is not match")]
         public string ConfirmPassword { get; set; }
+
+        public string LoginMethod { get; set; }
     }
 }
