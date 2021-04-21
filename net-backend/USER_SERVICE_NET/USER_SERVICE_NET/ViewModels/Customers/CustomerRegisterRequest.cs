@@ -14,9 +14,8 @@ namespace USER_SERVICE_NET.ViewModels.Customers
         [Required]
         public string Fullname { get; set; }
 
-        [Required]
         public AddressInfo Address { get; set; }
-        [Required]
+
         public Genders Gender { get; set; }
 
         public string ImageUrl { get; set; }

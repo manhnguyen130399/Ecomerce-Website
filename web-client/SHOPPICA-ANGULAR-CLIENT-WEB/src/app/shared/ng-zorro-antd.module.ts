@@ -13,6 +13,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 @NgModule({
   declarations: [],
   imports: [
@@ -27,6 +29,8 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
     NzSelectModule,
     NzCarouselModule,
     NzRateModule,
+    NzMessageModule,
+    NzDropDownModule,
     NzIconModule.forRoot(shareIcons)
   ],
   exports: [
@@ -42,7 +46,9 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
     NzModalModule,
     NzSelectModule,
     NzCarouselModule,
-    NzRateModule
+    NzRateModule,
+    NzMessageModule,
+    NzDropDownModule
   ],
   providers: []
 })

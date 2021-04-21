@@ -9,14 +9,6 @@ p {
   border-bottom: 1px solid #e3e3e3;
 }
 
-.row {
-  border-bottom: 1px solid #e3e3e3;
-}
-
-.row div {
-  padding: 15px 12px;
-}
-
 .account-detail .title {
   margin-bottom: 0;
 }
@@ -25,14 +17,8 @@ p {
   margin-bottom: 30px;
 }
 
-.order-error {
-  border: 2px solid;
-  padding: 14px 25px 14px 20px;
-  color: #af7d27;
-  border-color: #e0b252;
-}
-
-.order-error p i {
-  font-size: 18px;
-  margin-right: 5px;
+.account-detail-form {
+  padding: 30px 20px;
+  border: 1px dashed #d5d5d5;
+  margin-bottom: 60px;
 }

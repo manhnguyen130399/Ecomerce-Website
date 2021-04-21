@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Models;
 using USER_SERVICE_NET.Services.Communicates;
+using USER_SERVICE_NET.Services.Emails;
 using USER_SERVICE_NET.Services.StorageServices;
 using USER_SERVICE_NET.Utilities;
 using USER_SERVICE_NET.Utilities.Enums;
@@ -15,6 +17,7 @@ using USER_SERVICE_NET.ViewModels.Address;
 using USER_SERVICE_NET.ViewModels.Commons;
 using USER_SERVICE_NET.ViewModels.Commons.Pagging;
 using USER_SERVICE_NET.ViewModels.Customers;
+using USER_SERVICE_NET.ViewModels.Emails;
 using USER_SERVICE_NET.ViewModels.Sellers;
 using USER_SERVICE_NET.ViewModels.Stores;
 
@@ -25,12 +28,20 @@ namespace USER_SERVICE_NET.Services.Users
         private readonly ShopicaContext _context;
         private readonly IConfiguration _configuration;
         private readonly ICommunicateService _communicateService;
+        private readonly IEmailService _emailService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UserService(ShopicaContext context, IConfiguration configuration, ICommunicateService communicateService)
+        public UserService(
+            ShopicaContext context,
+            IConfiguration configuration,
+            ICommunicateService communicateService,
+            IEmailService emailService, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _configuration = configuration;
             _communicateService = communicateService;
+            _emailService = emailService;
+            _webHostEnvironment = webHostEnvironment;
         }
         public async Task<APIResult<string>> Authencate(LoginRequest request)
         {
@@ -125,7 +136,7 @@ namespace USER_SERVICE_NET.Services.Users
                 return new APIResultErrors<string>("Can not found user");
             }
 
-            if(!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password))
+            if(request.LoginMethod == "NORMAL" && !BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password))
             {
                 return new APIResultErrors<string>("Current password is incorrect");
             }
@@ -139,12 +150,12 @@ namespace USER_SERVICE_NET.Services.Users
 
         }
 
-        public async Task<APIResult<TokenResetPassword>> GenerateTokenResetPassword(string email)
+        public async Task<APIResult<string>> GenerateTokenResetPassword(string email)
         {
             var user = await _context.Account.FirstOrDefaultAsync(ac => ac.Username == email);
             if (user == null)
             {
-                return new APIResultErrors<TokenResetPassword>("Can not found user");
+                return new APIResultErrors<string>("Can not found user with this email!");
             }
 
             var token = Helpers.Base64Encode(Helpers.GetCurrentTime());
@@ -154,11 +165,21 @@ namespace USER_SERVICE_NET.Services.Users
 
             await _context.SaveChangesAsync();
 
-            var tokenResetPassword = new TokenResetPassword()
+
+            var redirectUrl = String.Format("{0}/account/reset?token={1}", Constant.ShopicaUrl,token);
+
+            string contentTemplate = Helpers.GetStringFromHtml(_webHostEnvironment.WebRootPath, "ResetPassword.html");
+
+            var emailRequest = new EmailRequest()
             {
-                DatabaseToken = token
+                To = email,
+                Subject = "Reset Password",
+                Content = String.Format(contentTemplate, redirectUrl)
             };
-            return new APIResultSuccess<TokenResetPassword>(tokenResetPassword);
+
+            _emailService.SendEmailAsync(emailRequest);
+
+            return new APIResultSuccess<string>("Send verify code successfully!");
         }
 
         public async Task<APIResult<bool>> ResetPassword(ResetPasswordRequest request)
@@ -166,14 +187,13 @@ namespace USER_SERVICE_NET.Services.Users
             var user = await _context.Account.FirstOrDefaultAsync(ac => ac.Username == request.Email);
             if (user == null)
             {
-                return new APIResultErrors<bool>("Can not found user");
+                return new APIResultErrors<bool>("Can not found user with this email!");
             }
-
             var tokenGenerateTime = Convert.ToInt64(Helpers.Base64Decode(request.DatabaseToken));
             var currentTime = Convert.ToInt64(Helpers.GetCurrentTime());
-            if (currentTime - tokenGenerateTime > Constant.TokenExpireTime)
+            if (currentTime - tokenGenerateTime > Constant.TokenExpireTime) // 10 minutes
             {
-                return new APIResultErrors<bool>("Token is expired");
+                return new APIResultErrors<bool>("Token is expired!");
             }
 
             if (String.Compare(user.TokenResetPassword, request.DatabaseToken) == 0)
@@ -186,15 +206,18 @@ namespace USER_SERVICE_NET.Services.Users
                 return new APIResultSuccess<bool>();
             }
 
-            return new APIResultErrors<bool>("Token is invalid");
+            return new APIResultErrors<bool>("Token is invalid!");
 
         }
 
         public async Task<APIResult<string>> SocialLogin(SocialLoginRequest request)
         {
             string result;
-            var user = await _context.Account.FirstOrDefaultAsync(ac => 
-                                            ac.ProviderKey == request.ProviderKey && ac.Provider == request.Provider);
+            var user = await _context.Account.FirstOrDefaultAsync(
+                    ac => ac.Username == request.Email ||
+                    (ac.ProviderKey == request.ProviderKey && ac.Provider == request.Provider)
+                );
+
             if (user == null)
             {
                 var account = new Account()
@@ -222,6 +245,11 @@ namespace USER_SERVICE_NET.Services.Users
 
                 result = Helpers.CreateToken(account, true, _configuration);
                 return new APIResultSuccess<string>(result);
+            }
+
+            else if (user.ProviderKey == null)
+            {
+                return new APIResultErrors<string>("Email has already been taken. Please reset your password with this email!");
             }
 
             result = Helpers.CreateToken(user, true, _configuration);

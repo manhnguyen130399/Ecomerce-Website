@@ -110,44 +110,34 @@ export class UpdateInfoComponent implements OnInit {
     })
   }
 
-  loadDistricts(provinceID: number, districtSelectId: number) {
+  loadDistricts(provinceID: number) {
     this.ghnService.getDistricts(provinceID).subscribe(res => {
       if (res.code == 200) {
         this.listDistrict = res.data;
-        if (districtSelectId == -1) {
-          this.sellerUpdateForm.controls.district.setValue(this.listDistrict[0])
-        }
-        else {
-          const districtSelect = this.listDistrict.find(x => x.DistrictID == districtSelectId);
-          this.sellerUpdateForm.controls.district.setValue(districtSelect)
-          this.districtIdSelected = -1;
-        }
+        const districtSelect = this.districtIdSelected !== -1 ? this.listDistrict.find(x => x.DistrictID == this.districtIdSelected) : this.listDistrict[0];
+        this.sellerUpdateForm.controls.district.setValue(districtSelect)
+        this.districtIdSelected = -1;
       }
     })
   }
 
-  loadWards(districtID: number, wardSelectId: number) {
+  loadWards(districtID: number,) {
     this.ghnService.getWards(districtID).subscribe(res => {
       if (res.code == 200) {
         this.listWard = res.data;
-        if (wardSelectId == -1) {
-          this.sellerUpdateForm.controls.ward.setValue(this.listWard[0])
-        }
-        else {
-          const wardSelect = this.listWard.find(x => x.WardCode == wardSelectId);
-          this.sellerUpdateForm.controls.ward.setValue(wardSelect)
-          this.wardIdSelected = -1;
-        }
+        const wardSelect = this.wardIdSelected !== -1 ? this.listWard.find(x => x.WardCode == this.wardIdSelected) : this.listWard[0];
+        this.sellerUpdateForm.controls.ward.setValue(wardSelect)
+        this.wardIdSelected = -1;
       }
     })
   }
 
   provinceChange(province: Province): void {
-    this.loadDistricts(province.ProvinceID, this.districtIdSelected);
+    this.loadDistricts(province.ProvinceID);
   }
 
   districtChange(district: District): void {
-    this.loadWards(district.DistrictID, this.wardIdSelected);
+    this.loadWards(district.DistrictID);
   }
 
   submitForm() {

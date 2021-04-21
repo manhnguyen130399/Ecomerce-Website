@@ -67,4 +67,12 @@ export class JwtService {
     }
     return null;
   }
+
+  getSocialLogin(): boolean {
+    this.user = this.storageService.getValue<TokenData>(environment.tokenKey);
+    if (this.user != null) {
+      return this.user.isSocial;
+    }
+    return null;
+  }
 }

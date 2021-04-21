@@ -1,6 +1,9 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { tap, finalize } from 'rxjs/operators';
 import { AuthService } from './../../../core/services/auth/auth.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { existEmailValidator } from '@core/directive/exist-email.directive';
 
 @Component({
   selector: 'app-register-drawer',
@@ -16,6 +19,7 @@ export class RegisterDrawerComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly authService: AuthService,
+    private readonly messageService: NzMessageService,
   ) { }
 
   ngOnInit(): void {
@@ -25,7 +29,7 @@ export class RegisterDrawerComponent implements OnInit {
   buildForm() {
     this.registerForm = this.formBuilder.group({
       fullName: [null, Validators.required],
-      email: [null, Validators.required],
+      email: [null, [Validators.required], existEmailValidator(this.authService)],
       password: [null, Validators.required],
     })
   }
@@ -38,4 +42,26 @@ export class RegisterDrawerComponent implements OnInit {
     this.openLoginDrawerEvent.emit();
   }
 
+  submitForm() {
+    // validate
+    for (const i in this.registerForm.controls) {
+      this.registerForm.controls[i].markAsDirty();
+      this.registerForm.controls[i].updateValueAndValidity();
+    }
+    const data = this.registerForm.value;
+    this.isLoading = true;
+    this.authService.register(data).pipe(
+      tap(result => {
+        if (result.isSuccessed) {
+          this.messageService.success("Register successfully!");
+          this.registerForm.reset();
+          this.openLoginDrawer();
+        }
+        else {
+          this.registerForm.setErrors({ "error": result.message });
+        }
+      }),
+      finalize(() => (this.isLoading = false))
+    ).subscribe();
+  }
 }

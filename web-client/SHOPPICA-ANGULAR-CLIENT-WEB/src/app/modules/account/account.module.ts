@@ -1,4 +1,4 @@
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -13,26 +13,26 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AddressComponent } from './components/addresses/address/address.component';
 import { OrderHistoryComponent } from './components/order-history/order-history.component';
-import { WishListComponent } from './components/wish-list/wish-list.component';
 import { AccountComponent } from './page/account/account.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { AddressFormComponent } from './components/addresses/address-form/address-form.component';
-import { AddressPageComponent } from './components/addresses/address-page/address-page.component';
-
+import { ResetPasswordComponent } from './page/reset-password/reset-password.component';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { AddressComponent } from './components/address/address.component';
+import { LoginComponent } from './page/login/login.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    AddressComponent,
     OrderHistoryComponent,
-    WishListComponent,
     AccountComponent,
     SidebarComponent,
-    AddressFormComponent,
-    AddressPageComponent
+    ResetPasswordComponent,
+    ChangePasswordComponent,
+    AddressComponent,
+    LoginComponent
   ],
   imports: [
     CommonModule,
@@ -44,7 +44,8 @@ import { AddressPageComponent } from './components/addresses/address-page/addres
     NzInputModule,
     NzFormModule,
     NzSelectModule,
-    NzCheckboxModule,
+    NzMessageModule,
+    NzRadioModule,
     NzIconModule.forChild(shareIcons),
     RouterModule.forChild(accountRoutes)
   ]
