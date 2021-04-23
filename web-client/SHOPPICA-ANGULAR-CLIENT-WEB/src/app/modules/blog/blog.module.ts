@@ -1,4 +1,4 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -36,6 +36,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     NzCommentModule,
     NzAvatarModule,
     NzPaginationModule,
+    FormsModule,
     NzInputModule,
     NzFormModule,
     NzButtonModule,

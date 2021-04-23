@@ -1,8 +1,8 @@
 import { Blog } from './../../../../core/model/blog';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BlogService } from '@modules/blog/services/blog.service';
 import { Router } from '@angular/router';
+import { BlogService } from '@core/services/blog/blog.service';
 
 @Component({
   selector: 'app-blog-list',

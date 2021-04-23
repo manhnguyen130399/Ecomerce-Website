@@ -21,7 +21,7 @@
               </div>
               <div class="num-comment">
                 <i nz-icon nzType="comment" nzTheme="outline"></i>
-                2 Comments
+                {{ blog.comments != null ? blog.comments.length : 0 }} Comments
               </div>
             </div>
           </div>
@@ -31,12 +31,11 @@
           </div>
           <div class="blog-tag"></div>
         </div>
-
-        <div class="blog-comment">
-          <app-comments></app-comments>
-        </div>
         <div class="leave-comment">
-          <app-leave-comment></app-leave-comment>
+          <app-leave-comment [blogId]="blog.id" (newComment)="appendComment($event)" ></app-leave-comment>
+        </div>
+        <div class="blog-comment">
+          <app-comments [comments]="blog.comments" ></app-comments>
         </div>
       </div>
 
