@@ -37,9 +37,9 @@ public class CommentResource extends BaseResource {
 
 	}
 
-	@PutMapping(URL)
-	public ResponseEntity<Map<String, Object>> updateComment(@RequestParam final String content,
-			@RequestParam final Integer id) {
+	@PutMapping(URL + "/{id}")
+	public ResponseEntity<Map<String, Object>> updateComment(@RequestBody final String content,
+			@PathVariable final Integer id) {
 		return success(commentService.updateComment(content, id));
 	}
 
@@ -50,8 +50,9 @@ public class CommentResource extends BaseResource {
 	}
 
 	@GetMapping(URL + "/{id}")
-	public ResponseEntity<Map<String, Object>> like(@PathVariable final Integer id) {
-		return success(commentService.likeComment(id));
+	public ResponseEntity<Map<String, Object>> like(@PathVariable final Integer id, @RequestParam final boolean isLike,
+			@RequestParam final int time) {
+		return success(commentService.likeComment(id, isLike, time));
 	}
 
 }

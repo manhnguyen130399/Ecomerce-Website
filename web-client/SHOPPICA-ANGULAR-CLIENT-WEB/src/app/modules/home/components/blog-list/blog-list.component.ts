@@ -16,7 +16,8 @@ export class BlogListComponent implements OnInit {
       author: "Admin",
       createdAt: new Date(),
       title: "The Easiest Way to Break Out on Top",
-      summary:null
+      summary:null,
+      comments: []
     }
   ]
   constructor() { }

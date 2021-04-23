@@ -2,8 +2,8 @@ import { CartItem } from './../../../../core/model/cart-item';
 import { CartItemOptions } from './../../../../shared/modules/cart-item/models/cart-item-options.model';
 import { Blog } from './../../../../core/model/blog';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { BlogService } from '@modules/blog/services/blog.service';
 import { Router } from '@angular/router';
+import { BlogService } from '@core/services/blog/blog.service';
 
 @Component({
   selector: 'app-sidebar',

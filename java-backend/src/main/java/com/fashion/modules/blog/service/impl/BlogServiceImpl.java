@@ -1,5 +1,6 @@
 package com.fashion.modules.blog.service.impl;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,6 +32,9 @@ import com.fashion.modules.blog.model.BlogUpdateReq;
 import com.fashion.modules.blog.model.BlogVM;
 import com.fashion.modules.blog.repository.BlogRepository;
 import com.fashion.modules.blog.service.BlogService;
+import com.fashion.modules.comment.domain.Comment;
+import com.fashion.modules.comment.model.CommentVM;
+import com.fashion.service.IAccountService;
 import com.fashion.service.impl.BaseService;
 import com.google.common.collect.Iterables;
 
@@ -42,6 +46,9 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 
 	@Autowired
 	private JavaMailSender mailSender;
+	
+	@Autowired
+	private IAccountService accountService;
 
 	@Override
 	@Transactional
@@ -75,8 +82,19 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND);
 		}
 		final BlogVM res = mapper.map(blog, BlogVM.class);
+		res.setComments(blog.getComments().stream().filter(i -> i.getEmail() != null)
+				.sorted(Comparator.comparing(Comment::getCreatedAt).reversed()).map(it -> convertToVM(it))
+				.collect(Collectors.toList()));
 		res.setAuthor(blog.getCreatedBy());
 		return res;
+	}
+	
+	private CommentVM convertToVM(final Comment comment) {
+		final CommentVM vm = mapper.map(comment, CommentVM.class);
+		final String email = comment.getEmail();
+		vm.setCustomerName(email);
+		vm.setCustomerImage(accountService.getAccountByUsername(email).getImageUrl());
+		return vm;
 	}
 
 	@Override

@@ -1,3 +1,5 @@
+import { Comment } from "./comment";
+
 export interface Blog {
   id: number;
   summary: string;
@@ -6,4 +8,5 @@ export interface Blog {
   createdAt: Date;
   content: string;
   image: string;
+  comments: Comment[]
 }
