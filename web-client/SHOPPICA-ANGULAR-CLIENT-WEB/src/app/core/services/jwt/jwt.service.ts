@@ -63,7 +63,7 @@ export class JwtService {
   getAccountId(): number {
     this.user = this.storageService.getValue<TokenData>(environment.tokenKey);
     if (this.user != null) {
-      return this.user.nameid;
+      return this.user.accountId;
     }
     return null;
   }

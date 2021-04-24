@@ -1,5 +1,5 @@
 export interface TokenData {
-  nameid: number;
+  accountId: number;
   name: string;
   sub: string;
   role: string;

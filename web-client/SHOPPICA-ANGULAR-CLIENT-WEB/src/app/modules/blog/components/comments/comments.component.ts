@@ -6,6 +6,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { StorageService } from '@core/services/storage/storage.service';
 import { environment } from '@env';
+import { JwtService } from '@core/services/jwt/jwt.service';
 
 @Component({
   selector: 'app-comments',
@@ -25,16 +26,17 @@ export class CommentsComponent implements OnInit {
   content: string;
   value: number = null;
   message = " You can login. Please "
-  constructor(private readonly commentService: CommentService, private readonly authService: AuthService, private readonly messageService: NzMessageService) {
+  accountId = null;
+  constructor(private readonly commentService: CommentService, private readonly authService: AuthService, private readonly messageService: NzMessageService, private readonly jwtService: JwtService) {
   }
 
   ngOnInit(): void {
-
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.comments != undefined) {
       this.subComments = this.comments.slice(this.pageIndex, this.pageSize)
+      this.accountId = this.jwtService.getAccountId();
     }
   }
 
