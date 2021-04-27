@@ -92,4 +92,12 @@
 
     </nz-comment>
   </div>
+
+  <div class="product-footer">
+    <div class="pagination flex jc-center">
+      <nz-pagination [nzHideOnSinglePage]="true" [nzPageIndex]="2" [nzPageSize]="10"
+        (nzPageIndexChange)="changePageIndex($event)" [nzTotal]="100">
+      </nz-pagination>
+    </div>
+  </div>
 </div>

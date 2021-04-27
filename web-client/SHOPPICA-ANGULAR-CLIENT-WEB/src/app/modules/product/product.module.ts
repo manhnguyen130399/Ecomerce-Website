@@ -1,3 +1,6 @@
+import { LoaderModule } from './../../shared/modules/loader/loader.module';
+import { LoaderComponent } from './../../shared/modules/loader/loader.component';
+import { SharedModule } from './../../shared/shared.module';
 import { HeaderPageModule } from './../../shared/modules/header-page/header-page.module';
 import { TabModule } from './../../shared/modules/tab/tab.module';
 import { ProductCarouselModule } from './../../shared/modules/product-carousel/product-carousel.module';
@@ -19,7 +22,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { ToolbarsComponent } from './components/toolbars/toolbars.component';
-import { PaginationComponent } from './components/pagination/pagination.component';
 import { ProductComponent } from './page/product/product.component';
 import { FilterDrawerComponent } from './components/filter-drawer/filter-drawer.component';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
@@ -34,12 +36,11 @@ import { WarrantyShippingComponent } from './components/product-detail/warranty-
 import { DescriptionComponent } from './components/product-detail/description/description.component';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { WishListComponent } from './wish-list/wish-list.component';
+import { WishListComponent } from './page/wish-list/wish-list.component';
 @NgModule({
   declarations: [
     CategoriesComponent,
     ToolbarsComponent,
-    PaginationComponent,
     ProductComponent,
     FilterDrawerComponent,
     ContentComponent,
@@ -64,6 +65,7 @@ import { WishListComponent } from './wish-list/wish-list.component';
     NzCommentModule,
     NzAvatarModule,
     FormsModule,
+    LoaderModule,
     // custom modules
     ProductCarouselModule,
     ProductCardModule,

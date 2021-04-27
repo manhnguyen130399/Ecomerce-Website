@@ -1,8 +1,9 @@
-import { Blog } from './../../../../core/model/blog';
-import { Component, EventEmitter, OnInit, Output, SimpleChanges } from '@angular/core';
+
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BlogService } from '@core/services/blog/blog.service';
-
+import { Blog } from '@core/model/blog/blog';
 @Component({
   selector: 'app-blog-list',
   templateUrl: './blog-list.component.html',

@@ -9,9 +9,17 @@
         </div>
         <div class="content custom-scroll-bar">
           <ul>
-            <li class="color flex al-center" *ngFor="let color of listColor">
+            <li (click)="selectColor(color)" [class.active]="color.colorName.toLowerCase() === selectedColor"
+              class="color flex al-center" *ngFor="let color of listColor">
               <div class="color-border">
-                <span [ngStyle]="{'background-color':color.colorCode}"></span>
+                <span [ngStyle]="{'background-color':color.colorCode}">
+                  <i class="checkbox-icon" nz-icon>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                      viewBox="0 0 24 24">
+                      <path d="M9 20l-7-7 3-3 4 4L19 4l3 3z"></path>
+                    </svg>
+                  </i>
+                </span>
               </div>
               <p>{{color.colorName}}</p>
             </li>
@@ -26,23 +34,15 @@
         </div>
         <div class="content custom-scroll-bar">
           <ul>
-            <li class="price item flex al-center">
+            <li [class.active]="price.priceUrl === selectedPrice" *ngFor="let price of listPrice"
+              (click)="selectPrice(price)" class="price item flex al-center">
               <i class="checkbox-icon" nz-icon>
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
                   <path fill="#ffffff" d="M9 20l-7-7 3-3 4 4L19 4l3 3z"></path>
                 </svg>
               </i>
-              <p>$7 - $50</p>
+              <p>{{price.priceName}}</p>
             </li>
-            <li class="price item flex al-center">
-              <i class="checkbox-icon" nz-icon>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
-                  <path fill="#ffffff" d="M9 20l-7-7 3-3 4 4L19 4l3 3z"></path>
-                </svg>
-              </i>
-              <p>$51 - $100</p>
-            </li>
-
           </ul>
         </div>
       </div>
@@ -54,7 +54,8 @@
         </div>
         <div class="content custom-scroll-bar">
           <ul>
-            <li *ngFor="let size of listSize" class="size item flex al-center">
+            <li (click)="selectSize(size)" [class.active]="size.sizeName.toLowerCase() === selectedSize"
+              *ngFor="let size of listSize" class="size item flex al-center">
               <i class="checkbox-icon" nz-icon>
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
                   <path fill="#ffffff" d="M9 20l-7-7 3-3 4 4L19 4l3 3z"></path>
@@ -73,7 +74,8 @@
         </div>
         <div class="content custom-scroll-bar">
           <ul>
-            <li *ngFor="let brand of listBrand" class="brand item flex al-center">
+            <li (click)="selectBrand(brand)" [class.active]="brand.brandName.toLowerCase() === selectedBrand"
+              *ngFor="let brand of listBrand" class="brand item flex al-center">
               <i class="checkbox-icon" nz-icon>
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24">
                   <path fill="#ffffff" d="M9 20l-7-7 3-3 4 4L19 4l3 3z"></path>

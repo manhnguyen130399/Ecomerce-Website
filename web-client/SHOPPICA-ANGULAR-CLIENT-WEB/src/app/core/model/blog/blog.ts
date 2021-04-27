@@ -1,4 +1,4 @@
-import { Comment } from "./comment";
+import { Comment } from "../comment/comment";
 
 export interface Blog {
   id: number;
@@ -8,5 +8,5 @@ export interface Blog {
   createdAt: Date;
   content: string;
   image: string;
-  comments: Comment[]
+  comments: Comment[];
 }

@@ -1,5 +1,5 @@
-import { Cart } from './../../../../core/model/cart';
-import { Product } from '@core/model/product';
+import { Cart } from '../../../../core/model/cart/cart';
+import { Product } from '@core/model/product/product';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit } from '@angular/core';
 

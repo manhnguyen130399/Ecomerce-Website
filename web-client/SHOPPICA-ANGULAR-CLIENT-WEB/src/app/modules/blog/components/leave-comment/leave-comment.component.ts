@@ -2,7 +2,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from '@core/services/auth/auth.service';
 import { CommentService } from '@core/services/comment/comment.service';
-import { Comment } from '@core/model/comment';
+import { Comment } from '@core/model/comment/comment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({

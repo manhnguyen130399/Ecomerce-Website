@@ -1,5 +1,5 @@
 import { StepsService } from './../../services/steps.service';
-import { Cart } from './../../../../core/model/cart';
+import { Cart } from '../../../../core/model/cart/cart';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({

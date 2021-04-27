@@ -1,5 +1,5 @@
-import { CartItem } from '@core/model/cart-item';
 import { Component, OnInit } from '@angular/core';
+import { CartItem } from '@core/model/cart/cart-item';
 
 @Component({
   selector: 'app-checkout',

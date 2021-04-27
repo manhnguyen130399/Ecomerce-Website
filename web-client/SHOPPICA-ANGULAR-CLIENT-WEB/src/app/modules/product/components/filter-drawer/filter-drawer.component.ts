@@ -1,7 +1,12 @@
-import { Brand } from './../../../../core/model/brand';
-import { Size } from '@core/model/size';
-import { Color } from './../../../../core/model/color';
+import { Price } from './../../../../core/model/product/price';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ColorService } from './../../../../core/services/color/color.service';
+import { Brand } from '../../../../core/model/brand/brand';
+import { Size } from '@core/model/size/size';
+import { Color } from '../../../../core/model/color/color';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BrandService } from '@core/services/brand/brand.service';
+import { SizeService } from '@core/services/size/size.service';
 
 @Component({
   selector: 'app-filter-drawer',
@@ -13,90 +18,96 @@ export class FilterDrawerComponent implements OnInit {
   @Input() isShowFilter = false;
   @Output() closeFilterEvent = new EventEmitter<boolean>();
 
-  listColor: Color[] = [
-    {
-      id: 1,
-      colorName: "Green",
-      colorCode: "Green"
-    },
-    {
-      id: 2,
-      colorName: "Gray",
-      colorCode: "Gray"
-    },
-    {
-      id: 3,
-      colorName: "Pink",
-      colorCode: "Pink"
-    },
-    {
-      id: 4,
-      colorName: "Blue",
-      colorCode: "Blue"
-    },
-    {
-      id: 5,
-      colorName: "Brown",
-      colorCode: "Brown"
-    },
-    {
-      id: 6,
-      colorName: "While",
-      colorCode: "While"
-    },
-  ]
+  listColor: Color[] = []
 
-  listSize: Size[] = [
-    {
-      id: 1,
-      sizeName: "M"
-    },
-    {
-      id: 2,
-      sizeName: "S"
-    },
-    {
-      id: 3,
-      sizeName: "L"
-    },
-    {
-      id: 4,
-      sizeName: "XL"
-    },
-    {
-      id: 5,
-      sizeName: "XXL"
-    },
-  ]
+  listSize: Size[] = [];
 
-  listBrand: Brand[] = [
+  listBrand: Brand[] = [];
+
+  listPrice: Price[] = [
     {
-      id: 1,
-      brandName: "Nike"
+      priceName: '$7 - $50',
+      priceUrl: '7-50',
     },
     {
-      id: 2,
-      brandName: "H&M"
+      priceName: '$51 - $100',
+      priceUrl: '51-100',
     },
-    {
-      id: 3,
-      brandName: "Kalles"
-    },
-    {
-      id: 4,
-      brandName: "Monki"
-    },
-    {
-      id: 5,
-      brandName: "Adidas"
-    },
-  ]
-  constructor() { }
+  ];
+
+  selectedColor: string;
+  selectedSize: string;
+  selectedBrand: string;
+  selectedPrice: string;
+
+  constructor(
+    private readonly brandService: BrandService,
+    private readonly colorService: ColorService,
+    private readonly sizeService: SizeService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
+    this.loadAllBrand();
+    this.loadAllColor();
+    this.loadAllSize();
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.selectedColor = params.color;
+      this.selectedSize = params.size;
+      this.selectedBrand = params.brand;
+      this.selectedPrice = params.price;
+    });
   }
 
   closeMenu() {
     this.closeFilterEvent.emit();
+  }
+
+  loadAllBrand() {
+    this.brandService.getAllBrand().subscribe((res) => {
+      if (res.code == "OK") {
+        this.listBrand = res.data;
+      }
+    });
+  }
+
+
+  loadAllSize() {
+    this.sizeService.getAllSize().subscribe((res) => {
+      if (res.code == "OK") {
+        this.listSize = res.data;
+      }
+    });
+  }
+
+
+  loadAllColor() {
+    this.colorService.getAllColor().subscribe((res) => {
+      if (res.code == "OK") {
+        this.listColor = res.data;
+      }
+    });
+  }
+
+  selectColor(color: Color) {
+    this.closeMenu();
+    this.router.navigate(["/product/collection/all"], { queryParams: { color: color.colorName.toLowerCase() }, queryParamsHandling: 'merge' })
+  }
+
+  selectSize(size: Size) {
+    this.closeMenu();
+    this.router.navigate(["/product/collection/all"], { queryParams: { size: size.sizeName.toLowerCase() }, queryParamsHandling: 'merge' })
+  }
+
+  selectBrand(brand: Brand) {
+    this.closeMenu();
+    this.router.navigate(["/product/collection/all"], { queryParams: { brand: brand.brandName.toLowerCase() }, queryParamsHandling: 'merge' })
+  }
+
+  selectPrice(price: Price) {
+    this.closeMenu();
+    this.router.navigate(["/product/collection/all"], { queryParams: { price: price.priceUrl }, queryParamsHandling: 'merge' })
   }
 }

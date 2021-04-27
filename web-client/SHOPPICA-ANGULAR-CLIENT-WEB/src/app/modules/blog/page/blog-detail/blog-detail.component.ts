@@ -1,10 +1,9 @@
 import { formatDistance } from 'date-fns';
-import { Blog } from '@core/model/blog';
+import { Blog } from '@core/model/blog/blog';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Comment } from '@core/model/comment';
+import { Comment } from '@core/model/comment/comment';
 import { BlogService } from '@core/services/blog/blog.service';
-
 @Component({
   selector: 'app-blog-detail',
   templateUrl: './blog-detail.component.html',

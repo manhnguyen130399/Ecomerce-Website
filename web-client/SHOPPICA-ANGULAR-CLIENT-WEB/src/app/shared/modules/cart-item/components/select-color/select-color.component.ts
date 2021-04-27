@@ -1,4 +1,4 @@
-import { Color } from './../../../../../core/model/color';
+import { Color } from '../../../../../core/model/color/color';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({

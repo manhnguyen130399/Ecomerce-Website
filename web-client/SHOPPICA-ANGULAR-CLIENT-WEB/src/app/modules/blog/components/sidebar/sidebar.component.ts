@@ -1,10 +1,10 @@
-import { CartItem } from './../../../../core/model/cart-item';
-import { CartItemOptions } from './../../../../shared/modules/cart-item/models/cart-item-options.model';
-import { Blog } from './../../../../core/model/blog';
+
+import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { BlogService } from '@core/services/blog/blog.service';
-
+import { CartItem } from '@core/model/cart/cart-item';
+import { Blog } from '@core/model/blog/blog';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',

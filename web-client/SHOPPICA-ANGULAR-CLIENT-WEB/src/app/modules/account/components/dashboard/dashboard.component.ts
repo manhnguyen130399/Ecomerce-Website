@@ -2,7 +2,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { tap, finalize } from 'rxjs/operators';
-import { Customer } from '@core/model/customer';
+import { Customer } from '@core/model/user/customer';
 import { AuthService } from '@core/services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 

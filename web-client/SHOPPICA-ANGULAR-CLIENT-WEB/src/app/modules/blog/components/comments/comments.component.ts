@@ -1,6 +1,6 @@
 import { formatDistance } from 'date-fns';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { Comment } from '@core/model/comment';
+import { Comment } from '@core/model/comment/comment';
 import { CommentService } from '@core/services/comment/comment.service';
 import { AuthService } from '@core/services/auth/auth.service';
 import { NzMessageService } from 'ng-zorro-antd/message';

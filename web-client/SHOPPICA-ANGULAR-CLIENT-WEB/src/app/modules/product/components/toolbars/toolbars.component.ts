@@ -11,6 +11,8 @@ export class ToolbarsComponent implements OnInit {
   prevWidth = window.innerWidth;
   @Output() openFilterDrawerEvent = new EventEmitter<boolean>();
   @Output() changeNumberProductEvent = new EventEmitter<number>();
+  @Output() sortChangeValueEvent = new EventEmitter<string>();
+  selectedProvince: string;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -25,6 +27,7 @@ export class ToolbarsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
   openFilterDrawer() {
@@ -36,4 +39,7 @@ export class ToolbarsComponent implements OnInit {
     this.changeNumberProductEvent.emit(numProductOnePage);
   }
 
+  provinceChange(value: string): void {
+    this.sortChangeValueEvent.emit(value);
+  }
 }

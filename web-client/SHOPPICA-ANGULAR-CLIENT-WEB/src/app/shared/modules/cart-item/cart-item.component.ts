@@ -1,6 +1,6 @@
 import { CartItemOptions } from './models/cart-item-options.model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CartItem } from '@core/model/cart-item';
+import { CartItem } from '@core/model/cart/cart-item';
 
 @Component({
   selector: 'app-cart-item',

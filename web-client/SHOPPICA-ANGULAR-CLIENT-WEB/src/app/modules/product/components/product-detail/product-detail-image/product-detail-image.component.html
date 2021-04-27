@@ -1,9 +1,9 @@
 <div class="image">
   <owl-carousel-o [options]="customOptions">
-    <ng-template style="width: 100%;" [dotContent]="'<img  src=' + image +'>'" *ngFor="let image of listImage"
+    <ng-template style="width: 100%;" [dotContent]="'<img  src=' + image.image +'>'" *ngFor="let image of listImage"
       carouselSlide>
       <div class="column">
-        <img [src]="image">
+        <img [src]="image.image">
       </div>
     </ng-template>
   </owl-carousel-o>

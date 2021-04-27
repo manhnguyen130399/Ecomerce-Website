@@ -1,3 +1,4 @@
+import { ProductImage } from './../../../../../core/model/product/product-image';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, Input, OnInit } from '@angular/core';
 import { NzImage, NzImageService } from 'ng-zorro-antd/image';
@@ -9,7 +10,7 @@ import { NzImage, NzImageService } from 'ng-zorro-antd/image';
 })
 export class ProductDetailImageComponent implements OnInit {
 
-  @Input() listImage: string[] = [];
+  @Input() listImage: ProductImage[] = [];
   listImageZoom: NzImage[] = [];
   constructor(private nzImageService: NzImageService) { }
 
@@ -36,7 +37,7 @@ export class ProductDetailImageComponent implements OnInit {
   enLargeImage() {
     this.listImage.forEach(x => {
       this.listImageZoom.push({
-        src: x,
+        src: x.image,
         height: '700px',
       })
     });

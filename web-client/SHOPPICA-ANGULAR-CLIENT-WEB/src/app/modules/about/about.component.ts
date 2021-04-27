@@ -1,6 +1,6 @@
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit } from '@angular/core';
-import { Comment } from '@core/model/comment';
+import { Comment } from '@core/model/comment/comment';
 
 @Component({
   selector: 'app-about',

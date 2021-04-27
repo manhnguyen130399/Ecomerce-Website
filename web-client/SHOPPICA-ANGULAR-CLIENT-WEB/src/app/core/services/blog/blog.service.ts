@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseResponse } from '@core/model/base-response';
-import { Blog } from '@core/model/blog';
+import { Blog } from '@core/model/blog/blog';
 import { environment } from '@env';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class BlogService {
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) { }
 
   getAllBlog(pageIndex: number, pageSize: number, type: string) {
     let params = new HttpParams()

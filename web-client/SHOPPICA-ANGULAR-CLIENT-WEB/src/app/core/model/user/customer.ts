@@ -1,4 +1,5 @@
-import { Address } from './address';
+import { Address } from '@core/model/address/address';
+
 export interface Customer {
   customerName: string;
   address: Address;

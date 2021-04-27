@@ -25,7 +25,13 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 
 @NgModule({
-  declarations: [SidebarComponent, BlogListComponent, BlogDetailComponent, CommentsComponent, LeaveCommentComponent],
+  declarations: [
+    SidebarComponent,
+    BlogListComponent,
+    BlogDetailComponent,
+    CommentsComponent,
+    LeaveCommentComponent
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

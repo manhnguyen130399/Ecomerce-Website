@@ -23,7 +23,7 @@ namespace ORDER_SERVICE_NET.Utilities
         public const string PENDING = "PENDING";
         public const string DELIVER = "DELIVER";
         public const string COMPLETE = "COMPLETE";
-        public const string CANCLE = "CANCLE";
+        public const string CANCEL = "CANCEL";
 
 
 

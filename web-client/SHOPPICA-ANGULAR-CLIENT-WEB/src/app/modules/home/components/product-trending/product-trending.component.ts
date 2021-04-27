@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Product } from '@core/model/product';
+import { Product } from '@core/model/product/product';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NzCarouselComponent } from 'ng-zorro-antd/carousel';
 import { OwlOptions } from 'ngx-owl-carousel-o';
