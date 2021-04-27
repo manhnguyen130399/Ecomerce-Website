@@ -58,6 +58,7 @@ export class CategoryModalComponent extends BaseModalComponent<Category> impleme
 
   handleChange = (info: NzUploadChangeParam) => {
     this.isHaveFile = false;
+    console.log(this.fileList);
     this.fileList.forEach(x => {
       if (x.status === 'done') {
         this.isHaveFile = true;

@@ -1,4 +1,4 @@
-import { Blog } from './core/model/blog';
+import { Blog } from './core/model/blog/blog';
 import { StorageService } from './core/services/storage/storage.service';
 import { HomeComponent } from './modules/home/page/home/home.component';
 import { Routes } from '@angular/router';
@@ -53,5 +53,5 @@ export const routes: Routes = [
     pathMatch: 'full',
     redirectTo: '/home',
   },
-  { path: '**', redirectTo: '/auth/login', pathMatch: 'full' }
+  { path: '**', redirectTo: '/home', pathMatch: 'full' }
 ];

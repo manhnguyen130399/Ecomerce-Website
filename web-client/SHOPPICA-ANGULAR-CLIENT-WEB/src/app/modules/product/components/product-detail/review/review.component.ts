@@ -26,4 +26,8 @@ export class ReviewComponent implements OnInit {
     this.dislikes = 1;
   }
 
+  changePageIndex(data) {
+
+  }
+
 }

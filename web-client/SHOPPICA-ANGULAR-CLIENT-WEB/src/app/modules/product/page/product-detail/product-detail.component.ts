@@ -1,5 +1,8 @@
+import { finalize } from 'rxjs/operators';
+import { ProductService } from './../../../../core/services/product/product.service';
+import { ActivatedRoute } from '@angular/router';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { Product } from './../../../../core/model/product';
+import { Product } from '../../../../core/model/product/product';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,61 +12,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductDetailComponent implements OnInit {
 
-  constructor() { }
+  productId: number;
+  product: Product;
+  isLoading = true;
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly productService: ProductService) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(pa => {
+      this.productId = pa.productId;
+      this.isLoading = true;
+      this.productService.getProductById(this.productId).pipe(
+        finalize(() => this.isLoading = false)
+      ).subscribe(res => {
+        if (res.code == "OK") {
+          this.product = res.data;
+        }
+      })
+    });
   }
 
-  listImages = [
-    "/assets/images/products/product-5.jpg",
-    "/assets/images/products/product-6.jpg",
-    "/assets/images/products/product-7.jpg"
-  ]
 
-  product = {
-    id: 1,
-    productName: "Cream women pants",
-    price: 35,
-    image: "/assets/images/products/product-4.jpg",
-    sizes: [
-      {
-        id: 1,
-        sizeName: "M"
-      },
-      {
-        id: 2,
-        sizeName: "L"
-      },
-      {
-        id: 3,
-        sizeName: "XL"
-      }
-    ],
-    colors: [
-      {
-        id: 1,
-        colorName: "Red",
-        colorCode: "#ff0000",
-      },
-      {
-        id: 2,
-        colorName: "Gray",
-        colorCode: "#ccc"
-      },
-      {
-        id: 3,
-        colorName: "yellow",
-        colorCode: "#e1eb78"
-      }
-    ],
-    isNew: true,
-    discount: 20
-  };
   listProduct: Product[] = [
-    this.product,
-    this.product,
-    this.product,
-    this.product,
+
   ]
 
   customOptions: OwlOptions = {

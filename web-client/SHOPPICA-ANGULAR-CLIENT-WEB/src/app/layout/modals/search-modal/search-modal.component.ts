@@ -1,7 +1,7 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
-import { CartItem } from '@core/model/cart-item';
-import { Product } from '@core/model/product';
+import { CartItem } from '@core/model/cart/cart-item';
+import { Product } from '@core/model/product/product';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({

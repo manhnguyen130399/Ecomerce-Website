@@ -1,10 +1,13 @@
 <div class="container">
   <div class="category-sections custom-scroll-bar">
     <ul *ngIf="listCategory.length > 0" class="flex jc-center">
-      <li (click)="selectCategory(category)" [class.active]="selectedId === category.id" class="text-hover"
+      <li [routerLink]="['/product','collection',category.categoryName.toLowerCase()]" [routerLinkActiveOptions]="{exact:
+        true}" (click)="selectCategory(category)" [routerLinkActive]="['active']" class="text-hover"
         *ngFor="let category of listCategory">
         {{category.categoryName}}</li>
     </ul>
   </div>
-
+</div>
+<div *ngIf="categorySelected !== undefined">
+  <app-header-page [image]="categorySelected.image" [pageName]="categorySelected.categoryName"></app-header-page>
 </div>

@@ -140,5 +140,20 @@ namespace ORDER_SERVICE_NET.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("GetBestSeller")]
+        public async Task<IActionResult> GetBestSeller(int storeId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _orderService.GetBestSeller(storeId);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }

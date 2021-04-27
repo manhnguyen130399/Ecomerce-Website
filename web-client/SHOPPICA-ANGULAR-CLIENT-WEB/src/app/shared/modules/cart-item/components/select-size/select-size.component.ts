@@ -1,4 +1,4 @@
-import { Size } from '@core/model/size';
+import { Size } from '@core/model/size/size';
 import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 @Component({

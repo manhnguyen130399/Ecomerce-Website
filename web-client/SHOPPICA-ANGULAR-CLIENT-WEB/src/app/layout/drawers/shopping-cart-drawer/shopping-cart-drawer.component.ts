@@ -1,6 +1,6 @@
-import { CartItemOptions } from './../../../shared/modules/cart-item/models/cart-item-options.model';
-import { CartItem } from './../../../core/model/cart-item';
-import { AuthService } from './../../../core/services/auth/auth.service';
+import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
+import { CartItem } from '@core/model/cart/cart-item';
+import { AuthService } from '@core/services/auth/auth.service';
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 
 @Component({

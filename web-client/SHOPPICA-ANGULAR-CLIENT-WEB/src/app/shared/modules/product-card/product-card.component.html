@@ -4,7 +4,9 @@
       <span class="new flex al-center jc-center" *ngIf="product.isNew && product.discount == 0">New</span>
       <span class="discount flex al-center jc-center" *ngIf="product.discount > 0">-{{product.discount}}%</span>
     </span>
-    <div class="background-image" [ngStyle]="{'background-image':'url('+product.image+')'}"></div>
+    <div [routerLink]="'/product/detail/' + product.id" class="background-image"
+      [ngStyle]="{'background-image':'url('+image+')'}">
+    </div>
     <div class="hover-btn flex fd-column">
       <button>
         <span>Quick View</span>
@@ -26,8 +28,8 @@
     </div>
   </div>
   <div class="product-info">
-    <p class="product-name text-hover">{{product.productName}}</p>
+    <p [routerLink]="'/product/detail/'+ product.id" class="product-name text-hover">{{product.productName}}</p>
     <span class="product-price">{{product.price |currency}}</span>
-    <app-select-color [showTitle]="false" [(listColor)]="product.colors"></app-select-color>
+    <app-select-color [showTitle]="false" [(listColor)]="listColor"></app-select-color>
   </div>
 </div>

@@ -353,6 +353,9 @@ ul {
 }
 
 /* product - detail */
+.owl-theme .owl-nav.disabled + .owl-dots {
+  margin-top: 0;
+}
 
 .product-detail-image .owl-theme .owl-dots {
   position: absolute;

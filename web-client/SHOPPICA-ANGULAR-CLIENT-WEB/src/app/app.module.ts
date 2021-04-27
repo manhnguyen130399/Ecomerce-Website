@@ -1,3 +1,4 @@
+import { LoaderModule } from './shared/modules/loader/loader.module';
 import { BlogCardModule } from './shared/modules/blog-card/blog-card.module';
 import { CartItemModule } from './shared/modules/cart-item/cart-item.module';
 import { JwtService } from './core/services/jwt/jwt.service';
@@ -49,17 +50,21 @@ registerLocaleData(en);
     QuickShopComponent,
     SearchDrawerComponent,
     SearchModalComponent,
+
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    LoaderModule,
     CartItemModule,
     CoreModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes,
+      { scrollPositionRestoration: 'top' }
+    ),
     //socialLogin
     SocialLoginModule,
     // jwt

@@ -15,6 +15,7 @@ export class RegisterDrawerComponent implements OnInit {
   @Output() closeRegisterDrawerEvent = new EventEmitter<boolean>();
   @Output() openLoginDrawerEvent = new EventEmitter<boolean>();
   registerForm: FormGroup;
+  a: string;
   isLoading = false;
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -48,7 +49,10 @@ export class RegisterDrawerComponent implements OnInit {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
     }
-    const data = this.registerForm.value;
+    const data = {
+      ...this.registerForm.value,
+      imageUrl: `https://ui-avatars.com/api/?background=random&name=${this.registerForm.controls.fullName.value.trimStart().substring(0, 1)}`
+    }
     this.isLoading = true;
     this.authService.register(data).pipe(
       tap(result => {

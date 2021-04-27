@@ -204,6 +204,63 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
             return new APIResultSuccess<List<OrderView>>(data);
         }
 
+        public async Task<APIResult<BestSeller>> GetBestSeller(int storeId)
+        {
+            var listOrder = storeId != 0 ? from od in _context.OrderDetail.Include(o => o.Order)
+                                           where od.Order.StoreId == storeId
+                                           group od by od.ProductDetailId into r
+                                           select new { produceDetailId = r.Key, quanity = r.Sum(x => x.Quantity) }
+                                        : from od in _context.OrderDetail.Include(o => o.Order)
+                                          group od by od.ProductDetailId into r
+                                          select new { produceDetailId = r.Key, quanity = r.Sum(x => x.Quantity) };
+            var orderState = from o in _context.Orders
+                             group o by o.State into r
+                             select new { state = r.Key, quantity = r.Count() };
+
+
+            var listProductDetail = await listOrder
+                .OrderByDescending(x => x.quanity)
+                .Select(x => new ProductDetailQuantity()
+                {
+                    ProductDetailId = x.produceDetailId,
+                    Quantity = x.quanity
+                }).ToListAsync();
+
+
+            var listAllState = new List<OrderState>()
+            {
+                new OrderState() {State = Constant.PENDING, Quantity = 0},
+                new OrderState() {State = Constant.DELIVER, Quantity = 0},
+                new OrderState() {State = Constant.COMPLETE, Quantity = 0},
+                new OrderState() {State = Constant.CANCEL, Quantity = 0},
+            };
+
+            var listState = await orderState
+                .Select(x => new OrderState()
+                {
+                    State = x.state,
+                    Quantity = x.quantity
+
+                }).ToListAsync();
+
+
+            listAllState.ForEach(item =>
+            {
+                var state = listState.FirstOrDefault(x => x.State == item.State);
+                item.Quantity = state == null ? 0 : state.Quantity;
+            });
+
+            var result = new BestSeller()
+            {
+                OrderStates = listAllState,
+                ProductDetails = listProductDetail
+
+            };
+
+            return new APIResultSuccess<BestSeller>(result);
+
+        }
+
         public async Task<APIResult<List<OrderView>>> GetByDate(OrderRequestByDate request)
         {
             var listOrder = from o in _context.Orders.Include(o => o.OrderDetail)

@@ -51,6 +51,7 @@ export class ColorModalComponent
   cancelModal() {
     super.cancel(this.cancelModalEvent);
   }
+  
   updateColor(event) {
     this.colorCode = event;
   }

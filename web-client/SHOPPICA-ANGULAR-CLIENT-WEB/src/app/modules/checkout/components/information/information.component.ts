@@ -1,6 +1,6 @@
 import { StepsService } from './../../services/steps.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CartItem } from './../../../../core/model/cart-item';
+import { CartItem } from '@core/model/cart/cart-item';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({

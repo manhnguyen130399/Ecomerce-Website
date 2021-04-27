@@ -10,6 +10,7 @@
 
 .category-sections ul li {
   padding: 10px 15px;
+  outline: none;
 }
 
 .category-sections ul li.active {

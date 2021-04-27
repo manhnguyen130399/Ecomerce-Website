@@ -16,7 +16,7 @@ import { NgZorroAntdModule } from './ng-zorro-antd.module';
   ],
   exports: [
     NgZorroAntdModule,
-    CarouselModule
+    CarouselModule,
   ]
 })
 export class SharedModule { }
