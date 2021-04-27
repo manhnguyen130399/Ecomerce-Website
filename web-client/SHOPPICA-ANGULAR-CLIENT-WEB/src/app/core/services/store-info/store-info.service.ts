@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseResponse } from '@core/model/base-response';
-import { Store } from '@core/model/store';
+import { Store } from '@core/model/store/store';
 import { environment } from '@env';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';

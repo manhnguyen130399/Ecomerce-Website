@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@core/model/store';
+import { Store } from '@core/model/store/store';
 import { ShareService } from '@core/services/share/share.service';
 import { StoreInfoService } from '@core/services/store-info/store-info.service';
 

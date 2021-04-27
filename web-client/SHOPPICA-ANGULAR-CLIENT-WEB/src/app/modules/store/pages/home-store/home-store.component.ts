@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@core/model/store';
+import { Store } from '@core/model/store/store';
 
 @Component({
   selector: 'app-home-store',
