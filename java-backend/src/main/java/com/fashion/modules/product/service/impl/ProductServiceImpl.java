@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +23,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.beust.jcommander.internal.Lists;
 import com.beust.jcommander.internal.Maps;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.ErrorMessage;
+import com.fashion.commons.constants.RestURL;
+import com.fashion.commons.enums.AccountType;
 import com.fashion.commons.enums.SortType;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.brand.domain.Brand;
@@ -37,9 +45,12 @@ import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.category.repository.CategoryRepository;
 import com.fashion.modules.color.domain.Color;
 import com.fashion.modules.color.repository.ColorRepository;
+import com.fashion.modules.comment.domain.Comment;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.product.domain.ProductImage;
+import com.fashion.modules.product.model.BestSellerData;
+import com.fashion.modules.product.model.BestSellerRes;
 import com.fashion.modules.product.model.ProductDetailVM;
 import com.fashion.modules.product.model.ProductFilterRequest;
 import com.fashion.modules.product.model.ProductImageVM;
@@ -79,7 +90,10 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Autowired
 	private ProductImageRepository imageRepo;
-
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
 	private static final String PRODUCT_NAME = "Product Name";
 	private static final String PRICE = "Price";
 	private static final String COLOR = "Color";
@@ -133,15 +147,16 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			}).collect(Collectors.toSet()));
 		}
 		productRepo.save(product);
-		return convertToVM(product);
+		return convertProductToVM(product);
 	}
 
-	private ProductVM convertToVM(final Product product) {
+	private ProductVM convertProductToVM(final Product product) {
 		final ProductVM vm = new ProductVM();
 		vm.setId(product.getId());
 		final Brand brand = product.getBrand();
 		vm.setBrandName(brand.getBrandName());
 		final Category category = product.getCategory();
+		vm.setStoreId(product.getStore().getId());
 		vm.setCategoryName(category.getCategoryName());
 		vm.setBrandId(brand.getId());
 		vm.setCategoryId(category.getId());
@@ -155,13 +170,19 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			return new ProductDetailVM(size.getId(), size.getSizeName(), color.getId(), color.getColorName(),
 					color.getcolorCode(), it.getQuantity());
 		}).collect(Collectors.toSet()));
+		vm.setComments(product.getComments().stream().filter(i -> i.getEmail() != null)
+				.sorted(Comparator.comparing(Comment::getCreatedAt).reversed()).map(it -> convertToVM(it))
+				.collect(Collectors.toList()));
 		return vm;
 	}
 
 	@Override
 	@Transactional
 	public ProductVM findById(final Integer id) {
-		return convertToVM(productRepo.findOneProductByIdAndStore(id, getCurrentStoreId()));
+		return convertProductToVM(getUserContext() != null && getCurrentStoreId() != null
+				&& getUserContext().getType() == AccountType.SELLER
+						? productRepo.findOneProductByIdAndStore(id, getCurrentStoreId())
+						: productRepo.getOne(id));
 	}
 
 	@Override
@@ -200,7 +221,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		product.setBrand(brandRepo.findOneByIdAndStoreId(req.getBrandId(), storeId));
 		product.setCategory(category);
 		productRepo.save(product);
-		return convertToVM(product);
+		return convertProductToVM(product);
 	}
 
 	@Override
@@ -208,7 +229,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	public Page<ProductVM> getAllProductByStore(final Integer page, final Integer pageSize, final ProductReq req) {
 		if (req == null) {
 			return productRepo.findAllProductStore(getCurrentStoreId(), PageRequest.of(page, pageSize))
-					.map(it -> convertToVM(it));
+					.map(it -> convertProductToVM(it));
 		}
 		return filterProduct(page, pageSize, req);
 	}
@@ -239,13 +260,13 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	public Page<ProductVM> searchProductByKeywordAndStore(final String keyword, final Integer page,
 			final Integer pageSize) {
 		return productRepo.searchByKeywordAndStore(keyword, getCurrentStoreId(), PageRequest.of(page, pageSize))
-				.map(it -> convertToVM(it));
+				.map(it -> convertProductToVM(it));
 	}
 
 	@Override
 	@Transactional
 	public Page<ProductVM> filterProduct(final Integer page, final Integer pageSize, final ProductReq req) {
-		return productRepo.filterProduct(page, pageSize, getCurrentStoreId(), req).map(it -> convertToVM(it));
+		return productRepo.filterProduct(page, pageSize, getCurrentStoreId(), req).map(it -> convertProductToVM(it));
 	}
 
 	@Override
@@ -352,7 +373,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		final List<Product> res = products.stream()
 				.map(it -> buildProductInternal(it, colorPair, sizePair, categoryPair, brandPair))
 				.collect(Collectors.toList());
-		return productRepo.saveAll(res).stream().map(it -> convertToVM(it)).collect(Collectors.toList());
+		return productRepo.saveAll(res).stream().map(it -> convertProductToVM(it)).collect(Collectors.toList());
 	}
 
 	private Product buildProductInternal(final ProductRes input, final Pair<List<Color>, Set<String>> colorPair,
@@ -393,7 +414,28 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@Transactional
 	public Page<ProductVM> getAllOrFilterProduct(final ProductFilterRequest req, final Integer page,
 			final Integer pageSize) {
-		return productRepo.filterProduct(req, page, pageSize).map(it -> convertToVM(it));
+		return productRepo.filterProduct(req, page, pageSize).map(it -> convertProductToVM(it));
+	}
+
+	@Override
+	@Transactional
+	public Page<ProductVM> getBestSellerProductByStore(final Integer storeId, final Integer page,
+			final Integer pageSize) {
+		final BestSellerData data = getBestSellerByStore(storeId);
+		return productRepo
+				.getBestSeller(storeId, page, pageSize, data.getProductDetails().stream()
+						.map(it -> it.getProductDetailId()).collect(Collectors.toSet()))
+				.map(it -> convertProductToVM(it));
+	}
+
+	private BestSellerData getBestSellerByStore(final Integer storeId) {
+		final String uri = Constants.ORDER_URL + RestURL.GET_BESTSELLER_BY_STORE;
+		final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(uri);
+		if (storeId != null) {
+			builder.queryParam("storeId", storeId);
+		}
+		return restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
+				new HttpEntity<String>(new HttpHeaders()), BestSellerRes.class).getBody().getData();
 	}
 
 }

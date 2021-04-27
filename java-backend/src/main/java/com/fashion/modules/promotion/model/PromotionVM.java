@@ -1,6 +1,7 @@
 package com.fashion.modules.promotion.model;
 
 import com.fashion.modules.store.model.StoreVM;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class PromotionVM extends PromotionRequest {
 
@@ -18,6 +19,7 @@ public class PromotionVM extends PromotionRequest {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public StoreVM getStore() {
 		return store;
 	}

@@ -1,6 +1,7 @@
 package com.fashion.modules.product.repository.custom.impl;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -86,7 +87,7 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 	@Override
 	public Page<Product> filterProduct(final ProductFilterRequest req, final Integer page, final Integer pageSize) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append(" SELECT p ");
+		builder.append(" SELECT DISTINCT p ");
 		builder.append(" FROM Product p ");
 		builder.append(" LEFT JOIN FETCH p.category cate ");
 		builder.append(" LEFT JOIN FETCH p.brand b ");
@@ -121,8 +122,12 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		}
 		final List<BigDecimal> prices = req.getPrices();
 		final boolean hasPrices = CollectionUtils.isNotEmpty(prices);
+		BigDecimal min = BigDecimal.ZERO;
+		BigDecimal max = BigDecimal.ZERO;
 		if (hasPrices) {
-			builder.append(" AND p.price IN (:prices)");
+			min = prices.get(0).compareTo(prices.get(1)) == 1 ? prices.get(1) : prices.get(0);
+			max = prices.get(0).compareTo(prices.get(1)) == 1 ? prices.get(0) : prices.get(1);
+			builder.append(" AND p.price >= (:min) AND p.price <= (:max) ");
 		}
 		builder.append(buildSortOrder(req.getSortType()));
 		final TypedQuery<Product> query = getEm().createQuery(builder.toString(), Product.class);
@@ -142,7 +147,8 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 			query.setParameter("sizeNames", sizeNames);
 		}
 		if (hasPrices) {
-			query.setParameter("prices", prices);
+			query.setParameter("min", min);
+			query.setParameter("max", max);
 		}
 		final List<Product> rs = query.getResultList();
 		if (page != null && pageSize != null) {
@@ -175,6 +181,36 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		default:
 			return " ORDER BY p.id ";
 		}
+	}
+
+	@Override
+	public Page<Product> getBestSeller(final Integer storeId, final Integer page, final Integer pageSize,
+			final Collection<Integer> ids) {
+		final StringBuilder builder = new StringBuilder();
+		builder.append(" SELECT DISTINCT p ");
+		builder.append(" FROM Product p ");
+		builder.append(" LEFT JOIN p.productDetails de ");
+		boolean hasStoreId = storeId != null;
+		if (hasStoreId) {
+			builder.append(" LEFT JOIN p.store s ");
+		}
+		builder.append(" WHERE de.id IN (:ids) ");
+		if (hasStoreId) {
+			builder.append(" AND s.id = :storeId");
+		}
+
+		final TypedQuery<Product> query = getEm().createQuery(builder.toString(), Product.class);
+		query.setParameter("ids", ids);
+		if (hasStoreId) {
+			query.setParameter("storeId", storeId);
+		}
+		final List<Product> rs = query.getResultList();
+		if (page != null && pageSize != null) {
+			query.setFirstResult(page * pageSize);
+			query.setMaxResults(pageSize);
+		}
+		final List<Product> rs2 = query.getResultList();
+		return new PageImpl<Product>(rs2, PageRequest.of(page, pageSize), rs.size());
 	}
 
 }

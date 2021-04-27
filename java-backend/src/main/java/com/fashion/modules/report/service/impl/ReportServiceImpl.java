@@ -22,7 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.beust.jcommander.internal.Lists;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.RestURL;
-import com.fashion.commons.enums.OrderType;
+import com.fashion.commons.enums.OrderState;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.modules.category.model.CategoryEntryMap;
@@ -73,10 +73,10 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 					.collect(Collectors.toList());
 			res.setRevenue(orders.parallelStream().map(it -> it.getTotal()).findAny().get());
 			res.setReviews(commentRepo.getCommentInProductIds(getCurrentStoreId(), productId));
-			res.setState(new StateOrderReportVM(getOrderStateNumber(OrderType.COMPLETE, orders, total),
-					getOrderStateNumber(OrderType.CANCEL, orders, total),
-					getOrderStateNumber(OrderType.PENDING, orders, total),
-					getOrderStateNumber(OrderType.DELIVER, orders, total)));
+			res.setState(new StateOrderReportVM(getOrderStateNumber(OrderState.COMPLETE, orders, total),
+					getOrderStateNumber(OrderState.CANCEL, orders, total),
+					getOrderStateNumber(OrderState.PENDING, orders, total),
+					getOrderStateNumber(OrderState.DELIVER, orders, total)));
 		} else {
 			res.setRevenue(BigDecimal.ZERO);
 			res.setReviews(0);
@@ -91,7 +91,7 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 		return res;
 	}
 
-	private Integer getOrderStateNumber(final OrderType type, final List<OrderVM> orders, final Integer total) {
+	private Integer getOrderStateNumber(final OrderState type, final List<OrderVM> orders, final Integer total) {
 		if (CollectionUtils.isNotEmpty(orders)) {
 			return (int) orders.parallelStream().filter(it -> type.equals(it.getState())).count();
 		}

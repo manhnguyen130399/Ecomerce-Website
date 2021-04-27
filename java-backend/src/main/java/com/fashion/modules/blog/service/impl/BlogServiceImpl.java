@@ -33,8 +33,6 @@ import com.fashion.modules.blog.model.BlogVM;
 import com.fashion.modules.blog.repository.BlogRepository;
 import com.fashion.modules.blog.service.BlogService;
 import com.fashion.modules.comment.domain.Comment;
-import com.fashion.modules.comment.model.CommentVM;
-import com.fashion.service.IAccountService;
 import com.fashion.service.impl.BaseService;
 import com.google.common.collect.Iterables;
 
@@ -46,9 +44,6 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 
 	@Autowired
 	private JavaMailSender mailSender;
-	
-	@Autowired
-	private IAccountService accountService;
 
 	@Override
 	@Transactional
@@ -87,14 +82,6 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 				.collect(Collectors.toList()));
 		res.setAuthor(blog.getCreatedBy());
 		return res;
-	}
-	
-	private CommentVM convertToVM(final Comment comment) {
-		final CommentVM vm = mapper.map(comment, CommentVM.class);
-		final String email = comment.getEmail();
-		vm.setCustomerName(email);
-		vm.setCustomerImage(accountService.getAccountByUsername(email).getImageUrl());
-		return vm;
 	}
 
 	@Override

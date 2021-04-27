@@ -13,6 +13,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.store.domain.Store;
@@ -21,13 +25,16 @@ import com.google.common.collect.Sets;
 @Entity
 @Table(name = "brand")
 @Access(AccessType.FIELD)
+@Indexed
 public class Brand extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = -18569127290012608L;
 
+	@Field
 	@Column(name = "brand_name")
 	private String brandName;
 
+	@ContainedIn
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
 	private Set<Product> products = Sets.newHashSet();
 

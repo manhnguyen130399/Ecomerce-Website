@@ -39,7 +39,6 @@ export class BlogDetailComponent implements OnInit {
   }
 
   viewBlogByCategory(value: string) {
-    // when view tags --> redirect blog page
     this.router.navigate(['/blog']);
   }
 

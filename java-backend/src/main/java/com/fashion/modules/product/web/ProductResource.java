@@ -113,4 +113,12 @@ public class ProductResource extends BaseResource {
 			@RequestBody final ProductFilterRequest req) {
 		return success(productService.getAllOrFilterProduct(req, page, pageSize));
 	}
+	
+	@GetMapping(URL + "/best-seller")
+	public ResponseEntity<Map<String, Object>> getBestSeller(
+			@RequestParam(required = false, defaultValue = "0") final Integer page,
+			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
+			@RequestParam(required = false) final Integer id) {
+		return success(productService.getBestSellerProductByStore(id, page, pageSize));
+	}
 }

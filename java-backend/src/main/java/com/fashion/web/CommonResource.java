@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import com.fashion.commons.constants.Constants;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.service.ICommonService;
 import com.fashion.service.IGoogleDriveService;
+import com.fashion.service.IIndexingService;
 import com.google.api.client.util.Maps;
 
 import io.swagger.annotations.Api;
@@ -35,8 +37,13 @@ public class CommonResource extends BaseResource {
 
 	private static final String URL_UPLOAD = "/upload";
 
+	private static final String URL_SYNC = "/sync";
+
 	@Autowired
 	private IGoogleDriveService driveService;
+
+	@Autowired
+	private IIndexingService indexingService;
 
 	@PostMapping(URL)
 	public ResponseEntity<Map<String, Object>> generateQrCode(@RequestBody final String qrCode) throws Exception {
@@ -59,6 +66,12 @@ public class CommonResource extends BaseResource {
 			return null;
 		}).collect(Collectors.toList());
 		return success(output);
+	}
+
+	@GetMapping(URL_SYNC)
+	public ResponseEntity<Map<String, Object>> indexing() throws InterruptedException {
+		indexingService.initiateIndexing();
+		return success(Constants.SUCCESS);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.fashion.modules.store.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,8 @@ import com.fashion.commons.constants.ErrorMessage;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
+import com.fashion.modules.product.repository.ProductRepository;
+import com.fashion.modules.promotion.model.PromotionVM;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.modules.store.model.StoreReq;
 import com.fashion.modules.store.model.StoreVM;
@@ -30,11 +33,21 @@ public class StoreServiceImpl extends BaseService implements StoreService {
 
 	@Autowired
 	private StoreRepository storeRepo;
+	
+	@Autowired
+	private ProductRepository producRepo;
 
 	@Transactional
 	@Override
 	public StoreVM getStore(final Integer id) {
-		return mapper.map(storeRepo.findOneById(id), StoreVM.class);
+		final Store store = storeRepo.findOneById(id);
+		final StoreVM storeVM = mapper.map(store, StoreVM.class);
+		storeVM.setPromotions(store.getPromotions().stream()
+				.filter(it -> (Calendar.getInstance().getTime().compareTo(it.getEndDate())) < 1)
+				.map(i -> mapper.map(i, PromotionVM.class)).collect(Collectors.toList()));
+		storeVM.setTotalProduct(
+				producRepo.findAllProductStore(id, PageRequest.of(0, Integer.MAX_VALUE)).getContent().size());
+		return storeVM;
 	}
 
 	@Transactional

@@ -59,11 +59,14 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/api/auth/**").permitAll().antMatchers("/api/complain/create").permitAll()
 				.antMatchers("/api/promotion/valid-date").permitAll().antMatchers("/api/store/v2").permitAll()
+				.antMatchers(HttpMethod.GET,"/api/store/**").permitAll()
 				.antMatchers("/api/store/existed").permitAll().antMatchers("/api/product/product-all-store").permitAll()
+				.antMatchers("/api/product/best-seller").permitAll()
 				.antMatchers("/api/size/size-all-store").permitAll().antMatchers("/api/category/category-all-store")
 				.permitAll().antMatchers("/api/color/color-all-store").permitAll()
-				.antMatchers(HttpMethod.GET, "/api/blog/**").permitAll().antMatchers("/api/brand/brand-all-store")
-				.permitAll().antMatchers("/api/**").authenticated();
+				.antMatchers(HttpMethod.GET, "/api/product/**").permitAll().antMatchers(HttpMethod.GET, "/api/blog/**")
+				.permitAll().antMatchers("/api/brand/brand-all-store").permitAll().antMatchers("/api/**")
+				.authenticated();
 		http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 }

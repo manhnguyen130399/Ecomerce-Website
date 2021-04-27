@@ -1,5 +1,7 @@
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit } from '@angular/core';
+import { ShareService } from '@core/services/share/share.service';
+import { Promotion } from '@core/model/promotion';
 
 @Component({
   selector: 'app-discounts',
@@ -8,24 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DiscountsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private readonly shareService: ShareService) { }
 
+  listDiscount: Promotion[];
   ngOnInit(): void {
+    this.shareService.loadStoreInfoSEmitted$.subscribe((it) => {
+      this.listDiscount = it.promotions
+    })
   }
-
-  discount = {
-    percent: 15,
-    expire: new Date(),
-
-  }
-
-  listDiscount = [
-    this.discount,
-    this.discount,
-    this.discount,
-    this.discount,
-    this.discount,
-  ]
 
   customOptions: OwlOptions = {
     loop: true,
