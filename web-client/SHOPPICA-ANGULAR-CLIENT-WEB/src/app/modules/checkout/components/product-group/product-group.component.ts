@@ -1,5 +1,5 @@
-import { CartGroup } from './../../../../core/model/cart-group';
 import { Component, OnInit, Input } from '@angular/core';
+import { CartGroup } from '@core/model/cart/cart-group';
 
 @Component({
   selector: 'app-product-group',

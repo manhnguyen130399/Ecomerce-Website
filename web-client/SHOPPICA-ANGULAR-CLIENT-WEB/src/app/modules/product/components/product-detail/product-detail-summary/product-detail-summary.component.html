@@ -7,13 +7,14 @@
     <nz-rate [ngModel]="3.5" nzAllowHalf nzDisabled></nz-rate>
   </div>
   <div class="product-description">
-    <p>{{product.description}}</p>
+    <p>Go sporty this summer with this vintage navy and white striped v-neck t-shirt from the Nike. Perfect for pairing
+      with denim and white kicks for a stylish sporty vibe.</p>
   </div>
   <div class="color">
-    <app-select-color [size]="'large'" [showTitle]="true" [(listColor)]="product.colors"></app-select-color>
+    <app-select-color [size]="'large'" [showTitle]="true" [(listColor)]="listColor"></app-select-color>
   </div>
   <div class="size">
-    <app-select-size [(listSize)]="product.sizes"></app-select-size>
+    <app-select-size [(listSize)]="listSize"></app-select-size>
   </div>
 
   <div class="actions flex al-center">
@@ -26,30 +27,14 @@
 
   <div class="extra-info">
     <app-ng-tabs>
-      <app-tab-content tabTitle="Shipping">
-        <div class="shipping-detail">
-          <div class="ship-to flex">
-            <p class="address">TX. Dĩ An, P. Đông Hòa, Bình Dương </p>
-            <p>-</p>
-            <a class="actions">Change address</a>
-          </div>
-          <div class="ship-fee flex">
-            <p>{{date | date:'mediumDate'}} </p>
-            <p>-</p>
-            <p class="value">{{20 | currency}}</p>
-          </div>
-        </div>
-      </app-tab-content>
       <app-tab-content tabTitle="Store">
-        <div class="seller flex al-center">
+        <div *ngIf="store" class="seller flex al-center">
           <div class="seller-left">
             <div class="seller-info flex al-center">
               <div class="logo">
-                <img height="30" width="30"
-                  src="https://vcdn.tikicdn.com/cache/w88/ts/seller/59/96/35/901306ce19ebcbdbcbe9c273b1e052d1.jpg"
-                  alt="">
+                <img height="30" width="30" [src]="store.logo" alt="">
               </div>
-              <div class="name">Joybuy Channel</div>
+              <div class="name">{{store.storeName}}</div>
             </div>
             <div class="seller-detail flex">
               <div class="rating flex jc-center al-center fd-column">
@@ -66,11 +51,26 @@
           </div>
 
           <div class="seller-action">
-            <button nz-button>View Shop</button>
+            <button [routerLink]="" nz-button>View Shop</button>
             <button nz-button>Follow</button>
           </div>
         </div>
       </app-tab-content>
+      <app-tab-content *ngIf="userAddress" tabTitle="Shipping">
+        <div class="shipping-detail">
+          <div class="ship-to flex">
+            <p class="address">{{userAddress.addressName}}</p>
+            <p>-</p>
+            <a [routerLink]="['/account/addresses']" class="actions">Change address</a>
+          </div>
+          <div class="ship-fee flex">
+            <p>{{date | date:'mediumDate'}} </p>
+            <p>-</p>
+            <p class="value">{{shippingFee | currency}}</p>
+          </div>
+        </div>
+      </app-tab-content>
+
     </app-ng-tabs>
   </div>
 </div>

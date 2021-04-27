@@ -1,9 +1,4 @@
-import { Customer } from './../../model/customer';
-import { ResetPasswordRequest } from './../../model/reset-password-request';
-import { RegisterRequest } from './../../model/register-request';
-import { SocialLogin } from './../../model/social-login';
 import { environment } from './../../../../environments/environment';
-import { Login } from './../../model/login';
 import { JwtService } from './../jwt/jwt.service';
 import { BaseResponse } from '../../model/base-response';
 import { HttpClient } from '@angular/common/http';
@@ -13,6 +8,10 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { StorageService } from '../storage/storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Login } from '@core/model/user/login';
+import { SocialLogin } from '@core/model/user/social-login';
+import { ResetPasswordRequest } from '@core/model/user/reset-password-request';
+import { RegisterRequest } from '@core/model/user/register-request';
 
 @Injectable({
   providedIn: 'root'

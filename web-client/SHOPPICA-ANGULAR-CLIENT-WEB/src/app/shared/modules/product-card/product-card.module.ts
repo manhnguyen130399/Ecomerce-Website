@@ -1,3 +1,5 @@
+import { productRoutes } from './../../../modules/product/product.routing';
+import { RouterModule } from '@angular/router';
 import { CartItemModule } from './../cart-item/cart-item.module';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -13,7 +15,8 @@ import { ProductCardComponent } from './product-card.component';
     CommonModule,
     NzIconModule,
     NzToolTipModule,
-    CartItemModule
+    CartItemModule,
+    RouterModule
   ],
   exports: [ProductCardComponent]
 })

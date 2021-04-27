@@ -1,6 +1,6 @@
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { NzCarouselComponent } from 'ng-zorro-antd/carousel';
-import { Product } from './../../../core/model/product';
+import { Product } from '../../../core/model/product/product';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({

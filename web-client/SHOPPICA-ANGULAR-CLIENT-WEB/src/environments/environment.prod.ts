@@ -11,6 +11,7 @@ export const environment = {
   databaseToken: "databaseToken",
   ghnToken: "aa3d5553-73e6-11eb-8be2-c21e19fc6803",
   loginMethod: "loginMethod",
+  USDToVND: 23000,
   backendDomain: [
     "user-service-net.herokuapp.com",
     "order-service-net.herokuapp.com",

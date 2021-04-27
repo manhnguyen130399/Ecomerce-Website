@@ -1,5 +1,5 @@
-import { CartItemOptions } from './../../../shared/modules/cart-item/models/cart-item-options.model';
-import { CartItem } from '@core/model/cart-item';
+import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
+import { CartItem } from '@core/model/cart/cart-item';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 

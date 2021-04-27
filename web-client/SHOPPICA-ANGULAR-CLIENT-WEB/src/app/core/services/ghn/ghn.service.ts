@@ -45,4 +45,24 @@ export class GhnService {
     )
   }
 
+  calculateShippingFee(fromDistrict: number, toDistrict: number) {
+    const body = {
+      service_type_id: 2,
+      height: 50,
+      length: 20,
+      weight: 200,
+      width: 20,
+      from_district_id: fromDistrict,
+      to_district_id: toDistrict,
+    }
+
+    console.log(body)
+
+    return this.httpClient.post(`${environment.ghnAPIUrl}/v2/shipping-order/fee`, body, this.options).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    )
+  }
+
 }

@@ -48,15 +48,17 @@ export class UpdateInfoComponent implements OnInit {
   }
 
   setFormValue(value: Seller) {
-    const province = this.listProvince.find(x => x.ProvinceID == value.address.provinceId);
-    this.districtIdSelected = value.address.districtId;
-    this.wardIdSelected = value.address.wardId;
+    if (value.address) {
+      const province = this.listProvince.find(x => x.ProvinceID == value.address.provinceId);
+      this.districtIdSelected = value.address.districtId;
+      this.wardIdSelected = value.address.wardId;
+      this.sellerUpdateForm.controls.province.setValue(province);
+    }
     this.initialEmailValue = value.email;
     this.sellerUpdateForm.controls.sellerName.setValue(value.sellerName);
     this.sellerUpdateForm.controls.gender.setValue(value.gender);
     this.sellerUpdateForm.controls.phone.setValue(value.phone);
     this.sellerUpdateForm.controls.email.setValue(value.email);
-    this.sellerUpdateForm.controls.province.setValue(province);
     this.sellerUpdateForm.controls.sellerName.setValue(value.sellerName);
 
     let listImage = [];

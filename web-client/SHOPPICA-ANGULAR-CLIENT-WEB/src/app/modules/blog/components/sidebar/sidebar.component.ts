@@ -1,7 +1,8 @@
-import { CartItem } from './../../../../core/model/cart-item';
+
 import { CartItemOptions } from './../../../../shared/modules/cart-item/models/cart-item-options.model';
-import { Blog } from './../../../../core/model/blog';
+import { Blog } from '../../../../core/model/blog/blog';
 import { Component, OnInit } from '@angular/core';
+import { CartItem } from '@core/model/cart/cart-item';
 
 @Component({
   selector: 'app-sidebar',

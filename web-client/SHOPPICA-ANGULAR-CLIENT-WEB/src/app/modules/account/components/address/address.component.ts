@@ -1,12 +1,12 @@
-import { Address } from '@core/model/address';
+import { Address } from '@core/model/address/address';
 import { tap, finalize } from 'rxjs/operators';
-import { Customer } from '@core/model/customer';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from '@core/services/auth/auth.service';
 import { GhnService } from '@core/services/ghn/ghn.service';
 import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { Customer } from '@core/model/user/customer';
 
 @Component({
   selector: 'app-address',

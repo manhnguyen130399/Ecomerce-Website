@@ -20,14 +20,15 @@
       <a (click)="viewProduct(4)" [class.active]="numOnePage === 4" class="view-page view_4"></a>
     </div>
     <div nz-col [nzSpan]="6" class="sort-by">
-      <nz-select class="select-none-border" nzPlaceHolder="Select a sort by">
-        <nz-option nzValue="best-selling" nzLabel="BEST SELLING"></nz-option>
-        <nz-option nzValue="price-ascending" nzLabel="PRICE LOW TO HIGHT"></nz-option>
-        <nz-option nzValue="price-descending" nzLabel="PRICE HIGHT TO LOW"></nz-option>
-        <nz-option nzValue="title-ascending" nzLabel="ALPHABETICALLY, A-Z"></nz-option>
-        <nz-option nzValue="title-descending" nzLabel="ALPHABETICALLY, Z-A"></nz-option>
-        <nz-option nzValue="created-descending" nzLabel="DATE OLD TO NEW"></nz-option>
-        <nz-option nzValue="created-ascending" nzLabel="DATE NEW TO OLD"></nz-option>
+      <nz-select class="select-none-border" [(ngModel)]="selectedProvince" (ngModelChange)="provinceChange($event)"
+        nzPlaceHolder="Select a sort by">
+        <nz-option nzValue="BESTSELLING" nzLabel="BEST SELLING"></nz-option>
+        <nz-option nzValue="LOW_HIGH" nzLabel="PRICE LOW TO HIGHT"></nz-option>
+        <nz-option nzValue="HIGH_LOW" nzLabel="PRICE HIGHT TO LOW"></nz-option>
+        <nz-option nzValue="A_Z" nzLabel="ALPHABETICALLY, A-Z"></nz-option>
+        <nz-option nzValue="Z_A" nzLabel="ALPHABETICALLY, Z-A"></nz-option>
+        <nz-option nzValue="OLD_NEW" nzLabel="DATE OLD TO NEW"></nz-option>
+        <nz-option nzValue="NEW_OLD" nzLabel="DATE NEW TO OLD"></nz-option>
       </nz-select>
     </div>
   </div>

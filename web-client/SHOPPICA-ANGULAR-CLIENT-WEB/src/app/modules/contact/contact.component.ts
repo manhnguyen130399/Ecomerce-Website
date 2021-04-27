@@ -15,7 +15,7 @@ export class ContactComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly contactService: ContactService,
     private readonly router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.buildForm();
@@ -33,15 +33,15 @@ export class ContactComponent implements OnInit {
   submitForm() {
     this.checkInput();
     const value = this.contactForm.value;
-    if(value.email&& value.content&& value.name){
+    if (this.contactForm.valid) {
       this.contactService
-      .createContact(this.contactForm.value)
-      .subscribe((res) => {
-        if (res.code == 'OK') {
-          this.contactForm.reset();
-          this.router.navigate(['/home']);
-        }
-      });
+        .createContact(this.contactForm.value)
+        .subscribe((res) => {
+          if (res.code == 'OK') {
+            this.contactForm.reset();
+            this.router.navigate(['/home']);
+          }
+        });
     }
   }
 

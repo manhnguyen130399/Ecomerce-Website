@@ -1,5 +1,5 @@
 import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
-import { CartItem } from '@core/model/cart-item';
+import { CartItem } from '@core/model/cart/cart-item';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
