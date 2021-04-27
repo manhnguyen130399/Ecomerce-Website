@@ -18,6 +18,7 @@ public final class Constants {
 	public static final String DATE_FORMAT_YYYYMM_HYPHEN = "yyyy-MM";
 	public static final String DATE_FORMAT_DDMMYYYY_SLASH = "dd/MM/yyyy";
 	public static final String DATE_FORMAT_DDMMYYYY_HYPHEN = "dd-MM-yyyy";
+	public static final String DATE_FORMAT_MMDDYYYY_HYPHEN = "MM-dd-yyyy";
 	public static final String DATE_FORMAT_YYYYMMDDHHMMSS_EXTENSION = "yyyy-MM-dd-hh-mm-ss";
 	public static final String DATE_FORMAT_YYYYMMDDHHMMSS_HYPHEN = "yyyy-MM-dd HH:mm:ss";
 	public static final String DATE_FORMAT_YYYYMMDDHHMM_HYPHEN = "yyyy-MM-dd HH:mm";

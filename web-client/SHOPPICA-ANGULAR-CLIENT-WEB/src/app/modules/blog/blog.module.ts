@@ -1,4 +1,4 @@
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -19,26 +19,35 @@ import { BlogListComponent } from './page/blog-list/blog-list.component';
 import { BlogDetailComponent } from './page/blog-detail/blog-detail.component';
 import { CommentsComponent } from './components/comments/comments.component';
 import { LeaveCommentComponent } from './components/leave-comment/leave-comment.component';
+import { QuillModule } from 'ngx-quill';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 
 
 @NgModule({
-  declarations: [SidebarComponent, BlogListComponent, BlogDetailComponent, CommentsComponent, LeaveCommentComponent],
+  declarations: [
+    SidebarComponent,
+    BlogListComponent,
+    BlogDetailComponent,
+    CommentsComponent,
+    LeaveCommentComponent
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     BlogCardModule,
     HeaderPageModule,
     CartItemModule,
-
     NzGridModule,
     NzCommentModule,
     NzAvatarModule,
+    NzPaginationModule,
+    FormsModule,
     NzInputModule,
     NzFormModule,
     NzButtonModule,
     NzIconModule.forChild(shareIcons),
-
+    QuillModule.forRoot(),
     RouterModule.forChild(blogRoutes)
   ]
 })

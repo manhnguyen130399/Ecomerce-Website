@@ -3,4 +3,8 @@ export interface Comment {
   content: string;
   customerName: string;
   customerImage: string;
+  createdAt: string;
+  like: number;
+  dislike: number;
+  accountId: number;
 }

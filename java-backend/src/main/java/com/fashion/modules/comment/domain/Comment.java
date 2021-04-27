@@ -24,7 +24,7 @@ import com.fashion.modules.product.domain.Product;
 @Entity
 @Table(name = "comment")
 @Access(AccessType.FIELD)
-public class Comment implements Serializable  {
+public class Comment implements Serializable {
 
 	private static final long serialVersionUID = 8891567408598708082L;
 
@@ -42,6 +42,9 @@ public class Comment implements Serializable  {
 	@Column(name = "`like`")
 	private Integer like;
 
+	@Column(name = "dislike")
+	private Integer dislike;
+
 	@CreationTimestamp
 	@Column(name = "created_at")
 	private Date createdAt;
@@ -50,7 +53,7 @@ public class Comment implements Serializable  {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@Column(name ="account_id")
+	@Column(name = "account_id")
 	private Integer accountId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -132,4 +135,13 @@ public class Comment implements Serializable  {
 	public void setBlog(final Blog blog) {
 		this.blog = blog;
 	}
+
+	public Integer getDislike() {
+		return dislike;
+	}
+
+	public void setDislike(Integer dislike) {
+		this.dislike = dislike;
+	}
+
 }

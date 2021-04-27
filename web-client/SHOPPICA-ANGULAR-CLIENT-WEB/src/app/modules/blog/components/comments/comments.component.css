@@ -1,5 +1,5 @@
 .blog-comments {
-  padding: 60px 0 30px;
+  padding: 1px 0 30px;
   border-bottom: 1px solid #e8e9eb;
 }
 
@@ -11,4 +11,9 @@
   letter-spacing: 0px;
   line-height: 1.428;
   margin-bottom: 20px;
+}
+
+input {
+  height: 35px;
+  border-radius: 18px !important;
 }

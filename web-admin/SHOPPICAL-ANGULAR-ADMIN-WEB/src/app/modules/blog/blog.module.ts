@@ -8,12 +8,14 @@ import { RouterModule } from '@angular/router';
 import { BlogFormComponent } from './page/blog-form/blog-form.component';
 import { QuillModule } from 'ngx-quill';
 import { BlogViewComponent } from './page/blog-view/blog-view.component'
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 @NgModule({
   declarations: [BlogListComponent, BlogModalComponent, BlogFormComponent, BlogViewComponent],
   imports: [
     CommonModule,
     SharedModule,
+    NzUploadModule,
     QuillModule.forRoot(),
     RouterModule.forChild(blogRoutes)
   ]

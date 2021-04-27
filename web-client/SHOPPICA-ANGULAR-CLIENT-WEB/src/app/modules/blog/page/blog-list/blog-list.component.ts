@@ -1,34 +1,43 @@
-import { Blog } from '../../../../core/model/blog/blog';
-import { Component, OnInit } from '@angular/core';
 
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { BlogService } from '@core/services/blog/blog.service';
+import { Blog } from '@core/model/blog/blog';
 @Component({
   selector: 'app-blog-list',
   templateUrl: './blog-list.component.html',
-  styleUrls: ['./blog-list.component.css']
+  styleUrls: ['./blog-list.component.css'],
 })
 export class BlogListComponent implements OnInit {
 
-  blog =
-    {
-      id: 1,
-      image: "/assets/images/blogs/blog-2.jpg",
-      content: "Typography is the work of typesetters, compositors, typographers, graphic designers, art directors, manga artists, ",
-      author: "Admin",
-      created_at: new Date(),
-      title: "The Easiest Way to Break Out on Top"
-    }
-
-
-  listBlog: Blog[] = [
-    this.blog,
-    this.blog,
-    this.blog,
-    this.blog,
-    this.blog,
-  ]
-  constructor() { }
+  listBlog: Blog[];
+  pageIndex = 1;
+  pageSize = 6;
+  total = 1;
+  constructor(private readonly blogService: BlogService, private readonly router: Router) { }
 
   ngOnInit(): void {
+    this.loadDataBlogs(this.pageIndex, this.pageSize, null);
   }
 
+  loadDataBlogs(pageIndex: number, pageSize: number, type: string) {
+    this.blogService.getAllBlog(pageIndex, pageSize, type).subscribe((res) => {
+      this.listBlog = res.data.content;
+      this.total = res.data.totalElements
+    });
+  }
+
+  onQueryPageIndexChange(event) {
+    this.loadDataBlogs(event, this.pageSize, null)
+  }
+
+  viewItem(id: number) {
+    this.router.navigate(['/blog/detail/', id]);
+  }
+
+  viewBlogByCategory(item: string) {
+    const last = item.indexOf(" "); // remove Quantity
+    this.loadDataBlogs(this.pageIndex, this.pageSize, item.substring(0, last))
+  }
 }

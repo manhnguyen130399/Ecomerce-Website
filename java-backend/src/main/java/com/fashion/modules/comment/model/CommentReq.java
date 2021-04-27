@@ -10,7 +10,5 @@ public class CommentReq {
 	private Integer productId;
 	
 	private Integer blogId;
-	
-	private String email;
 
 }

@@ -1,14 +1,18 @@
 <div class="blog-card">
   <div class="blog-image">
-    <div class="background-image" [ngStyle]="{'background-image':'url('+blog.image+')'}"></div>
+    <div
+      class="background-image"
+      [ngStyle]="{ 'background-image': 'url(' + blog.image + ')' }"
+    ></div>
   </div>
   <div class="blog-info">
-    <p class="title text-hover">{{blog.title}}</p>
-    <p class="author">By
-      <span class="author-name">{{blog.author}}</span>
+   <p class="title text-hover">{{ blog.title }}</p>
+    <p class="author">
+      By
+      <span class="author-name">{{ blog.author }}</span>
       on
-      <span class="create-at">{{blog.created_at | date:'mediumDate'}}</span>
+      <span class="create-at">{{ blog.createdAt | date: "mediumDate" }}</span>
     </p>
-    <p class="short-content">{{blog.content}}</p>
+    <p class="short-content">{{ blog.summary }}</p>
   </div>
 </div>

@@ -1,9 +1,10 @@
 
-import { CartItemOptions } from './../../../../shared/modules/cart-item/models/cart-item-options.model';
-import { Blog } from '../../../../core/model/blog/blog';
-import { Component, OnInit } from '@angular/core';
+import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { BlogService } from '@core/services/blog/blog.service';
 import { CartItem } from '@core/model/cart/cart-item';
-
+import { Blog } from '@core/model/blog/blog';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -11,21 +12,9 @@ import { CartItem } from '@core/model/cart/cart-item';
 })
 export class SidebarComponent implements OnInit {
 
-  blog =
-    {
-      id: 1,
-      image: "/assets/images/blogs/blog-2.jpg",
-      content: "Typography is the work of typesetters, compositors, typographers, graphic designers, art directors, manga artists, ",
-      author: "Admin",
-      created_at: new Date(),
-      title: "The Easiest Way to Break Out on Top"
-    }
-
-  listBlog: Blog[] = [
-    this.blog,
-    this.blog,
-    this.blog,
-  ]
+  listBlog: Blog[];
+  categories: string[];
+  @Output() newItemEvent = new EventEmitter<string>();
 
   listCartItem: CartItem[] = [
     {
@@ -54,9 +43,25 @@ export class SidebarComponent implements OnInit {
     showPrice: true,
     size: 'small'
   }
-  constructor() { }
+  constructor(private readonly blogService: BlogService, private readonly router: Router) { }
 
   ngOnInit(): void {
+    this.loadDataForSideBar()
+  }
+
+  loadDataForSideBar() {
+    this.blogService.getDataForSideBlog().subscribe((res) => {
+      this.listBlog = res.data.blogRecents;
+      this.categories = res.data.categories;
+    })
+  }
+
+  viewItem(id: number) {
+    this.router.navigate(['/blog/detail/', id]);
+  }
+
+  addNewItem(value: string) {
+    this.newItemEvent.emit(value);
   }
 
 }

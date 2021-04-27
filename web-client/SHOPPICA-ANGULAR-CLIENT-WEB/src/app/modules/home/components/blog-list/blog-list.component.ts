@@ -14,8 +14,10 @@ export class BlogListComponent implements OnInit {
       image: "/assets/images/blogs/blog-1.jpg",
       content: "Typography is the work of typesetters, compositors, typographers, graphic designers, art directors, manga artists, ",
       author: "Admin",
-      created_at: new Date(),
-      title: "The Easiest Way to Break Out on Top"
+      createdAt: new Date(),
+      title: "The Easiest Way to Break Out on Top",
+      summary:null,
+      comments: []
     }
   ]
   constructor() { }

@@ -41,7 +41,7 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		comment.setContent(req.getContent());
 		final AccountVM account = accountService.getAccountByUsername(getUserContext().getUsername());
 		comment.setAccountId(account.getId());
-		comment.setEmail(req.getEmail() != null ? req.getEmail() : account.getUsername());
+		comment.setEmail(account.getUsername());
 		final Integer productId = req.getProductId();
 		final Integer blogId = req.getBlogId();
 		final Integer storeId = getCurrentStoreId();
@@ -52,15 +52,24 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 			}
 			comment.setProduct(product);
 		} else if (blogId != null) {
-			final Blog blog = blogRepo.findOneByIdAndStoreId(blogId, storeId);
+			final Blog blog = blogRepo.findOneById(blogId);
 			if (blog == null) {
 				throw new InvalidArgumentException(" Can't found blog ");
 			}
+			comment.setBlog(blog);
 		} else {
-			throw new InvalidArgumentException(" Can't not create comment. Because can't found product or blog ");
+			throw new InvalidArgumentException(" Can't create comment. Because can't found product or blog ");
 		}
 
-		return mapper.map(commentRepo.save(comment), CommentVM.class);
+		return convertToVM(commentRepo.save(comment));
+	}
+
+	private CommentVM convertToVM(final Comment comment) {
+		final CommentVM vm = mapper.map(comment, CommentVM.class);
+		final String email = comment.getEmail();
+		vm.setCustomerName(email);
+		vm.setCustomerImage(accountService.getAccountByUsername(email).getImageUrl());
+		return vm;
 	}
 
 	@Override
@@ -69,7 +78,7 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		final Comment comment = commentRepo.findOneById(id);
 		checkUserComment(comment);
 		comment.setContent(content);
-		return mapper.map(comment, CommentVM.class);
+		return convertToVM(comment);
 	}
 
 	private void checkUserComment(final Comment comment) {
@@ -91,14 +100,22 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 
 	@Override
 	@Transactional
-	public CommentVM likeComment(final Integer id) {
+	public CommentVM likeComment(final Integer id, final boolean isLike, final int time) {
 		final Comment comment = commentRepo.findOneById(id);
 		if (comment == null) {
 			throw new InvalidArgumentException(" Can't found comment.");
 		}
-		Integer oldLike = comment.getLike();
-		comment.setLike(oldLike == null ? 1 : ++oldLike);
-		return mapper.map(comment, CommentVM.class);
+		final boolean increment = time == 0;
+		if (isLike) {
+			Integer oldLike = comment.getLike();
+			final boolean isLikeNull = oldLike == null;
+			comment.setLike(increment ? (isLikeNull ? 1 : ++oldLike) : (isLikeNull ? 0 : --oldLike));
+		} else {
+			Integer oldDislike = comment.getDislike();
+			final boolean isDislikeNull = oldDislike == null;
+			comment.setDislike(increment ? (isDislikeNull ? 1 : ++oldDislike) : (isDislikeNull ? 0 : --oldDislike));
+		}
+		return convertToVM(comment);
 	}
 
 }
