@@ -13,6 +13,7 @@ export const environment = {
   tokenKey: "token",
   emailToken: "emailToken",
   databaseToken: "databaseToken",
+  cartKey: "cart",
   ghnToken: "aa3d5553-73e6-11eb-8be2-c21e19fc6803",
   loginMethod: "loginMethod",
   USDToVND: 23000,

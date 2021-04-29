@@ -11,14 +11,15 @@
       with denim and white kicks for a stylish sporty vibe.</p>
   </div>
   <div class="color">
-    <app-select-color [size]="'large'" [showTitle]="true" [(listColor)]="listColor"></app-select-color>
+    <app-select-color [size]="'large'" [showTitle]="true" [(colorSelected)]="colorSelected" [listColor]="listColor">
+    </app-select-color>
   </div>
   <div class="size">
-    <app-select-size [(listSize)]="listSize"></app-select-size>
+    <app-select-size [listSize]="listSize" [(sizeSelected)]="sizeSelected"></app-select-size>
   </div>
 
   <div class="actions flex al-center">
-    <app-input-quantity [(quantity)]="cartItem.quantity"></app-input-quantity>
+    <app-input-quantity [(quantity)]="quantity"></app-input-quantity>
     <button class="add-to-cart-btn" nz-button [nzType]="'primary'" [nzShape]="'round'">ADD TO CART</button>
     <button nz-tooltip [nzTooltipTitle]="'Add to wishlist'" class="add-to-wishlist" nz-button nzSize="large"
       nzShape="circle"><i nz-icon nzType="heart" nzTheme="outline"></i></button>
@@ -57,7 +58,7 @@
         </div>
       </app-tab-content>
       <app-tab-content *ngIf="userAddress" tabTitle="Shipping">
-        <div class="shipping-detail">
+        <div class="shipping-detail flex fd-column jc-center">
           <div class="ship-to flex">
             <p class="address">{{userAddress.addressName}}</p>
             <p>-</p>

@@ -75,15 +75,15 @@ namespace ORDER_SERVICE_NET.Models
             {
                 entity.ToTable("carts");
 
-                entity.HasIndex(e => e.CustomerId)
-                    .HasName("FK_Order_Customer");
+                entity.HasIndex(e => e.AccountId)
+                    .HasName("FK_Order_Account");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.CustomerId)
-                    .HasColumnName("customer_id")
+                entity.Property(e => e.AccountId)
+                    .HasColumnName("account_id")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.Total)

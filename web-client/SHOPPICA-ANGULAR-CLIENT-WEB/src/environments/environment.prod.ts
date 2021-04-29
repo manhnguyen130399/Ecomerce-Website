@@ -8,6 +8,7 @@ export const environment = {
   ghnAPIUrl: "https://dev-online-gateway.ghn.vn/shiip/public-api",
   tokenKey: "token",
   emailToken: "emailToken",
+  cartKey: "cart",
   databaseToken: "databaseToken",
   ghnToken: "aa3d5553-73e6-11eb-8be2-c21e19fc6803",
   loginMethod: "loginMethod",

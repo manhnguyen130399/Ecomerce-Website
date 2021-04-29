@@ -10,7 +10,6 @@ namespace ORDER_SERVICE_NET.ViewModels.Carts
         public int Id { set; get; }
         public decimal Price { set; get; }
         public string CreateAt { set; get; }
-        public int CustomerId{ set; get; }
         public List<CartItemView> Items { set; get; }
     }
 }

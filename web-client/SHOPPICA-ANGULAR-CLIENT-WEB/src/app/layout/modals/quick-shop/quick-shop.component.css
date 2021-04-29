@@ -3,6 +3,10 @@
   background-color: white;
 }
 
+.product-info {
+  padding: 20px 20px 20px 0;
+}
+
 app-select-color {
   margin-bottom: 20px;
 }
