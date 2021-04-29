@@ -30,7 +30,7 @@ export class InputQuantityComponent implements OnInit {
   focusOut() {
     if (this.quantity < 1) {
       this.quantity = 1;
-      this.quantityChange.emit(this.quantity);
     }
+    this.quantityChange.emit(this.quantity);
   }
 }

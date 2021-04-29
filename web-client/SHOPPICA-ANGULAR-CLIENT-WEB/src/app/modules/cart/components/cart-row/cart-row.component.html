@@ -1,6 +1,8 @@
 <div nz-row class="cart-row" [ngStyle]="{'padding': (mode === 'cart') ? '30px 0': '15px 0'}">
   <div nz-col class="product" [nzMd]="10" [nzXs]="24">
-    <app-cart-item [cartItemOptions]="cartItemOptions" [item]="item"></app-cart-item>
+    <app-cart-item (changeQuantityEvent)="changeQuantity($event)" (deleteItemEvent)="deleteItem($event)"
+      (loadingEvent)="loadingEvent($event)" [cartItemOptions]="cartItemOptions" [item]="item">
+    </app-cart-item>
   </div>
 
   <div class="price jc-center al-center flex" nz-col [nzMd]="6" [nzXs]="8">
@@ -9,7 +11,8 @@
 
   <div class="quantity jc-center al-center flex" nz-col [nzMd]="4" [nzXs]="8">
     <span *ngIf="mode === 'checkout'">x{{item.quantity }}</span>
-    <app-input-quantity *ngIf="mode === 'cart'" [(quantity)]="item.quantity"></app-input-quantity>
+    <app-input-quantity *ngIf="mode === 'cart'" (quantityChange)="changeQuantity($event)" [quantity]="item.quantity">
+    </app-input-quantity>
   </div>
 
   <div class="total jc-flex-end al-center flex" nz-col [nzMd]="4" [nzXs]="8">

@@ -14,6 +14,7 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Store } from '@core/model/store/store';
 import { tap } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
+import { getListColor, getListSize } from '@core/model/product/product-helper';
 
 @Component({
   selector: 'app-product-detail-summary',
@@ -28,9 +29,12 @@ export class ProductDetailSummaryComponent implements OnInit {
   storeAddress: Address;
   listColor: Color[] = [];
   listSize: Size[] = [];
+  colorSelected: Color;
+  sizeSelected: Size;
   listObservable: Observable<any>[] = [];
   date = new Date();
   shippingFee: number;
+  quantity: number;
 
   constructor(
     private readonly storeService: StoreService,
@@ -44,26 +48,34 @@ export class ProductDetailSummaryComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.product !== undefined) {
-      this.listSize = this.getListSize(changes.product.currentValue.productDetails);
-      this.listColor = this.getListColor(changes.product.currentValue.productDetails);
-
-
-      this.listObservable.push(this.storeService.getStoreById(changes.product.currentValue.storeId))
-      if (this.authService.isAuthenticated()) {
-        this.listObservable.push(this.authService.getUserById());
-      }
-      forkJoin(this.listObservable)
-        .subscribe(res => {
-          if (res[0].code === "OK") {
-            this.storeAddress = JSON.parse(res[0].data.address);
-            this.store = res[0].data;
-            if (res[1] && res[1].isSuccessed) {
-              this.userAddress = res[1].data.address;
-              this.calculateShippingFee();
-            }
-          }
-        })
+      this.listSize = getListSize(changes.product.currentValue.productDetails);
+      this.listColor = getListColor(changes.product.currentValue.productDetails);
+      this.colorSelected = this.listColor[0];
+      this.sizeSelected = this.listSize[0];
+      this.getShippingFeeAndStore(changes.product.currentValue.storeId);
+      this.quantity = 1;
     }
+
+  }
+
+  getShippingFeeAndStore(storeId: number) {
+
+    this.listObservable.push(this.storeService.getStoreById(storeId))
+    if (this.authService.isAuthenticated()) {
+      this.listObservable.push(this.authService.getUserById());
+    }
+
+    forkJoin(this.listObservable)
+      .subscribe(res => {
+        if (res[0].code === "OK") {
+          this.storeAddress = JSON.parse(res[0].data.address);
+          this.store = res[0].data;
+          if (res[1] && res[1].isSuccessed) {
+            this.userAddress = res[1].data.address;
+            this.calculateShippingFee();
+          }
+        }
+      })
   }
 
   calculateShippingFee() {
@@ -76,40 +88,5 @@ export class ProductDetailSummaryComponent implements OnInit {
         });
 
     }
-  }
-
-  getListSize(productDetails: ProductDetail[]) {
-    let distinctSizes = new Set<string>();
-    productDetails.forEach(element => {
-      const size: Size = {
-        id: element.sizeId,
-        sizeName: element.size,
-      }
-      distinctSizes.add(JSON.stringify(size));
-    });
-
-    return [...distinctSizes].map(x => JSON.parse(x));
-  }
-
-  getListColor(productDetails: ProductDetail[]) {
-    let distinctColors = new Set<string>();
-    productDetails.forEach(element => {
-      const color: Color = {
-        id: element.colorId,
-        colorName: element.color,
-        colorCode: element.colorHex
-      }
-      distinctColors.add(JSON.stringify(color));
-    });
-
-    return [...distinctColors].map(x => JSON.parse(x));
-  }
-
-  cartItem = {
-    id: 1,
-    productName: "Cream women pants",
-    price: 35,
-    image: "/assets/images/products/product-4.jpg",
-    quantity: 1
   }
 }

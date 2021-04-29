@@ -37,6 +37,14 @@
   border-bottom: 1px solid #ddd;
 }
 
+.cart-content-wrapper {
+  position: relative;
+}
+
+.cart-content-wrapper.initial {
+  min-height: 500px;
+}
+
 .recently-view {
   margin-bottom: 60px;
 }

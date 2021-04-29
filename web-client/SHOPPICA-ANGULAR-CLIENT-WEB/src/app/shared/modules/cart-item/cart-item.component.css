@@ -91,3 +91,17 @@
   border: 1px rgba(0, 0, 0, 0.1) solid;
   z-index: 2;
 }
+
+.product-detail {
+  font-size: 13px;
+  color: #999;
+  line-height: 1rem;
+}
+
+.product-detail span {
+  padding: 0 2px;
+}
+
+.product-detail span:first-child {
+  padding-left: 0;
+}

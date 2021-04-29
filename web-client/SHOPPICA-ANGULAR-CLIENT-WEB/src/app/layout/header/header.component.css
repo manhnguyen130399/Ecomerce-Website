@@ -60,9 +60,12 @@
   outline: none;
 }
 
+.icon-btns ul li {
+  padding: 0 10px;
+}
+
 .icon-btns ul li i {
   font-size: 19px;
-  padding: 0 10px;
 }
 
 .user-option li {

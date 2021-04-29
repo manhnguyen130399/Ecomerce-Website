@@ -5,5 +5,6 @@ export interface CartItemOptions {
   showColor?: boolean;
   showSize?: boolean;
   showBorder?: boolean;
+  shortDetail?: boolean;
   size?: string;
 }

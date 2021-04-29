@@ -7,6 +7,7 @@ import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 })
 export class LoaderComponent implements OnInit {
   @Input() loading: boolean = false;
+  @Input() background: string = "#ffffff";
   constructor() { }
 
   ngOnInit(): void {

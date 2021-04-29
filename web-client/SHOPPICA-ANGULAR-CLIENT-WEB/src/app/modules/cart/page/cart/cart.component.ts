@@ -1,7 +1,12 @@
+import { finalize } from 'rxjs/operators';
+import { CartService } from './../../../../core/services/cart/cart.service';
+import { ShareService } from './../../../../core/services/share/share.service';
+import { AuthService } from '@core/services/auth/auth.service';
 import { Cart } from '../../../../core/model/cart/cart';
 import { Product } from '@core/model/product/product';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit } from '@angular/core';
+import { CartRequest } from '@core/model/cart/cart-request';
 
 @Component({
   selector: 'app-cart',
@@ -9,67 +14,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  product = {
-    id: 1,
-    productName: "Cream women pants",
-    price: 35,
-    image: "/assets/images/products/product-4.jpg",
-    sizes: [
-      {
-        id: 1,
-        sizeName: "M"
-      },
-      {
-        id: 2,
-        sizeName: "L"
-      },
-      {
-        id: 3,
-        sizeName: "XL"
-      }
-    ],
-    colors: [
-      {
-        id: 1,
-        colorName: "Red",
-        colorCode: "#ff0000",
-      },
-      {
-        id: 2,
-        colorName: "Gray",
-        colorCode: "#ccc"
-      },
-      {
-        id: 3,
-        colorName: "yellow",
-        colorCode: "#e1eb78"
-      }
-    ],
-    isNew: true,
-    discount: 20
-  };
+  cart: Cart;
+  isLoading = false;
+  initialLoading = false;
   listProduct: Product[] = [
-    this.product,
-    this.product,
-    this.product,
-    this.product,
+
   ]
-
-  item = {
-    id: 1,
-    productName: "T-shirt product",
-    price: 99,
-    image: '/assets/images/products/product-2.jpg',
-    quantity: 12,
-  };
-
-  listCartItem = [
-    this.item,
-    this.item,
-    this.item,
-    this.item,
-  ]
-
   customOptions: OwlOptions = {
     loop: false,
     autoplay: true,
@@ -90,9 +40,33 @@ export class CartComponent implements OnInit {
     nav: true,
     navText: ['<', '>']
   }
-  constructor() { }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly shareService: ShareService,
+    private readonly cartService: CartService
+  ) { }
 
   ngOnInit(): void {
+    this.initialLoading = true;
+    this.shareService.addToCartSuccessEmitted$.subscribe((cart) => {
+      if (cart !== null) {
+        this.cart = cart;
+        this.initialLoading = false;
+      }
+    })
   }
 
+  loadingEvent(isLoad: boolean) {
+    this.isLoading = isLoad;
+  }
+
+  deleteItem(cartDeleted: CartRequest) {
+    this.cart.total -= cartDeleted.quantity * cartDeleted.price;
+    this.cart.cartItems = this.cart.cartItems.filter(c => c.productDetailId != cartDeleted.productDetailId);
+    this.shareService.changeNumCartItemEvent(this.cart.cartItems.length);
+  }
+
+  changeQuantity(priceChange: number) {
+    this.cart.total -= priceChange;
+  }
 }

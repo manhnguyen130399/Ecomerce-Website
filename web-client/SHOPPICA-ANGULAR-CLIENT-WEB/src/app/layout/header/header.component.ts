@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   prevPosition = 0;
+  numCartItems = 0;
   isScrollUp = false;
   isLogged = false;
   isShowMenuDrawer = false;
@@ -33,6 +34,11 @@ export class HeaderComponent implements OnInit {
     this.shareService.loginSuccessEmitted$.subscribe((loginStatus) => {
       this.isLogged = loginStatus;
     })
+
+    this.shareService.changeNumCartItemEmitted$.subscribe((num) => {
+      this.numCartItems = num;
+    })
+
     this.isLogged = this.authService.isAuthenticated();
   }
 
@@ -53,6 +59,12 @@ export class HeaderComponent implements OnInit {
       this.isShowLoginDrawer = true;
       this.isShowRegisterDrawer = false;
       this.isShowResetPasswordDrawer = false;
+    }
+  }
+
+  openShoppingCartDrawer() {
+    if (this.numCartItems > 0) {
+      this.shareService.openCartDrawerEvent();
     }
   }
 
