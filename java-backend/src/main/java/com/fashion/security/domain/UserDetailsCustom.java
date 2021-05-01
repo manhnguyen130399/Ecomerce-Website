@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.model.AccountVM;
 
 import lombok.AllArgsConstructor;
@@ -22,8 +23,7 @@ public class UserDetailsCustom implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
-		return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+		return Collections.singleton(new SimpleGrantedAuthority(Constants.ROLE_PREFIX + account.getType()));
 	}
 
 	@Override

@@ -14,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.Field;
+
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.store.domain.Store;
@@ -26,12 +29,14 @@ public class Category extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = -2657588185896188134L;
 
+	@Field
 	@Column(name = "category_name")
 	private String categoryName;
 
 	@Column(name = "image")
 	private String image;
 
+	@ContainedIn
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
 	private Set<Product> products = Sets.newHashSet();
 

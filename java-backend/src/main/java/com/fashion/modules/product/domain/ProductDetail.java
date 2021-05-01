@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.ContainedIn;
+import org.hibernate.search.annotations.IndexedEmbedded;
+
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.color.domain.Color;
 import com.fashion.modules.size.domain.Size;
@@ -27,14 +30,17 @@ public class ProductDetail extends AbstractAuditingEntity {
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
+	@ContainedIn
 	private Product product;
 
 	@ManyToOne
 	@JoinColumn(name = "size_id")
+	@IndexedEmbedded
 	private Size size;
 
 	@ManyToOne
 	@JoinColumn(name = "color_id")
+	@IndexedEmbedded
 	private Color color;
 
 	public Integer getQuantity() {

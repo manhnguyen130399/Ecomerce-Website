@@ -30,4 +30,6 @@ public class ProductVM {
 	private Set<ProductImageVM> productImages;
 
 	private List<CommentVM> comments;
+
+	private Integer storeId;
 }

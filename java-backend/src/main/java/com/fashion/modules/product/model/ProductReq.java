@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductReq extends BaseReq {
 
+	private Integer storeId;
+	
 	private Integer id;
 
 	private String productName;

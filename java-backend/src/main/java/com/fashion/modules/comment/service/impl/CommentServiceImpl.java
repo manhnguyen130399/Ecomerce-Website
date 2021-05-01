@@ -64,14 +64,6 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		return convertToVM(commentRepo.save(comment));
 	}
 
-	private CommentVM convertToVM(final Comment comment) {
-		final CommentVM vm = mapper.map(comment, CommentVM.class);
-		final String email = comment.getEmail();
-		vm.setCustomerName(email);
-		vm.setCustomerImage(accountService.getAccountByUsername(email).getImageUrl());
-		return vm;
-	}
-
 	@Override
 	@Transactional
 	public CommentVM updateComment(final String content, final Integer id) {

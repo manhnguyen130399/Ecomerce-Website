@@ -7,7 +7,6 @@ export const blogRoutes: Routes = [
     component: BlogListComponent,
     children: [
 
-
     ]
   },
   {

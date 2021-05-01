@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ProductDetailVM {
+	
+	private Integer productDetailId;
 
 	private Integer sizeId;
 

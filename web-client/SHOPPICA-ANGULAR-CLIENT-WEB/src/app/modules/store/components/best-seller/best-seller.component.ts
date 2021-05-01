@@ -1,6 +1,9 @@
 import { Product } from '../../../../core/model/product/product';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ShareService } from '@core/services/share/share.service';
+import { ProductService } from '@core/services/product/product.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-best-seller',
@@ -8,53 +11,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./best-seller.component.css']
 })
 export class BestSellerComponent implements OnInit {
-
-  product = {
-    id: 1,
-    productName: "Cream women pants",
-    price: 35,
-    image: "/assets/images/products/product-4.jpg",
-    sizes: [
-      {
-        id: 1,
-        sizeName: "M"
-      },
-      {
-        id: 2,
-        sizeName: "L"
-      },
-      {
-        id: 3,
-        sizeName: "XL"
-      }
-    ],
-    colors: [
-      {
-        id: 1,
-        colorName: "Red",
-        colorCode: "#ff0000",
-      },
-      {
-        id: 2,
-        colorName: "Gray",
-        colorCode: "#ccc"
-      },
-      {
-        id: 3,
-        colorName: "yellow",
-        colorCode: "#e1eb78"
-      }
-    ],
-    isNew: true,
-    discount: 20
-  };
-  listProduct: Product[] = [
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-  ]
-
+  storeId: number;
+  listProduct: Product[];
+  isLoading: boolean = true;
   customOptions: OwlOptions = {
     loop: false,
     autoplay: true,
@@ -76,9 +35,21 @@ export class BestSellerComponent implements OnInit {
     navText: ['<', '>']
   }
 
-  constructor() { }
+  constructor(private readonly storeService: ShareService, private readonly productService: ProductService) {
+    this.storeService.loadStoreInfoSEmitted$.subscribe((res) => {
+      this.storeId = res
+    })
+
+  }
 
   ngOnInit(): void {
+    this.getProductBestSellerByStore(this.storeId);
+  }
+
+  getProductBestSellerByStore(id: number) {
+    this.productService.getProductBestSellerByStore(id).pipe(finalize(() => this.isLoading = false)).subscribe((res) => {
+      this.listProduct = res.data;
+    })
   }
 
 }

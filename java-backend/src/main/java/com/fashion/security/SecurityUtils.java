@@ -2,6 +2,7 @@ package com.fashion.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,7 @@ public class SecurityUtils {
 
 	public static UserContext getCurrentUserContext() {
 		final Authentication authentication = getAuthentication();
-		if (authentication != null) {
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			final UserDetailsCustom userDetails = (UserDetailsCustom) authentication.getPrincipal();
 			final AccountVM acc = userDetails.getAccount();
 			return new UserContext(acc.getUsername(), null, acc.getStoreId(), acc.getId(), null, null, acc.getType());
