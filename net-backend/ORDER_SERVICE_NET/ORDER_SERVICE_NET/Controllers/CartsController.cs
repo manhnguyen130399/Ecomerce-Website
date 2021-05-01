@@ -6,6 +6,7 @@ using ORDER_SERVICE_NET.ViewModels.Carts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ORDER_SERVICE_NET.Controllers
@@ -21,20 +22,26 @@ namespace ORDER_SERVICE_NET.Controllers
             _cartService = cartService;
         }
 
-        [HttpGet("GetCart/{customerId}")]
-        public async Task<IActionResult> GetCart(int customerId)
+        [HttpGet("GetCart")]
+        public async Task<IActionResult> GetCart()
         {
-            var result = await _cartService.GetById(customerId);
+
+            var accountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
+
+            var result = await _cartService.GetById(accountId);
 
             if (!result.IsSuccessed) return BadRequest(result);
 
             return Ok(result);
         }
 
-        [HttpGet("DeleteCartItem")]
-        public async Task<IActionResult> GetCart(int cartId, int productDetailId, decimal priceChange)
+        [HttpPost("DeleteCartItem")]
+
+        public async Task<IActionResult> DeleteCartItem(CartItemCreateRequest request)
         {
-            var result = await _cartService.DeleteItem(cartId, productDetailId, priceChange);
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
+
+            var result = await _cartService.DeleteItem(request);
 
             if (!result.IsSuccessed) return BadRequest(result);
 
@@ -49,12 +56,40 @@ namespace ORDER_SERVICE_NET.Controllers
                 return BadRequest(ModelState);
             }
 
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
+
             var result = await _cartService.AddToCart(request);
 
             if (!result.IsSuccessed) return BadRequest(result);
 
-            return Ok(result);
+            var cart = await _cartService.GetById(request.AccountId);
+
+            if (!cart.IsSuccessed) return BadRequest(cart);
+
+            return Ok(cart);
         }
+
+        [HttpPost("UpdateCart")]
+        public async Task<IActionResult> UpdateCart(CartItemUpdateRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
+
+            var result = await _cartService.Update(request);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            var cart = await _cartService.GetById(request.AccountId);
+
+            if (!cart.IsSuccessed) return BadRequest(cart);
+
+            return Ok(cart);
+        }
+
 
         [HttpPost("ChangeQuantity")]
         public async Task<IActionResult> ChangeQuantity(CartItemCreateRequest request)
@@ -63,6 +98,8 @@ namespace ORDER_SERVICE_NET.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
 
             var result = await _cartService.ChangeQuantity(request);
 

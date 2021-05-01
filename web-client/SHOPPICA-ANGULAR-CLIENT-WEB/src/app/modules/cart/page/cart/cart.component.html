@@ -12,28 +12,32 @@
         <div class="flex al-center jc-flex-end" nz-col [nzSpan]="4">TOTAL</div>
       </div>
     </div>
-    <div class="cart-content">
-      <div *ngFor="let item of listCartItem" class="cart-item">
-        <app-cart-row [mode]="'cart'" [item]="item"></app-cart-row>
+    <div [class.initial]="initialLoading" class="cart-content-wrapper">
+      <app-loader [background]="'#ffffffab'" [loading]="isLoading || initialLoading"></app-loader>
+      <div *ngIf="cart" class="cart-content">
+        <div *ngFor="let item of cart.cartItems" class="cart-item">
+          <app-cart-row (changeQuantityEvent)="changeQuantity($event)" (deleteItemEvent)="deleteItem($event)"
+            (isLoading)="loadingEvent($event)" [mode]="'cart'" [item]="item"></app-cart-row>
+        </div>
       </div>
     </div>
 
-    <div class="cart-footer flex  jc-flex-end">
+
+    <div *ngIf="cart" class="cart-footer flex  jc-flex-end">
       <div>
         <div class="price flex jc-flex-end">
           <div class="price_text">Subtotal:</div>
-          <div class="price_value">{{20 | currency}}</div>
+          <div class="price_value">{{cart.total| currency}}</div>
         </div>
         <div class="policy">
           <p>Taxes, shipping and discounts codes calculated at checkout</p>
-          <label nz-checkbox>I agree with the terms and conditions.</label>
+
         </div>
         <div class="flex  al-flex-end fd-column">
           <button [routerLink]="['/checkout/information']" class="checkout-btn" nz-button nzType="primary">CHECK
             OUT</button>
           <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
         </div>
-
 
       </div>
 

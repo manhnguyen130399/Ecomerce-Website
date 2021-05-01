@@ -12,6 +12,11 @@
   overflow-y: auto;
 }
 
+.cart-items-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
 .cart-footer {
   padding: 20px;
   border-top: 1px solid rgba(129, 129, 129, 0.2);

@@ -1,3 +1,4 @@
+import { LoaderModule } from './../../shared/modules/loader/loader.module';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { shareIcons } from '@shared/share-icon';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -34,7 +35,8 @@ import { CartComponent } from './page/cart/cart.component';
     RouterModule.forChild(cartRoutes),
     CartItemModule,
     ProductCarouselModule,
-    SectionTitleModule
+    SectionTitleModule,
+    LoaderModule
   ],
   exports: [
     CartRowComponent,

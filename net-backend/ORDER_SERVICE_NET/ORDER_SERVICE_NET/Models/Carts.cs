@@ -15,7 +15,7 @@ namespace ORDER_SERVICE_NET.Models
         }
 
         public int Id { get; set; }
-        public int CustomerId { get; set; }
+        public int AccountId { get; set; }
         public decimal Total { get; set; }
         public DateTime? Created_at { get; set; }
         public DateTime? Updated_at { get; set; }

@@ -8,11 +8,11 @@
       [ngStyle]="{'background-image':'url('+image+')'}">
     </div>
     <div class="hover-btn flex fd-column">
-      <button>
+      <button (click)="openQuickView(product)">
         <span>Quick View</span>
         <i nz-icon nzType="eye" nzTheme="outline"></i>
       </button>
-      <button>
+      <button (click)="openQuickShop(product)">
         <span>Quick Shop</span>
         <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
       </button>
@@ -30,6 +30,6 @@
   <div class="product-info">
     <p [routerLink]="'/product/detail/'+ product.id" class="product-name text-hover">{{product.productName}}</p>
     <span class="product-price">{{product.price |currency}}</span>
-    <app-select-color [showTitle]="false" [(listColor)]="listColor"></app-select-color>
+    <app-select-color [showTitle]="false" [listColor]="listColor" [(colorSelected)]="colorSelected"></app-select-color>
   </div>
 </div>

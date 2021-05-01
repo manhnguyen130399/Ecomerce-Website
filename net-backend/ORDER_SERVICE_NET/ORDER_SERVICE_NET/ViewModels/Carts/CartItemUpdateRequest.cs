@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 
 namespace ORDER_SERVICE_NET.ViewModels.Carts
 {
-    public class CartItemCreateRequest
+    public class CartItemUpdateRequest
     {
-        public int ProductDetailID { set; get; }
+        public int OldProductDetailID { set; get; }
+        public int NewProductDetailID { set; get; }
         public int AccountId { set; get; }
         public int Quantity { set; get; }
+
         public decimal Price { set; get; }
     }
 }

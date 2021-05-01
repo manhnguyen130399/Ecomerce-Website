@@ -14,5 +14,8 @@ namespace ORDER_SERVICE_NET.ViewModels.Products
         public string BrandName { get; set; }
         public string SizeName { get; set; }
         public string ColorName { get; set; }
+        public string Image { get; set; }
+        public int StoreId { get; set; }
+
     }
 }

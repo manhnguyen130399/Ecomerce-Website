@@ -23,13 +23,14 @@ namespace ORDER_SERVICE_NET.Services.CartServices
         {
             var cart = await _context.Carts
                 .Include(c => c.CartDetail)
-                .FirstOrDefaultAsync(c => c.Id == request.CartID);
+                .FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
+
             if (cart == null)
             {
 
                 var newCart = new Carts()
                 {
-                    CustomerId = request.CustomerId,
+                    AccountId = request.AccountId,
                     CartDetail = new List<CartDetail>()
                     {
                         new CartDetail()
@@ -51,16 +52,15 @@ namespace ORDER_SERVICE_NET.Services.CartServices
             cart.Total += request.Quantity * request.Price;
 
             var cartDetail = cart.CartDetail
-                .FirstOrDefault(c => c.CartId == request.CartID && c.ProductDetailId == request.ProductDetailID);
+                .FirstOrDefault(c => c.ProductDetailId == request.ProductDetailID);
 
             if(cartDetail == null)
             {
-
                 var newCartDetail = new CartDetail()
                 {
                     ProductDetailId = request.ProductDetailID,
                     Quantity = request.Quantity,
-                    CartId = request.CartID,
+                    CartId = cart.Id,
                 };
 
                 cart.CartDetail.Add(newCartDetail);
@@ -83,23 +83,23 @@ namespace ORDER_SERVICE_NET.Services.CartServices
             throw new NotImplementedException();
         }
 
-        public Task<APIResult<bool>> DeleteAll(int cartId)
+        public Task<APIResult<bool>> DeleteAll(int accountId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<APIResult<bool>> DeleteItem(int cartId, int productDetailId, decimal priceChange)
+        public async Task<APIResult<bool>> DeleteItem(CartItemCreateRequest request)
         {
             var cart = await _context.Carts
                 .Include(c => c.CartDetail)
-                .FirstOrDefaultAsync(c => c.Id == cartId);
+                .FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
             if (cart != null)
             {
-                var cartDetail = cart.CartDetail.FirstOrDefault(c => c.ProductDetailId == productDetailId);
+                var cartDetail = cart.CartDetail.FirstOrDefault(c => c.ProductDetailId == request.ProductDetailID);
 
                 if (cartDetail != null)
                 {
-                    cart.Total -= priceChange;
+                    cart.Total -= cartDetail.Quantity * request.Price;
 
                     _context.CartDetail.Remove(cartDetail);
 
@@ -108,17 +108,17 @@ namespace ORDER_SERVICE_NET.Services.CartServices
                     return new APIResultSuccess<bool>();
                 }
 
-                return new APIResultSuccess<bool>();
+                return new APIResultErrors<bool>("Not found item");
             }
-            return new APIResultSuccess<bool>();
+            return new APIResultErrors<bool>("Can not find this cart");
 
         }
 
-        public async Task<APIResult<CartView>> GetById(int customerId)
+        public async Task<APIResult<CartView>> GetById(int accountId)
         {
             var carts = await _context.Carts
                 .Include(x => x.CartDetail)
-                .FirstOrDefaultAsync(x => x.CustomerId == customerId);
+                .FirstOrDefaultAsync(x => x.AccountId == accountId);
 
             var listProductDetailId = carts.CartDetail.Select(x => x.ProductDetailId).ToList();
 
@@ -132,7 +132,14 @@ namespace ORDER_SERVICE_NET.Services.CartServices
             {
                 Quantity = x.cd.Quantity,
                 Price = x.l.Price,
-                ProductName = x.l.ProductName
+                ProductName = x.l.ProductName,
+                ColorName = x.l.ColorName,
+                SizeName = x.l.SizeName,
+                BrandName = x.l.BrandName,
+                ProductDetailId = x.l.ProductDetailId,
+                StoreId = x.l.StoreId,
+                Image = x.l.Image,
+                ProductId = x.l.ProductId
             }).ToList();
 
             var result = new CartView()
@@ -146,16 +153,53 @@ namespace ORDER_SERVICE_NET.Services.CartServices
 
         }
 
-        public Task<APIResult<bool>> Update(CartCreateRequest request)
+        public async Task<APIResult<bool>> Update(CartItemUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var cart = await _context.Carts
+                  .Include(c => c.CartDetail)
+                  .FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
+
+            if (cart == null)
+            {
+                return new APIResultErrors<bool>("Can not find this cart!");
+            }
+
+            var cartDetail = cart.CartDetail
+                .FirstOrDefault(c => c.ProductDetailId == request.OldProductDetailID);
+
+            var newCartDetail = cart.CartDetail
+                .FirstOrDefault(c => c.ProductDetailId == request.NewProductDetailID);
+
+            if (cartDetail == null)
+            {
+                return new APIResultErrors<bool>("This cart item is not exist!");
+            }
+
+            cart.Total += (request.Quantity * request.Price - cartDetail.Quantity* request.Price);
+
+            if(newCartDetail != null && request.OldProductDetailID != request.NewProductDetailID)    
+            {
+                newCartDetail.Quantity += request.Quantity;
+                _context.CartDetail.Remove(cartDetail);
+                await _context.SaveChangesAsync();
+
+                return new APIResultSuccess<bool>();
+            }
+
+            cartDetail.Quantity = request.Quantity;
+
+            cartDetail.ProductDetailId = request.NewProductDetailID;
+
+            await _context.SaveChangesAsync();
+
+            return new APIResultSuccess<bool>();
         }
 
         public async Task<APIResult<bool>> ChangeQuantity(CartItemCreateRequest request)
         {
             var cart = await _context.Carts
                 .Include(c => c.CartDetail)
-                .FirstOrDefaultAsync(c => c.Id == request.CartID);
+                .FirstOrDefaultAsync(c => c.AccountId == request.AccountId);
             if (cart != null)
             {
                 var cartDetail = cart.CartDetail.FirstOrDefault(cd => cd.ProductDetailId == request.ProductDetailID);

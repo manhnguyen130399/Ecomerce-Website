@@ -1,23 +1,27 @@
-<nz-drawer [nzWidth]="340" [nzWrapClassName]="'shopping-cart-modal'" [nzClosable]="true"
-  [nzVisible]="isOpenShoppingCartDrawer" nzPlacement="right" nzTitle="SHOPPING CART" (nzOnClose)="closeMenu()">
+<nz-drawer [nzWidth]="340" [nzWrapClassName]="'shopping-cart-modal'" [nzClosable]="true" [nzVisible]="isVisible"
+  nzPlacement="right" nzTitle="SHOPPING CART" (nzOnClose)="closeMenu()">
   <ng-container *nzDrawerContent>
-    <div class="shopping-cart-content flex fd-column">
-      <div class="cart-items custom-scroll-bar">
-        <app-cart-item [cartItemOptions]="cartItemOptions" *ngFor="let item of listCartItem"
-          (deleteItemEvent)="deleteItem($event)" [item]="item">
-        </app-cart-item>
+    <div *ngIf="cart" class="shopping-cart-content flex fd-column">
+      <div class="cart-items-wrapper">
+        <app-loader [loading]="isLoading" [background]="'#ffffffab'"></app-loader>
+        <div class="cart-items custom-scroll-bar">
+          <app-cart-item (loadingEvent)="loadingEvent($event)" [cartItemOptions]="cartItemOptions"
+            *ngFor="let item of cart.cartItems" (changeQuantityEvent)="changeQuantity($event)"
+            (deleteItemEvent)="deleteItem($event)" [item]="item">
+          </app-cart-item>
+        </div>
       </div>
+
       <div class="cart-footer">
         <div class="total flex">
           <p class="title">Subtotal:</p>
-          <p class="price">{{ totalPrice | currency}}</p>
+          <p class="price">{{ cart.total | currency}}</p>
         </div>
         <div class="action">
-          <button [routerLink]="['/cart']" nzShape="round" [nzLoading]="isLoading" nzSize="large" nz-button
-            [nzType]="'default'">VIEW
+          <button (click)="viewCart()" nzShape="round" nzSize="large" nz-button [nzType]="'default'">VIEW
             CART</button>
-          <button [routerLink]="['/checkout/information']" nzShape="round" [nzLoading]="isLoading" nzSize="large"
-            nz-button class="drawer-form-button " [nzType]="'primary'" nz-button>CHECK OUT</button>
+          <button (click)="viewCheckout()" nzShape="round" nzSize="large" nz-button class="drawer-form-button "
+            [nzType]="'primary'" nz-button>CHECK OUT</button>
         </div>
         <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
       </div>

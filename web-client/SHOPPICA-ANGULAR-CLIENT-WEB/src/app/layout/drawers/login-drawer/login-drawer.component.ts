@@ -1,3 +1,4 @@
+import { CartService } from './../../../core/services/cart/cart.service';
 import { ShareService } from './../../../core/services/share/share.service';
 import { LoginMethod } from './../../../core/enum/login-method';
 import { StorageService } from './../../../core/services/storage/storage.service';
@@ -31,7 +32,8 @@ export class LoginDrawerComponent implements OnInit {
     private readonly messageService: NzMessageService,
     private readonly socialAuthService: SocialAuthService,
     private readonly storageService: StorageService,
-    private readonly shareService: ShareService
+    private readonly shareService: ShareService,
+    private readonly cartService: CartService
   ) { }
 
   ngOnInit(): void {
@@ -119,6 +121,7 @@ export class LoginDrawerComponent implements OnInit {
     this.closeMenu();
     this.messageService.success("Login successfully!");
     this.loginForm.reset();
+
   }
 
   signInWithGoogle(): void {
@@ -128,4 +131,6 @@ export class LoginDrawerComponent implements OnInit {
   signInWithFacebook(): void {
     this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
   }
+
+
 }
