@@ -10,11 +10,14 @@ import javax.transaction.Transactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.modules.brand.domain.Brand;
@@ -33,6 +36,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.BRANDS, allEntries = true)
 	public BrandVM createBrand(final BrandVM req) {
 		final Store store = getStore(getUserContext());
 		final Brand brand = new Brand();
@@ -50,6 +54,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.BRANDS)
 	public Page<BrandVM> findAllByStore(final Integer page, final Integer pageSize, final String brandName,
 			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(brandName)) {
@@ -63,6 +68,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.BRANDS, allEntries = true)
 	public BrandVM deleteBrand(final Integer id, final Integer page, final Integer pageSize, final String brandName,
 			final SortType sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
@@ -80,6 +86,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.BRANDS)
 	public Page<BrandVM> seachBrandByStoreAndKeyword(final String brandName, final SortType sortOrder,
 			final Integer page, final Integer pageSize, final String sortField) {
 		return brandRepo
@@ -90,6 +97,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.BRANDS)
 	public Set<BrandVM> getAllBrand() {
 		return brandRepo.findAll().stream().map(it -> mapper.map(it, BrandVM.class)).collect(Collectors.toSet());
 	}

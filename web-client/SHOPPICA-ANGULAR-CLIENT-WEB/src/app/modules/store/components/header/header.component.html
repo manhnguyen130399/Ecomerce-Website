@@ -1,3 +1,4 @@
+<app-loader [loading]="isLoading"></app-loader>
 <div class="store-header">
     <div class="background"></div>
     <div class="flex al-center content">
@@ -11,14 +12,12 @@
             </div>
         </div>
     </div>
-
-
     <div class="store-header_menu jc-space-between flex al-center">
         <div class="menu">
             <ul class="flex">
-                <li routerLink="/store/home">Store</li>
-                <li routerLink="/product">All product</li>
-                <li routerLink="/store/info">Store profile</li>
+                <li [routerLink]="['/store/home',store.id]">Store</li>
+                <li [routerLink]="['/store/allProduct',store.id]">All product</li>
+                <li [routerLink]="['/store/info', store.id ]">Store profile</li>
             </ul>
         </div>
         <div class="store-header_search">

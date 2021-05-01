@@ -1,20 +1,20 @@
+<app-loader [loading]="isLoading"></app-loader>
 <div class="section-products">
     <div class="product-filter-bar flex al-center">
         <ul class="flex al-center">
-            <li class="active">New Product</li>
-            <li>Selling Well</li>
-            <li>Hight price</li>
-            <li>Low Price</li>
+            <li [ngClass]="{'active': selectedIndex == 1}" (click)=" loadProduct(1) ">New Product</li>
+            <li [ngClass]="{'active': selectedIndex == 2}" (click)="loadProduct(2) ">Hight price</li>
+            <li [ngClass]="{'active': selectedIndex == 3}" (click)="loadProduct(3) ">Low Price</li>
         </ul>
     </div>
-    <div class="product-row">
-        <div nz-row class="product-list">
-            <div *ngFor="let product of listProduct" nz-col class="product-item column" [nzLg]="fullScreen ? 6 : 8" [nzMd]="8" [nzSm]="12" [nzXs]="fullScreen ? 12 : 24">
-                <app-product-card [product]="product"></app-product-card>
+    <div class="product-row ">
+        <div nz-row class="product-list ">
+            <div *ngFor="let product of listProduct " nz-col class="product-item column " [nzLg]="fullScreen ? 6 : 8 " [nzMd]="8 " [nzSm]="12 " [nzXs]="fullScreen ? 12 : 24 ">
+                <app-product-card [product]="product "></app-product-card>
             </div>
         </div>
     </div>
-    <div class="product-footer">
-        <a>Load more</a>
+    <div class="product-footer ">
+        <a (click)="loadProduct(4) ">Load more</a>
     </div>
 </div>

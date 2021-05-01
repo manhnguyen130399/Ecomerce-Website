@@ -9,15 +9,15 @@ export const storeRoutes: Routes = [
     component: IndexComponent,
     children: [
       {
-        path: 'home',
+        path: 'home/:id',
         component: HomeStoreComponent
       },
       {
-        path: 'info',
+        path: 'info/:id',
         component: StoreInfoComponent
       },
       {
-        path: 'allProduct',
+        path: 'allProduct/:id',
         component: AllProductComponent
       }
     ]

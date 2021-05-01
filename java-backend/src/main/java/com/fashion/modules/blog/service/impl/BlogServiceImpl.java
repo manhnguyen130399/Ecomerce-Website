@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mail.SimpleMailMessage;
@@ -47,6 +49,7 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.BLOG, allEntries = true)
 	public BlogVM createBlog(final BlogReq req) {
 		final Blog blog = mapper.map(req, Blog.class);
 		blog.setStore(getStore(getUserContext()));
@@ -86,6 +89,7 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.BLOG)
 	public Page<BlogVM> getAllBlog(final Integer page, final Integer pageSize, final SortType sortOrder,
 			final String sortField, final String title) {
 		if (StringUtils.isEmpty(title)) {
@@ -112,6 +116,7 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.BLOG, allEntries = true)
 	public BlogVM deleteBlog(final Integer id, final Integer page, final Integer pageSize, final SortType sortOrder,
 			final String sortField, final String title) {
 		try {
@@ -130,6 +135,7 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.BLOG, allEntries = true)
 	public BlogVM updateBlog(final Integer id, final BlogUpdateReq req) {
 		final Blog blog = blogRepo.findOneById(id);
 		if (blog == null) {
@@ -154,6 +160,7 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 	}
 
 	@Override
+	@Cacheable(value = Constants.BLOG_RES)
 	public BlogRes getBlogRecentAndCategories() {
 		final List<BlogVM> blogs = getAllBlogComplete(0, Integer.MAX_VALUE, null).getContent();
 		final BlogRes res = new BlogRes();
@@ -186,6 +193,7 @@ public class BlogServiceImpl extends BaseService implements BlogService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.BLOG)
 	public Page<BlogVM> getAllBlogComplete(final Integer page, final Integer pageSize, final BlogType type) {
 		return blogRepo.getBlogComple(page, pageSize, type).map(it -> mapper.map(it, BlogVM.class));
 	}

@@ -4,12 +4,14 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Comment } from '@core/model/comment/comment';
 import { BlogService } from '@core/services/blog/blog.service';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-blog-detail',
   templateUrl: './blog-detail.component.html',
   styleUrls: ['./blog-detail.component.css'],
 })
 export class BlogDetailComponent implements OnInit {
+  isLoading = true;
   blog: Blog = {
     id: null,
     summary: null,
@@ -31,7 +33,7 @@ export class BlogDetailComponent implements OnInit {
   }
 
   getBlogById(id: number) {
-    this.blogService.getBlogById(id).subscribe((res) => {
+    this.blogService.getBlogById(id).pipe(finalize(() => this.isLoading = false)).subscribe((res) => {
       const data = res.data;
       this.blog = data;
     })

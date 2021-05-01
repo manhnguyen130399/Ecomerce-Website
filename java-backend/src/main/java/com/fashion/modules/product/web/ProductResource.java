@@ -115,10 +115,15 @@ public class ProductResource extends BaseResource {
 	}
 	
 	@GetMapping(URL + "/best-seller")
-	public ResponseEntity<Map<String, Object>> getBestSeller(
+	public ResponseEntity<Map<String, Object>> getBestSeller(@RequestParam(required = false) final Integer id) {
+		return success(productService.getBestSellerProductByStore(id));
+	}
+	
+	@GetMapping(URL + "/fulltext-search")
+	public ResponseEntity<Map<String, Object>> searchProductByKeyword(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
-			@RequestParam(required = false) final Integer id) {
-		return success(productService.getBestSellerProductByStore(id, page, pageSize));
+			@RequestParam final String keyword) {
+		return success(productService.searchProductByKeyword(page, pageSize, keyword));
 	}
 }

@@ -37,6 +37,8 @@ public interface ProductService {
 	
 	Page<ProductVM> getAllOrFilterProduct(ProductFilterRequest req, Integer page, Integer pageSize);
 	
-	Page<ProductVM> getBestSellerProductByStore(Integer storeId, Integer page, Integer pageSize);
+	List<ProductVM> getBestSellerProductByStore(Integer storeId);
+	
+	Page<ProductVM> searchProductByKeyword(Integer page, Integer pageSize, String keyword);
 
 }

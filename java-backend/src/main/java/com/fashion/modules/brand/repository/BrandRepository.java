@@ -1,5 +1,8 @@
 package com.fashion.modules.brand.repository;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,5 +31,7 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
 			+ " WHERE  st.id = :id "
 			+ " AND b.brandName LIKE %:keyword% ")
 	Page<Brand> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("id") Integer id, Pageable page);
+	
+	List<Brand> findBrandByIdIn(Collection<Integer> ids);
 
 }

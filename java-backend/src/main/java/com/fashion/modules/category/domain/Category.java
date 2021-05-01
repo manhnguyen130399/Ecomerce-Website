@@ -16,7 +16,6 @@ import javax.persistence.Table;
 
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
 
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.product.domain.Product;
@@ -26,7 +25,6 @@ import com.google.common.collect.Sets;
 @Entity
 @Table(name = "category")
 @Access(AccessType.FIELD)
-@Indexed
 public class Category extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = -2657588185896188134L;

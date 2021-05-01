@@ -89,18 +89,18 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		final StringBuilder builder = new StringBuilder();
 		builder.append(" SELECT DISTINCT p ");
 		builder.append(" FROM Product p ");
-		builder.append(" LEFT JOIN FETCH p.category cate ");
-		builder.append(" LEFT JOIN FETCH p.brand b ");
-		builder.append(" LEFT JOIN FETCH p.productDetails d ");
-		builder.append(" LEFT JOIN FETCH d.color c ");
-		builder.append(" LEFT JOIN FETCH d.size s ");
+		builder.append(" LEFT JOIN  p.category cate ");
+		builder.append(" LEFT JOIN  p.brand b ");
+		builder.append(" LEFT JOIN  p.productDetails d ");
+		builder.append(" LEFT JOIN  d.color c ");
+		builder.append(" LEFT JOIN  d.size s ");
 		builder.append(" WHERE 1 = 1");
 		final String categoryNames = req.getCategoryNames();
 		final boolean hasCategoryName = StringUtils.isNotEmpty(categoryNames);
 		if (hasCategoryName) {
 			builder.append(" AND cate.categoryName = :categoryName ");
 		}
-		final String productName = req.getProductName();
+		final String productName = req.getProductNames();
 		final boolean hasProductName = StringUtils.isNotEmpty(productName);
 		if (hasProductName) {
 			builder.append(" AND p.productName LIKE :productName ");
@@ -135,7 +135,7 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 			query.setParameter("categoryName", categoryNames);
 		}
 		if (hasProductName) {
-			query.setParameter("productName", productName);
+			query.setParameter("productName", Constants.PERCENT + productName + Constants.PERCENT);
 		}
 		if (hasBrandNames) {
 			query.setParameter("brandNames", brandNames);
@@ -184,8 +184,7 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 	}
 
 	@Override
-	public Page<Product> getBestSeller(final Integer storeId, final Integer page, final Integer pageSize,
-			final Collection<Integer> ids) {
+	public List<Product> getBestSeller(final Integer storeId, final Collection<Integer> ids) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append(" SELECT DISTINCT p ");
 		builder.append(" FROM Product p ");
@@ -198,19 +197,13 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		if (hasStoreId) {
 			builder.append(" AND s.id = :storeId");
 		}
-
 		final TypedQuery<Product> query = getEm().createQuery(builder.toString(), Product.class);
 		query.setParameter("ids", ids);
+		query.setMaxResults(10);
 		if (hasStoreId) {
 			query.setParameter("storeId", storeId);
 		}
-		final List<Product> rs = query.getResultList();
-		if (page != null && pageSize != null) {
-			query.setFirstResult(page * pageSize);
-			query.setMaxResults(pageSize);
-		}
-		final List<Product> rs2 = query.getResultList();
-		return new PageImpl<Product>(rs2, PageRequest.of(page, pageSize), rs.size());
+		return query.getResultList();
 	}
 
 }

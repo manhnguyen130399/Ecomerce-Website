@@ -59,14 +59,17 @@ public class Product extends AbstractAuditingEntity {
 	@JoinColumn(name = "store_id")
 	private Store store;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<Comment> comments = Sets.newHashSet();
 
 	@JsonIgnore
+	@IndexedEmbedded
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<ProductDetail> productDetails = Sets.newHashSet();
 
 	@JsonIgnore
+	@IndexedEmbedded
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<ProductImage> productImages = Sets.newHashSet();
 

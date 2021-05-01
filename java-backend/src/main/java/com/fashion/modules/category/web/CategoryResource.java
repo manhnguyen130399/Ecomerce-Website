@@ -48,8 +48,9 @@ public class CategoryResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String categoryName,
 			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
-			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
-		return success(categoryService.findAllByStore(page, pageSize, categoryName, sortOrder, sortField));
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField,
+			@RequestParam(required = false, defaultValue = "0") final Integer storeId) {
+		return success(categoryService.findAllByStore(page, pageSize, categoryName, sortOrder, sortField, storeId));
 	}
 
 	@DeleteMapping(URL + "/{id}")
@@ -68,9 +69,10 @@ public class CategoryResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String categoryName,
 			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
-			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
+			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField,
+			@RequestParam(required = false, defaultValue = "0") final Integer storeId) {
 		return success(
-				categoryService.searchCategoryByKeywordAndStore(categoryName, sortOrder, sortField, page, pageSize));
+				categoryService.searchCategoryByKeywordAndStore(categoryName, sortOrder, sortField, page, pageSize, storeId));
 	}
 	
 	@GetMapping(URL + "/category-all-store")

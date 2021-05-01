@@ -1,12 +1,13 @@
+<app-loader [loading]="isLoading"></app-loader>
 <div class="store-info">
     <div nz-row>
         <div nz-col [nzMd]="7" [nzXs]="12" class="cancel-rating flex al-center jc-center fd-column">
             <p class="text">Cancellation rating</p>
-            <p class="value">{{cancel}}%</p>
+            <p class="value">{{cancel| number: '1.0-0'}}%</p>
         </div>
         <div nz-col [nzMd]="7" [nzXs]="12" class="return-rating flex al-center jc-center fd-column">
             <p class="text">Complete rating</p>
-            <p class="value">{{complete}}%</p>
+            <p class="value">{{complete |number: '1.0-0'}}%</p>
         </div>
         <div nz-col [nzMd]="10" [nzXs]="10" class="info">
             <div nz-row class="since">

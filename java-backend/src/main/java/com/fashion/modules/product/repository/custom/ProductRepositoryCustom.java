@@ -1,6 +1,7 @@
 package com.fashion.modules.product.repository.custom;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 
@@ -14,6 +15,6 @@ public interface ProductRepositoryCustom {
 
 	Page<Product> filterProduct(ProductFilterRequest req, Integer page, Integer pageSize);
 	
-	Page<Product> getBestSeller(Integer storeId, Integer page, Integer pageSize, Collection<Integer> ids);
+	List<Product> getBestSeller(Integer storeId, Collection<Integer> ids);
 
 }

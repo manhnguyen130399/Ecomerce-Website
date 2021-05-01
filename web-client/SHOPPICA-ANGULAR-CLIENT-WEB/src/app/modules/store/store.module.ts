@@ -19,6 +19,8 @@ import { ProductsComponent } from './components/products/products.component';
 import { IndexComponent } from './pages/index/index.component';
 import { AllProductComponent } from './pages/all-product/all-product.component';
 import { HomeStoreComponent } from './pages/home-store/home-store.component';
+import { LoaderModule } from '@shared/modules/loader/loader.module';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 
 
@@ -35,12 +37,12 @@ import { HomeStoreComponent } from './pages/home-store/home-store.component';
   ],
   imports: [
     CommonModule,
-
+    NzPaginationModule,
     SectionTitleModule,
     NzButtonModule,
     NzInputModule,
     NzGridModule,
-
+    LoaderModule,
     CarouselModule,
     ProductCarouselModule,
     ProductCardModule,

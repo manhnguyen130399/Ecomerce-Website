@@ -11,16 +11,16 @@ export class ShareService {
 
   loginSuccessEmitted$ = this.loginSuccess.asObservable();
 
-  private storeInfo = new BehaviorSubject<Store>(null);
+  private storeId = new BehaviorSubject<number>(null);
 
-  loadStoreInfoSEmitted$ = this.storeInfo.asObservable()
+  loadStoreInfoSEmitted$ = this.storeId.asObservable()
 
   loginSuccessEvent() {
     this.loginSuccess.next(true);
   }
 
-  storeInfoSuccessEvent(store: Store) {
-    this.storeInfo.next(store)
+  storeInfoSuccessEvent(id: number) {
+    this.storeId.next(id)
   }
 
   constructor() { }
