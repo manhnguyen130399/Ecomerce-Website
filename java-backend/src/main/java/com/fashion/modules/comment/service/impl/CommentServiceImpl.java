@@ -44,9 +44,8 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		comment.setEmail(account.getUsername());
 		final Integer productId = req.getProductId();
 		final Integer blogId = req.getBlogId();
-		final Integer storeId = getCurrentStoreId();
 		if (productId != null) {
-			final Product product = productRepo.findOneProductByIdAndStore(productId, storeId);
+			final Product product = productRepo.getOne(productId);
 			if (product == null) {
 				throw new InvalidArgumentException(" Can't found product ");
 			}

@@ -47,6 +47,7 @@ export class ProductTrendingComponent implements OnInit {
         colorCode: "#e1eb78"
       }
     ],
+    comments: [],
     isNew: true,
     discount: 20
   };

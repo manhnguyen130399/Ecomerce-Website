@@ -22,6 +22,7 @@ export class SearchModalComponent implements OnInit {
     price: 12,
     sizes: [],
     colors: [],
+    comments: []
   };
 
   listProduct: Product[] = [
