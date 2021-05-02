@@ -97,7 +97,9 @@ registerLocaleData(en);
           }
         ]
       } as SocialAuthServiceConfig,
-    }],
+
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,11 +1,11 @@
 <div [class.large]="cartItemOptions.size === 'large'" [class.small]="cartItemOptions.size === 'small'"
   [class.hiddenBorder]="!cartItemOptions.showBorder" class="cart-item flex">
-  <div [routerLink]="'/product/detail/'+ item.productId" class="product-image">
-    <a href=""><img src={{item.image}} alt=""></a>
+  <div class="product-image">
+    <a (click)="viewProductDetail(item.productId)"><img src={{item.image}} alt=""></a>
   </div>
   <div class="cart-info">
     <div class="info">
-      <div [routerLink]="'/product/detail/'+ item.productId" class="product-name text-hover">{{item.productName}}</div>
+      <div (click)="viewProductDetail(item.productId)" class="product-name text-hover">{{item.productName}}</div>
       <div *ngIf="cartItemOptions.shortDetail" class="product-detail">
         <span>{{item.colorName}}</span>
         <span>/</span>
