@@ -1,3 +1,8 @@
+.cart {
+  height: 100%;
+  overflow: hidden;
+}
+
 .shopping-cart-content {
   flex: 1 1 auto;
   align-items: stretch;
@@ -60,4 +65,27 @@
 .trust-img {
   width: 100%;
   margin-top: 10px;
+}
+
+.checkout-btn {
+  width: auto;
+  min-width: 180px;
+  border-radius: 30px;
+  background-color: #56cfe1;
+  border-color: #56cfe1;
+  height: 40px;
+  margin-bottom: 5px;
+}
+
+.cart-empty {
+  margin-top: 60px;
+}
+
+.cart-empty i {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.cart-empty p {
+  color: #878787;
 }

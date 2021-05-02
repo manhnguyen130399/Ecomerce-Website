@@ -39,6 +39,7 @@ export class FilterDrawerComponent implements OnInit {
   selectedSize: string;
   selectedBrand: string;
   selectedPrice: string;
+  currentCategory: string;
 
   constructor(
     private readonly brandService: BrandService,
@@ -59,6 +60,10 @@ export class FilterDrawerComponent implements OnInit {
       this.selectedBrand = params.brand;
       this.selectedPrice = params.price;
     });
+
+    this.activatedRoute.params.subscribe((data) => {
+      this.currentCategory = data.category;
+    })
   }
 
   closeMenu() {
@@ -93,21 +98,44 @@ export class FilterDrawerComponent implements OnInit {
 
   selectColor(color: Color) {
     this.closeMenu();
-    this.router.navigate(["/product/collection/all"], { queryParams: { color: color.colorName.toLowerCase() }, queryParamsHandling: 'merge' })
+    this.router.navigate(["/product/collection", this.currentCategory],
+      {
+        queryParams: {
+          color: color.colorName.toLowerCase()
+        },
+        queryParamsHandling: 'merge'
+      })
   }
 
   selectSize(size: Size) {
     this.closeMenu();
-    this.router.navigate(["/product/collection/all"], { queryParams: { size: size.sizeName.toLowerCase() }, queryParamsHandling: 'merge' })
+    this.router.navigate(["/product/collection", this.currentCategory],
+      {
+        queryParams: {
+          size: size.sizeName.toLowerCase()
+        },
+        queryParamsHandling: 'merge'
+      })
   }
 
   selectBrand(brand: Brand) {
     this.closeMenu();
-    this.router.navigate(["/product/collection/all"], { queryParams: { brand: brand.brandName.toLowerCase() }, queryParamsHandling: 'merge' })
+    this.router.navigate(["/product/collection", this.currentCategory],
+      {
+        queryParams: {
+          brand: brand.brandName.toLowerCase()
+        },
+        queryParamsHandling: 'merge'
+      })
   }
 
   selectPrice(price: Price) {
     this.closeMenu();
-    this.router.navigate(["/product/collection/all"], { queryParams: { price: price.priceUrl }, queryParamsHandling: 'merge' })
+    this.router.navigate(["/product/collection", this.currentCategory],
+      {
+        queryParams: {
+          price: price.priceUrl
+        }, queryParamsHandling: 'merge'
+      })
   }
 }

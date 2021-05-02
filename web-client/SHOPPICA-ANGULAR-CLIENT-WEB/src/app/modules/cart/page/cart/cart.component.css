@@ -1,3 +1,7 @@
+.container {
+  min-height: 450px;
+}
+
 .title {
   background-image: url("/assets/images/products/cart.jpg");
   background-position: center center;
@@ -89,9 +93,24 @@
   margin-bottom: 5px;
 }
 
-.empty-cart {
+.cart-empty {
+  margin: 150px 0;
+}
+
+.cart-empty i {
+  font-size: 60px;
+  margin-bottom: 30px;
+}
+
+.cart-empty h1 {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.cart-empty p {
   color: #878787;
   text-align: center;
+  margin-bottom: 30px;
 }
 
 @media (max-width: 768px) {

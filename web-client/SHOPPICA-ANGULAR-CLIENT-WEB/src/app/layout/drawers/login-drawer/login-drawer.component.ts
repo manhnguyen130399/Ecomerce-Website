@@ -1,3 +1,4 @@
+import { CartService } from './../../../core/services/cart/cart.service';
 
 import { ShareService } from './../../../core/services/share/share.service';
 import { LoginMethod } from './../../../core/enum/login-method';
@@ -32,6 +33,7 @@ export class LoginDrawerComponent implements OnInit {
     private readonly socialAuthService: SocialAuthService,
     private readonly storageService: StorageService,
     private readonly shareService: ShareService,
+    private readonly cartService: CartService
   ) { }
 
   ngOnInit(): void {
@@ -123,6 +125,15 @@ export class LoginDrawerComponent implements OnInit {
     this.messageService.success("Login successfully!");
     this.loginForm.reset();
     this.getCustomerDetail();
+    this.getCart();
+  }
+
+  getCart() {
+    this.cartService.getCartById().subscribe((res) => {
+      if (res.isSuccessed) {
+        this.shareService.cartEmitEvent(res.data);
+      }
+    })
   }
 
   getCustomerDetail() {

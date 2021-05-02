@@ -1,7 +1,7 @@
-import { OrderGroup } from './../order/order-group';
+import { OrderGroup } from '../../model/order/order-group';
 import { HttpClient } from '@angular/common/http';
 import { environment } from './../../../../environments/environment';
-import { Order } from './../order/order';
+import { Order } from '../../model/order/order';
 import { of, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';

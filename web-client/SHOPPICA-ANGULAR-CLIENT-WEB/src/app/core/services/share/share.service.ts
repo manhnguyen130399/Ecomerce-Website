@@ -14,20 +14,31 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ShareService {
 
   private loginSuccess = new BehaviorSubject<boolean>(false);
+  private gotoCartPage = new Subject<boolean>();
+
   private openQuickView = new Subject<Product>();
+  private closeQuickView = new Subject<boolean>();
   private openQuickShop = new Subject<Product>();
-  private addToCartSuccess = new BehaviorSubject<Cart>(null);
+  private closeQuickShop = new Subject<boolean>();
   private openCartDrawer = new Subject<boolean>();
+  private closeCartDrawer = new Subject<boolean>();
+
+  private cart = new BehaviorSubject<Cart>(new Cart());
   private editCartItem = new Subject<OldCartItem>();
   private changeNumCartItem = new Subject<number>();
   private customerInfo = new BehaviorSubject<Customer>(null);
   private shippingAddress = new BehaviorSubject<ShippingAddress>(null);
 
   loginSuccessEmitted$ = this.loginSuccess.asObservable();
+  gotoCartPageEmitted$ = this.gotoCartPage.asObservable();
   openQuickViewEmitted$ = this.openQuickView.asObservable();
+  closeQuickViewEmitted$ = this.closeQuickView.asObservable();
   openQuickShopEmitted$ = this.openQuickShop.asObservable();
-  addToCartSuccessEmitted$ = this.addToCartSuccess.asObservable();
+  closeQuickShopEmitted$ = this.closeQuickShop.asObservable();
   openCartDrawerEmitted$ = this.openCartDrawer.asObservable();
+  closeCartDrawerEmitted$ = this.closeCartDrawer.asObservable();
+
+  cartEmitted$ = this.cart.asObservable();
   editCartItemEmitted$ = this.editCartItem.asObservable();
   changeNumCartItemEmitted$ = this.changeNumCartItem.asObservable();
   customerInfoEmitted$ = this.customerInfo.asObservable();
@@ -41,20 +52,37 @@ export class ShareService {
     this.loginSuccess.next(true);
   }
 
+  changeGotoCartPage(isGotoPage: boolean) {
+    this.gotoCartPage.next(isGotoPage);
+  }
+
   openQuickViewEvent(product: Product) {
     this.openQuickView.next(product);
+  }
+
+  closeQuickViewEvent() {
+    this.closeQuickView.next();
   }
 
   openQuickShopEvent(product: Product) {
     this.openQuickShop.next(product);
   }
 
-  addToCartSuccessEvent(cart: Cart) {
-    this.addToCartSuccess.next(cart);
+  closeQuickShopEvent() {
+    this.closeQuickShop.next();
   }
 
   openCartDrawerEvent() {
     this.openCartDrawer.next(true);
+  }
+
+  closeCartDrawerEvent() {
+    this.closeCartDrawer.next();
+  }
+
+  cartEmitEvent(cart: Cart) {
+    this.cart.next(cart);
+    this.changeNumCartItem.next(cart.cartItems.length);
   }
 
   editCartItemEvent(cartItem: OldCartItem) {

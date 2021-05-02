@@ -1,8 +1,8 @@
 <div class="container">
   <div class="category-sections custom-scroll-bar">
     <ul *ngIf="listCategory.length > 0" class="flex jc-center">
-      <li [routerLink]="['/product','collection',category.categoryName.toLowerCase()]" [routerLinkActiveOptions]="{exact:
-        true}" (click)="selectCategory(category)" [routerLinkActive]="['active']" class="text-hover"
+      <li [routerLink]="['/product','collection',category.categoryName.toLowerCase()]"
+        (click)="selectCategory(category)" [routerLinkActive]="['active']" class="text-hover"
         *ngFor="let category of listCategory">
         {{category.categoryName}}</li>
     </ul>
