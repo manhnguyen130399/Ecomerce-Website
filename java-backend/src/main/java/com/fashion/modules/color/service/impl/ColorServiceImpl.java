@@ -10,11 +10,14 @@ import javax.transaction.Transactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.domain.UserContext;
@@ -34,6 +37,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.COLORS, allEntries = true)
 	public ColorVM createColor(final ColorVM vm) {
 		final UserContext context = getUserContext();
 		final Store store = getStore(context);
@@ -54,6 +58,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.COLORS)
 	public Page<ColorVM> findByAllStore(final String colorName, final SortType sortOrder, final String sortField,
 			final Integer page, final Integer pageSize) {
 		if (StringUtils.isEmpty(colorName)) {
@@ -67,6 +72,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.COLORS, allEntries = true)
 	public ColorVM deleteColor(final Integer id, final String colorName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
@@ -85,6 +91,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.COLORS)
 	public Page<ColorVM> searchColorByKeywordAndStore(final String colorName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		return colorRepo
@@ -95,6 +102,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.COLORS)
 	public Set<ColorVM> getAllColor() {
 		return colorRepo.findAll().stream().map(it -> mapper.map(it, ColorVM.class)).collect(Collectors.toSet());
 	}

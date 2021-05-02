@@ -21,6 +21,7 @@ import { CommentsComponent } from './components/comments/comments.component';
 import { LeaveCommentComponent } from './components/leave-comment/leave-comment.component';
 import { QuillModule } from 'ngx-quill';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { LoaderModule } from '@shared/modules/loader/loader.module';
 
 
 
@@ -45,6 +46,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     FormsModule,
     NzInputModule,
     NzFormModule,
+    LoaderModule,
     NzButtonModule,
     NzIconModule.forChild(shareIcons),
     QuillModule.forRoot(),

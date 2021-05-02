@@ -1,8 +1,6 @@
 <div class="blog-page mt-70">
-  <app-header-page
-    [image]="'/assets/images/blogs/blog-background.jpg'"
-    [pageName]="'ALL BLOGS'"
-  ></app-header-page>
+  <app-header-page [image]="'/assets/images/blogs/blog-background.jpg'" [pageName]="'ALL BLOGS'"></app-header-page>
+  <app-loader [id]="'blog'"></app-loader>
   <div class="container">
     <div class="content" nz-row>
       <div nz-col [nzLg]="6" [nzSm]="18" [nzXs]="24">
@@ -10,25 +8,14 @@
       </div>
       <div nz-col [nzLg]="18" [nzXs]="24">
         <div nz-row [nzGutter]="24">
-          <div
-            class="item"
-            *ngFor="let blog of listBlog"
-            nz-col
-            [nzMd]="12"
-            [nzXs]="24"
-          >
+          <div class="item" *ngFor="let blog of listBlog" nz-col [nzMd]="12" [nzXs]="24">
             <app-blog-card [blog]="blog" (click)="viewItem(blog.id)"></app-blog-card>
           </div>
         </div>
         <div class="product-footer">
           <div class="pagination flex jc-center">
-            <nz-pagination
-              [nzHideOnSinglePage]="true"
-              [nzPageIndex]= "pageIndex"
-              [nzPageSize]="pageSize"
-              [nzTotal]="total"
-              (nzPageIndexChange) ="onQueryPageIndexChange($event)"
-            ></nz-pagination>
+            <nz-pagination [nzHideOnSinglePage]="true" [nzPageIndex]="pageIndex" [nzPageSize]="pageSize"
+              [nzTotal]="total" (nzPageIndexChange)="onQueryPageIndexChange($event)"></nz-pagination>
           </div>
         </div>
       </div>

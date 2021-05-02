@@ -14,6 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.category.domain.Category;
@@ -25,24 +29,29 @@ import com.google.common.collect.Sets;
 @Entity
 @Table(name = "product")
 @Access(AccessType.FIELD)
+@Indexed
 public class Product extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = 8690924342016681887L;
 
+	@Field
 	@Column(name = "product_name")
 	private String productName;
 
+	@Field
 	@Column(name = "price")
 	private BigDecimal price;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
+	@IndexedEmbedded
 	private Category category;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "brand_id")
+	@IndexedEmbedded
 	private Brand brand;
 
 	@JsonIgnore
@@ -50,14 +59,17 @@ public class Product extends AbstractAuditingEntity {
 	@JoinColumn(name = "store_id")
 	private Store store;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<Comment> comments = Sets.newHashSet();
 
 	@JsonIgnore
+	@IndexedEmbedded
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<ProductDetail> productDetails = Sets.newHashSet();
 
 	@JsonIgnore
+	@IndexedEmbedded
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
 	private Set<ProductImage> productImages = Sets.newHashSet();
 

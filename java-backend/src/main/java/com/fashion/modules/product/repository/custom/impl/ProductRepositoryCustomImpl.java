@@ -1,6 +1,7 @@
 package com.fashion.modules.product.repository.custom.impl;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -86,20 +87,20 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 	@Override
 	public Page<Product> filterProduct(final ProductFilterRequest req, final Integer page, final Integer pageSize) {
 		final StringBuilder builder = new StringBuilder();
-		builder.append(" SELECT p ");
+		builder.append(" SELECT DISTINCT p ");
 		builder.append(" FROM Product p ");
-		builder.append(" LEFT JOIN FETCH p.category cate ");
-		builder.append(" LEFT JOIN FETCH p.brand b ");
-		builder.append(" LEFT JOIN FETCH p.productDetails d ");
-		builder.append(" LEFT JOIN FETCH d.color c ");
-		builder.append(" LEFT JOIN FETCH d.size s ");
+		builder.append(" LEFT JOIN  p.category cate ");
+		builder.append(" LEFT JOIN  p.brand b ");
+		builder.append(" LEFT JOIN  p.productDetails d ");
+		builder.append(" LEFT JOIN  d.color c ");
+		builder.append(" LEFT JOIN  d.size s ");
 		builder.append(" WHERE 1 = 1");
 		final String categoryNames = req.getCategoryNames();
 		final boolean hasCategoryName = StringUtils.isNotEmpty(categoryNames);
 		if (hasCategoryName) {
 			builder.append(" AND cate.categoryName = :categoryName ");
 		}
-		final String productName = req.getProductName();
+		final String productName = req.getProductNames();
 		final boolean hasProductName = StringUtils.isNotEmpty(productName);
 		if (hasProductName) {
 			builder.append(" AND p.productName LIKE :productName ");
@@ -121,8 +122,12 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		}
 		final List<BigDecimal> prices = req.getPrices();
 		final boolean hasPrices = CollectionUtils.isNotEmpty(prices);
+		BigDecimal min = BigDecimal.ZERO;
+		BigDecimal max = BigDecimal.ZERO;
 		if (hasPrices) {
-			builder.append(" AND p.price IN (:prices)");
+			min = prices.get(0).compareTo(prices.get(1)) == 1 ? prices.get(1) : prices.get(0);
+			max = prices.get(0).compareTo(prices.get(1)) == 1 ? prices.get(0) : prices.get(1);
+			builder.append(" AND p.price >= (:min) AND p.price <= (:max) ");
 		}
 		builder.append(buildSortOrder(req.getSortType()));
 		final TypedQuery<Product> query = getEm().createQuery(builder.toString(), Product.class);
@@ -130,7 +135,7 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 			query.setParameter("categoryName", categoryNames);
 		}
 		if (hasProductName) {
-			query.setParameter("productName", productName);
+			query.setParameter("productName", Constants.PERCENT + productName + Constants.PERCENT);
 		}
 		if (hasBrandNames) {
 			query.setParameter("brandNames", brandNames);
@@ -142,7 +147,8 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 			query.setParameter("sizeNames", sizeNames);
 		}
 		if (hasPrices) {
-			query.setParameter("prices", prices);
+			query.setParameter("min", min);
+			query.setParameter("max", max);
 		}
 		final List<Product> rs = query.getResultList();
 		if (page != null && pageSize != null) {
@@ -175,6 +181,29 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		default:
 			return " ORDER BY p.id ";
 		}
+	}
+
+	@Override
+	public List<Product> getBestSeller(final Integer storeId, final Collection<Integer> ids) {
+		final StringBuilder builder = new StringBuilder();
+		builder.append(" SELECT DISTINCT p ");
+		builder.append(" FROM Product p ");
+		builder.append(" LEFT JOIN p.productDetails de ");
+		boolean hasStoreId = storeId != null;
+		if (hasStoreId) {
+			builder.append(" LEFT JOIN p.store s ");
+		}
+		builder.append(" WHERE de.id IN (:ids) ");
+		if (hasStoreId) {
+			builder.append(" AND s.id = :storeId");
+		}
+		final TypedQuery<Product> query = getEm().createQuery(builder.toString(), Product.class);
+		query.setParameter("ids", ids);
+		query.setMaxResults(10);
+		if (hasStoreId) {
+			query.setParameter("storeId", storeId);
+		}
+		return query.getResultList();
 	}
 
 }

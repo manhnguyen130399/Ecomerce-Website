@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Field;
+
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.store.domain.Store;
@@ -26,6 +28,7 @@ public class Color extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = 4254079776649399838L;
 
+	@Field
 	@Column(name = "color_name")
 	private String colorName;
 

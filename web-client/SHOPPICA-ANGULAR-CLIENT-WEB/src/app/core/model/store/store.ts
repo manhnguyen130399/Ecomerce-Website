@@ -9,5 +9,7 @@ export interface Store {
   closeTime: string;
   website: string;
   logo: string;
+  createdAt: Date;
+  totalProduct: number;
   promotions: Promotion[];
 }

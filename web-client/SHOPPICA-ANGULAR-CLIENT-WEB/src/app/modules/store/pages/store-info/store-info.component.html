@@ -1,25 +1,22 @@
+<app-loader [id]="'store'"></app-loader>
 <div class="store-info">
   <div nz-row>
     <div nz-col [nzMd]="7" [nzXs]="12" class="cancel-rating flex al-center jc-center fd-column">
       <p class="text">Cancellation rating</p>
-      <p class="value">0%</p>
+      <p class="value">{{cancel| number: '1.0-0'}}%</p>
     </div>
     <div nz-col [nzMd]="7" [nzXs]="12" class="return-rating flex al-center jc-center fd-column">
-      <p class="text">Return rating</p>
-      <p class="value">0%</p>
+      <p class="text">Complete rating</p>
+      <p class="value">{{complete |number: '1.0-0'}}%</p>
     </div>
     <div nz-col [nzMd]="10" [nzXs]="10" class="info">
       <div nz-row class="since">
         <p nz-col [nzMd]="8" [nzXs]="12" class="title"><i nz-icon nzType="calendar" nzTheme="outline"></i>Since</p>
-        <p nz-col [nzMd]="16" [nzXs]="12" class="value">2020</p>
+        <p nz-col [nzMd]="16" [nzXs]="12" class="value">{{createdAt}}</p>
       </div>
       <div nz-row class="product">
         <p nz-col [nzMd]="8" [nzXs]="12" class="title"> <i nz-icon nzType="shop" nzTheme="outline"></i>Product</p>
-        <p nz-col [nzMd]="16" [nzXs]="12" class="value">100+</p>
-      </div>
-      <div nz-row class="follow">
-        <p nz-col [nzMd]="8" [nzXs]="12" class="title"><i nz-icon nzType="user-add" nzTheme="outline"></i>Follow</p>
-        <p nz-col [nzMd]="16" [nzXs]="12" class="value">200+</p>
+        <p nz-col [nzMd]="16" [nzXs]="12" class="value">{{totalProduct}}+</p>
       </div>
     </div>
   </div>

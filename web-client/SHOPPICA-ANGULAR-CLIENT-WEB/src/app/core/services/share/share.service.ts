@@ -5,6 +5,7 @@ import { OldCartItem } from './../../model/cart/old-cart-item';
 import { Cart } from './../../model/cart/cart';
 import { Product } from '@core/model/product/product';
 import { Injectable } from '@angular/core';
+import { Store } from '@core/model/store/store';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
@@ -32,7 +33,9 @@ export class ShareService {
   customerInfoEmitted$ = this.customerInfo.asObservable();
   shippingAddressEmitted$ = this.shippingAddress.asObservable();
 
-  constructor() { }
+  private storeId = new BehaviorSubject<number>(null);
+
+  loadStoreInfoSEmitted$ = this.storeId.asObservable()
 
   loginSuccessEvent() {
     this.loginSuccess.next(true);
@@ -69,4 +72,10 @@ export class ShareService {
   shippingAddressChangeEvent(address: ShippingAddress) {
     this.shippingAddress.next(address);
   }
+
+  storeInfoSuccessEvent(id: number) {
+    this.storeId.next(id)
+  }
+
+  constructor() { }
 }

@@ -1,3 +1,4 @@
+<app-loader [id]="'store'"></app-loader>
 <div class="store-discount">
   <div class="discounts">
     <owl-carousel-o [options]="customOptions">
@@ -7,13 +8,15 @@
           <div class="content">
             <div class="left">
               <div>
-                <p class="percent">Discount {{discount.percent}} %</p>
-                <p class="apply">Apply for receipt more than $ 20</p>
+                <p class="percent">Discount {{discount.discount |number: '1.0-0'}} %</p>
               </div>
-              <p class="expire">Expire: {{discount.expire | date:'shortDate'}}</p>
+              <div>
+                <p class="expire">Start: {{discount.startDate | date:'mediumDate'}}</p>
+                <p class="expire">Expire: {{discount.endDate | date:'mediumDate'}}</p>
+              </div>
             </div>
             <div class="right">
-              <a href="">SAVE</a>
+              <img src="{{discount.qrCode}}" alt="">
             </div>
           </div>
         </div>
