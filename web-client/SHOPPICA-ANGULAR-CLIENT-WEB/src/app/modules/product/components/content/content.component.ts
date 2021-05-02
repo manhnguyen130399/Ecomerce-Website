@@ -13,7 +13,6 @@ import { Component, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 })
 export class ContentComponent implements OnInit {
   @Input() productCol: number = 6;
-  @Input() isLoading = false;
   @Input() listProduct: Product[] = []
   constructor() { }
 

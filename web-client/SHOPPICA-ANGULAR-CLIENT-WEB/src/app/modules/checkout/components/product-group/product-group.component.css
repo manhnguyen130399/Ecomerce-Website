@@ -3,8 +3,7 @@
   margin-bottom: 30px;
 }
 
-.cart-group-name i {
-  font-size: 27px;
+.cart-group-name img {
   margin-right: 5px;
 }
 
@@ -28,6 +27,10 @@
 .cart-group-order-notes .notes-content {
   width: 100%;
   padding: 0 20px;
+}
+
+.discount-content {
+  padding: 10px 0;
 }
 
 .cart-group-order-fee {
@@ -67,11 +70,7 @@
 
 /* popover */
 
-.discount-content {
-  padding: 10px 20px;
-}
-
-.coupon-input input {
+input.coupon-input {
   line-height: 26px;
 }
 
@@ -80,6 +79,10 @@
   border-radius: 4px;
   background-color: #56cfe1;
   border-color: #56cfe1;
+}
+
+nz-form-item {
+  margin-bottom: 0;
 }
 
 @media (max-width: 768px) {

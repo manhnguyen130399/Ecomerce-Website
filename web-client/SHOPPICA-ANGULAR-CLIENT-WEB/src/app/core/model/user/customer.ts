@@ -5,6 +5,6 @@ export interface Customer {
   address: Address;
   phone: string;
   email: string;
-  image: string;
-  gender: number;
+  image?: string;
+  gender?: number;
 }

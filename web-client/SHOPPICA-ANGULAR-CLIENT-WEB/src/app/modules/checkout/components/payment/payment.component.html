@@ -1,1 +1,19 @@
-<p>payment works!</p>
+<form nz-form [formGroup]="paymentMethodForm">
+  <nz-radio-group formControlName="method">
+    <label *ngIf="!hiddenCash" class="payment-method" nz-radio nzValue="CASH">
+      <img src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-cod.svg">
+      Pay by cash
+    </label>
+    <label class="payment-method" nz-radio nzValue="PAYPAL">
+      <img src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icon-payment-method-credit.svg"
+        alt="">
+      Pay with paypal
+    </label>
+  </nz-radio-group>
+  <nz-collapse [nzGhost]="true">
+    <nz-collapse-panel [nzShowArrow]="false" [nzActive]="showPaypal">
+      <div class="paypal-component" #paypal></div>
+    </nz-collapse-panel>
+  </nz-collapse>
+
+</form>

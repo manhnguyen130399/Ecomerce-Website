@@ -1,9 +1,8 @@
-import { CartService } from './../../../core/services/cart/cart.service';
+
 import { ShareService } from './../../../core/services/share/share.service';
 import { LoginMethod } from './../../../core/enum/login-method';
 import { StorageService } from './../../../core/services/storage/storage.service';
 import { AuthService } from './../../../core/services/auth/auth.service';
-
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { finalize, tap } from 'rxjs/operators';
@@ -33,7 +32,6 @@ export class LoginDrawerComponent implements OnInit {
     private readonly socialAuthService: SocialAuthService,
     private readonly storageService: StorageService,
     private readonly shareService: ShareService,
-    private readonly cartService: CartService
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +40,10 @@ export class LoginDrawerComponent implements OnInit {
     this.socialAuthService.authState.subscribe((user) => {
       this.socialLogin(user);
     });
+
+    if (this.authService.isAuthenticated()) {
+      this.getCustomerDetail();
+    }
   }
 
   buildForm() {
@@ -90,7 +92,6 @@ export class LoginDrawerComponent implements OnInit {
   }
 
   socialLogin(user) {
-
     this.isLoading = true;
     const socialLoginData = {
       email: user.email,
@@ -121,7 +122,15 @@ export class LoginDrawerComponent implements OnInit {
     this.closeMenu();
     this.messageService.success("Login successfully!");
     this.loginForm.reset();
+    this.getCustomerDetail();
+  }
 
+  getCustomerDetail() {
+    this.authService.getUserById().subscribe(res => {
+      if (res.isSuccessed) {
+        this.shareService.customerInfoChangeEvent(res.data);
+      }
+    });
   }
 
   signInWithGoogle(): void {

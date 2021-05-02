@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '@core/model/user/customer';
+import { ShareService } from '@core/services/share/share.service';
+import { combineLatest, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-address',
@@ -29,20 +31,23 @@ export class AddressComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly ghnService: GhnService,
     private readonly messageService: NzMessageService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly shareService: ShareService
   ) { }
 
   ngOnInit(): void {
     this.buildForm();
-    this.loadProvinces();
-    this.authService.getUserById().pipe(
-      tap(res => {
-        if (res.isSuccessed) {
-          this.customer = res.data;
-          this.setFormValue();
-        }
-      })
-    ).subscribe();
+
+    combineLatest([
+      this.ghnService.getProvinces(),
+      this.shareService.customerInfoEmitted$
+    ]).subscribe(res => {
+      if (res[0].code == 200) {
+        this.listProvince = res[0].data;
+      }
+      this.customer = res[1];
+      this.setFormValue();
+    })
   }
 
   buildForm() {
@@ -61,7 +66,9 @@ export class AddressComponent implements OnInit {
       this.districtSelectedId = this.customer.address.districtId;
       this.wardSelectedId = this.customer.address.wardId;
       const province = this.listProvince.find(x => x.ProvinceID == this.customer.address.provinceId);
+      const apartment = this.customer.address.addressName.split("-")[0];
       this.addressForm.controls.province.setValue(province);
+      this.addressForm.controls.apartment.setValue(apartment);
     }
     this.addressForm.controls.customerName.setValue(this.customer.customerName);
     this.addressForm.controls.phone.setValue(this.customer.phone);
@@ -73,14 +80,6 @@ export class AddressComponent implements OnInit {
 
   districtChange(district): void {
     this.loadWards(district.DistrictID);
-  }
-
-  loadProvinces() {
-    this.ghnService.getProvinces().subscribe(res => {
-      if (res.code == 200) {
-        this.listProvince = res.data;
-      }
-    })
   }
 
   loadDistricts(provinceID: number) {
@@ -109,12 +108,12 @@ export class AddressComponent implements OnInit {
     const province = this.addressForm.get("province").value;
     const district = this.addressForm.get("district").value;
     const ward = this.addressForm.get("ward").value;
-
+    const apartment = this.addressForm.get("apartment").value;
     const address: Address = {
       provinceId: province.ProvinceID,
       districtId: district.DistrictID,
       wardId: parseInt(ward.WardCode),
-      addressName: `${ward.WardName} - ${district.DistrictName} - Tỉnh ${province.ProvinceName}`
+      addressName: `${apartment} - ${ward.WardName} - ${district.DistrictName} - Tỉnh ${province.ProvinceName}`
     }
 
     const request = {

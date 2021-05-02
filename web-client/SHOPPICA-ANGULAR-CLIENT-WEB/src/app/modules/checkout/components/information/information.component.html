@@ -8,7 +8,7 @@
       </div>
       <div class="content">
         <nz-form-item nz-col>
-          <nz-form-label nzFor="customerName">Customer Name</nz-form-label>
+          <nz-form-label nzRequired nzFor="customerName">Customer Name</nz-form-label>
           <nz-form-control nzErrorTip="Please input your seller name!">
             <input nz-input type="text" formControlName="customerName">
           </nz-form-control>
@@ -17,7 +17,7 @@
         <div nz-row [nzGutter]="24">
           <div nz-col [nzSm]="12" [nzXs]="24">
             <nz-form-item>
-              <nz-form-label nzFor="email">Email</nz-form-label>
+              <nz-form-label nzRequired nzFor="email">Email</nz-form-label>
               <nz-form-control nzErrorTip="Please input your seller name!">
                 <input nz-input type="text" formControlName="email">
               </nz-form-control>
@@ -26,7 +26,7 @@
           </div>
           <div nz-col [nzSm]="12" [nzXs]="24">
             <nz-form-item>
-              <nz-form-label nzFor="phone">Phone</nz-form-label>
+              <nz-form-label nzRequired nzFor="phone">Phone</nz-form-label>
               <nz-form-control nzErrorTip="Please input your seller name!">
                 <input nz-input type="text" formControlName="phone">
               </nz-form-control>
@@ -44,11 +44,11 @@
         <div nz-row [nzGutter]="24">
           <div nz-col [nzSm]="12" [nzXs]="24">
             <nz-form-item>
-              <nz-form-label nzFor="province">Province</nz-form-label>
+              <nz-form-label nzRequired nzFor="province">Province</nz-form-label>
               <nz-form-control nzErrorTip="Please select your province!">
                 <nz-select nzSize="large" (ngModelChange)="provinceChange($event)" formControlName="province"
                   nzShowSearch nzPlaceHolder="Select a province">
-                  <nz-option *ngFor="let item of listProvince" [nzLabel]="item" [nzValue]="item">
+                  <nz-option *ngFor="let item of listProvince" [nzLabel]="item.ProvinceName" [nzValue]="item">
                   </nz-option>
                 </nz-select>
               </nz-form-control>
@@ -56,11 +56,11 @@
           </div>
           <div nz-col [nzSm]="12" [nzXs]="24">
             <nz-form-item>
-              <nz-form-label nzFor="district">District</nz-form-label>
+              <nz-form-label nzRequired nzFor="district">District</nz-form-label>
               <nz-form-control nzErrorTip="Please select your district!">
                 <nz-select nzSize="large" (ngModelChange)="districtChange($event)" formControlName="district"
                   nzShowSearch nzPlaceHolder="Select a district">
-                  <nz-option *ngFor="let item of listDistrict" [nzLabel]="item" [nzValue]="item">
+                  <nz-option *ngFor="let item of listDistrict" [nzLabel]="item.DistrictName" [nzValue]="item">
                   </nz-option>
                 </nz-select>
               </nz-form-control>
@@ -71,10 +71,10 @@
         <div nz-row [nzGutter]="24">
           <div nz-col [nzSm]="12" [nzXs]="24">
             <nz-form-item>
-              <nz-form-label nzFor="ward">Ward</nz-form-label>
+              <nz-form-label nzRequired nzFor="ward">Ward</nz-form-label>
               <nz-form-control nzErrorTip="Please select your ward!">
                 <nz-select nzSize="large" formControlName="ward" nzShowSearch nzPlaceHolder="Select a ward">
-                  <nz-option *ngFor="let item of listWard" [nzLabel]="item" [nzValue]="item">
+                  <nz-option *ngFor="let item of listWard" [nzLabel]="item.WardName" [nzValue]="item">
                   </nz-option>
                 </nz-select>
               </nz-form-control>
@@ -82,7 +82,7 @@
           </div>
           <div nz-col [nzSm]="12" [nzXs]="24">
             <nz-form-item>
-              <nz-form-label nzFor="apartment">Apartment, Street</nz-form-label>
+              <nz-form-label nzRequired nzFor="apartment">Apartment, Street</nz-form-label>
               <nz-form-control nzErrorTip="Please input your seller name!">
                 <input nz-input type="text" formControlName="apartment">
               </nz-form-control>
@@ -91,7 +91,12 @@
         </div>
       </div>
     </div>
-    <app-footer [stepIndex]="2"></app-footer>
+    <div class="footer ">
+      <button (click)="gotoShipping()" [disabled]="orderForm.invalid" class="next-step" nz-button
+        nzType="primary">Continue to
+        Checkout</button>
+      <a [routerLink]="['/cart']" class="prev-step">Return to cart</a>
+    </div>
   </form>
 
 </div>

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
 using ORDER_SERVICE_NET.Hubs;
 using ORDER_SERVICE_NET.Models;
+using ORDER_SERVICE_NET.Services.CartServices;
 using ORDER_SERVICE_NET.Services.ProductServices;
 using ORDER_SERVICE_NET.Utilities;
 using ORDER_SERVICE_NET.ViewModels.Address;
@@ -22,13 +23,20 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
     public class OrderService : IOrderService
     {
         private readonly ShopicaContext _context;
+        private readonly ICartService _cartService;
         private readonly IProductService _productService;
         private readonly IHubContext<NotificationHub> _hubContext;
-        public OrderService(ShopicaContext context, IProductService productService, IHubContext<NotificationHub> hubContext)
+        public OrderService(
+            ShopicaContext context,
+            IProductService productService,
+            IHubContext<NotificationHub> hubContext,
+            ICartService cartService
+         )
         {
             _context = context;
             _productService = productService;
             _hubContext = hubContext;
+            _cartService = cartService;
         }
         public async Task<APIResult<string>> Create(OrderCreateRequest request)
         {
@@ -52,6 +60,9 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         QrCode = qrCodeData.Message == "OK" ? qrCodeData.Data : null,
                         Total = orderStore.Total,
                         Discount = orderStore.Discount,
+                        ShippingCost = orderStore.ShippingCost,
+                        PaymentMethod = request.PaymentMethod,
+                        TransactionId = request.TransactionId,
                         Created_at = DateTime.Now,
                         StoreId = orderStore.StoreId
                     };
@@ -103,6 +114,11 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 
                     _context.Notify.Add(notify);
                     await _hubContext.Clients.User(item.StoreId.ToString()).SendAsync("NewOrderNotify", notify);
+                }
+
+                if (request.AccountId != 0)
+                {
+                    _cartService.DeleteAll(request.AccountId);
                 }
 
                 await _context.SaveChangesAsync();

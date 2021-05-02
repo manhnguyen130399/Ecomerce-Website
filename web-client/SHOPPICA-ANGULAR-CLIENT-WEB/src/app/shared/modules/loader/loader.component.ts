@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, SimpleChange } from '@angular/core';
+import { LoaderService } from './loader.service';
+import { Component, OnInit, Input, SimpleChange, SimpleChanges } from '@angular/core';
+import { Loader } from './loader';
 
 @Component({
   selector: 'app-loader',
@@ -6,15 +8,17 @@ import { Component, OnInit, Input, SimpleChange } from '@angular/core';
   styleUrls: ['./loader.component.css']
 })
 export class LoaderComponent implements OnInit {
-  @Input() loading: boolean = false;
+  @Input() id: string = 'global';
   @Input() background: string = "#ffffff";
-  constructor() { }
+  show: boolean;
+  constructor(
+    private readonly loaderService: LoaderService
+  ) { }
 
   ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChange) {
-    //logging the changes in @Input()
+    this.loaderService.loaderStatus$.subscribe((response: Loader) => {
+      this.show = response.id === this.id ? response.status : this.show;
+    })
   }
 
 }

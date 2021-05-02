@@ -14,6 +14,7 @@ namespace ORDER_SERVICE_NET.ViewModels.Orders
         public int PromotionId { set; get; }
         public int StoreId { set; get; }
         public int Discount { set; get; }
+        public int ShippingCost { set; get; }
         public List<OrderDetailCreateRequest> OrderDetails { set; get; }
     }
 }

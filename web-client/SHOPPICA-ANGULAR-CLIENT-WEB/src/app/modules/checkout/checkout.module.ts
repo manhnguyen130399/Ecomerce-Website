@@ -1,4 +1,6 @@
-import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { LoaderModule } from './../../shared/modules/loader/loader.module';
 import { CartModule } from './../cart/cart.module';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -11,6 +13,7 @@ import { PaymentComponent } from './components/payment/payment.component';
 import { ShippingComponent } from './components/shipping/shipping.component';
 import { InformationComponent } from './components/information/information.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { CartItemModule } from './../../shared/modules/cart-item/cart-item.module';
 import { checkoutRoutes } from './checkout.routing';
 import { RouterModule } from '@angular/router';
@@ -18,7 +21,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { CheckoutComponent } from './page/checkout/checkout.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { OrderStepsComponent } from './components/order-steps/order-steps.component';
 import { ProductGroupComponent } from './components/product-group/product-group.component';
@@ -29,7 +31,6 @@ import { CheckoutSummaryComponent } from './components/checkout-summary/checkout
     ShippingComponent,
     PaymentComponent,
     CheckoutComponent,
-    FooterComponent,
     OrderStepsComponent,
     ProductGroupComponent,
     CheckoutSummaryComponent
@@ -39,6 +40,7 @@ import { CheckoutSummaryComponent } from './components/checkout-summary/checkout
     CartItemModule,
     ReactiveFormsModule,
     CartModule,
+    LoaderModule,
 
     NzInputModule,
     NzGridModule,
@@ -46,7 +48,9 @@ import { CheckoutSummaryComponent } from './components/checkout-summary/checkout
     NzSelectModule,
     NzButtonModule,
     NzStepsModule,
-    NzPopoverModule,
+    NzCollapseModule,
+    NzRadioModule,
+    NzMessageModule,
 
     NzIconModule.forChild(shareIcons),
     RouterModule.forChild(checkoutRoutes)
