@@ -8,5 +8,5 @@ export interface CartItem {
   productId?: number;
   colorName?: string;
   sizeName?: string;
-  storeId?: string;
+  storeId?: number;
 }

@@ -10,9 +10,13 @@ namespace ORDER_SERVICE_NET.ViewModels.Orders
     public class OrderCreateRequest
     {
         public string CustomerName { set; get; }
+        public int AccountId { set; get; }
         public AddressInfo Address { set; get; }
         public string Email { set; get; }
         public string Phone { set; get; }
+        public string PaymentMethod { set; get; }
+        public string TransactionId { set; get; }
+
         public List<OrderOneStoreRequest> OrderOneStores { set; get; }
     }
 }

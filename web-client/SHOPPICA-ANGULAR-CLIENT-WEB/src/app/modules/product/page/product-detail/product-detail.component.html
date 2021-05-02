@@ -1,6 +1,6 @@
 <div class="container">
   <div class="product-detail-page">
-    <app-loader [loading]="isLoading"></app-loader>
+    <app-loader [id]="'productDetail'"></app-loader>
     <div *ngIf="product" class="product-detail" [nzGutter]="24" nz-row>
       <div class="product-detail-image" nz-col [nzLg]="12" [nzMd]="10">
         <app-product-detail-image [listImage]="product.productImages"></app-product-detail-image>

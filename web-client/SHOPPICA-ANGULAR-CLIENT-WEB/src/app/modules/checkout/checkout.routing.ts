@@ -1,3 +1,4 @@
+import { PaymentComponent } from './components/payment/payment.component';
 import { InformationComponent } from './components/information/information.component';
 import { CheckoutComponent } from './page/checkout/checkout.component';
 import { Routes } from '@angular/router';
@@ -12,9 +13,9 @@ export const checkoutRoutes: Routes = [
         component: InformationComponent
       },
       {
-        path: 'shipping',
+        path: 'payment',
         component: ShippingComponent
-      }
+      },
     ]
   }
 ]

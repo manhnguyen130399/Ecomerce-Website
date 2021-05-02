@@ -29,6 +29,8 @@ namespace ORDER_SERVICE_NET.Controllers
                 return BadRequest(ModelState);
             }
 
+            request.AccountId = Convert.ToInt32(HttpContext.User.FindFirstValue("accountId"));
+
             var result = await _orderService.Create(request);
 
             if(!result.IsSuccessed) return BadRequest(result);

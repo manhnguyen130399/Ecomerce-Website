@@ -25,6 +25,8 @@ namespace ORDER_SERVICE_NET.Models
         public decimal Total { get; set; }
         public decimal ShippingCost { get; set; }
         public decimal Discount { get; set; }
+        public string PaymentMethod { get; set; }
+        public string TransactionId { get; set; }
         public string CreatedBy { get; set; }
         public string UpdatedBy { get; set; }
         public DateTime Created_at { get; set; }

@@ -1,3 +1,4 @@
+import { ShareService } from './../../../../core/services/share/share.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
@@ -21,19 +22,19 @@ export class DashboardComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private readonly authService: AuthService,
     private readonly messageService: NzMessageService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly shareService: ShareService
   ) { }
 
   ngOnInit(): void {
     this.buildForm();
-    this.authService.getUserById().pipe(
-      tap(res => {
-        if (res.isSuccessed) {
-          this.customer = res.data;
-          this.setFormValue();
-        }
-      })
-    ).subscribe();
+
+    this.shareService.customerInfoEmitted$.subscribe(customer => {
+      if (customer) {
+        this.customer = customer;
+        this.setFormValue();
+      }
+    })
   }
 
   setFormValue() {

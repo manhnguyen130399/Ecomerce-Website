@@ -1,0 +1,29 @@
+.payment-method {
+  display: block;
+  height: 32px;
+  line-height: 32px;
+  margin-bottom: 10px;
+}
+
+.paypal-component {
+  padding-left: 20px;
+  width: 30%;
+}
+
+@media (max-width: 992px) {
+  .paypal-component {
+    width: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  .paypal-component {
+    width: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .paypal-component {
+    width: 60%;
+  }
+}

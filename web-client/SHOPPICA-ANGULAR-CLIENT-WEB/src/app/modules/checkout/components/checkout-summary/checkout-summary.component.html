@@ -1,23 +1,31 @@
-<div class="cart-total-prices__inner">
+<div *ngIf="shippingAddress" class="cart-total-prices__inner">
   <div class="cart-shipping-address">
     <div class="heading flex jc-space-between al-center">
       <b>Shipping Address</b>
-      <a>Change</a>
+      <a [routerLink]="['/checkout/information']">Change</a>
     </div>
     <div class="info flex al-center">
-      <b class="name">Võ Trung Hiếu</b>
-      <b class="phone">0968540305</b>
+      <b class="name">{{shippingAddress.customerName}}</b>
+      <b class="phone">{{shippingAddress.phone}}</b>
     </div>
-    <div class="address">ktx khu B, Phường Đông Hòa, Thị xã Dĩ An, Bình Dương</div>
+    <div class="address">{{shippingAddress.address.addressName}}</div>
   </div>
   <div class="cart-price">
     <div class="cart-price-sub-price flex jc-space-between al-center">
       <span class="price_text">Subtotal</span>
-      <span class="price_value">{{499 | currency}}</span>
+      <span class="price_value">{{subtotal | currency}}</span>
+    </div>
+    <div *ngIf="shippingPrice" class="cart-price-sub-price flex jc-space-between al-center">
+      <span class="price_text">Shipping</span>
+      <span class="price_value">{{shippingPrice | currency}}</span>
+    </div>
+    <div *ngIf="discount" class="cart-price-sub-price flex jc-space-between al-center">
+      <span class="price_text">Discount</span>
+      <span class="price_value">-{{discount | currency}}</span>
     </div>
     <div class="cart-price-total-price flex jc-space-between al-center">
       <span class="price_text">Total</span>
-      <span class="price_value">{{499 | currency}}</span>
+      <span class="price_value">{{subtotal + shippingPrice - discount | currency}}</span>
     </div>
   </div>
 </div>

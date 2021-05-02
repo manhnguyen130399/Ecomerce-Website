@@ -83,9 +83,27 @@ namespace ORDER_SERVICE_NET.Services.CartServices
             throw new NotImplementedException();
         }
 
-        public Task<APIResult<bool>> DeleteAll(int accountId)
+        public async Task<APIResult<bool>> DeleteAll(int accountId)
         {
-            throw new NotImplementedException();
+            var cart = await _context.Carts
+               .Include(c => c.CartDetail)
+               .FirstOrDefaultAsync(c => c.AccountId == accountId);
+
+            if(cart == null)
+            {
+                return new APIResultErrors<bool>("Can not found this cart!");
+            }
+
+            foreach(var item in cart.CartDetail)
+            {
+                _context.CartDetail.Remove(item);
+            }
+
+            cart.Total = 0;
+
+            await _context.SaveChangesAsync();
+
+            return new APIResultSuccess<bool>();
         }
 
         public async Task<APIResult<bool>> DeleteItem(CartItemCreateRequest request)

@@ -237,6 +237,16 @@ namespace ORDER_SERVICE_NET.Models
                 .HasColumnType("decimal(10,0)")
                 .HasDefaultValueSql("'NULL'");
 
+                entity.Property(e => e.PaymentMethod)
+               .IsRequired()
+               .HasColumnName("payment_method")
+               .HasColumnType("enum('CASH','PAYPAL')");
+
+                entity.Property(e => e.TransactionId)
+                   .HasColumnName("transaction_id")
+                   .HasMaxLength(45)
+                   .HasDefaultValueSql("'NULL'");
+
                 entity.Property(e => e.UpdatedBy)
                     .HasColumnName("updated_by")
                     .HasMaxLength(45)

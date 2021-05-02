@@ -4,5 +4,6 @@
 }
 
 .product-section {
+  min-height: 400px;
   position: relative;
 }

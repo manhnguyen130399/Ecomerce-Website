@@ -1,3 +1,4 @@
+import { LoaderService } from './shared/modules/loader/loader.service';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
@@ -8,24 +9,29 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 })
 export class AppComponent {
   @ViewChild("preload", { static: true }) loadElement: ElementRef;
+
+
   isLoaded: boolean = false;
-  isHttpLoaded: boolean = false;
-  constructor(private route: Router) { }
+  constructor(
+    private route: Router,
+    private readonly loaderService: LoaderService
+  ) { }
   ngOnInit(): void {
     document.getElementById("preload").className = "preload-none";
 
     this.route.events.subscribe(
       event => {
         if (event instanceof NavigationStart) {
-          this.isLoaded = true;
+          this.loaderService.showLoader();
         }
         else if (event instanceof NavigationEnd) {
-          this.isLoaded = false;
+          this.loaderService.hideLoader();
         }
       },
       error => {
-        this.isLoaded = false;
+        this.loaderService.hideLoader();
       })
   }
+
 
 }

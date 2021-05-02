@@ -13,7 +13,7 @@
       </div>
     </div>
     <div [class.initial]="initialLoading" class="cart-content-wrapper">
-      <app-loader [background]="'#ffffffab'" [loading]="isLoading || initialLoading"></app-loader>
+      <app-loader [background]="'#ffffffab'" [id]="'cart'"></app-loader>
       <div *ngIf="cart" class="cart-content">
         <div *ngFor="let item of cart.cartItems" class="cart-item">
           <app-cart-row (changeQuantityEvent)="changeQuantity($event)" (deleteItemEvent)="deleteItem($event)"

@@ -1,3 +1,4 @@
+import { LoaderService } from './../../../../shared/modules/loader/loader.service';
 import { finalize } from 'rxjs/operators';
 import { ProductService } from './../../../../core/services/product/product.service';
 import { ActivatedRoute } from '@angular/router';
@@ -14,17 +15,18 @@ export class ProductDetailComponent implements OnInit {
 
   productId: number;
   product: Product;
-  isLoading = true;
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly productService: ProductService) { }
+    private readonly productService: ProductService,
+    private readonly loaderService: LoaderService
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(pa => {
       this.productId = pa.productId;
-      this.isLoading = true;
+      this.loaderService.showLoader('productDetail');
       this.productService.getProductById(this.productId).pipe(
-        finalize(() => this.isLoading = false)
+        finalize(() => this.loaderService.hideLoader('productDetail'))
       ).subscribe(res => {
         if (res.code == "OK") {
           this.product = res.data;
@@ -32,7 +34,6 @@ export class ProductDetailComponent implements OnInit {
       })
     });
   }
-
 
   listProduct: Product[] = [
 

@@ -24,11 +24,11 @@
             pairing with denim and white kicks for a stylish sporty vibe.</p>
         </div>
         <div class="color">
-          <app-select-color (selectColorEvent)="colorSelectEvent($event)" [listColor]="listColor" [size]="'large'"
+          <app-select-color [(colorSelected)]="colorSelected" [listColor]="listColor" [size]="'large'"
             [showTitle]="true"></app-select-color>
         </div>
         <div class="size">
-          <app-select-size [listSize]="listSize" (selectSizeEvent)="sizeSelectEvent($event)"></app-select-size>
+          <app-select-size [listSize]="listSize" [(sizeSelected)]="sizeSelected"></app-select-size>
         </div>
         <div class="actions flex al-center">
           <app-input-quantity [(quantity)]="quantity"></app-input-quantity>
