@@ -13,6 +13,12 @@
               <input nz-input type="text" formControlName="customerName">
             </nz-form-control>
           </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzRequired nzFor="phone">Phone</nz-form-label>
+            <nz-form-control nzErrorTip="Please input your seller name!">
+              <input nz-input type="text" formControlName="phone">
+            </nz-form-control>
+          </nz-form-item>
         </div>
       </div>
       <div class="shipping-address">
@@ -58,9 +64,9 @@
             </div>
             <div nz-col [nzSm]="12" [nzXs]="24">
               <nz-form-item>
-                <nz-form-label nzRequired nzFor="phone">Phone</nz-form-label>
-                <nz-form-control nzErrorTip="Please input your seller name!">
-                  <input nz-input type="text" formControlName="phone">
+                <nz-form-label nzRequired nzFor="apartment">Apartment, Street</nz-form-label>
+                <nz-form-control nzErrorTip="Please input your Apartment, Street!">
+                  <input nz-input type="text" formControlName="apartment">
                 </nz-form-control>
               </nz-form-item>
             </div>

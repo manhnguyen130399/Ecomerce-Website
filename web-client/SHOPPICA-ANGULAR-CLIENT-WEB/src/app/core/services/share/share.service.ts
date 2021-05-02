@@ -1,3 +1,5 @@
+import { ShippingAddress } from './../../model/user/shipping-address';
+import { Customer } from '@core/model/user/customer';
 import { CartItem } from './../../model/cart/cart-item';
 import { OldCartItem } from './../../model/cart/old-cart-item';
 import { Cart } from './../../model/cart/cart';
@@ -18,6 +20,8 @@ export class ShareService {
   private openCartDrawer = new Subject<boolean>();
   private editCartItem = new Subject<OldCartItem>();
   private changeNumCartItem = new Subject<number>();
+  private customerInfo = new BehaviorSubject<Customer>(null);
+  private shippingAddress = new BehaviorSubject<ShippingAddress>(null);
 
   loginSuccessEmitted$ = this.loginSuccess.asObservable();
   openQuickViewEmitted$ = this.openQuickView.asObservable();
@@ -26,6 +30,8 @@ export class ShareService {
   openCartDrawerEmitted$ = this.openCartDrawer.asObservable();
   editCartItemEmitted$ = this.editCartItem.asObservable();
   changeNumCartItemEmitted$ = this.changeNumCartItem.asObservable();
+  customerInfoEmitted$ = this.customerInfo.asObservable();
+  shippingAddressEmitted$ = this.shippingAddress.asObservable();
 
   private storeId = new BehaviorSubject<number>(null);
 
@@ -59,6 +65,13 @@ export class ShareService {
     this.changeNumCartItem.next(num);
   }
 
+  customerInfoChangeEvent(customer: Customer) {
+    this.customerInfo.next(customer);
+  }
+
+  shippingAddressChangeEvent(address: ShippingAddress) {
+    this.shippingAddress.next(address);
+  }
   storeInfoSuccessEvent(id: number) {
     this.storeId.next(id)
   }

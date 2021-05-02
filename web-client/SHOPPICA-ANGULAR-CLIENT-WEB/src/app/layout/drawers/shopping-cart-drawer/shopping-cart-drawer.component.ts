@@ -1,3 +1,4 @@
+import { LoaderService } from './../../../shared/modules/loader/loader.service';
 import { Router } from '@angular/router';
 import { CartRequest } from './../../../core/model/cart/cart-request';
 import { CartService } from './../../../core/services/cart/cart.service';
@@ -16,7 +17,6 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 export class ShoppingCartDrawerComponent implements OnInit {
   cart: Cart;
   isVisible: boolean;
-  isLoading = false;
 
   cartItemOptions: CartItemOptions = {
     showActions: true,
@@ -31,7 +31,8 @@ export class ShoppingCartDrawerComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly shareService: ShareService,
     private readonly cartService: CartService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly loaderService: LoaderService
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +40,6 @@ export class ShoppingCartDrawerComponent implements OnInit {
       if (cart) {
         this.cart = cart;
       }
-
     })
 
     this.shareService.openCartDrawerEmitted$.subscribe((data) => {
@@ -68,7 +68,9 @@ export class ShoppingCartDrawerComponent implements OnInit {
   }
 
   loadingEvent(isLoad: boolean) {
-    this.isLoading = isLoad;
+    isLoad
+      ? this.loaderService.showLoader('shoppingCart')
+      : this.loaderService.hideLoader('shoppingCart');
   }
 
   changeQuantity(priceChange: number) {

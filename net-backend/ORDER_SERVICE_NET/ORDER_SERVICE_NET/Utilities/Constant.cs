@@ -25,6 +25,9 @@ namespace ORDER_SERVICE_NET.Utilities
         public const string COMPLETE = "COMPLETE";
         public const string CANCEL = "CANCEL";
 
+        //payment method
+        public const string CASH = "CASH";
+        public const string PAYPAL = "PAYPAL";
 
 
     }

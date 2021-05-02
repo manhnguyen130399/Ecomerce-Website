@@ -1,6 +1,7 @@
+import { LoaderService } from './../../../../shared/modules/loader/loader.service';
 import { Brand } from './../../../../core/model/brand/brand';
 import { ProductSort } from './../../../../core/model/product/product-sort';
-import { finalize } from 'rxjs/operators';
+import { delay, finalize } from 'rxjs/operators';
 import { ProductService } from './../../../../core/services/product/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductOptions } from './../../../../core/model/product/product-option';
@@ -18,7 +19,6 @@ import { stringify } from '@angular/compiler/src/util';
 })
 export class ProductComponent implements OnInit {
   isShowFilter = false;
-  isLoading = false;
   productCol: number;
   baseParams: BaseParams = new BaseParams(0, 12);
   productOptions: ProductOptions = new ProductOptions();
@@ -34,7 +34,8 @@ export class ProductComponent implements OnInit {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly productService: ProductService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly loaderService: LoaderService
   ) { }
 
   ngOnInit(): void {
@@ -85,9 +86,10 @@ export class ProductComponent implements OnInit {
   }
 
   loadListProduct() {
-    this.isLoading = true;
+    this.loaderService.showLoader('product');
+
     this.productService.getListProduct(this.productOptions, this.baseParams).pipe(
-      finalize(() => this.isLoading = false)
+      finalize(() => this.loaderService.hideLoader('product'))
     ).subscribe(res => {
       if (res.code === "OK") {
         this.listProduct = res.data.content;

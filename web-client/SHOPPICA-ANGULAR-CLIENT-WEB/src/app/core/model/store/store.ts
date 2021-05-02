@@ -1,5 +1,4 @@
 import { Address } from '@core/model/address/address';
-import { Promotion } from '../promotion';
 export interface Store {
   id: number;
   storeName: string;

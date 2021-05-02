@@ -1,5 +1,6 @@
 .checkout {
   margin-top: 30px;
+  position: relative;
 }
 
 .order-summary {

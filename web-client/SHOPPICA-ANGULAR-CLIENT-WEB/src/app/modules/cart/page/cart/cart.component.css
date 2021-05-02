@@ -89,6 +89,11 @@
   margin-bottom: 5px;
 }
 
+.empty-cart {
+  color: #878787;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   /* .container {
     max-width: 100%;

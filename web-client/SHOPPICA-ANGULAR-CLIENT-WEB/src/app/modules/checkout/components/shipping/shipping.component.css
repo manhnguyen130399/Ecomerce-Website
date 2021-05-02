@@ -1,3 +1,17 @@
 .cart-total-price {
   padding-bottom: 30px;
 }
+
+.footer {
+  margin: 20px 0 80px;
+}
+
+.next-step {
+  background-color: #56cfe1;
+  border-color: #56cfe1;
+  height: 40px;
+}
+
+.prev-step {
+  margin-left: 20px;
+}

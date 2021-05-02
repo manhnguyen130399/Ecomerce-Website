@@ -1,4 +1,5 @@
-import { StepsService } from './../../services/steps.service';
+import { Router } from '@angular/router';
+import { CheckoutService } from '@core/services/checkout/checkout.service';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
@@ -8,17 +9,31 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 })
 export class OrderStepsComponent implements OnInit {
   index = 0;
-  constructor(private readonly stepService: StepsService) { }
+  maxIndex = 0;
+  constructor(
+    private readonly checkoutService: CheckoutService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit(): void {
-
-    this.stepService.changeStepEmitted$.subscribe(step => {
-      this.index = step - 1;
+    this.checkoutService.stepEmitted$.subscribe((step: number) => {
+      this.index = step;
+      this.maxIndex = this.maxIndex <= step ? step : this.maxIndex;
     })
   }
 
-
   onIndexChange(event: number): void {
     this.index = event;
+    switch (event) {
+      case 0:
+        this.router.navigate(['/cart'])
+        break;
+      case 1:
+        this.router.navigate(['/checkout/information'])
+        break;
+      case 2:
+        this.router.navigate(['/checkout/payment'])
+        break;
+    }
   }
 }

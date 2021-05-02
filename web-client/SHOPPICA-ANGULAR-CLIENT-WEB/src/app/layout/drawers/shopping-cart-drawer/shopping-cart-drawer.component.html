@@ -3,7 +3,7 @@
   <ng-container *nzDrawerContent>
     <div *ngIf="cart" class="shopping-cart-content flex fd-column">
       <div class="cart-items-wrapper">
-        <app-loader [loading]="isLoading" [background]="'#ffffffab'"></app-loader>
+        <app-loader [id]="'shoppingCart'" [background]="'#ffffffab'"></app-loader>
         <div class="cart-items custom-scroll-bar">
           <app-cart-item (loadingEvent)="loadingEvent($event)" [cartItemOptions]="cartItemOptions"
             *ngFor="let item of cart.cartItems" (changeQuantityEvent)="changeQuantity($event)"
