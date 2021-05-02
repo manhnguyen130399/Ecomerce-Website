@@ -16,6 +16,7 @@ export class LeaveCommentComponent implements OnInit {
   content: string;
   isLoading = false;
   @Input() blogId: number;
+  @Input() productId: number;
   @Output() newComment = new EventEmitter<Comment>();
   constructor(private readonly authService: AuthService, private readonly commentService: CommentService, private readonly messageService: NzMessageService) { }
 
@@ -26,7 +27,9 @@ export class LeaveCommentComponent implements OnInit {
     if (!this.authService.isAuthenticated()) {
       this.messageService.warning(" You can login. Please ")
     } else {
-      this.commentService.comment(null, this.blogId, this.content).subscribe((res) => {
+      console.log(this.productId);
+
+      this.commentService.comment(this.productId, this.blogId, this.content).subscribe((res) => {
         if (res.code = "OK") {
           this.content = ''
           this.newComment.emit(res.data)

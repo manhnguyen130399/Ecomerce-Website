@@ -115,7 +115,7 @@ export class CommentsComponent implements OnInit {
   showEdit(id: number, content: string) {
     this.isShow = !this.isShow
     this.value = id;
-    this.content = content
+    this.content = content;
   }
 
   edit(id: number) {

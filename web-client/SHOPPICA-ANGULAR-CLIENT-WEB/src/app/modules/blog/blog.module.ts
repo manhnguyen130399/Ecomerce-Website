@@ -17,12 +17,11 @@ import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { BlogListComponent } from './page/blog-list/blog-list.component';
 import { BlogDetailComponent } from './page/blog-detail/blog-detail.component';
-import { CommentsComponent } from './components/comments/comments.component';
-import { LeaveCommentComponent } from './components/leave-comment/leave-comment.component';
 import { QuillModule } from 'ngx-quill';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { LoaderModule } from '@shared/modules/loader/loader.module';
-
+import { CommentsModule } from '@shared/modules/comments/comments.module';
+import { LeaveCommentModule } from '@shared/modules/leave-comment/leave-comment.module';
 
 
 @NgModule({
@@ -30,8 +29,6 @@ import { LoaderModule } from '@shared/modules/loader/loader.module';
     SidebarComponent,
     BlogListComponent,
     BlogDetailComponent,
-    CommentsComponent,
-    LeaveCommentComponent
   ],
   imports: [
     CommonModule,
@@ -48,6 +45,8 @@ import { LoaderModule } from '@shared/modules/loader/loader.module';
     NzFormModule,
     LoaderModule,
     NzButtonModule,
+    CommentsModule,
+    LeaveCommentModule,
     NzIconModule.forChild(shareIcons),
     QuillModule.forRoot(),
     RouterModule.forChild(blogRoutes)

@@ -10,7 +10,7 @@
                         {{ comment.content }}
                     </p>
                     <nz-input-group *ngIf="value == comment.id && !isShow">
-                        <input type="text" nz-input n [(ngModel)]="content" (keyup.enter)="edit(comment.id)" />
+                        <input type="text" nz-input [(ngModel)]="content" (keyup.enter)="edit(comment.id)" />
                     </nz-input-group>
                 </nz-comment-content>
                 <nz-comment-action>

@@ -31,12 +31,13 @@ import { ProductDetailComponent } from './page/product-detail/product-detail.com
 import { ProductDetailImageComponent } from './components/product-detail/product-detail-image/product-detail-image.component';
 import { ProductDetailSummaryComponent } from './components/product-detail/product-detail-summary/product-detail-summary.component';
 import { NzImageModule } from 'ng-zorro-antd/image';
-import { ReviewComponent } from './components/product-detail/review/review.component';
 import { WarrantyShippingComponent } from './components/product-detail/warranty-shipping/warranty-shipping.component';
 import { DescriptionComponent } from './components/product-detail/description/description.component';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { WishListComponent } from './page/wish-list/wish-list.component';
+import { CommentsModule } from '@shared/modules/comments/comments.module';
+import { LeaveCommentModule } from '@shared/modules/leave-comment/leave-comment.module';
 @NgModule({
   declarations: [
     CategoriesComponent,
@@ -47,10 +48,9 @@ import { WishListComponent } from './page/wish-list/wish-list.component';
     ProductDetailComponent,
     ProductDetailImageComponent,
     ProductDetailSummaryComponent,
-    ReviewComponent,
     WarrantyShippingComponent,
     DescriptionComponent,
-    WishListComponent,
+    WishListComponent
   ],
   imports: [
     CommonModule,
@@ -66,6 +66,8 @@ import { WishListComponent } from './page/wish-list/wish-list.component';
     NzAvatarModule,
     FormsModule,
     LoaderModule,
+    CommentsModule,
+    LeaveCommentModule,
     // custom modules
     ProductCarouselModule,
     ProductCardModule,
