@@ -27,8 +27,6 @@ export class LeaveCommentComponent implements OnInit {
     if (!this.authService.isAuthenticated()) {
       this.messageService.warning(" You can login. Please ")
     } else {
-      console.log(this.productId);
-
       this.commentService.comment(this.productId, this.blogId, this.content).subscribe((res) => {
         if (res.code = "OK") {
           this.content = ''
