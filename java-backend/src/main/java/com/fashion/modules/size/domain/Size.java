@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Field;
+
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.store.domain.Store;
@@ -25,6 +27,7 @@ public class Size extends AbstractAuditingEntity {
 
 	private static final long serialVersionUID = 8401446074224917065L;
 
+	@Field
 	private String sizeName;
 
 	@Column(name = "size_name")

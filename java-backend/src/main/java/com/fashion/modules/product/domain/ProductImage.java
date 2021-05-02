@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.ContainedIn;
+
 import com.fashion.domain.AbstractAuditingEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,6 +26,7 @@ public class ProductImage extends AbstractAuditingEntity {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "product_id")
+	@ContainedIn
 	private Product product;
 
 	public String getImage() {

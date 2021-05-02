@@ -26,4 +26,8 @@ public class ProductRes {
 	private String categoryName;
 
 	private Integer quantity;
+	
+	private Integer storeId;
+	
+	private String image;
 }

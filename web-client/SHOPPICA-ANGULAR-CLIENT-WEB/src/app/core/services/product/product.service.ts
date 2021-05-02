@@ -32,4 +32,25 @@ export class ProductService {
       })
     );
   }
+
+  getProductBestSellerByStore(id: number) {
+    let params = new HttpParams();
+    if (id != null) {
+      params = params.append('storeId', id.toString());
+    }
+    return this.httpClient.get(`${environment.productServiceUrl}/api/product/best-seller`, { params }).pipe(catchError(error => {
+      return of(error.error);
+    }))
+  }
+
+  getProductByStore(pageIndex: number, pageSize: number, body: Object) {
+    const params = new HttpParams()
+      .append('page', (pageIndex - 1).toString())
+      .append('pageSize', pageSize.toString())
+    return this.httpClient.post(`${environment.productServiceUrl}/api/product`, body, { params }).pipe(catchError(error => {
+      return of(error.error);
+    }))
+
+  }
 }
+

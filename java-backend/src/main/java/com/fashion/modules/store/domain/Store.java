@@ -29,6 +29,7 @@ import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.color.domain.Color;
 import com.fashion.modules.promotion.domain.Promotion;
 import com.fashion.modules.size.domain.Size;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 
 @Entity
@@ -63,6 +64,7 @@ public class Store implements Serializable {
 	@UpdateTimestamp
 	private Date updatedAt;
 
+	@JsonIgnore  
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "store")
 	private Set<Promotion> promotions = Sets.newHashSet();
 

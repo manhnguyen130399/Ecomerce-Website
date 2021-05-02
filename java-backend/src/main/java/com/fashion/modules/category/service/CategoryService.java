@@ -14,14 +14,14 @@ public interface CategoryService {
 	CategoryVM findById(Integer id);
 
 	Page<CategoryVM> findAllByStore(Integer page, Integer pageSize, String categoryName, SortType sortOrder,
-			String sortField);
+			String sortField, Integer storeId);
 
 	CategoryVM deleteCategory(Integer id, Integer page, Integer pageSize, String categoryName, SortType sortOrder,
 			String sortField);
 
 	Page<CategoryVM> searchCategoryByKeywordAndStore(String categoryName, SortType sortOrder, String sortField,
-			Integer page, Integer pageSize);
-	
+			Integer page, Integer pageSize, Integer storeId);
+
 	Set<CategoryVM> getAll();
 
 }

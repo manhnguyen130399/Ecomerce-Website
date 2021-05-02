@@ -1,5 +1,6 @@
 package com.fashion.modules.category.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -40,5 +41,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 			+ " WHERE st.id = :id "//
 			+ " AND c.categoryName LIKE %:keyword% ") //
 	Page<Category> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("id") Integer id, Pageable page);
+	
+	List<Category> findCategoryByIdIn(Collection<Integer> ids);
 
 }

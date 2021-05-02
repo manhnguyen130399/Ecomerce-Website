@@ -1,5 +1,11 @@
 import { Product } from '../../../../core/model/product/product';
 import { Component, OnInit } from '@angular/core';
+import { ShareService } from '@core/services/share/share.service';
+import { ProductService } from '@core/services/product/product.service';
+import { CategoryService } from '@core/services/category/category.service';
+import { Category } from '@core/model/category/category';
+import { finalize } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-all-product',
@@ -7,60 +13,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./all-product.component.css']
 })
 export class AllProductComponent implements OnInit {
+  storeId: number;
+  categories: Category[] = [];
+  isLoading: boolean = true;
+  constructor(private readonly categoryService: CategoryService, private readonly router: ActivatedRoute, private readonly shareService: ShareService) {
+    this.router.params.subscribe(params => {
+      this.storeId = params.id;
+      this.shareService.storeInfoSuccessEvent(params.id)
+    });
 
-  constructor() { }
-
+  }
   ngOnInit(): void {
+    this.loadCategoryByStore()
   }
 
-  product = {
-    id: 1,
-    productName: "Cream women pants",
-    price: 35,
-    image: "/assets/images/products/product-4.jpg",
-    sizes: [
-      {
-        id: 1,
-        sizeName: "M"
-      },
-      {
-        id: 2,
-        sizeName: "L"
-      },
-      {
-        id: 3,
-        sizeName: "XL"
-      }
-    ],
-    colors: [
-      {
-        id: 1,
-        colorName: "Red",
-        colorCode: "#ff0000",
-      },
-      {
-        id: 2,
-        colorName: "Gray",
-        colorCode: "#ccc"
-      },
-      {
-        id: 3,
-        colorName: "yellow",
-        colorCode: "#e1eb78"
-      }
-    ],
-    isNew: true,
-    discount: 20
-  };
-  listProduct: Product[] = [
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-  ]
+  loadCategoryByStore() {
+    this.categoryService.getCategoryByStore(this.storeId).pipe(finalize(() => this.isLoading = false)).subscribe((res) => {
+      this.categories = res.data.content;
+    })
+
+  }
+
+
 
 }

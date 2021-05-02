@@ -13,11 +13,14 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.fashion.commons.constants.Constants;
+import com.fashion.commons.constants.ErrorMessage;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.exception.InvalidArgumentException;
@@ -49,10 +52,11 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.PROMOTIONS, allEntries = true)
 	public PromotionVM createPromotion(final PromotionRequest req) throws Exception {
 		final Store store = storeRepo.findOneById(getCurrentStoreId());
 		if (store == null) {
-			throw new InvalidArgumentException(" Can't found store ");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_STORE);
 		}
 		final SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD_HYPHEN);
 		final String storeName = store.getStoreName();
@@ -73,7 +77,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 			promotion.setStore(store);
 			promoRepo.save(promotion);
 		} catch (Exception e) {
-			throw new InvalidArgumentException(" Duplicated code ");
+			throw new InvalidArgumentException(ErrorMessage.DUPLICATED_CODE);
 		}
 		return mapper.map(promotion, PromotionVM.class);
 	}
@@ -86,6 +90,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.PROMOTIONS)
 	public Page<PromotionVM> getAllPromotionByStore(final Integer page, final Integer pageSize,
 			final PromotionFilterReq req) {
 		if (req == null) {
@@ -125,10 +130,9 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 		calendar.set(Calendar.MILLISECOND, 0);
 		final Date now = calendar.getTime();
 		if (promotion == null) {
-			throw new InvalidArgumentException(" Promotion not found ");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND);
 		} else if (promotion.getStartDate().after(now) || promotion.getEndDate().before(now)) {
-			throw new InvalidArgumentException(" Can't use promotion. Start date or end date invalid. ");
-
+			throw new InvalidArgumentException(ErrorMessage.INVALID_PROMOTION);
 		} else {
 			return promotion.getDiscount().toString() + Constants.PERCENT;
 		}
@@ -137,6 +141,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.PROMOTIONS)
 	public Page<PromotionVM> searchPromotionByKeywordAndStore(final String keyword, final Integer page,
 			final Integer pageSize) {
 		return promoRepo.searchByKeywordAndStore(keyword, getCurrentStoreId(), PageRequest.of(page, pageSize))
@@ -145,6 +150,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.PROMOTIONS)
 	public Page<PromotionVM> filterPromotion(final PromotionFilterReq req, final Integer page, final Integer pageSize) {
 		return promoRepo.filterPromotion(req, page, pageSize, getCurrentStoreId())
 				.map(it -> mapper.map(it, PromotionVM.class));
@@ -152,6 +158,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.PROMOTIONS, allEntries = true)
 	public PromotionVM deletePromotion(final Integer id, final Integer page, final Integer pageSize,
 			final SortType sortOrder, final String sortField) {
 		try {
@@ -164,7 +171,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 			}
 			return Iterables.getLast(content);
 		} catch (Exception e) {
-			throw new InvalidArgumentException(" Can't not find promotion ");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND);
 		}
 
 	}

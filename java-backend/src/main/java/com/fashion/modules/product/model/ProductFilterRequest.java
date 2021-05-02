@@ -14,6 +14,6 @@ public class ProductFilterRequest {
 	private List<String> sizeNames;
 	private List<String> brandNames;
 	private List<BigDecimal> prices;
-	private String productName;
+	private String productNames;
 	private CustomerSortType sortType;
 }

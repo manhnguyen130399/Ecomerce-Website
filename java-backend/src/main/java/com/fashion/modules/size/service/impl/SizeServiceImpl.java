@@ -10,10 +10,13 @@ import javax.transaction.Transactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
 import com.fashion.domain.UserContext;
@@ -33,6 +36,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.SIZES, allEntries = true)
 	public SizeVM createSize(final SizeVM size) {
 		final UserContext userContext = getUserContext();
 		final Store store = getStore(userContext);
@@ -51,6 +55,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.SIZES)
 	public Page<SizeVM> findAllByStore(final Integer page, final Integer pageSize, final String sizeName,
 			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(sizeName)) {
@@ -65,6 +70,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.SIZES, allEntries = true)
 	public SizeVM deleteSize(final Integer id, final Integer page, final Integer pageSize, final String sizeName,
 			final SortType sortOrder, final String sortField) {
 		final Integer storeId = getCurrentStoreId();
@@ -83,6 +89,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.SIZES)
 	public Page<SizeVM> searchByKeyword(final String keyword, final Integer page, final Integer pageSize,
 			final SortType sortOrder, final String sortField) {
 		return sizeRepo
@@ -93,6 +100,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.SIZES)
 	public Set<SizeVM> getAllSize() {
 		return sizeRepo.findAll().stream().map(it -> mapper.map(it, SizeVM.class)).collect(Collectors.toSet());
 	}

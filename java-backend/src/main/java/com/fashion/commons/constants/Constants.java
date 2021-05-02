@@ -70,6 +70,8 @@ public final class Constants {
 	public static final String NONE = "";
 	public static final String BLANK = " ";
 	public static final String REGEX_BLANK = "\\s+";
+	//ROLE
+	public static final String ROLE_PREFIX = "ROLE_";
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
 
@@ -98,7 +100,7 @@ public final class Constants {
 	public static final String BLOG_ADMIN_TITLE = "BLOG SELLER REQUEST";
 	public static final String BLOG_ADMIN_REPLY = " ADMIN REPLY YOU REQUEST";
 	public static final String THANK_YOU = "  Thanks .";
-	
+
 	// BLOG
 	public static final String BLOG_COMPLETE = "Your blog accepted";
 	public static final String BLOG_CANCEL = "Your blog denied";
@@ -121,15 +123,33 @@ public final class Constants {
 	public static final String DESC = "DESC";
 	public static final String EXISTED = "existed";
 	public static final String NOT_EXISTED = "not existed";
-	
+
 	// Header
 	public static final String AUTHORIZATION = "Authorization";
 
 	// NET API
 	public static final String USER_URL = "https://user-service-net.herokuapp.com/api";
 	public static final String ORDER_URL = "https://order-service-net.herokuapp.com/api";
-	
+
 	// EXCEL
 	public static final List<String> EXCEL_VALID_FORMATS = Lists.newArrayList("xls", "xlsx");
+
+	// CACHE
+	// product
+	public static final String PRODUCTS = "products";
+	public static final String BEST_SELLER = "best-seller";
+	// blog
+	public static final String BLOG = "blogs";
+	public static final String BLOG_RES = "blog-res";
+	// brand
+	public static final String BRANDS = "brands";
+	// category
+	public static final String CATEGORIES = "categories";
+	// color
+	public static final String COLORS = "colors";
+	// size
+	public static final String SIZES = "sizes";
+	// promotion
+	public static final String PROMOTIONS = "promotions";
 
 }
