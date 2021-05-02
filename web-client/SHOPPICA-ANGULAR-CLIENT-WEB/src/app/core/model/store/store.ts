@@ -1,5 +1,6 @@
 import { Address } from '@core/model/address/address';
 import { Promotion } from '../promotion/promotion';
+
 export interface Store {
   id: number;
   storeName: string;
