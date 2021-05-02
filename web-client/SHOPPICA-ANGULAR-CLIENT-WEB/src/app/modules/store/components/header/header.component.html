@@ -1,32 +1,32 @@
 <app-loader [id]="'store'"></app-loader>
 <div *ngIf="store" class="store-header">
-  <div class="background"></div>
-  <div class="flex al-center content">
-    <div class="store-header_info flex al-center">
-      <div class="info-logo">
-        <img height="60" width="60" src="{{store.logo}}" alt="">
-      </div>
-      <div class="info">
-        <p class="name">{{store.storeName}}</p>
-        <p class="number-follow">{{store.owner}} </p>
-      </div>
+    <div class="background"></div>
+    <div class="flex al-center content">
+        <div class="store-header_info flex al-center">
+            <div class="info-logo">
+                <img height="60" width="60" src="{{store.logo}}" alt="">
+            </div>
+            <div class="info">
+                <p class="name">{{store.storeName}}</p>
+                <p class="number-follow">{{store.owner}} </p>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="store-header_menu jc-space-between flex al-center">
-    <div class="menu">
-      <ul class="flex">
-        <li [routerLink]="['/store/home',store.id]">Store</li>
-        <li [routerLink]="['/store/allProduct',store.id]">All product</li>
-        <li [routerLink]="['/store/info', store.id ]">Store profile</li>
-      </ul>
-    </div>
-    <div class="store-header_search">
+    <div class="store-header_menu jc-space-between flex al-center">
+        <div class="menu">
+            <ul class="flex">
+                <li [routerLink]="['/store/home',store.id]">Store</li>
+                <li [routerLink]="['/store/allProduct',store.id]">All product</li>
+                <li [routerLink]="['/store/info', store.id ]">Store profile</li>
+            </ul>
+        </div>
+        <!-- <div class="store-header_search">
       <nz-input-group class="product-name" [nzSuffix]="suffixIconSearch">
         <input placeholder="Search for products" nz-input />
       </nz-input-group>
       <ng-template #suffixIconSearch>
         <i nz-icon nzType="search"></i>
       </ng-template>
+    </div> -->
     </div>
-  </div>
 </div>

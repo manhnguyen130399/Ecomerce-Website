@@ -3,6 +3,9 @@ import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-opti
 import { CartItem } from '@core/model/cart/cart-item';
 import { Product } from '@core/model/product/product';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ProductService } from '@core/services/product/product.service';
+import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-modal',
@@ -14,27 +17,14 @@ export class SearchModalComponent implements OnInit {
   @Input() isVisible;
   @Output() closeSearchModalEvent = new EventEmitter();
   searchForm: FormGroup;
+  pageIndex: number = 1;
+  pageSize: number = 6;
+  listProduct: Product[];
 
-  product: Product = {
-    id: 1,
-    productName: "Ruby & Diamonds",
-    image: "/assets/images/products/product-5.jpg",
-    price: 12,
-    sizes: [],
-    colors: [],
-    comments: []
-  };
-
-  listProduct: Product[] = [
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-  ]
   constructor(
     private readonly formBuilder: FormBuilder,
+    private readonly productService: ProductService,
+    private readonly router: Router
 
   ) { }
 
@@ -44,8 +34,7 @@ export class SearchModalComponent implements OnInit {
 
   buildForm() {
     this.searchForm = this.formBuilder.group({
-      categoryId: [null],
-      productName: [null],
+      keyword: [null],
     })
   }
 
@@ -53,4 +42,23 @@ export class SearchModalComponent implements OnInit {
     this.closeSearchModalEvent.emit();
   }
 
+  searchProductFullText(keyword: string) {
+    this.productService.searchProductByFullText(this.pageIndex
+      , this.pageSize, keyword).subscribe((res) => {
+        if (res.code == "OK") {
+          this.listProduct = res.data.content;
+          this.searchForm.reset()
+        }
+      })
+  }
+
+  submitForm() {
+    this.searchProductFullText(this.searchForm.get('keyword').value);
+  }
+
+  viewDetail(id: number) {
+    this.handleCancel()
+    this.router.navigate(['/product/detail/', id]);
+
+  }
 }
