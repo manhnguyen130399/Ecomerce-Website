@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '@core/model/product/product';
 import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
 import { stringify } from '@angular/compiler/src/util';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-product',
@@ -25,11 +26,13 @@ export class ProductComponent implements OnInit {
   listProduct: Product[] = [];
   total: number = 0;
   countFilter = 0;
+  loaded = true;
 
   selectedColor: string;
   selectedSize: string;
   selectedBrand: string;
   selectedPrice: string;
+  currentCategory: string;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -39,37 +42,50 @@ export class ProductComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((data) => {
-      this.productOptions.categoryNames = data.category === "all" ? null : data.category;
+
+    combineLatest([
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams
+    ]).subscribe(data => {
+      console.log(data);
+      this.getCategory(data[0]);
+      this.getFilter(data[1]);
       this.loadListProduct();
     })
-
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.countFilter = Object.keys(params).length;
-      if (params.color) {
-        this.selectedColor = params.color;
-        this.productOptions.colorNames = [params.color];
-      }
-      if (params.size) {
-        this.selectedSize = params.size;
-        this.productOptions.sizeNames = [params.size]
-      }
-      if (params.brand) {
-        this.selectedBrand = params.brand;
-        this.productOptions.brandNames = [params.brand];
-      }
-      if (params.price) {
-        this.selectedPrice = params.price;
-        this.productOptions.prices = params.price.split("-");
-      }
-      this.loadListProduct();
-    });
 
     if (window.innerWidth <= 992) {
       this.productCol = 12;
     }
     else {
       this.productCol = 6;
+    }
+  }
+
+  getCategory(params) {
+    this.currentCategory = params.category;
+    this.productOptions.categoryNames = params.category === "all" ? null : params.category;
+  }
+
+  getFilter(queryParams) {
+    this.countFilter = Object.keys(queryParams).length;
+    if (queryParams.color) {
+      this.selectedColor = queryParams.color;
+      this.productOptions.colorNames = [queryParams.color];
+    }
+    else if (queryParams.size) {
+      this.selectedSize = queryParams.size;
+      this.productOptions.sizeNames = [queryParams.size]
+    }
+    else if (queryParams.brand) {
+      this.selectedBrand = queryParams.brand;
+      this.productOptions.brandNames = [queryParams.brand];
+    }
+    else if (queryParams.price) {
+      this.selectedPrice = queryParams.price;
+      this.productOptions.prices = queryParams.price.split("-");
+    }
+    else {
+      this.clearFilter();
     }
   }
 
@@ -87,9 +103,13 @@ export class ProductComponent implements OnInit {
 
   loadListProduct() {
     this.loaderService.showLoader('product');
-
+    this.loaded = false;
     this.productService.getListProduct(this.productOptions, this.baseParams).pipe(
-      finalize(() => this.loaderService.hideLoader('product'))
+      finalize(() => {
+        this.loaderService.hideLoader('product')
+        this.loaded = true;
+      }
+      )
     ).subscribe(res => {
       if (res.code === "OK") {
         this.listProduct = res.data.content;
@@ -109,7 +129,11 @@ export class ProductComponent implements OnInit {
   }
 
   clearAllFilter() {
-    this.router.navigate(['/product/collection/all']);
+    this.router.navigate(['/product/collection', this.currentCategory]);
+    this.clearFilter();
+  }
+
+  clearFilter() {
     this.productOptions.colorNames = [];
     this.productOptions.sizeNames = [];
     this.productOptions.brandNames = [];
@@ -121,7 +145,7 @@ export class ProductComponent implements OnInit {
   }
 
   clearSize() {
-    this.router.navigate(['/product/collection/all'], {
+    this.router.navigate(['/product/collection', this.currentCategory], {
       queryParams: {
         size: null,
       },
@@ -132,7 +156,7 @@ export class ProductComponent implements OnInit {
   }
 
   clearColor() {
-    this.router.navigate(['/product/collection/all'], {
+    this.router.navigate(['/product/collection', this.currentCategory], {
       queryParams: {
         color: null,
       },
@@ -143,7 +167,7 @@ export class ProductComponent implements OnInit {
   }
 
   clearBrand() {
-    this.router.navigate(['/product/collection/all'], {
+    this.router.navigate(['/product/collection', this.currentCategory], {
       queryParams: {
         Brand: null,
       },
@@ -154,7 +178,7 @@ export class ProductComponent implements OnInit {
   }
 
   clearPrice() {
-    this.router.navigate(['/product/collection/all'], {
+    this.router.navigate(['/product/collection', this.currentCategory], {
       queryParams: {
         price: null,
       },

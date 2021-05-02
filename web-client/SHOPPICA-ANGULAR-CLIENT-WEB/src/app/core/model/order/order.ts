@@ -1,5 +1,5 @@
 import { OrderGroup } from './order-group';
-import { Address } from './../../model/address/address';
+import { Address } from '../address/address';
 export interface Order {
   customerName: string;
   address: Address;

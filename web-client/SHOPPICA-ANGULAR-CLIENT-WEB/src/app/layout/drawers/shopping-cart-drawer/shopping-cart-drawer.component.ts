@@ -36,22 +36,27 @@ export class ShoppingCartDrawerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.shareService.addToCartSuccessEmitted$.subscribe((cart) => {
-      if (cart) {
-        this.cart = cart;
-      }
+    this.shareService.cartEmitted$.subscribe((cart) => {
+      this.cart = cart;
     })
 
-    this.shareService.openCartDrawerEmitted$.subscribe((data) => {
+    this.shareService.openCartDrawerEmitted$.subscribe(() => {
       this.isVisible = true;
     })
 
-    if (this.authService.isAuthenticated) {
+    this.shareService.closeCartDrawerEmitted$.subscribe(data => {
+      console.log(data);
+      this.isVisible = false;
+    })
+
+    if (this.authService.isAuthenticated()) {
       this.cartService.getCartById().subscribe((res) => {
         if (res.isSuccessed) {
           this.cart = res.data;
-          this.shareService.addToCartSuccessEvent(res.data);
-          this.shareService.changeNumCartItemEvent(res.data.cartItems.length);
+          this.shareService.cartEmitEvent(res.data);
+        }
+        else {
+
         }
       })
     }
@@ -85,6 +90,11 @@ export class ShoppingCartDrawerComponent implements OnInit {
   viewCheckout() {
     this.isVisible = false;
     this.router.navigate(['/checkout/information']);
+  }
+
+  returnToShop() {
+    this.isVisible = false;
+    this.router.navigate(['/product/collection/all']);
   }
 
 }

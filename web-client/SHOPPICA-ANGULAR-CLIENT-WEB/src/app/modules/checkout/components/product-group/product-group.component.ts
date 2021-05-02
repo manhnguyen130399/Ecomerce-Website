@@ -1,5 +1,5 @@
 import { finalize } from 'rxjs/operators';
-import { OrderGroup } from './../../../../core/services/order/order-group';
+import { OrderGroup } from '../../../../core/model/order/order-group';
 
 import { LoaderService } from '@shared/modules/loader/loader.service';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
@@ -13,6 +13,7 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { CartGroup } from '@core/model/cart/cart-group';
 import { environment } from '@env';
 import { CheckoutService } from '@core/services/checkout/checkout.service';
+import { Promotion } from '@core/model/promotion/promotion';
 
 @Component({
   selector: 'app-product-group',
@@ -23,7 +24,7 @@ export class ProductGroupComponent implements OnInit {
 
   visible: boolean = false;
   shippingFee: number;
-  discount = 0;
+  promotionInUse: Promotion;
   store: Store;
   couponForm: FormGroup;
   shippingAddress: ShippingAddress;
@@ -62,7 +63,6 @@ export class ProductGroupComponent implements OnInit {
         this.store = res.data;
         this.store.address = JSON.parse(res.data.address);
         this.calculateShippingFee();
-
         this.checkoutService.productPriceChange(this.getTotalPrice());
       }
     })
@@ -86,22 +86,23 @@ export class ProductGroupComponent implements OnInit {
   }
 
   useCouponCode() {
-    let currentDate = new Date();
-    console.log(this.store);
     const code = this.couponForm.controls.couponCode.value;
     let validCoupons = this.store.promotions.filter(
       x => x.code == code
     );
 
     if (validCoupons.length > 0) {
-      this.discount = validCoupons[0].discount;
-      this.checkoutService.discountChange(this.discount);
+      this.promotionInUse = validCoupons[0];
+      this.checkoutService.discountChange(this.promotionInUse.discount);
     }
     else {
-      this.checkoutService.discountChange(-this.discount);
-      this.discount = 0;
+      if (this.promotionInUse) {
+        this.checkoutService.discountChange(-this.promotionInUse.discount);
+      }
+      this.promotionInUse = null;
       this.couponForm.controls.couponCode.setErrors({ 'incorrect': true });
     }
+
   }
 
   emittedOrderGroup() {
@@ -118,7 +119,8 @@ export class ProductGroupComponent implements OnInit {
       notes: "",
       total: this.cartGroup.cartItems.map(x => x.price).reduce((a, b) => a + b),
       storeId: this.cartGroup.storeId,
-      discount: this.discount,
+      discount: this.promotionInUse?.discount,
+      promotionId: this.promotionInUse?.id,
       shippingCost: this.shippingFee,
       orderDetails: orderDetails
     }

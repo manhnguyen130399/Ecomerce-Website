@@ -6,6 +6,7 @@ import { Component, HostListener, Inject, OnInit, Optional } from '@angular/core
 import { DOCUMENT } from '@angular/common';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Router } from '@angular/router';
+import { Cart } from '@core/model/cart/cart';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -16,6 +17,7 @@ export class HeaderComponent implements OnInit {
   numCartItems = 0;
   isScrollUp = false;
   isLogged = false;
+  goToCartPage = false;
   isShowMenuDrawer = false;
   isShowLoginDrawer = false;
   isShowRegisterDrawer = false;
@@ -26,8 +28,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly shareService: ShareService
-
+    private readonly shareService: ShareService,
+    private readonly storageService: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -37,6 +39,11 @@ export class HeaderComponent implements OnInit {
 
     this.shareService.changeNumCartItemEmitted$.subscribe((num) => {
       this.numCartItems = num;
+    })
+
+
+    this.shareService.gotoCartPageEmitted$.subscribe((isGotoPage: boolean) => {
+      this.goToCartPage = isGotoPage;
     })
 
     this.isLogged = this.authService.isAuthenticated();
@@ -63,13 +70,16 @@ export class HeaderComponent implements OnInit {
   }
 
   openShoppingCartDrawer() {
-    if (this.numCartItems > 0) {
-      this.shareService.openCartDrawerEvent();
-    }
+    this.goToCartPage
+      ? this.router.navigate(['/cart'])
+      : this.shareService.openCartDrawerEvent();
+
   }
 
   logout() {
     this.authService.logout();
+    this.shareService.cartEmitEvent(new Cart());
+    this.storageService.remove(environment.shippingAddressKey);
     this.isLogged = false;
     this.router.navigate(['/home']);
   }

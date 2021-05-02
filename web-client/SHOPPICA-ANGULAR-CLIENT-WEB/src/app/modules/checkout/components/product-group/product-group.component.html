@@ -34,9 +34,9 @@
           <span class="price_text">Shipping</span>
           <span class="price_value">{{ shippingFee | currency}}</span>
         </div>
-        <div *ngIf="discount" class="cart-price-discount flex jc-space-between al-center">
+        <div *ngIf="promotionInUse" class="cart-price-discount flex jc-space-between al-center">
           <span class="price_text">Discount </span>
-          <span class="price_value">{{-discount | currency}}</span>
+          <span class="price_value">{{-promotionInUse.discount | currency}}</span>
         </div>
       </div>
     </div>

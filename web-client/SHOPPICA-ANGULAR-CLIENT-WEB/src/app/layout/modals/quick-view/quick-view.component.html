@@ -13,7 +13,7 @@
       </div>
       <div nz-col [nzSpan]="11" class="product-info">
         <div class="product-name">
-          <p class="name">{{product.productName}}</p>
+          <p (click)="viewDetail(product.id)" class="name">{{product.productName}}</p>
         </div>
         <div class="product-price flex al-center">
           <p class="price">{{product.price | currency}}</p>

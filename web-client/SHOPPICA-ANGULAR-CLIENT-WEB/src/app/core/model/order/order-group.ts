@@ -5,6 +5,7 @@ export interface OrderGroup {
   orderDetails: OrderDetail[];
   total: number;
   storeId: number;
-  discount: number;
+  discount?: number;
+  promotionId?: number;
   shippingCost: number;
 }

@@ -54,6 +54,6 @@ import { CheckoutSummaryComponent } from './components/checkout-summary/checkout
 
     NzIconModule.forChild(shareIcons),
     RouterModule.forChild(checkoutRoutes)
-  ]
+  ],
 })
 export class CheckoutModule { }

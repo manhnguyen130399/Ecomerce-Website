@@ -104,10 +104,8 @@ export class QuickViewComponent implements OnInit {
       .subscribe((res) => {
         if (res.isSuccessed) {
           this.isVisible = false;
-          this.shareService.addToCartSuccessEvent(res.data);
+          this.shareService.cartEmitEvent(res.data);
           this.shareService.openCartDrawerEvent();
-          this.shareService.changeNumCartItemEvent(res.data.cartItems.length);
-
         }
       })
   }

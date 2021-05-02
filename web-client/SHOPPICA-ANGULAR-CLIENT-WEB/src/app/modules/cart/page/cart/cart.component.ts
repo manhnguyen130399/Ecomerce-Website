@@ -1,5 +1,5 @@
 import { LoaderService } from './../../../../shared/modules/loader/loader.service';
-import { finalize } from 'rxjs/operators';
+import { finalize, delay } from 'rxjs/operators';
 import { CartService } from './../../../../core/services/cart/cart.service';
 import { ShareService } from './../../../../core/services/share/share.service';
 import { AuthService } from '@core/services/auth/auth.service';
@@ -16,7 +16,7 @@ import { CartRequest } from '@core/model/cart/cart-request';
 })
 export class CartComponent implements OnInit {
   cart: Cart;
-  initialLoading = false;
+  initialLoading = true;
   listProduct: Product[] = [
 
   ]
@@ -46,21 +46,21 @@ export class CartComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loaderService.showLoader('cart');
-    this.initialLoading = true;
-    this.shareService.addToCartSuccessEmitted$.subscribe((cart) => {
-      if (cart !== null) {
+    this.loaderService.showLoader('cart-page');
+    this.shareService.cartEmitted$.subscribe((cart) => {
+      if (cart.id !== -1) {
         this.cart = cart;
-        this.loaderService.hideLoader('cart');
+        this.loaderService.hideLoader('cart-page');
         this.initialLoading = false;
       }
+
     })
   }
 
   loadingEvent(isLoad: boolean) {
     isLoad
-      ? this.loaderService.showLoader('cart')
-      : this.loaderService.hideLoader('cart');
+      ? this.loaderService.showLoader('cart-item')
+      : this.loaderService.hideLoader('cart-item');
   }
 
   deleteItem(cartDeleted: CartRequest) {

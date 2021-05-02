@@ -45,6 +45,13 @@ export class QuickShopComponent implements OnInit {
   ngOnInit(): void {
     this.addToCartMode();
     this.editCartMode();
+    this.closeQuickShop();
+  }
+
+  closeQuickShop() {
+    this.shareService.closeQuickShopEmitted$.subscribe(data => {
+      this.isVisible = false;
+    })
   }
 
   editCartMode() {
@@ -78,7 +85,8 @@ export class QuickShopComponent implements OnInit {
   setCartItem(product: Product) {
     this.cartItem = {
       productName: product.productName,
-      image: product.productImages[0].image
+      image: product.productImages[0].image,
+      productId: product.id
     }
   }
 
@@ -109,9 +117,8 @@ export class QuickShopComponent implements OnInit {
       .subscribe((res) => {
         if (res.isSuccessed) {
           this.isVisible = false;
-          this.shareService.addToCartSuccessEvent(res.data);
+          this.shareService.cartEmitEvent(res.data);
           this.shareService.openCartDrawerEvent();
-          this.shareService.changeNumCartItemEvent(res.data.cartItems.length);
         }
       })
   }
@@ -132,7 +139,7 @@ export class QuickShopComponent implements OnInit {
       .subscribe((res) => {
         if (res.isSuccessed) {
           this.isVisible = false;
-          this.shareService.addToCartSuccessEvent(res.data);
+          this.shareService.cartEmitEvent(res.data);
         }
       })
   }

@@ -1,7 +1,12 @@
 import { CartItem } from '@core/model/cart/cart-item';
-import { CartGroup } from './cart-group';
-export interface Cart {
+export class Cart {
   id: number;
   total: number;
-  cartItems?: CartItem[];
+  cartItems: CartItem[];
+
+  constructor() {
+    this.id = -1;
+    this.total = 0;
+    this.cartItems = [];
+  }
 }

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { ProductGroupComponent } from './../product-group/product-group.component';
 import { PaymentComponent } from './../payment/payment.component';
-import { OrderGroup } from './../../../../core/services/order/order-group';
+import { OrderGroup } from '../../../../core/model/order/order-group';
 import { StorageService } from './../../../../core/services/storage/storage.service';
 import { CheckoutService } from '@core/services/checkout/checkout.service';
 import { LoaderService } from './../../../../shared/modules/loader/loader.service';
@@ -16,7 +16,7 @@ import { ShareService } from '@core/services/share/share.service';
 import { Cart } from '../../../../core/model/cart/cart';
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { environment } from '@env';
-import { Order } from '@core/services/order/order';
+import { Order } from '@core/model/order/order';
 
 @Component({
   selector: 'app-shipping',
@@ -51,19 +51,17 @@ export class ShippingComponent implements OnInit {
   }
 
   getCart() {
-    this.shareService.addToCartSuccessEmitted$.subscribe((cart) => {
-      if (cart) {
-        this.cart = cart;
-        this.cartGroups = [];
-        let listStoreId = this.getListStore(cart);
-        listStoreId.forEach(id => {
-          let cartGroup: CartGroup = {
-            storeId: id,
-            cartItems: this.cart.cartItems.filter(x => x.storeId == id)
-          }
-          this.cartGroups.push(cartGroup);
-        })
-      }
+    this.shareService.cartEmitted$.subscribe((cart) => {
+      this.cart = cart;
+      this.cartGroups = [];
+      let listStoreId = this.getListStore(cart);
+      listStoreId.forEach(id => {
+        let cartGroup: CartGroup = {
+          storeId: id,
+          cartItems: this.cart.cartItems.filter(x => x.storeId == id)
+        }
+        this.cartGroups.push(cartGroup);
+      })
     })
   }
 
@@ -93,17 +91,11 @@ export class ShippingComponent implements OnInit {
         this.storageService.remove(environment.shippingAddressKey);
         this.router.navigate(['/home']);
         this.messageService.success("Order successfully!");
-        this.emptyCart();
+        this.shareService.cartEmitEvent(new Cart());
       }
       console.log(res);
     })
     console.log(order);
 
-  }
-
-  emptyCart() {
-    this.cart.cartItems = [];
-    this.cart.total = 0;
-    this.shareService.changeNumCartItemEvent(this.cart.cartItems.length);
   }
 }
