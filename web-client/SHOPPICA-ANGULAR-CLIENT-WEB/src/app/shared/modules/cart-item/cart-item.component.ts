@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { OldCartItem } from './../../../core/model/cart/old-cart-item';
 import { ProductService } from './../../../core/services/product/product.service';
 import { ShareService } from './../../../core/services/share/share.service';
@@ -5,7 +6,7 @@ import { finalize } from 'rxjs/operators';
 import { CartRequest } from '../../../core/model/cart/cart-request';
 import { CartService } from './../../../core/services/cart/cart.service';
 import { CartItemOptions } from './models/cart-item-options.model';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CartItem } from '@core/model/cart/cart-item';
 
 @Component({
@@ -23,10 +24,18 @@ export class CartItemComponent implements OnInit {
   constructor(
     private readonly cartService: CartService,
     private readonly shareService: ShareService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private readonly router: Router
   ) { }
   ngOnInit(): void {
 
+  }
+
+  viewProductDetail(id) {
+    this.shareService.closeCartDrawerEvent();
+    this.shareService.closeQuickShopEvent();
+    this.shareService.closeQuickViewEvent();
+    this.router.navigate(['/product/detail', id]);
   }
 
   changeQuantity(quantity: number) {
