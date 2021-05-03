@@ -117,7 +117,7 @@ export class ProductGroupComponent implements OnInit {
 
     let orderGroup: OrderGroup = {
       notes: "",
-      total: this.cartGroup.cartItems.map(x => x.price).reduce((a, b) => a + b),
+      total: this.cartGroup.cartItems.map(x => x.price * x.quantity).reduce((a, b) => a + b),
       storeId: this.cartGroup.storeId,
       discount: this.promotionInUse?.discount,
       promotionId: this.promotionInUse?.id,

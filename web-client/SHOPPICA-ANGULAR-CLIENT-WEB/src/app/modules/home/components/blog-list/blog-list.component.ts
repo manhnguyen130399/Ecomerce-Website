@@ -1,3 +1,4 @@
+import { BlogService } from '@core/services/blog/blog.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Blog } from '../../../../core/model/blog/blog';
 import { Component, OnInit } from '@angular/core';
@@ -8,27 +9,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./blog-list.component.css']
 })
 export class BlogListComponent implements OnInit {
-  listBlog: Blog[] = [
-    {
-      id: 1,
-      image: "/assets/images/blogs/blog-1.jpg",
-      content: "Typography is the work of typesetters, compositors, typographers, graphic designers, art directors, manga artists, ",
-      author: "Admin",
-      createdAt: new Date(),
-      title: "The Easiest Way to Break Out on Top",
-      summary:null,
-      comments: []
-    }
-  ]
-  constructor() { }
+  listBlog: Blog[] = []
+  constructor(private readonly blogService: BlogService) { }
 
   ngOnInit(): void {
+    this.blogService.getAllBlog(1, 6).subscribe(res => {
+      if (res.code === "OK") {
+        this.listBlog = res.data.content;
+      }
+    })
   }
+
   customOptions: OwlOptions = {
     loop: true,
     autoplay: false,
     dots: false,
-    autoHeight: true,
+    autoHeight: false,
     autoWidth: true,
     responsive: {
       300: {

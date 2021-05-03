@@ -3,10 +3,28 @@
     <p><strong> Order History :</strong></p>
   </div>
   <div class="table-content">
-    <div class="order-error">
-
+    <div *ngIf="orders?.length === 0" class="order-error">
       <p> <i nz-icon nzType="warning" nzTheme="outline"></i>No order has been made yet.</p>
     </div>
-
+    <nz-table [nzPageSize]="4" [nzLoading]="isLoading" #basicTable [nzData]=" orders">
+      <thead>
+        <tr>
+          <th [nzAlign]="'center'">Id</th>
+          <th [nzAlign]="'center'">Order Date</th>
+          <th [nzAlign]="'center'">Total</th>
+          <th [nzAlign]="'center'">QrCode</th>
+          <th [nzAlign]="'center'">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [routerLink]="['/account/order-detail',data.id]" *ngFor="let data of basicTable.data">
+          <td [nzAlign]="'center'"> <a>{{ data.id }}</a> </td>
+          <td [nzAlign]="'center'">{{ data.created_at | date:'mediumDate'}}</td>
+          <td [nzAlign]="'center'">{{ data.total| currency}}</td>
+          <td [nzAlign]="'center'"><img height="70" [src]="data.qrCode" alt=""></td>
+          <td [nzAlign]="'center'">{{ data.state }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
   </div>
 </div>

@@ -1,12 +1,10 @@
 <div class="blog-card">
-  <div class="blog-image">
-    <div
-      class="background-image"
-      [ngStyle]="{ 'background-image': 'url(' + blog.image + ')' }"
-    ></div>
+  <div [routerLink]="['/blog/detail',blog.id]" class="blog-image">
+    <div class="background-image" [ngStyle]="{ 'background-image': 'url(' + blog.image + ')' }"></div>
   </div>
   <div class="blog-info">
-   <p class="title text-hover">{{ blog.title }}</p>
+    <p [routerLink]="['/blog/detail',blog.id]" class="title text-hover">{{
+      blog.title }}</p>
     <p class="author">
       By
       <span class="author-name">{{ blog.author }}</span>

@@ -52,4 +52,20 @@ export class CheckoutService {
       })
     );
   }
+
+  getOrderByEmail(email: string) {
+    return this.httpClient.get(`${environment.orderServiceUrl}/api/orders/GetAllByUser/${email}`).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+  getOrderDetailById(id: number) {
+    return this.httpClient.get(`${environment.orderServiceUrl}/api/orders/GetOrderDetails/${id}`).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
 }

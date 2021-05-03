@@ -1,7 +1,7 @@
 import { LoaderService } from './../../../../shared/modules/loader/loader.service';
 import { Brand } from './../../../../core/model/brand/brand';
 import { ProductSort } from './../../../../core/model/product/product-sort';
-import { delay, finalize } from 'rxjs/operators';
+import { delay, finalize, switchMap, tap } from 'rxjs/operators';
 import { ProductService } from './../../../../core/services/product/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductOptions } from './../../../../core/model/product/product-option';
@@ -43,15 +43,29 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
 
-    combineLatest([
-      this.activatedRoute.params,
-      this.activatedRoute.queryParams
-    ]).subscribe(data => {
-      console.log(data);
-      this.getCategory(data[0]);
-      this.getFilter(data[1]);
-      this.loadListProduct();
-    })
+    combineLatest(
+      [
+        this.activatedRoute.params,
+        this.activatedRoute.queryParams
+      ]
+    )
+      .pipe(
+        switchMap((data) => {
+          this.getCategory(data[0]);
+          this.getFilter(data[1]);
+          this.loaderService.showLoader('product');
+          this.loaded = false;
+          return this.productService.getListProduct(this.productOptions, this.baseParams);
+        }),
+      ).subscribe(res => {
+
+        if (res.code === "OK") {
+          this.listProduct = res.data.content;
+          this.total = res.data.totalElements;
+        }
+        this.loaderService.hideLoader('product')
+        this.loaded = true;
+      })
 
     if (window.innerWidth <= 992) {
       this.productCol = 12;
@@ -102,19 +116,11 @@ export class ProductComponent implements OnInit {
   }
 
   loadListProduct() {
-    this.loaderService.showLoader('product');
-    this.loaded = false;
+
     this.productService.getListProduct(this.productOptions, this.baseParams).pipe(
-      finalize(() => {
-        this.loaderService.hideLoader('product')
-        this.loaded = true;
-      }
-      )
+
     ).subscribe(res => {
-      if (res.code === "OK") {
-        this.listProduct = res.data.content;
-        this.total = res.data.totalElements;
-      }
+
     })
   }
 

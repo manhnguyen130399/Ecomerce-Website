@@ -118,9 +118,7 @@ namespace ORDER_SERVICE_NET.Controllers
                 return BadRequest(ModelState);
             }
 
-            var storeId = Convert.ToInt32(HttpContext.User.FindFirstValue("storeId"));
-
-            var result = await _orderService.GetOrderDetails(orderId, storeId);
+            var result = await _orderService.GetOrderDetails(orderId);
 
             if(!result.IsSuccessed) return BadRequest(result);
 

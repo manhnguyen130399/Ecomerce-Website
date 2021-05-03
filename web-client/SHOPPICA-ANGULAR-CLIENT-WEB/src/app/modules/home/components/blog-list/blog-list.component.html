@@ -4,34 +4,9 @@
   <div class="content">
 
     <owl-carousel-o [options]="customOptions">
-      <ng-template carouselSlide>
+      <ng-template *ngFor="let blog of listBlog" carouselSlide>
         <div class="column">
-          <app-blog-card [blog]="listBlog[0]"></app-blog-card>
-        </div>
-      </ng-template>
-      <ng-template carouselSlide>
-        <div class="column">
-          <app-blog-card [blog]="listBlog[0]"></app-blog-card>
-        </div>
-      </ng-template>
-      <ng-template carouselSlide>
-        <div class="column">
-          <app-blog-card [blog]="listBlog[0]"></app-blog-card>
-        </div>
-      </ng-template>
-      <ng-template carouselSlide>
-        <div class="column">
-          <app-blog-card [blog]="listBlog[0]"></app-blog-card>
-        </div>
-      </ng-template>
-      <ng-template carouselSlide>
-        <div class="column">
-          <app-blog-card [blog]="listBlog[0]"></app-blog-card>
-        </div>
-      </ng-template>
-      <ng-template carouselSlide>
-        <div class="column">
-          <app-blog-card [blog]="listBlog[0]"></app-blog-card>
+          <app-blog-card [blog]="blog"></app-blog-card>
         </div>
       </ng-template>
     </owl-carousel-o>

@@ -1,3 +1,4 @@
+import { ProductService } from '@core/services/product/product.service';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '@core/model/product/product';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
@@ -11,65 +12,22 @@ import { throwError } from 'rxjs';
   styleUrls: ['./product-trending.component.css']
 })
 export class ProductTrendingComponent implements OnInit {
-  product = {
-    id: 1,
-    productName: "Cream women pants",
-    price: 35,
-    image: "/assets/images/products/product-4.jpg",
-    sizes: [
-      {
-        id: 1,
-        sizeName: "M"
-      },
-      {
-        id: 2,
-        sizeName: "L"
-      },
-      {
-        id: 3,
-        sizeName: "XL"
-      }
-    ],
-    colors: [
-      {
-        id: 1,
-        colorName: "Red",
-        colorCode: "#ff0000",
-      },
-      {
-        id: 2,
-        colorName: "Gray",
-        colorCode: "#ccc"
-      },
-      {
-        id: 3,
-        colorName: "yellow",
-        colorCode: "#e1eb78"
-      }
-    ],
-    comments: [],
-    isNew: true,
-    discount: 20
-  };
-  listProduct: Product[] = [
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-  ]
+  listProduct: Product[] = []
 
-  constructor() { }
+  constructor(private readonly productService: ProductService) { }
 
   ngOnInit() {
-
+    this.productService.getProductBestSellerByStore().subscribe(res => {
+      if (res.code === "OK") {
+        this.listProduct = res.data;
+      }
+    })
   }
 
   customOptions: OwlOptions = {
     loop: true,
-    autoplay: false,
-    dots: false,
+    autoplay: true,
+    dots: true,
     autoHeight: true,
     autoWidth: true,
     responsive: {

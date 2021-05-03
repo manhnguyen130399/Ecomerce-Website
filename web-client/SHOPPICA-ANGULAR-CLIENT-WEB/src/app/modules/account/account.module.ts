@@ -1,3 +1,4 @@
+import { LoaderModule } from './../../shared/modules/loader/loader.module';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -21,7 +22,8 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AddressComponent } from './components/address/address.component';
 import { LoginComponent } from './page/login/login.component';
-
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
 
 @NgModule({
   declarations: [
@@ -32,12 +34,14 @@ import { LoginComponent } from './page/login/login.component';
     ResetPasswordComponent,
     ChangePasswordComponent,
     AddressComponent,
-    LoginComponent
+    LoginComponent,
+    OrderDetailComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     HeaderPageModule,
+    LoaderModule,
 
     NzGridModule,
     NzButtonModule,
@@ -46,6 +50,7 @@ import { LoginComponent } from './page/login/login.component';
     NzSelectModule,
     NzMessageModule,
     NzRadioModule,
+    NzTableModule,
     NzIconModule.forChild(shareIcons),
     RouterModule.forChild(accountRoutes)
   ]

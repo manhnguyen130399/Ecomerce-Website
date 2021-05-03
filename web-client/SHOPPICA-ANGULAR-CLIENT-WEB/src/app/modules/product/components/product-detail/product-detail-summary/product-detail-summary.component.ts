@@ -1,18 +1,18 @@
+import { ShareService } from './../../../../../core/services/share/share.service';
+import { CartService } from './../../../../../core/services/cart/cart.service';
+import { getProductDetailId } from '@core/model/cart/cart-helper';
+import { CartRequest } from './../../../../../core/model/cart/cart-request';
 import { environment } from '@env';
 import { GhnService } from '@core/services/ghn/ghn.service';
 import { Address } from '@core/model/address/address';
-import { StorageService } from './../../../../../core/services/storage/storage.service';
-import { Customer } from '@core/model/user/customer';
 import { AuthService } from '@core/services/auth/auth.service';
-import { JwtService } from './../../../../../core/services/jwt/jwt.service';
 import { StoreService } from '@core/services/store/store.service';
-import { ProductDetail } from '@core/model/product/product-detail';
 import { Size } from '@core/model/size/size';
 import { Color } from '@core/model/color/color';
 import { Product } from '@core/model/product/product';
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Store } from '@core/model/store/store';
-import { tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import { getListColor, getListSize } from '@core/model/product/product-helper';
 
@@ -35,11 +35,14 @@ export class ProductDetailSummaryComponent implements OnInit {
   date = new Date();
   shippingFee: number;
   quantity: number;
+  isAddingToCart = false;
 
   constructor(
     private readonly storeService: StoreService,
     private readonly ghnService: GhnService,
     private readonly authService: AuthService,
+    private readonly cartService: CartService,
+    private readonly shareService: ShareService
   ) { }
 
   ngOnInit(): void {
@@ -88,5 +91,24 @@ export class ProductDetailSummaryComponent implements OnInit {
         });
 
     }
+  }
+
+  addToCart() {
+    const body: CartRequest = {
+      productDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id),
+      quantity: this.quantity,
+      price: this.product.price,
+    }
+    this.isAddingToCart = true;
+    this.cartService.addToCart(body)
+      .pipe(
+        finalize(() => this.isAddingToCart = false)
+      )
+      .subscribe((res) => {
+        if (res.isSuccessed) {
+          this.shareService.cartEmitEvent(res.data);
+          this.shareService.openCartDrawerEvent();
+        }
+      })
   }
 }

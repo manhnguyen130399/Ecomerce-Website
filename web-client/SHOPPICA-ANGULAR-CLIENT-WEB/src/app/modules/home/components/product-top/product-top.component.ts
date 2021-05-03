@@ -1,3 +1,4 @@
+import { ProductService } from '@core/services/product/product.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Product } from '@core/model/product/product';
 import { Component, OnInit } from '@angular/core';
@@ -8,52 +9,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./product-top.component.css']
 })
 export class ProductBestSellerComponent implements OnInit {
-  product = {
-    id: 1,
-    productName: "Cream women pants",
-    price: 35,
-    image: "/assets/images/products/product-4.jpg",
-    sizes: [
-      {
-        id: 1,
-        sizeName: "M"
-      },
-      {
-        id: 2,
-        sizeName: "L"
-      },
-      {
-        id: 3,
-        sizeName: "XL"
+  listProduct: Product[] = []
+
+  constructor(private readonly productService: ProductService) { }
+
+  ngOnInit() {
+    this.productService.getProductBestSellerByStore().subscribe(res => {
+      if (res.code === "OK") {
+        this.listProduct = res.data;
       }
-    ],
-    colors: [
-      {
-        id: 1,
-        colorName: "Red",
-        colorCode: "#ff0000",
-      },
-      {
-        id: 2,
-        colorName: "Gray",
-        colorCode: "#ccc"
-      },
-      {
-        id: 3,
-        colorName: "yellow",
-        colorCode: "#e1eb78"
-      }
-    ],
-    comments: [],
-    isNew: true,
-    discount: 20
-  };
-  listProduct: Product[] = [
-    this.product,
-    this.product,
-    this.product,
-    this.product,
-  ]
+    })
+  }
 
   customOptions: OwlOptions = {
     loop: false,
@@ -74,11 +40,6 @@ export class ProductBestSellerComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
-  }
-
-  constructor() { }
-
-  ngOnInit(): void {
   }
 
 }

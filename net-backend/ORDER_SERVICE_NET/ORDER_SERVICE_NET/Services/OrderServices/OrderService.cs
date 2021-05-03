@@ -202,6 +202,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         select p;
 
             var data = await query
+                .OrderByDescending(o => o.Created_at)
                 .Select(x => new OrderView()
                 {
                     Id = x.Id,
@@ -343,10 +344,10 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
             return new APIResultSuccess<OrderView>(orderView);
         }
 
-        public async Task<APIResult<OrderView>> GetOrderDetails(int orderId, int storeId)
+        public async Task<APIResult<OrderView>> GetOrderDetails(int orderId)
         {
             var order = await _context.Orders.Include(o => o.OrderDetail)
-                .FirstOrDefaultAsync(o => o.Id == orderId && o.StoreId == storeId);
+                .FirstOrDefaultAsync(o => o.Id == orderId);
 
             if(order == null)
             {
@@ -380,9 +381,14 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
              .Select(x => new OrderDetailView()
              {
                  ProductName = x.p.ProductName,
+                 Image = x.p.Image,
+                 Price = x.p.Price,
+                 Id = x.q.Id,
+                 SizeName = x.p.SizeName,
+                 ColorName =x.p.ColorName,
+                 ProductId = x.p.ProductId,
                  ProductDetailId = x.p.ProductDetailId,
                  Quantity = x.q.Quantity,
-
                  TotalPriceProduct = x.q.TotalPriceProduct,
              }).ToList();
 

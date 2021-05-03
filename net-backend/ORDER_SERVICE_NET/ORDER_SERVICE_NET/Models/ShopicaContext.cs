@@ -238,7 +238,6 @@ namespace ORDER_SERVICE_NET.Models
                 .HasDefaultValueSql("'NULL'");
 
                 entity.Property(e => e.PaymentMethod)
-               .IsRequired()
                .HasColumnName("payment_method")
                .HasColumnType("enum('CASH','PAYPAL')");
 

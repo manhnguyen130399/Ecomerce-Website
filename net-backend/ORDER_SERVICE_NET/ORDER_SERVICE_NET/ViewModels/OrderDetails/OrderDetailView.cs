@@ -12,6 +12,10 @@ namespace ORDER_SERVICE_NET.ViewModels.OrderDetails
         public decimal Price { get; set; }
         public decimal TotalPriceProduct { get; set; }
         public string ProductName { get; set; }
+        public string SizeName { get; set; }
+        public string ColorName { get; set; }
+        public string Image { get; set; }
         public int ProductDetailId { get; set; }
+        public int ProductId { get; set; }
     }
 }

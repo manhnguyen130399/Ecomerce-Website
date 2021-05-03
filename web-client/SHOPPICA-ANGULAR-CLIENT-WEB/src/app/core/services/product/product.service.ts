@@ -33,9 +33,9 @@ export class ProductService {
     );
   }
 
-  getProductBestSellerByStore(id: number) {
+  getProductBestSellerByStore(id?: number) {
     let params = new HttpParams();
-    if (id != null) {
+    if (id) {
       params = params.append('storeId', id.toString());
     }
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/best-seller`, { params }).pipe(catchError(error => {

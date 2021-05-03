@@ -1,3 +1,5 @@
+import { OrderDetailComponent } from './components/order-detail/order-detail.component';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 import { AuthGuard } from './../../core/guards/auth.guard';
 import { LoginComponent } from './page/login/login.component';
 import { AddressComponent } from './components/address/address.component';
@@ -23,6 +25,14 @@ export const accountRoutes: Routes = [
       {
         path: 'change-password',
         component: ChangePasswordComponent
+      },
+      {
+        path: 'order-history',
+        component: OrderHistoryComponent
+      },
+      {
+        path: 'order-detail/:id',
+        component: OrderDetailComponent
       }
     ]
   },

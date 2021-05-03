@@ -12,11 +12,11 @@ import { catchError } from 'rxjs/operators';
 export class BlogService {
   constructor(private readonly httpClient: HttpClient) { }
 
-  getAllBlog(pageIndex: number, pageSize: number, type: string) {
+  getAllBlog(pageIndex: number, pageSize: number, type?: string) {
     let params = new HttpParams()
       .append('page', (pageIndex - 1).toString())
       .append('pageSize', pageSize.toString());
-    if (type != null) {
+    if (type) {
       params = params.append('type', type);
     }
 

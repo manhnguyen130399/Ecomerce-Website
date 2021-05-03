@@ -11,7 +11,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 {
     public interface IOrderService
     {
-        Task<APIResult<OrderView>> GetOrderDetails(int orderId, int storeId);
+        Task<APIResult<OrderView>> GetOrderDetails(int orderId);
         Task<APIResult<OrderView>> GetById(int orderId);
         Task<APIResult<List<OrderView>>> GetAllByUser(string email);
         Task<APIResult<PaggingView<OrderView>>> GetAll(PaggingRequest request,int storeId, string customerName, string state);
