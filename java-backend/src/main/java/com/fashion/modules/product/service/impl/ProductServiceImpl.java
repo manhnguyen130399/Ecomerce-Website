@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +53,6 @@ import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.category.repository.CategoryRepository;
 import com.fashion.modules.color.domain.Color;
 import com.fashion.modules.color.repository.ColorRepository;
-import com.fashion.modules.comment.domain.Comment;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.product.domain.ProductImage;
@@ -155,32 +153,6 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		return req.getImages().parallelStream().map(it -> {
 			return new ProductImage(it, product);
 		}).collect(Collectors.toSet());
-	}
-
-	private ProductVM convertProductToVM(final Product product) {
-		final ProductVM vm = new ProductVM();
-		vm.setId(product.getId());
-		final Brand brand = product.getBrand();
-		vm.setBrandName(brand.getBrandName());
-		final Category category = product.getCategory();
-		vm.setStoreId(product.getStore().getId());
-		vm.setCategoryName(category.getCategoryName());
-		vm.setBrandId(brand.getId());
-		vm.setCategoryId(category.getId());
-		vm.setPrice(product.getPrice());
-		vm.setProductName(product.getProductName());
-		vm.setProductImages(product.getProductImages().stream().map(it -> new ProductImageVM(it.getId(), it.getImage()))
-				.collect(Collectors.toSet()));
-		vm.setProductDetails(product.getProductDetails().stream().map(it -> {
-			final Color color = it.getColor();
-			final Size size = it.getSize();
-			return new ProductDetailVM(it.getId(), size.getId(), size.getSizeName(), color.getId(),
-					color.getColorName(), color.getcolorCode(), it.getQuantity());
-		}).collect(Collectors.toSet()));
-		vm.setComments(product.getComments().stream().filter(i -> i.getEmail() != null)
-				.sorted(Comparator.comparing(Comment::getCreatedAt).reversed()).map(it -> convertToVM(it))
-				.collect(Collectors.toList()));
-		return vm;
 	}
 
 	@Override
