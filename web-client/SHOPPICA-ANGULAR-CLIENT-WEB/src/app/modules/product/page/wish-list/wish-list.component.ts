@@ -1,3 +1,6 @@
+import { finalize } from 'rxjs/operators';
+import { LoaderService } from './../../../../shared/modules/loader/loader.service';
+import { ProductService } from '@core/services/product/product.service';
 import { Product } from '@core/model/product/product';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,52 +11,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WishListComponent implements OnInit {
 
-  listProduct: Product[] = [
-    {
-      id: 1,
-      productName: "Cream women pants",
-      price: 35,
-      inWishList: true,
-      image: "/assets/images/products/product-4.jpg",
-      sizes: [
-        {
-          id: 1,
-          sizeName: "M"
-        },
-        {
-          id: 2,
-          sizeName: "L"
-        },
-        {
-          id: 3,
-          sizeName: "XL"
-        }
-      ],
-      colors: [
-        {
-          id: 1,
-          colorName: "Red",
-          colorCode: "#ff0000",
-        },
-        {
-          id: 2,
-          colorName: "Gray",
-          colorCode: "#ccc"
-        },
-        {
-          id: 3,
-          colorName: "yellow",
-          colorCode: "#e1eb78"
-        }
-      ],
-      comments: [],
-      isNew: true,
-      discount: 20
-    },
-  ]
-  constructor() { }
+  listProduct: Product[] = [];
+  constructor(
+    private readonly productService: ProductService,
+    private readonly loaderService: LoaderService
+  ) { }
 
   ngOnInit(): void {
+    this.loaderService.showLoader("wishlist");
+    this.productService.getWishList({ pageIndex: 0, pageSize: 12 })
+      .pipe(
+        finalize(() => this.loaderService.hideLoader("wishlist"))
+      ).subscribe(res => {
+        if (res.code == "OK") {
+          this.listProduct = res.data.content;
+        }
+      });
+  }
+
+  removeFromWishList(id: number) {
+    this.listProduct = this.listProduct.filter(x => x.id !== id);
   }
 
 }

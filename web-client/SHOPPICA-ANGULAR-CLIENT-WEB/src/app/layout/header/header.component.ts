@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+import { ProductService } from '@core/services/product/product.service';
 import { ShareService } from './../../core/services/share/share.service';
 import { environment } from '@env';
 import { StorageService } from './../../core/services/storage/storage.service';
@@ -15,21 +17,21 @@ import { Cart } from '@core/model/cart/cart';
 export class HeaderComponent implements OnInit {
   prevPosition = 0;
   numCartItems = 0;
+  wishlistIds = [];
   isScrollUp = false;
   isLogged = false;
   goToCartPage = false;
   isShowMenuDrawer = false;
-  isShowLoginDrawer = false;
   isShowRegisterDrawer = false;
   isShowResetPasswordDrawer = false;
-  isShowShoppingCartDrawer = false;
   isShowSearchModal = false;
 
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly shareService: ShareService,
-    private readonly storageService: StorageService
+    private readonly storageService: StorageService,
+    private readonly productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -41,29 +43,46 @@ export class HeaderComponent implements OnInit {
       this.numCartItems = num;
     })
 
+    this.shareService.wishlistEmitted$.subscribe((wishListIds) => {
+      this.wishlistIds = wishListIds;
+    })
 
     this.shareService.gotoCartPageEmitted$.subscribe((isGotoPage: boolean) => {
       this.goToCartPage = isGotoPage;
     })
 
     this.isLogged = this.authService.isAuthenticated();
+
+    this.getWishList();
+  }
+
+  getWishList() {
+    if (this.isLogged) {
+      this.productService.getWishList().pipe(
+        map(res => {
+          if (res.code === "OK") {
+            return res.data.content.map(x => x.id);
+          }
+        })
+      ).subscribe(res => {
+        this.shareService.wishListEmitEvent(res);
+      })
+    }
   }
 
   openRegister() {
-    this.isShowLoginDrawer = false;
     this.isShowResetPasswordDrawer = false;
     this.isShowRegisterDrawer = true;
   }
 
   openResetPassword() {
-    this.isShowLoginDrawer = false;
     this.isShowRegisterDrawer = false;
     this.isShowResetPasswordDrawer = true;
   }
 
   openLogin() {
     if (!this.authService.isAuthenticated()) {
-      this.isShowLoginDrawer = true;
+      this.shareService.openLoginDrawerEvent();
       this.isShowRegisterDrawer = false;
       this.isShowResetPasswordDrawer = false;
     }
@@ -79,7 +98,9 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.shareService.cartEmitEvent(new Cart());
+    this.shareService.wishListEmitEvent([]);
     this.storageService.remove(environment.shippingAddressKey);
+    this.shareService.shippingAddressChangeEvent(null);
     this.isLogged = false;
     this.router.navigate(['/home']);
   }

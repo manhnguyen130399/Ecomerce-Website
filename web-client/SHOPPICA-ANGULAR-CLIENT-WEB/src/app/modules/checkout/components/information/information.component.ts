@@ -71,7 +71,7 @@ export class InformationComponent implements OnInit {
   }
 
   setFormValue() {
-    if (this.customer.address) {
+    if (this.customer?.address) {
       this.districtSelectedId = this.customer.address.districtId;
       this.wardSelectedId = this.customer.address.wardId;
       const province = this.listProvince.find(x => x.ProvinceID == this.customer.address.provinceId);
@@ -79,9 +79,9 @@ export class InformationComponent implements OnInit {
       this.orderForm.controls.province.setValue(province);
       this.orderForm.controls.apartment.setValue(apartment);
     }
-    this.orderForm.controls.customerName.setValue(this.customer.customerName);
-    this.orderForm.controls.phone.setValue(this.customer.phone);
-    this.orderForm.controls.email.setValue(this.customer.email);
+    this.orderForm.controls.customerName.setValue(this.customer?.customerName);
+    this.orderForm.controls.phone.setValue(this.customer?.phone);
+    this.orderForm.controls.email.setValue(this.customer?.email);
   }
 
   provinceChange(province): void {

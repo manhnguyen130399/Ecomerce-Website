@@ -38,10 +38,12 @@ export class DashboardComponent implements OnInit {
   }
 
   setFormValue() {
-    this.updateInfoForm.controls.customerName.setValue(this.customer.customerName);
-    this.updateInfoForm.controls.email.setValue(this.customer.email);
-    this.updateInfoForm.controls.phone.setValue(this.customer.phone);
-    this.updateInfoForm.controls.gender.setValue(this.customer.gender);
+    if (this.customer) {
+      this.updateInfoForm.controls.customerName.setValue(this.customer.customerName);
+      this.updateInfoForm.controls.email.setValue(this.customer.email);
+      this.updateInfoForm.controls.phone.setValue(this.customer.phone);
+      this.updateInfoForm.controls.gender.setValue(this.customer.gender);
+    }
   }
 
   buildForm() {

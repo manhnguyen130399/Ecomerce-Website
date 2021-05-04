@@ -1,3 +1,4 @@
+import { AuthService } from './../../../core/services/auth/auth.service';
 import { finalize } from 'rxjs/operators';
 import { CartService } from './../../../core/services/cart/cart.service';
 import { CartRequest } from '../../../core/model/cart/cart-request';
@@ -38,7 +39,8 @@ export class QuickShopComponent implements OnInit {
   constructor(
     private readonly shareService: ShareService,
     private readonly router: Router,
-    private readonly cartService: CartService
+    private readonly cartService: CartService,
+    private readonly authService: AuthService
   ) { }
 
 
@@ -100,6 +102,11 @@ export class QuickShopComponent implements OnInit {
   }
 
   saveChangeCart() {
+    if (!this.authService.isAuthenticated()) {
+      this.isVisible = false;
+      this.shareService.openLoginDrawerEvent();
+      return;
+    }
     this.editMode ? this.editCart() : this.addToCart();
   }
 

@@ -45,7 +45,6 @@ export class ShoppingCartDrawerComponent implements OnInit {
     })
 
     this.shareService.closeCartDrawerEmitted$.subscribe(data => {
-      console.log(data);
       this.isVisible = false;
     })
 
@@ -54,9 +53,6 @@ export class ShoppingCartDrawerComponent implements OnInit {
         if (res.isSuccessed) {
           this.cart = res.data;
           this.shareService.cartEmitEvent(res.data);
-        }
-        else {
-
         }
       })
     }

@@ -1,3 +1,5 @@
+import { ProductService } from '@core/services/product/product.service';
+import { Product } from './../../../core/model/product/product';
 import { CartService } from './../../../core/services/cart/cart.service';
 
 import { ShareService } from './../../../core/services/share/share.service';
@@ -6,7 +8,7 @@ import { StorageService } from './../../../core/services/storage/storage.service
 import { AuthService } from './../../../core/services/auth/auth.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { SocialAuthService, GoogleLoginProvider, FacebookLoginProvider } from 'angularx-social-login';
@@ -18,11 +20,9 @@ import { environment } from '@env';
   styleUrls: ['./login-drawer.component.css']
 })
 export class LoginDrawerComponent implements OnInit {
-  @Input() isOpenLoginDrawer: boolean = false;
-  @Output() closeLoginDrawer = new EventEmitter<boolean>();
   @Output() openRegisterDrawerEvent = new EventEmitter<boolean>();
   @Output() openResetPasswordDrawerEvent = new EventEmitter<boolean>();
-
+  isVisible = false;
   isClose: Observable<any>;
   loginForm: FormGroup;
   isLoading = false;
@@ -33,11 +33,21 @@ export class LoginDrawerComponent implements OnInit {
     private readonly socialAuthService: SocialAuthService,
     private readonly storageService: StorageService,
     private readonly shareService: ShareService,
-    private readonly cartService: CartService
+    private readonly cartService: CartService,
+    private readonly productService: ProductService
   ) { }
 
   ngOnInit(): void {
     this.buildForm();
+
+    this.shareService.openLoginDrawerEmitted$.subscribe(() => {
+      console.log(123);
+      this.isVisible = true;
+    })
+
+    this.shareService.closeLoginDrawerEmitted$.subscribe(data => {
+      this.isVisible = false;
+    })
 
     this.socialAuthService.authState.subscribe((user) => {
       this.socialLogin(user);
@@ -56,15 +66,17 @@ export class LoginDrawerComponent implements OnInit {
   }
 
   closeMenu(): void {
-    this.closeLoginDrawer.emit();
+    this.isVisible = false;
   }
 
   openRegisterDrawer() {
     this.openRegisterDrawerEvent.emit();
+    this.shareService.closeLoginDrawerEvent();
   }
 
   openResetPasswordDrawer() {
     this.openResetPasswordDrawerEvent.emit();
+    this.shareService.closeLoginDrawerEvent();
   }
 
   submitForm() {
@@ -126,6 +138,19 @@ export class LoginDrawerComponent implements OnInit {
     this.loginForm.reset();
     this.getCustomerDetail();
     this.getCart();
+    this.getWishList();
+  }
+
+  getWishList() {
+    this.productService.getWishList().pipe(
+      map(res => {
+        if (res.code === "OK") {
+          return res.data.content.map(x => x.id);
+        }
+      })
+    ).subscribe(res => {
+      this.shareService.wishListEmitEvent(res);
+    })
   }
 
   getCart() {

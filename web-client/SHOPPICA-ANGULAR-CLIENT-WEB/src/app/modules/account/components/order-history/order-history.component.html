@@ -3,9 +3,6 @@
     <p><strong> Order History :</strong></p>
   </div>
   <div class="table-content">
-    <div *ngIf="orders?.length === 0" class="order-error">
-      <p> <i nz-icon nzType="warning" nzTheme="outline"></i>No order has been made yet.</p>
-    </div>
     <nz-table [nzPageSize]="4" [nzLoading]="isLoading" #basicTable [nzData]=" orders">
       <thead>
         <tr>

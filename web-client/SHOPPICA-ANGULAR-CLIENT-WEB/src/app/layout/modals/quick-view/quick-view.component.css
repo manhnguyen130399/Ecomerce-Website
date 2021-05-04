@@ -103,10 +103,9 @@
   margin-bottom: 10px;
 }
 
-/* .add-to-cart-btn:hover {
-  animation-duration: 0.5s;
-  animation-name: transformAnimation;
-} */
+.inWishlist {
+  color: #e81e63;
+}
 
 @keyframes transformAnimation {
   0% {

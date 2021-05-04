@@ -58,7 +58,7 @@
             </nz-dropdown-menu>
           </li>
           <li [routerLink]="['/product/wishlist']" class="text-hover flex al-center">
-            <nz-badge [nzCount]="5">
+            <nz-badge nzShowZero [nzCount]="wishlistIds.length">
               <i class="wishlist" nz-icon>
                 <svg height="1em" width="1.3em">
                   <path
@@ -98,8 +98,7 @@
 <app-menu-drawer (closeMenuDrawer)="isShowMenuDrawer = false" [isOpenMenuDrawer]="isShowMenuDrawer">
 </app-menu-drawer>
 <!-- login -->
-<app-login-drawer (openRegisterDrawerEvent)="openRegister()" (openResetPasswordDrawerEvent)="openResetPassword()"
-  (closeLoginDrawer)="isShowLoginDrawer = false" [isOpenLoginDrawer]="isShowLoginDrawer">
+<app-login-drawer (openRegisterDrawerEvent)="openRegister()" (openResetPasswordDrawerEvent)="openResetPassword()">
 </app-login-drawer>
 <!-- register -->
 <app-register-drawer (closeRegisterDrawerEvent)="isShowRegisterDrawer = false" (openLoginDrawerEvent)="openLogin()"

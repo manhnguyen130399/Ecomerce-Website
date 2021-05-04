@@ -34,8 +34,10 @@
           <app-input-quantity [(quantity)]="quantity"></app-input-quantity>
           <button (click)="addToCart()" [nzLoading]="isAddingToCart" class="add-to-cart-btn" nz-button
             [nzType]="'primary'" [nzShape]="'round'">ADD TO CART</button>
-          <button nz-tooltip [nzTooltipTitle]="'Add to wishlist'" class="add-to-wishlist" nz-button nzSize="large"
-            nzShape="circle"><i nz-icon nzType="heart" nzTheme="outline"></i></button>
+          <button nz-tooltip (click)="addToWishList(product.id)"
+            [nzTooltipTitle]="inWishList ?'Browse wishlist' : 'Add to wishlist'" class="add-to-wishlist" nz-button
+            nzSize="large" nzShape="circle"><i [class.inWishlist]="inWishList" nz-icon
+              [nzType]="isChangeWishList ? 'loading' : 'heart'" [nzTheme]="!inWishList ?'outline' :'fill'"></i></button>
         </div>
         <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
         <div (click)="viewDetail(product.id)" class="view-detail flex al-center jc-center">

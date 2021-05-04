@@ -1,3 +1,5 @@
+import { AuthService } from './../../../core/services/auth/auth.service';
+import { ProductService } from './../../../core/services/product/product.service';
 import { CartService } from './../../../core/services/cart/cart.service';
 import { CartRequest } from '../../../core/model/cart/cart-request';
 import { Router } from '@angular/router';
@@ -28,6 +30,9 @@ export class QuickViewComponent implements OnInit {
   sizeSelected: Size;
   product: Product;
   isAddingToCart = false;
+  isChangeWishList = false;
+  inWishList = false;
+  listWishIds: number[] = [];
   quantity = 1;
   customOptions: OwlOptions = {
     loop: false,
@@ -46,7 +51,9 @@ export class QuickViewComponent implements OnInit {
   constructor(
     private readonly shareService: ShareService,
     private readonly router: Router,
-    private readonly cartService: CartService
+    private readonly cartService: CartService,
+    private readonly productService: ProductService,
+    private readonly authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +66,32 @@ export class QuickViewComponent implements OnInit {
       this.sizeSelected = this.listSize[0];
       this.setImages(product.productImages);
     })
+    this.shareService.wishlistEmitted$.subscribe(listIds => {
+      this.listWishIds = listIds;
+      if (listIds.indexOf(this.product?.id) !== -1) {
+        this.inWishList = true;
+      }
+      else {
+        this.inWishList = false;
+      }
+    })
+  }
+
+  addToWishList(productId: number) {
+    if (this.inWishList) {
+      this.router.navigate(['/product/wishlist']);
+      return;
+    }
+    this.isChangeWishList = true;
+    this.productService.addToWishList(productId)
+      .pipe(
+        finalize(() => this.isChangeWishList = false)
+      ).subscribe(res => {
+        if (res.code == "OK") {
+          this.listWishIds.push(productId);
+          this.shareService.wishListEmitEvent(this.listWishIds);
+        }
+      })
   }
 
   setImages(productImage: ProductImage[]) {
@@ -91,6 +124,12 @@ export class QuickViewComponent implements OnInit {
   }
 
   addToCart() {
+    if (!this.authService.isAuthenticated()) {
+      this.isVisible = false;
+      this.shareService.openLoginDrawerEvent();
+      return;
+    }
+
     const body: CartRequest = {
       productDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id),
       quantity: this.quantity,

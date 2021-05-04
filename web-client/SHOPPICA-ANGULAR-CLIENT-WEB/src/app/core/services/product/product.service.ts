@@ -59,7 +59,42 @@ export class ProductService {
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/fulltext-search`, { params }).pipe(catchError(error => {
       return of(error.error);
     }))
+  }
 
+  addToWishList(productId: number) {
+    const body = {};
+    let params = new HttpParams()
+      .append('productId', `${productId}`)
+
+    return this.httpClient.post(`${environment.productServiceUrl}/api/wish-list/create`, body, { params }).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+
+  removeWishList(productId: number) {
+    return this.httpClient.delete(`${environment.productServiceUrl}/api/wish-list/${productId}`).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
+
+  getWishList(baseParams?: BaseParams) {
+
+    let params = new HttpParams()
+    if (baseParams) {
+      params.append('page', `${baseParams.pageIndex}`)
+      params.append('pageSize', `${baseParams.pageSize}`)
+    }
+
+    return this.httpClient.get(`${environment.productServiceUrl}/api/wish-list`, { params }).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
   }
 }
 

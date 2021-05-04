@@ -18,10 +18,12 @@
       </button>
     </div>
     <div class="add-wishlist">
-      <i *ngIf="!product.inWishList" class="text-hover" nz-tooltip nzTooltipPlacement="right"
-        nzTooltipTitle="Add to wishlist" nz-icon nzType="heart" nzTheme="outline"></i>
-      <i *ngIf="product.inWishList" nz-tooltip nzTooltipPlacement="right" nzTooltipTitle="Remove wishlist" nz-icon
-        nzType="delete" nzTheme="outline"></i>
+      <i (click)="addToWishList(product.id)" *ngIf="!inWishList && !isChangeWishList" class="text-hover" nz-tooltip
+        nzTooltipPlacement="right" nzTooltipTitle="Add to wishlist" nz-icon nzType="heart" nzTheme="outline"></i>
+      <i class="loading" *ngIf="isChangeWishList" nz-icon nzType="loading" nzTheme="outline"></i>
+      <i [class.liked]="inWishList" *ngIf="inWishList && !isChangeWishList" (click)="removeWishList(product.id)"
+        nz-tooltip nzTooltipPlacement="right" nzTooltipTitle="Remove wishlist" nz-icon nzType="heart"
+        nzTheme="fill"></i>
     </div>
     <div class="list-size">
       <span>{{sizes}}</span>

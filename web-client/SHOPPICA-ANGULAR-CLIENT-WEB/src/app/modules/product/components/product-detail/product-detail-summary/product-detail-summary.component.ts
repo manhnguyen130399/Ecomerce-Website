@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { ProductService } from './../../../../../core/services/product/product.service';
 import { ShareService } from './../../../../../core/services/share/share.service';
 import { CartService } from './../../../../../core/services/cart/cart.service';
 import { getProductDetailId } from '@core/model/cart/cart-helper';
@@ -36,17 +38,47 @@ export class ProductDetailSummaryComponent implements OnInit {
   shippingFee: number;
   quantity: number;
   isAddingToCart = false;
+  isChangeWishList = false;
+  inWishList = false;
+  listWishIds: number[] = [];
 
   constructor(
     private readonly storeService: StoreService,
     private readonly ghnService: GhnService,
     private readonly authService: AuthService,
     private readonly cartService: CartService,
-    private readonly shareService: ShareService
+    private readonly shareService: ShareService,
+    private readonly productService: ProductService,
+    private readonly router: Router
   ) { }
 
   ngOnInit(): void {
+    this.shareService.wishlistEmitted$.subscribe(listIds => {
+      this.listWishIds = listIds;
+      if (listIds.indexOf(this.product?.id) !== -1) {
+        this.inWishList = true;
+      }
+      else {
+        this.inWishList = false;
+      }
+    })
+  }
 
+  addToWishList(productId: number) {
+    if (this.inWishList) {
+      this.router.navigate(['/product/wishlist']);
+      return;
+    }
+    this.isChangeWishList = true;
+    this.productService.addToWishList(productId)
+      .pipe(
+        finalize(() => this.isChangeWishList = false)
+      ).subscribe(res => {
+        if (res.code == "OK") {
+          this.listWishIds.push(productId);
+          this.shareService.wishListEmitEvent(this.listWishIds);
+        }
+      })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -94,6 +126,11 @@ export class ProductDetailSummaryComponent implements OnInit {
   }
 
   addToCart() {
+    if (!this.authService.isAuthenticated()) {
+      this.shareService.openLoginDrawerEvent();
+      return;
+    }
+
     const body: CartRequest = {
       productDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id),
       quantity: this.quantity,

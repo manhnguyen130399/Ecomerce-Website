@@ -22,8 +22,11 @@ export class ShareService {
   private closeQuickShop = new Subject<boolean>();
   private openCartDrawer = new Subject<boolean>();
   private closeCartDrawer = new Subject<boolean>();
+  private openLoginDrawer = new Subject<boolean>();
+  private closeLoginDrawer = new Subject<boolean>();
 
   private cart = new BehaviorSubject<Cart>(new Cart());
+  private wishlist = new BehaviorSubject<number[]>([]);
   private editCartItem = new Subject<OldCartItem>();
   private changeNumCartItem = new Subject<number>();
   private customerInfo = new BehaviorSubject<Customer>(null);
@@ -37,8 +40,11 @@ export class ShareService {
   closeQuickShopEmitted$ = this.closeQuickShop.asObservable();
   openCartDrawerEmitted$ = this.openCartDrawer.asObservable();
   closeCartDrawerEmitted$ = this.closeCartDrawer.asObservable();
+  openLoginDrawerEmitted$ = this.openLoginDrawer.asObservable();
+  closeLoginDrawerEmitted$ = this.closeLoginDrawer.asObservable();
 
   cartEmitted$ = this.cart.asObservable();
+  wishlistEmitted$ = this.wishlist.asObservable();
   editCartItemEmitted$ = this.editCartItem.asObservable();
   changeNumCartItemEmitted$ = this.changeNumCartItem.asObservable();
   customerInfoEmitted$ = this.customerInfo.asObservable();
@@ -80,9 +86,21 @@ export class ShareService {
     this.closeCartDrawer.next();
   }
 
+  openLoginDrawerEvent() {
+    this.openLoginDrawer.next(true);
+  }
+
+  closeLoginDrawerEvent() {
+    this.closeLoginDrawer.next();
+  }
+
   cartEmitEvent(cart: Cart) {
     this.cart.next(cart);
     this.changeNumCartItem.next(cart.cartItems.length);
+  }
+
+  wishListEmitEvent(productIds: number[]) {
+    this.wishlist.next(productIds);
   }
 
   editCartItemEvent(cartItem: OldCartItem) {

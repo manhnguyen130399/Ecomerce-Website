@@ -138,6 +138,11 @@ namespace ORDER_SERVICE_NET.Services.CartServices
                 .Include(x => x.CartDetail)
                 .FirstOrDefaultAsync(x => x.AccountId == accountId);
 
+            if(carts == null)
+            {
+                return new APIResultErrors<CartView>("Can not find this cart");
+            }
+
             var listProductDetailId = carts.CartDetail.Select(x => x.ProductDetailId).ToList();
 
             var listProduct = await _productService.GetListProduct(listProductDetailId);

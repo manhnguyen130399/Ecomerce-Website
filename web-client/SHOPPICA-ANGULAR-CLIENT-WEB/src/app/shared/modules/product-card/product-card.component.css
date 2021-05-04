@@ -33,7 +33,6 @@
 }
 
 .product-image:hover .list-size,
-.product-image:hover .add-wishlist,
 .product-image:hover .hover-btn,
 .product-image:hover .background-image::before {
   opacity: 1;
@@ -129,13 +128,26 @@
   position: absolute;
   top: 10px;
   left: 8px;
-  opacity: 0;
-  transition: 0.5s;
 }
 
 .add-wishlist i {
   color: white;
+  opacity: 0;
+  transition: 0.5s;
   font-size: 20px;
+}
+
+.add-wishlist i.loading {
+  opacity: 1;
+}
+
+.product-image:hover .add-wishlist i {
+  opacity: 1;
+}
+
+.add-wishlist .liked {
+  opacity: 1;
+  color: #e81e63;
 }
 
 .product-info {
