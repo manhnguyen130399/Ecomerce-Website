@@ -12,8 +12,8 @@ import { Component, Input, OnInit, Output, SimpleChanges } from '@angular/core';
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent implements OnInit {
-  @Input() productCol: number = 6;
-  @Input() listProduct: Product[] = []
+  @Input() productCol = 6;
+  @Input() listProduct: Product[] = [];
   constructor() { }
 
   ngOnInit(): void {

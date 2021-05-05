@@ -28,14 +28,20 @@ export class AuthService {
 
   login(request: Login): Observable<BaseResponse<string>> {
     return this.httpClient.post<BaseResponse<string>>(`${environment.userServiceUrl}/api/users/authenticate`, request).pipe(
-      tap(result => {
-        if (result.isSuccessed) {
-          const tokenObject = this.jwtHelperService.decodeToken(result.data);
+      map(res => {
+        if (res.isSuccessed) {
+          const tokenObject = this.jwtHelperService.decodeToken(res.data);
+          if (tokenObject.role !== 'Customer') {
+            res.isSuccessed = false;
+            res.message = "Username or password is incorrect!";
+            return res;
+          }
           const user = {
             ...tokenObject,
-            token: result.data
+            token: res.data
           };
           this.storageService.setObject(environment.tokenKey, user);
+          return res;
         }
       }),
       catchError(error => {
@@ -46,14 +52,20 @@ export class AuthService {
 
   socialLogin(request: SocialLogin): Observable<BaseResponse<string>> {
     return this.httpClient.post<BaseResponse<string>>(`${environment.userServiceUrl}/api/users/socialLogin`, request).pipe(
-      tap(result => {
-        if (result.isSuccessed) {
-          const tokenObject = this.jwtHelperService.decodeToken(result.data);
+      map(res => {
+        if (res.isSuccessed) {
+          const tokenObject = this.jwtHelperService.decodeToken(res.data);
+          if (tokenObject.role !== 'Customer') {
+            res.isSuccessed = false;
+            res.message = "Username or password is incorrect!";
+            return res;
+          }
           const user = {
             ...tokenObject,
-            token: result.data
+            token: res.data
           };
           this.storageService.setObject(environment.tokenKey, user);
+          return res;
         }
       }),
       catchError(error => {
@@ -71,12 +83,12 @@ export class AuthService {
   }
 
 
-  logout() {
+  logout(): void {
     this.storageService.remove(environment.tokenKey);
     this.storageService.remove(environment.loginMethod);
   }
 
-  isAuthenticated() {
+  isAuthenticated(): boolean {
     return this.jwtService.isTokeExpire();
   }
 
@@ -101,7 +113,7 @@ export class AuthService {
     );
   }
 
-  resetPassword(request: ResetPasswordRequest) {
+  resetPassword(request: ResetPasswordRequest): Observable<BaseResponse<string>> {
     return this.httpClient.post<BaseResponse<string>>(`${environment.userServiceUrl}/api/users/resetPassword`, request).pipe(
       catchError(error => {
         return of(error.error);

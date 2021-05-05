@@ -33,7 +33,7 @@ export class BestSellerComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
-  }
+  };
 
   constructor(
     private readonly storeService: ShareService,
@@ -41,8 +41,8 @@ export class BestSellerComponent implements OnInit {
     private readonly loaderService: LoaderService
   ) {
     this.storeService.loadStoreInfoSEmitted$.subscribe((res) => {
-      this.storeId = res
-    })
+      this.storeId = res;
+    });
 
   }
 
@@ -56,7 +56,7 @@ export class BestSellerComponent implements OnInit {
       pipe(finalize(() => this.loaderService.hideLoader('store')))
       .subscribe((res) => {
         this.listProduct = res.data;
-      })
+      });
   }
 
 }

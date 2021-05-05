@@ -2,7 +2,7 @@
   nzPlacement="right" nzTitle="SHOPPING CART" (nzOnClose)="closeMenu()">
   <ng-container *nzDrawerContent>
     <div *ngIf="cart" class="cart">
-      <div *ngIf="cart.cartItems.length == 0" class="cart-empty al-center flex fd-column">
+      <div *ngIf="cart.cartItems.length === 0" class="cart-empty al-center flex fd-column">
         <i nz-icon>
           <svg t="1619944205782" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
             p-id="2396" width="1em" height="1em">

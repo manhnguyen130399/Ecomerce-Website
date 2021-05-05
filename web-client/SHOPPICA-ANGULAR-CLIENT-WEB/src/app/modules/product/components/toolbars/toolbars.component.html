@@ -20,8 +20,8 @@
       <a (click)="viewProduct(4)" [class.active]="numOnePage === 4" class="view-page view_4"></a>
     </div>
     <div nz-col [nzSpan]="6" class="sort-by">
-      <nz-select class="select-none-border" [(ngModel)]="selectedProvince" (ngModelChange)="provinceChange($event)"
-        nzPlaceHolder="Select a sort by">
+      <nz-select [nzDropdownClassName]="'sort-options'" class="select-none-border" [(ngModel)]="selectedProvince"
+        (ngModelChange)="provinceChange($event)" nzPlaceHolder="Select a sort by">
         <nz-option nzValue="BESTSELLING" nzLabel="BEST SELLING"></nz-option>
         <nz-option nzValue="LOW_HIGH" nzLabel="PRICE LOW TO HIGHT"></nz-option>
         <nz-option nzValue="HIGH_LOW" nzLabel="PRICE HIGHT TO LOW"></nz-option>

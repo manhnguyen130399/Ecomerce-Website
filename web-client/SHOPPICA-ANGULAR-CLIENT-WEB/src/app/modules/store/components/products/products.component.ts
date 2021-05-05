@@ -13,7 +13,7 @@ import { finalize } from 'rxjs/operators';
 export class ProductsComponent implements OnInit {
 
   @Input() fullScreen: boolean;
-  selectedIndex: number = 0;
+  selectedIndex = 0;
   storeId: number;
   pageIndex = 1;
   pageSize = 4;
@@ -24,29 +24,29 @@ export class ProductsComponent implements OnInit {
     private readonly loaderService: LoaderService
   ) {
     this.shareService.loadStoreInfoSEmitted$.subscribe((it) => {
-      this.storeId = it
-    })
+      this.storeId = it;
+    });
   }
 
   ngOnInit(): void {
-    this.loadProductByStore("descend", null);
+    this.loadProductByStore('descend', null);
   }
 
   loadProductByStore(sortOrder: string, categoryName: string) {
     const body = {
-      "storeId": this.storeId,
-      "productName": null,
-      "price": null,
-      "brandName": "",
-      "categoryName": null,
-      "sortOrder": sortOrder,
-      "sortField": "price"
-    }
+      storeId: this.storeId,
+      productName: null,
+      price: null,
+      brandName: '',
+      categoryName: null,
+      sortOrder,
+      sortField: 'price'
+    };
     this.productService.getProductByStore(this.pageIndex, this.pageSize, body)
       .pipe(finalize(() => this.loaderService.hideLoader('store')))
       .subscribe((res) => {
-        this.listProduct = res.data.content
-      })
+        this.listProduct = res.data.content;
+      });
   }
 
   loadProduct(id: number) {
@@ -56,6 +56,6 @@ export class ProductsComponent implements OnInit {
     if (isMore) {
       this.pageSize = this.pageSize * 2;
     }
-    this.loadProductByStore(id == 3 ? "ascend" : "descend", null);
+    this.loadProductByStore(id == 3 ? 'ascend' : 'descend', null);
   }
 }

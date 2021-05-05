@@ -21,7 +21,7 @@ export class CartRowComponent implements OnInit {
     showActions: false,
     showSize: true,
     showColor: true,
-  }
+  };
 
   constructor(private readonly cartService: CartService) { }
 
@@ -29,9 +29,9 @@ export class CartRowComponent implements OnInit {
   }
 
   ngOnChanges(changes): void {
-    if (changes.mode !== undefined && changes.mode.currentValue === "cart") {
+    if (changes.mode !== undefined && changes.mode.currentValue === 'cart') {
       this.cartItemOptions.showActions = true;
-      this.cartItemOptions.size = "large";
+      this.cartItemOptions.size = 'large';
     }
   }
 
@@ -47,8 +47,8 @@ export class CartRowComponent implements OnInit {
     const request: CartRequest = {
       productDetailId: this.item.productDetailId,
       price: this.item.price,
-      quantity: quantity
-    }
+      quantity
+    };
     this.isLoading.emit(true);
     this.cartService.changeQuantity(request)
       .pipe(
@@ -56,9 +56,9 @@ export class CartRowComponent implements OnInit {
       )
       .subscribe(res => {
         if (res.isSuccessed) {
-          this.changeQuantityEvent.emit((this.item.quantity - quantity) * this.item.price)
+          this.changeQuantityEvent.emit((this.item.quantity - quantity) * this.item.price);
           this.item.quantity = quantity;
         }
-      })
+      });
   }
 }

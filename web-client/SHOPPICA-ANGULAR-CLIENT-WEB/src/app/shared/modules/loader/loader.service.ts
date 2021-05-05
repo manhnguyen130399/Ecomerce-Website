@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Loader } from './loader';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class LoaderService {
 

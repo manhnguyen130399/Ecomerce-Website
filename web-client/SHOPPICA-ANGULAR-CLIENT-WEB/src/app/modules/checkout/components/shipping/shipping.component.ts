@@ -47,26 +47,26 @@ export class ShippingComponent implements OnInit {
     this.checkoutService.stepChange(2);
     this.checkoutService.orderGroupEmitted$.subscribe((orderGroup: OrderGroup) => {
       this.orderGroups.push(orderGroup);
-    })
+    });
   }
 
   getCart() {
     this.shareService.cartEmitted$.subscribe((cart) => {
       this.cart = cart;
       this.cartGroups = [];
-      let listStoreId = this.getListStore(cart);
+      const listStoreId = this.getListStore(cart);
       listStoreId.forEach(id => {
-        let cartGroup: CartGroup = {
+        const cartGroup: CartGroup = {
           storeId: id,
           cartItems: this.cart.cartItems.filter(x => x.storeId == id)
-        }
+        };
         this.cartGroups.push(cartGroup);
-      })
-    })
+      });
+    });
   }
 
   getListStore(cart: Cart) {
-    let distinctStoreId = new Set<number>();
+    const distinctStoreId = new Set<number>();
     cart.cartItems.forEach(element => {
       distinctStoreId.add(element.storeId);
     });
@@ -83,18 +83,18 @@ export class ShippingComponent implements OnInit {
       OrderOneStores: [
         ...this.orderGroups
       ]
-    }
+    };
     this.checkoutService.createOrder(order).pipe(
       finalize(() => this.isCreatingOrder = false)
     ).subscribe(res => {
       if (res.isSuccessed) {
         this.storageService.remove(environment.shippingAddressKey);
         this.router.navigate(['/home']);
-        this.messageService.success("Order successfully!");
+        this.messageService.success('Order successfully!');
         this.shareService.cartEmitEvent(new Cart());
       }
       console.log(res);
-    })
+    });
     console.log(order);
 
   }

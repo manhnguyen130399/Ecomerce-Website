@@ -12,7 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./reset-password-drawer.component.css']
 })
 export class ResetPasswordDrawerComponent implements OnInit {
-  @Input() isOpenResetPasswordDrawer: boolean = false;
+  @Input() isOpenResetPasswordDrawer = false;
   @Output() closeResetPasswordDrawerEvent = new EventEmitter<boolean>();
   @Output() openLoginDrawerEvent = new EventEmitter<boolean>();
   firstForm: FormGroup;
@@ -32,7 +32,7 @@ export class ResetPasswordDrawerComponent implements OnInit {
   buildForm() {
     this.firstForm = this.formBuilder.group({
       email: [null, Validators.required],
-    })
+    });
   }
 
   sendCode() {
@@ -41,13 +41,13 @@ export class ResetPasswordDrawerComponent implements OnInit {
     this.authService.sendVerifyCode(email).pipe(
       tap(result => {
         if (result.isSuccessed) {
-          this.storageService.set(environment.emailToken, email)
-          this.messageService.success("To reset password, please check you email!");
+          this.storageService.set(environment.emailToken, email);
+          this.messageService.success('To reset password, please check you email!');
           this.closeMenu();
           this.firstForm.reset();
         }
         else {
-          this.firstForm.setErrors({ "error": result.message });
+          this.firstForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => this.isLoading = false)

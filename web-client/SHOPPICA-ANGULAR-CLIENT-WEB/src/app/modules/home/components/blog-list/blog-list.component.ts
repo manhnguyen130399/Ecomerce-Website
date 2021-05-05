@@ -9,16 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./blog-list.component.css']
 })
 export class BlogListComponent implements OnInit {
-  listBlog: Blog[] = []
   constructor(private readonly blogService: BlogService) { }
-
-  ngOnInit(): void {
-    this.blogService.getAllBlog(1, 6).subscribe(res => {
-      if (res.code === "OK") {
-        this.listBlog = res.data.content;
-      }
-    })
-  }
+  listBlog: Blog[] = [];
 
   customOptions: OwlOptions = {
     loop: true,
@@ -45,5 +37,13 @@ export class BlogListComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
+  };
+
+  ngOnInit(): void {
+    this.blogService.getAllBlog(1, 6).subscribe(res => {
+      if (res.code === 'OK') {
+        this.listBlog = res.data.content;
+      }
+    });
   }
 }

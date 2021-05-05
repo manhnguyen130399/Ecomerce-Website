@@ -33,7 +33,7 @@ export class OrderDetailComponent implements OnInit {
       }
       this.isLoading = false;
       this.loaderService.hideLoader('order-detail');
-    })
+    });
   }
 
 }

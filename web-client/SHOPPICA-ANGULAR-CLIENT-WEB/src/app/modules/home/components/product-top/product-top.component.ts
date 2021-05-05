@@ -9,17 +9,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./product-top.component.css']
 })
 export class ProductBestSellerComponent implements OnInit {
-  listProduct: Product[] = []
 
   constructor(private readonly productService: ProductService) { }
-
-  ngOnInit() {
-    this.productService.getProductBestSellerByStore().subscribe(res => {
-      if (res.code === "OK") {
-        this.listProduct = res.data;
-      }
-    })
-  }
+  listProduct: Product[] = [];
 
   customOptions: OwlOptions = {
     loop: false,
@@ -40,6 +32,14 @@ export class ProductBestSellerComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
+  };
+
+  ngOnInit() {
+    this.productService.getProductBestSellerByStore().subscribe(res => {
+      if (res.code === 'OK') {
+        this.listProduct = res.data;
+      }
+    });
   }
 
 }

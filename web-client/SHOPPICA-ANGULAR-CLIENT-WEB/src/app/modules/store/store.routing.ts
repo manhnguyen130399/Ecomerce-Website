@@ -28,4 +28,4 @@ export const storeRoutes: Routes = [
     redirectTo: 'store/home',
   },
 
-]
+];

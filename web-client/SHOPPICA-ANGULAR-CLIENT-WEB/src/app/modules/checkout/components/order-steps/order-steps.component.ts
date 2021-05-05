@@ -19,20 +19,20 @@ export class OrderStepsComponent implements OnInit {
     this.checkoutService.stepEmitted$.subscribe((step: number) => {
       this.index = step;
       this.maxIndex = this.maxIndex <= step ? step : this.maxIndex;
-    })
+    });
   }
 
   onIndexChange(event: number): void {
     this.index = event;
     switch (event) {
       case 0:
-        this.router.navigate(['/cart'])
+        this.router.navigate(['/cart']);
         break;
       case 1:
-        this.router.navigate(['/checkout/information'])
+        this.router.navigate(['/checkout/information']);
         break;
       case 2:
-        this.router.navigate(['/checkout/payment'])
+        this.router.navigate(['/checkout/payment']);
         break;
     }
   }

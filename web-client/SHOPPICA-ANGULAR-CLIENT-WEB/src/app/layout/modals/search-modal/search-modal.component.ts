@@ -17,8 +17,8 @@ export class SearchModalComponent implements OnInit {
   @Input() isVisible;
   @Output() closeSearchModalEvent = new EventEmitter();
   searchForm: FormGroup;
-  pageIndex: number = 1;
-  pageSize: number = 6;
+  pageIndex = 1;
+  pageSize = 6;
   listProduct: Product[];
 
   constructor(
@@ -35,7 +35,7 @@ export class SearchModalComponent implements OnInit {
   buildForm() {
     this.searchForm = this.formBuilder.group({
       keyword: [null],
-    })
+    });
   }
 
   handleCancel() {
@@ -45,11 +45,11 @@ export class SearchModalComponent implements OnInit {
   searchProductFullText(keyword: string) {
     this.productService.searchProductByFullText(this.pageIndex
       , this.pageSize, keyword).subscribe((res) => {
-        if (res.code == "OK") {
+        if (res.code == 'OK') {
           this.listProduct = res.data.content;
-          this.searchForm.reset()
+          this.searchForm.reset();
         }
-      })
+      });
   }
 
   submitForm() {
@@ -57,7 +57,7 @@ export class SearchModalComponent implements OnInit {
   }
 
   viewDetail(id: number) {
-    this.handleCancel()
+    this.handleCancel();
     this.router.navigate(['/product/detail/', id]);
 
   }

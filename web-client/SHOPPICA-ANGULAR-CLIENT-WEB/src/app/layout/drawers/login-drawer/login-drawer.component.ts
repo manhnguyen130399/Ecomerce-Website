@@ -1,3 +1,4 @@
+import { ModalService } from './../../../core/services/modal/modal.service';
 import { ProductService } from '@core/services/product/product.service';
 import { Product } from './../../../core/model/product/product';
 import { CartService } from './../../../core/services/cart/cart.service';
@@ -34,20 +35,20 @@ export class LoginDrawerComponent implements OnInit {
     private readonly storageService: StorageService,
     private readonly shareService: ShareService,
     private readonly cartService: CartService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private readonly modalService: ModalService
   ) { }
 
   ngOnInit(): void {
     this.buildForm();
 
-    this.shareService.openLoginDrawerEmitted$.subscribe(() => {
-      console.log(123);
+    this.modalService.openLoginDrawerEmitted$.subscribe(() => {
       this.isVisible = true;
-    })
+    });
 
-    this.shareService.closeLoginDrawerEmitted$.subscribe(data => {
+    this.modalService.closeLoginDrawerEmitted$.subscribe(data => {
       this.isVisible = false;
-    })
+    });
 
     this.socialAuthService.authState.subscribe((user) => {
       this.socialLogin(user);
@@ -62,7 +63,7 @@ export class LoginDrawerComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: [null, [Validators.required]],
       password: [null, [Validators.required]],
-    })
+    });
   }
 
   closeMenu(): void {
@@ -71,12 +72,12 @@ export class LoginDrawerComponent implements OnInit {
 
   openRegisterDrawer() {
     this.openRegisterDrawerEvent.emit();
-    this.shareService.closeLoginDrawerEvent();
+    this.modalService.closeLoginDrawerEvent();
   }
 
   openResetPasswordDrawer() {
     this.openResetPasswordDrawerEvent.emit();
-    this.shareService.closeLoginDrawerEvent();
+    this.modalService.closeLoginDrawerEvent();
   }
 
   submitForm() {
@@ -97,7 +98,7 @@ export class LoginDrawerComponent implements OnInit {
           this.storageService.set(environment.loginMethod, LoginMethod.NORMAL);
         }
         else {
-          this.loginForm.setErrors({ "error": result.message });
+          this.loginForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => (this.isLoading = false))
@@ -113,7 +114,7 @@ export class LoginDrawerComponent implements OnInit {
       imageUrl: user.photoUrl,
       fullName: user.name,
       providerKey: user.id
-    }
+    };
 
     this.authService.socialLogin(socialLoginData).pipe(
       tap(result => {
@@ -122,7 +123,7 @@ export class LoginDrawerComponent implements OnInit {
           this.storageService.set(environment.loginMethod, LoginMethod.SOCIAL);
         }
         else {
-          this.loginForm.setErrors({ "error": result.message });
+          this.loginForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => (this.isLoading = false))
@@ -134,7 +135,7 @@ export class LoginDrawerComponent implements OnInit {
   loginSuccessAction() {
     this.shareService.loginSuccessEvent();
     this.closeMenu();
-    this.messageService.success("Login successfully!");
+    this.messageService.success('Login successfully!');
     this.loginForm.reset();
     this.getCustomerDetail();
     this.getCart();
@@ -144,13 +145,13 @@ export class LoginDrawerComponent implements OnInit {
   getWishList() {
     this.productService.getWishList().pipe(
       map(res => {
-        if (res.code === "OK") {
+        if (res.code === 'OK') {
           return res.data.content.map(x => x.id);
         }
       })
     ).subscribe(res => {
       this.shareService.wishListEmitEvent(res);
-    })
+    });
   }
 
   getCart() {
@@ -158,7 +159,7 @@ export class LoginDrawerComponent implements OnInit {
       if (res.isSuccessed) {
         this.shareService.cartEmitEvent(res.data);
       }
-    })
+    });
   }
 
   getCustomerDetail() {

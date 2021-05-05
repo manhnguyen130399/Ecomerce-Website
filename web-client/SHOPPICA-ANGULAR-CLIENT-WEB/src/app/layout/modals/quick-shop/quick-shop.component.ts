@@ -1,3 +1,4 @@
+import { ModalService } from './../../../core/services/modal/modal.service';
 import { AuthService } from './../../../core/services/auth/auth.service';
 import { finalize } from 'rxjs/operators';
 import { CartService } from './../../../core/services/cart/cart.service';
@@ -28,19 +29,20 @@ export class QuickShopComponent implements OnInit {
   colorSelected: Color;
   sizeSelected: Size;
   cartItem;
-  quantity: number = 1;
+  quantity = 1;
   isAddingToCart = false;
   editMode: boolean;
   oldProductDetailId: number;
   cartItemOptions: CartItemOptions = {
-    size: "small"
-  }
+    size: 'small'
+  };
 
   constructor(
     private readonly shareService: ShareService,
     private readonly router: Router,
     private readonly cartService: CartService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly modalService: ModalService
   ) { }
 
 
@@ -51,9 +53,9 @@ export class QuickShopComponent implements OnInit {
   }
 
   closeQuickShop() {
-    this.shareService.closeQuickShopEmitted$.subscribe(data => {
+    this.modalService.closeQuickShopEmitted$.subscribe(data => {
       this.isVisible = false;
-    })
+    });
   }
 
   editCartMode() {
@@ -61,16 +63,16 @@ export class QuickShopComponent implements OnInit {
       this.quantity = oldCartItem.quantity;
       this.editMode = true;
       this.oldProductDetailId = oldCartItem.oldProductDetailId;
-      let productDetailSelect = this.product.productDetails.filter(pd => pd.productDetailId == oldCartItem.oldProductDetailId);
+      const productDetailSelect = this.product.productDetails.filter(pd => pd.productDetailId == oldCartItem.oldProductDetailId);
       if (productDetailSelect.length > 0) {
         this.colorSelected = this.listColor.filter(x => x.id == productDetailSelect[0].colorId)[0];
         this.sizeSelected = this.listSize.filter(x => x.id == productDetailSelect[0].sizeId)[0];
       }
-    })
+    });
   }
 
   addToCartMode() {
-    this.shareService.openQuickShopEmitted$.subscribe((product) => {
+    this.modalService.openQuickShopEmitted$.subscribe((product) => {
       this.product = product;
       this.isVisible = true;
       this.listSize = getListSize(product.productDetails);
@@ -80,7 +82,7 @@ export class QuickShopComponent implements OnInit {
       this.setCartItem(product);
       this.quantity = 1;
       this.editMode = false;
-    })
+    });
   }
 
 
@@ -89,7 +91,7 @@ export class QuickShopComponent implements OnInit {
       productName: product.productName,
       image: product.productImages[0].image,
       productId: product.id
-    }
+    };
   }
 
   handleCancel() {
@@ -104,7 +106,7 @@ export class QuickShopComponent implements OnInit {
   saveChangeCart() {
     if (!this.authService.isAuthenticated()) {
       this.isVisible = false;
-      this.shareService.openLoginDrawerEvent();
+      this.modalService.openLoginDrawerEvent();
       return;
     }
     this.editMode ? this.editCart() : this.addToCart();
@@ -115,7 +117,7 @@ export class QuickShopComponent implements OnInit {
       productDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id),
       quantity: this.quantity,
       price: this.product.price,
-    }
+    };
     this.isAddingToCart = true;
     this.cartService.addToCart(body)
       .pipe(
@@ -125,9 +127,9 @@ export class QuickShopComponent implements OnInit {
         if (res.isSuccessed) {
           this.isVisible = false;
           this.shareService.cartEmitEvent(res.data);
-          this.shareService.openCartDrawerEvent();
+          this.modalService.openCartDrawerEvent();
         }
-      })
+      });
   }
 
   editCart() {
@@ -136,7 +138,7 @@ export class QuickShopComponent implements OnInit {
       quantity: this.quantity,
       price: this.product.price,
       newProductDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id)
-    }
+    };
 
     this.isAddingToCart = true;
     this.cartService.updateCart(body)
@@ -148,7 +150,7 @@ export class QuickShopComponent implements OnInit {
           this.isVisible = false;
           this.shareService.cartEmitEvent(res.data);
         }
-      })
+      });
   }
 
 }

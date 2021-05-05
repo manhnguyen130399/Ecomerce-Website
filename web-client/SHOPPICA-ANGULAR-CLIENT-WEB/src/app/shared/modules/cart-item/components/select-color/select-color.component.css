@@ -13,19 +13,16 @@
   width: 20px;
   border-radius: 50%;
   margin-right: 3px;
-  border: 1px solid #989494;
   padding: 1px;
 }
 
 .list-color .color.selected {
-  border: 2px solid #222;
-  padding: 0;
+  border: 1px solid #222;
 }
 
 .list-color .color:hover {
   cursor: pointer;
-  border: 2px solid #222;
-  padding: 0;
+  border: 1px solid #222;
 }
 
 .list-color .color span {
@@ -39,4 +36,5 @@
   height: 30px;
   width: 30px;
   margin-right: 5px;
+  padding: 2px;
 }

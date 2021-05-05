@@ -16,7 +16,7 @@ export class PaymentComponent implements OnInit {
   subtotal = 0;
   shippingPrice = 0;
   discount = 0;
-  transactionId = "";
+  transactionId = '';
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly checkoutService: CheckoutService
@@ -26,27 +26,27 @@ export class PaymentComponent implements OnInit {
   buildForm() {
     this.paymentMethodForm = this.formBuilder.group({
       method: ['CASH', Validators.required]
-    })
+    });
   }
 
   ngOnInit(): void {
     this.buildForm();
     this.paymentMethodForm.valueChanges.subscribe(value => {
-      value.method === "PAYPAL" ? this.showPaypal = true : this.showPaypal = false;
-    })
+      value.method === 'PAYPAL' ? this.showPaypal = true : this.showPaypal = false;
+    });
     this.initPayment();
 
     this.checkoutService.productPriceEmitted$.subscribe((price: number) => {
       this.subtotal += price;
-    })
+    });
 
     this.checkoutService.shippingPriceEmitted$.subscribe((shipping: number) => {
       this.shippingPrice += shipping;
-    })
+    });
 
     this.checkoutService.discountEmitted$.subscribe((discount: number) => {
       this.discount += discount;
-    })
+    });
   }
 
   initPayment() {
@@ -54,7 +54,7 @@ export class PaymentComponent implements OnInit {
       .Buttons(
         {
           style: {
-            size: "small",
+            size: 'small',
             height: 30,
             layout: 'vertical',
             label: 'pay'
@@ -76,7 +76,7 @@ export class PaymentComponent implements OnInit {
           },
           onApprove: (data, actions) => {
             return actions.order.capture().then(_details => {
-              if (_details.status === "COMPLETED") {
+              if (_details.status === 'COMPLETED') {
                 this.hiddenCash = true;
                 this.transactionId = _details.purchase_units[0].payments.captures[0].id;
               }
@@ -86,14 +86,14 @@ export class PaymentComponent implements OnInit {
             console.log('Error in Payment');
           }
 
-        }).render(this.paypal.nativeElement)
+        }).render(this.paypal.nativeElement);
   }
 
   getPaymentMethod() {
     return {
       paymentMethod: this.paymentMethodForm.controls.method.value,
       transactionId: this.transactionId
-    }
+    };
   }
 
 }

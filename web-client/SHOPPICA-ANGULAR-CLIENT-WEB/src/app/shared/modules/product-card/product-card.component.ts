@@ -1,3 +1,4 @@
+import { ModalService } from './../../../core/services/modal/modal.service';
 import { finalize } from 'rxjs/operators';
 import { ProductService } from '@core/services/product/product.service';
 import { ShareService } from './../../../core/services/share/share.service';
@@ -22,12 +23,13 @@ export class ProductCardComponent implements OnInit {
   sizeSelected: Size;
   colorSelected: Color;
   image: string;
-  sizes: string = "";
+  sizes = '';
   inWishList = false;
   isChangeWishList = false;
   constructor(
     private readonly shareService: ShareService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private readonly modalService: ModalService
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +41,7 @@ export class ProductCardComponent implements OnInit {
       else {
         this.inWishList = false;
       }
-    })
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -49,17 +51,17 @@ export class ProductCardComponent implements OnInit {
       this.listColor = getListColor(changes.product.currentValue.productDetails);
       this.colorSelected = this.listColor[0];
       this.image = changes.product.currentValue.productImages[0].image;
-      this.sizes = this.listSize.map(x => x.sizeName).join(", ");
+      this.sizes = this.listSize.map(x => x.sizeName).join(', ');
 
     }
   }
 
   openQuickView(product: Product) {
-    this.shareService.openQuickViewEvent(product);
+    this.modalService.openQuickViewEvent(product);
   }
 
   openQuickShop(product: Product) {
-    this.shareService.openQuickShopEvent(product);
+    this.modalService.openQuickShopEvent(product);
   }
 
   addToWishList(productId: number) {
@@ -68,11 +70,11 @@ export class ProductCardComponent implements OnInit {
       .pipe(
         finalize(() => this.isChangeWishList = false)
       ).subscribe(res => {
-        if (res.code == "OK") {
+        if (res.code == 'OK') {
           this.listWishIds.push(productId);
           this.shareService.wishListEmitEvent(this.listWishIds);
         }
-      })
+      });
   }
 
   removeWishList(productId: number) {
@@ -80,10 +82,10 @@ export class ProductCardComponent implements OnInit {
     this.productService.removeWishList(productId).pipe(
       finalize(() => this.isChangeWishList = false)
     ).subscribe(res => {
-      if (res.code == "OK") {
+      if (res.code == 'OK') {
         this.shareService.wishListEmitEvent(this.listWishIds.filter(x => x !== productId));
         this.removeFromWishListEvent.emit(productId);
       }
-    })
+    });
   }
 }

@@ -19,7 +19,7 @@ export class CartComponent implements OnInit {
   initialLoading = true;
   listProduct: Product[] = [
 
-  ]
+  ];
   customOptions: OwlOptions = {
     loop: false,
     autoplay: true,
@@ -39,7 +39,7 @@ export class CartComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
-  }
+  };
   constructor(
     private readonly shareService: ShareService,
     private readonly loaderService: LoaderService
@@ -54,7 +54,7 @@ export class CartComponent implements OnInit {
         this.initialLoading = false;
       }
 
-    })
+    });
   }
 
   loadingEvent(isLoad: boolean) {

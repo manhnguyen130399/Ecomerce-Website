@@ -38,7 +38,7 @@ export class ChangePasswordComponent implements OnInit {
       currentPassword: [null, this.loginMethod === LoginMethod.SOCIAL ? [] : [Validators.required]],
       newPassword: [null, [Validators.required]],
       confirmPassword: [null, [Validators.required, this.confirmationValidator]],
-    })
+    });
   }
 
   confirmationValidator = (control: FormControl) => {
@@ -46,7 +46,7 @@ export class ChangePasswordComponent implements OnInit {
       return { required: true };
     }
     if (control.value !== this.changePasswordForm.controls.newPassword.value) {
-      return { error: true, confirm: true }
+      return { error: true, confirm: true };
     }
     return null;
   }
@@ -55,18 +55,18 @@ export class ChangePasswordComponent implements OnInit {
     const request = {
       ...this.changePasswordForm.value,
       loginMethod: this.loginMethod,
-    }
+    };
     this.isLoading = true;
 
     this.authService.changePassword(request).pipe(
       tap(result => {
         if (result.isSuccessed) {
-          this.messageService.success("Change password successfully!");
+          this.messageService.success('Change password successfully!');
           this.authService.logout();
-          this.router.navigate(["/account/login"]);
+          this.router.navigate(['/account/login']);
         }
         else {
-          this.changePasswordForm.setErrors({ "error": result.message });
+          this.changePasswordForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => this.isLoading = false)

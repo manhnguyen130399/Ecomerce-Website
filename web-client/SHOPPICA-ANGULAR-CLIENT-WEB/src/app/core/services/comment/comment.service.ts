@@ -13,26 +13,26 @@ export class CommentService {
 
   likeComment(id: number, time: number, isLike: boolean) {
     const params = new HttpParams()
-      .append("isLike", isLike.toString())
-      .append("time", time.toString());
+      .append('isLike', isLike.toString())
+      .append('time', time.toString());
     return this.httpClient.get<Comment>(`${environment.productServiceUrl}/api/comment/${id}`, { params }).pipe(
       catchError((error) => {
         return of(error.error);
       })
-    )
+    );
   }
 
   comment(productId: number, blogId: number, content: string) {
     const body = {
-      "productId": productId,
-      "blogId": blogId,
-      "content": content,
-    }
+      productId,
+      blogId,
+      content,
+    };
     return this.httpClient.post<Comment>(`${environment.productServiceUrl}/api/comment/create`, body).pipe(
       catchError((error) => {
         return of(error.error);
       })
-    )
+    );
   }
 
   deleteComment(id: number) {
@@ -40,7 +40,7 @@ export class CommentService {
       catchError((error) => {
         return of(error.error);
       })
-    )
+    );
   }
 
   editComment(id: number, content: string) {
@@ -48,7 +48,7 @@ export class CommentService {
       catchError((error) => {
         return of(error.error);
       })
-    )
+    );
   }
 
 }

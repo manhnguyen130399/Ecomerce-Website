@@ -1,4 +1,4 @@
-import { Comment } from "../comment/comment";
+import { Comment } from '../comment/comment';
 
 export interface Blog {
   id: number;

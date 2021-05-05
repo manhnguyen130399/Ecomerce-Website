@@ -5,4 +5,4 @@ export const aboutRoutes: Routes = [
     path: '',
     component: AboutComponent,
   }
-]
+];

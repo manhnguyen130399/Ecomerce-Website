@@ -42,12 +42,12 @@ export class AddressComponent implements OnInit {
       this.ghnService.getProvinces(),
       this.shareService.customerInfoEmitted$
     ]).subscribe(res => {
-      if (res[0].code == 200) {
+      if (res[0].code === 200) {
         this.listProvince = res[0].data;
       }
       this.customer = res[1];
       this.setFormValue();
-    })
+    });
   }
 
   buildForm() {
@@ -58,15 +58,15 @@ export class AddressComponent implements OnInit {
       ward: [null, Validators.required],
       district: [null, Validators.required],
       apartment: [null, Validators.required],
-    })
+    });
   }
 
   setFormValue() {
     if (this.customer?.address) {
       this.districtSelectedId = this.customer.address.districtId;
       this.wardSelectedId = this.customer.address.wardId;
-      const province = this.listProvince.find(x => x.ProvinceID == this.customer.address.provinceId);
-      const apartment = this.customer.address.addressName.split("-")[0];
+      const province = this.listProvince.find(x => x.ProvinceID === this.customer.address.provinceId);
+      const apartment = this.customer.address.addressName.split('-')[0];
       this.addressForm.controls.province.setValue(province);
       this.addressForm.controls.apartment.setValue(apartment);
     }
@@ -82,57 +82,57 @@ export class AddressComponent implements OnInit {
     this.loadWards(district.DistrictID);
   }
 
-  loadDistricts(provinceID: number) {
+  loadDistricts(provinceID: number): void {
     this.ghnService.getDistricts(provinceID).subscribe(res => {
-      if (res.code == 200) {
+      if (res.code === 200) {
         this.listDistrict = res.data;
         const district = this.districtSelectedId !== 0 ? this.listDistrict.find(x => x.DistrictID == this.districtSelectedId) : this.listDistrict[0];
         this.addressForm.controls.district.setValue(district);
         this.districtSelectedId = 0;
       }
-    })
+    });
   }
 
   loadWards(districtID: number) {
     this.ghnService.getWards(districtID).subscribe(res => {
-      if (res.code == 200) {
+      if (res.code === 200) {
         this.listWard = res.data;
-        const ward = this.wardSelectedId !== 0 ? this.listWard.find(x => x.WardCode == this.wardSelectedId) : this.listWard[0];
+        const ward = this.wardSelectedId !== 0 ? this.listWard.find(x => x.WardCode === this.wardSelectedId) : this.listWard[0];
         this.addressForm.controls.ward.setValue(ward);
         this.wardSelectedId = 0;
       }
-    })
+    });
   }
 
   updateAddress() {
-    const province = this.addressForm.get("province").value;
-    const district = this.addressForm.get("district").value;
-    const ward = this.addressForm.get("ward").value;
-    const apartment = this.addressForm.get("apartment").value;
+    const province = this.addressForm.get('province').value;
+    const district = this.addressForm.get('district').value;
+    const ward = this.addressForm.get('ward').value;
+    const apartment = this.addressForm.get('apartment').value;
     const address: Address = {
       provinceId: province.ProvinceID,
       districtId: district.DistrictID,
       wardId: parseInt(ward.WardCode),
       addressName: `${apartment} - ${ward.WardName} - ${district.DistrictName} - Tỉnh ${province.ProvinceName}`
-    }
+    };
 
     const request = {
-      customerName: this.addressForm.get("customerName").value,
-      phone: this.addressForm.get("phone").value,
-      address: address
-    }
+      customerName: this.addressForm.get('customerName').value,
+      phone: this.addressForm.get('phone').value,
+      address
+    };
 
     this.isLoading = true;
 
     this.authService.updateInfo(request).pipe(
       tap(result => {
         if (result.isSuccessed) {
-          this.messageService.success("Update address successfully!");
-          this.router.navigate(["/account"]);
+          this.messageService.success('Update address successfully!');
+          this.router.navigate(['/account']);
 
         }
         else {
-          this.addressForm.setErrors({ "error": result.message });
+          this.addressForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => this.isLoading = false)

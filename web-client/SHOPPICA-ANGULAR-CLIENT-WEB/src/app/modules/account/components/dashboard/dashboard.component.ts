@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit {
         this.customer = customer;
         this.setFormValue();
       }
-    })
+    });
   }
 
   setFormValue() {
@@ -52,24 +52,24 @@ export class DashboardComponent implements OnInit {
       email: [null, [Validators.required]],
       gender: [null, [Validators.required]],
       phone: [null, [Validators.required]],
-    })
+    });
   }
 
   updateInfo() {
     const request = {
       ...this.updateInfoForm.value
-    }
+    };
     this.isLoading = true;
 
     this.authService.updateInfo(request).pipe(
       tap(result => {
         if (result.isSuccessed) {
-          this.messageService.success("Update information successfully!");
-          this.router.navigate(["/account"]);
+          this.messageService.success('Update information successfully!');
+          this.router.navigate(['/account']);
 
         }
         else {
-          this.updateInfoForm.setErrors({ "error": result.message });
+          this.updateInfoForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => this.isLoading = false)

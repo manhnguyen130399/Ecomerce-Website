@@ -25,14 +25,14 @@ export class LeaveCommentComponent implements OnInit {
 
   comment() {
     if (!this.authService.isAuthenticated()) {
-      this.messageService.warning(" You can login. Please ")
+      this.messageService.warning(' You can login. Please ');
     } else {
       this.commentService.comment(this.productId, this.blogId, this.content).subscribe((res) => {
-        if (res.code = "OK") {
-          this.content = ''
-          this.newComment.emit(res.data)
+        if (res.code = 'OK') {
+          this.content = '';
+          this.newComment.emit(res.data);
         }
-      })
+      });
     }
   }
 }

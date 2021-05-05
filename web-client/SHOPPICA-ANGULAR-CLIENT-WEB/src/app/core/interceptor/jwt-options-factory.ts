@@ -1,3 +1,4 @@
+import { FactorySansProvider } from '@angular/core';
 import { environment } from './../../../environments/environment';
 import { JwtService } from './../services/jwt/jwt.service';
 export function jwtOptionsFactory(jwtService: JwtService) {
@@ -6,8 +7,8 @@ export function jwtOptionsFactory(jwtService: JwtService) {
       return jwtService.getToken();
 
     },
-    authScheme: "Bearer ",
+    authScheme: 'Bearer ',
     allowedDomains: environment.backendDomain,
     disallowedRoutes: [], // not token in header
-  }
+  };
 }

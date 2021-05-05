@@ -28,15 +28,14 @@
 
 .avatar img {
   width: 100%;
-  filter: grayscale(1);
   padding: 20px 20px 0;
   box-shadow: 0 0 5px rgb(0 0 0 / 40%);
+  margin-bottom: 20px;
 }
 
 .member-info h2 {
   font-size: 35px;
   line-height: 1;
-  margin-top: 20px;
 }
 
 .member-info h3 {

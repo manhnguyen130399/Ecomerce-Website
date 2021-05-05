@@ -9,7 +9,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./search-drawer.component.css']
 })
 export class SearchDrawerComponent implements OnInit {
-  @Input() isOpenSearchDrawer: boolean = false;
+  @Input() isOpenSearchDrawer = false;
   @Output() closeSearchDrawerEvent = new EventEmitter<boolean>();
   searchForm: FormGroup;
   isLoading = false;
@@ -17,37 +17,37 @@ export class SearchDrawerComponent implements OnInit {
   listCartItem: CartItem[] = [
     {
       id: 1,
-      productName: "T-shirt product",
+      productName: 'T-shirt product',
       price: 99,
       image: '/assets/images/products/product-2.jpg',
       quantity: 12,
     },
     {
       id: 2,
-      productName: "T-shirt product",
+      productName: 'T-shirt product',
       price: 99,
       image: '/assets/images/products/product-3.jpg',
       quantity: 12,
     },
     {
       id: 3,
-      productName: "T-shirt Top",
+      productName: 'T-shirt Top',
       price: 99,
       image: '/assets/images/products/product-1.jpg',
       quantity: 12,
     },
     {
       id: 4,
-      productName: "T-shirt Top",
+      productName: 'T-shirt Top',
       price: 99,
       image: '/assets/images/products/product-1.jpg',
       quantity: 12,
     }
-  ]
+  ];
   cartItemOptions: CartItemOptions = {
     showPrice: true,
     size: 'small'
-  }
+  };
   constructor(
     private readonly formBuilder: FormBuilder,
 
@@ -61,7 +61,7 @@ export class SearchDrawerComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       categoryId: [null],
       productName: [null],
-    })
+    });
   }
 
   closeMenu(): void {

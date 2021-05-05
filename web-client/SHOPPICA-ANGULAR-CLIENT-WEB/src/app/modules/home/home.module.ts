@@ -54,7 +54,7 @@ import { SummerSaleComponent } from './components/summer-sale/summer-sale.compon
     BlogCardModule,
     ProductCarouselModule,
 
-    //carousel
+    // carousel
     CarouselModule,
     RouterModule.forChild(homeRoutes)
   ]

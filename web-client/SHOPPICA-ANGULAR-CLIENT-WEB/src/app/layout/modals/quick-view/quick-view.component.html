@@ -2,8 +2,7 @@
   nzTitle="" [nzClosable]="true" (nzOnCancel)="handleCancel()">
   <ng-container *nzModalContent>
     <div nz-row class="quick-view">
-
-      <div nz-col [nzSpan]="13" class="product-image">
+      <div nz-col [nzMd]="13" [nzXs]="24" class="product-image">
         <owl-carousel-o [options]="customOptions">
           <ng-template *ngFor="let image of listProductImage" carouselSlide>
             <div class="content" [ngStyle]="{'background-image':'url('+image+')'}">
@@ -11,7 +10,7 @@
           </ng-template>
         </owl-carousel-o>
       </div>
-      <div nz-col [nzSpan]="11" class="product-info">
+      <div nz-col [nzMd]="11" [nzXs]="24" class="product-info">
         <div class="product-name">
           <p (click)="viewDetail(product.id)" class="name">{{product.productName}}</p>
         </div>

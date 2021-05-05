@@ -44,4 +44,4 @@ export const accountRoutes: Routes = [
     path: 'login',
     component: LoginComponent
   }
-]
+];

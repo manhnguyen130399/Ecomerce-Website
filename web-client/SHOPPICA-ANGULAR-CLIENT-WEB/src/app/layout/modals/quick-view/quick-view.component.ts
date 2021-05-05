@@ -1,3 +1,4 @@
+import { ModalService } from './../../../core/services/modal/modal.service';
 import { AuthService } from './../../../core/services/auth/auth.service';
 import { ProductService } from './../../../core/services/product/product.service';
 import { CartService } from './../../../core/services/cart/cart.service';
@@ -46,18 +47,19 @@ export class QuickViewComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
-  }
+  };
 
   constructor(
     private readonly shareService: ShareService,
     private readonly router: Router,
     private readonly cartService: CartService,
     private readonly productService: ProductService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly modalService: ModalService
   ) { }
 
   ngOnInit(): void {
-    this.shareService.openQuickViewEmitted$.subscribe((product) => {
+    this.modalService.openQuickViewEmitted$.subscribe((product) => {
       this.product = product;
       this.isVisible = true;
       this.listSize = getListSize(product.productDetails);
@@ -65,7 +67,7 @@ export class QuickViewComponent implements OnInit {
       this.colorSelected = this.listColor[0];
       this.sizeSelected = this.listSize[0];
       this.setImages(product.productImages);
-    })
+    });
     this.shareService.wishlistEmitted$.subscribe(listIds => {
       this.listWishIds = listIds;
       if (listIds.indexOf(this.product?.id) !== -1) {
@@ -74,7 +76,7 @@ export class QuickViewComponent implements OnInit {
       else {
         this.inWishList = false;
       }
-    })
+    });
   }
 
   addToWishList(productId: number) {
@@ -87,11 +89,11 @@ export class QuickViewComponent implements OnInit {
       .pipe(
         finalize(() => this.isChangeWishList = false)
       ).subscribe(res => {
-        if (res.code == "OK") {
+        if (res.code == 'OK') {
           this.listWishIds.push(productId);
           this.shareService.wishListEmitEvent(this.listWishIds);
         }
-      })
+      });
   }
 
   setImages(productImage: ProductImage[]) {
@@ -126,7 +128,7 @@ export class QuickViewComponent implements OnInit {
   addToCart() {
     if (!this.authService.isAuthenticated()) {
       this.isVisible = false;
-      this.shareService.openLoginDrawerEvent();
+      this.modalService.openLoginDrawerEvent();
       return;
     }
 
@@ -134,7 +136,7 @@ export class QuickViewComponent implements OnInit {
       productDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id),
       quantity: this.quantity,
       price: this.product.price,
-    }
+    };
     this.isAddingToCart = true;
     this.cartService.addToCart(body)
       .pipe(
@@ -144,9 +146,9 @@ export class QuickViewComponent implements OnInit {
         if (res.isSuccessed) {
           this.isVisible = false;
           this.shareService.cartEmitEvent(res.data);
-          this.shareService.openCartDrawerEvent();
+          this.modalService.openCartDrawerEvent();
         }
-      })
+      });
   }
 
 

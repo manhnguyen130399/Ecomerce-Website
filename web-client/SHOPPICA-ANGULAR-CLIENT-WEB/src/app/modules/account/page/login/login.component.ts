@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: [null, [Validators.required]],
       password: [null, [Validators.required]],
-    })
+    });
   }
 
 
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
           this.storageService.set(environment.loginMethod, LoginMethod.NORMAL);
         }
         else {
-          this.loginForm.setErrors({ "error": result.message });
+          this.loginForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => (this.isLoading = false))
@@ -69,8 +69,8 @@ export class LoginComponent implements OnInit {
 
   loginSuccessAction() {
     this.shareService.loginSuccessEvent();
-    this.messageService.success("Login successfully!");
-    this.router.navigate(['/home'])
+    this.messageService.success('Login successfully!');
+    this.router.navigate(['/home']);
     this.loginForm.reset();
   }
 }

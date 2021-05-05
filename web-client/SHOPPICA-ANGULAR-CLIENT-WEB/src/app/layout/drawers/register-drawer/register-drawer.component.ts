@@ -11,7 +11,7 @@ import { existEmailValidator } from '@core/directive/exist-email.directive';
   styleUrls: ['./register-drawer.component.css']
 })
 export class RegisterDrawerComponent implements OnInit {
-  @Input() isOpenRegisterDrawer: boolean = false;
+  @Input() isOpenRegisterDrawer = false;
   @Output() closeRegisterDrawerEvent = new EventEmitter<boolean>();
   @Output() openLoginDrawerEvent = new EventEmitter<boolean>();
   registerForm: FormGroup;
@@ -32,7 +32,7 @@ export class RegisterDrawerComponent implements OnInit {
       fullName: [null, Validators.required],
       email: [null, [Validators.required], existEmailValidator(this.authService)],
       password: [null, Validators.required],
-    })
+    });
   }
 
   closeMenu(): void {
@@ -52,17 +52,17 @@ export class RegisterDrawerComponent implements OnInit {
     const data = {
       ...this.registerForm.value,
       imageUrl: `https://ui-avatars.com/api/?background=random&name=${this.registerForm.controls.fullName.value.trimStart().substring(0, 1)}`
-    }
+    };
     this.isLoading = true;
     this.authService.register(data).pipe(
       tap(result => {
         if (result.isSuccessed) {
-          this.messageService.success("Register successfully!");
+          this.messageService.success('Register successfully!');
           this.registerForm.reset();
           this.openLoginDrawer();
         }
         else {
-          this.registerForm.setErrors({ "error": result.message });
+          this.registerForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => (this.isLoading = false))

@@ -8,8 +8,8 @@ import { Loader } from './loader';
   styleUrls: ['./loader.component.css']
 })
 export class LoaderComponent implements OnInit {
-  @Input() id: string = 'global';
-  @Input() background: string = "#ffffff";
+  @Input() id = 'global';
+  @Input() background = '#ffffff';
   show: boolean;
   constructor(
     private readonly loaderService: LoaderService
@@ -18,7 +18,7 @@ export class LoaderComponent implements OnInit {
   ngOnInit(): void {
     this.loaderService.loaderStatus$.subscribe((response: Loader) => {
       this.show = response.id === this.id ? response.status : this.show;
-    })
+    });
   }
 
 }

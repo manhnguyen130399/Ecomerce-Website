@@ -1,4 +1,4 @@
-import { OrderDetail } from "./order-details";
+import { OrderDetail } from './order-details';
 
 export interface OrderGroup {
   notes: string;

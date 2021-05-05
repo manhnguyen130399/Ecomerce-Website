@@ -1,3 +1,4 @@
+import { ModalService } from './../../../../../core/services/modal/modal.service';
 import { Router } from '@angular/router';
 import { ProductService } from './../../../../../core/services/product/product.service';
 import { ShareService } from './../../../../../core/services/share/share.service';
@@ -49,7 +50,8 @@ export class ProductDetailSummaryComponent implements OnInit {
     private readonly cartService: CartService,
     private readonly shareService: ShareService,
     private readonly productService: ProductService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly modalService: ModalService
   ) { }
 
   ngOnInit(): void {
@@ -61,7 +63,7 @@ export class ProductDetailSummaryComponent implements OnInit {
       else {
         this.inWishList = false;
       }
-    })
+    });
   }
 
   addToWishList(productId: number) {
@@ -74,11 +76,11 @@ export class ProductDetailSummaryComponent implements OnInit {
       .pipe(
         finalize(() => this.isChangeWishList = false)
       ).subscribe(res => {
-        if (res.code == "OK") {
+        if (res.code == 'OK') {
           this.listWishIds.push(productId);
           this.shareService.wishListEmitEvent(this.listWishIds);
         }
-      })
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -95,14 +97,14 @@ export class ProductDetailSummaryComponent implements OnInit {
 
   getShippingFeeAndStore(storeId: number) {
 
-    this.listObservable.push(this.storeService.getStoreById(storeId))
+    this.listObservable.push(this.storeService.getStoreById(storeId));
     if (this.authService.isAuthenticated()) {
       this.listObservable.push(this.authService.getUserById());
     }
 
     forkJoin(this.listObservable)
       .subscribe(res => {
-        if (res[0].code === "OK") {
+        if (res[0].code === 'OK') {
           this.storeAddress = JSON.parse(res[0].data.address);
           this.store = res[0].data;
           if (res[1] && res[1].isSuccessed) {
@@ -110,7 +112,7 @@ export class ProductDetailSummaryComponent implements OnInit {
             this.calculateShippingFee();
           }
         }
-      })
+      });
   }
 
   calculateShippingFee() {
@@ -127,7 +129,7 @@ export class ProductDetailSummaryComponent implements OnInit {
 
   addToCart() {
     if (!this.authService.isAuthenticated()) {
-      this.shareService.openLoginDrawerEvent();
+      this.modalService.openLoginDrawerEvent();
       return;
     }
 
@@ -135,7 +137,7 @@ export class ProductDetailSummaryComponent implements OnInit {
       productDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id),
       quantity: this.quantity,
       price: this.product.price,
-    }
+    };
     this.isAddingToCart = true;
     this.cartService.addToCart(body)
       .pipe(
@@ -144,8 +146,8 @@ export class ProductDetailSummaryComponent implements OnInit {
       .subscribe((res) => {
         if (res.isSuccessed) {
           this.shareService.cartEmitEvent(res.data);
-          this.shareService.openCartDrawerEvent();
+          this.modalService.openCartDrawerEvent();
         }
-      })
+      });
   }
 }

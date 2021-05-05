@@ -29,8 +29,8 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
-    this.verifyToken = this.activatedRoute.snapshot.queryParamMap.get("token");
-    console.log(this.verifyToken)
+    this.verifyToken = this.activatedRoute.snapshot.queryParamMap.get('token');
+    console.log(this.verifyToken);
     this.email = this.storageService.get(environment.emailToken);
   }
 
@@ -38,7 +38,7 @@ export class ResetPasswordComponent implements OnInit {
     this.resetForm = this.formBuilder.group({
       newPassword: [null, [Validators.required]],
       confirmPassword: [null, [Validators.required, this.confirmationValidator]],
-    })
+    });
   }
 
   confirmationValidator = (control: FormControl) => {
@@ -46,7 +46,7 @@ export class ResetPasswordComponent implements OnInit {
       return { required: true };
     }
     if (control.value !== this.resetForm.controls.newPassword.value) {
-      return { error: true, confirm: true }
+      return { error: true, confirm: true };
     }
     return null;
   }
@@ -57,18 +57,18 @@ export class ResetPasswordComponent implements OnInit {
       email: this.email,
       databaseToken: this.verifyToken,
       ...this.resetForm.value
-    }
+    };
     this.isLoading = true;
 
     this.authService.resetPassword(request).pipe(
       tap(result => {
         if (result.isSuccessed) {
-          this.messageService.success("Reset password successfully!");
-          this.router.navigate(["/account/login"]);
+          this.messageService.success('Reset password successfully!');
+          this.router.navigate(['/account/login']);
           this.storageService.remove(environment.emailToken);
         }
         else {
-          this.resetForm.setErrors({ "error": result.message });
+          this.resetForm.setErrors({ error: result.message });
         }
       }),
       finalize(() => this.isLoading = false)

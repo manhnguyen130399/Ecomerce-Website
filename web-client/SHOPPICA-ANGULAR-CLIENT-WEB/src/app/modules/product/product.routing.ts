@@ -20,4 +20,4 @@ export const productRoutes: Routes = [
     pathMatch: 'full',
     redirectTo: 'collection/all',
   },
-]
+];

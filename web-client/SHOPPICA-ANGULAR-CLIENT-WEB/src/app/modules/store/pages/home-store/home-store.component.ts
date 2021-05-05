@@ -11,11 +11,11 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./home-store.component.css']
 })
 export class HomeStoreComponent implements OnInit {
-  isLoading: boolean = true;
+  isLoading = true;
 
   constructor(private readonly shareService: ShareService, private readonly router: ActivatedRoute) {
     this.router.params.subscribe(params => {
-      this.shareService.storeInfoSuccessEvent(params.id)
+      this.shareService.storeInfoSuccessEvent(params.id);
     });
   }
 

@@ -3,7 +3,7 @@
     <div nz-row class="header">
       <div nz-col [nzXl]="0" [nzLg]="0" [nzMd]="6" [nzSm]="6" [nzXs]="6">
         <div class="push-menu flex al-center">
-          <i class="text-hover" (click)="isShowMenuDrawer = true" [nzRotate]="180" nz-icon>
+          <i class="text-hover" (click)="openMenu()" [nzRotate]="180" nz-icon>
             <svg>
               <path
                 d="M127.9 168.9h768v46h-768z m-0.7 640.2h768v46h-768z m280.9-313.6h488.7v46H408.1z m-90.5-149.2L130.1 522.6l187.5 176.3V346.3z m-46 246.2l-74.3-69.9 74.3-69.9v139.8z"
@@ -95,8 +95,7 @@
   </div>
 </div>
 <!-- menu -->
-<app-menu-drawer (closeMenuDrawer)="isShowMenuDrawer = false" [isOpenMenuDrawer]="isShowMenuDrawer">
-</app-menu-drawer>
+<app-menu-drawer></app-menu-drawer>
 <!-- login -->
 <app-login-drawer (openRegisterDrawerEvent)="openRegister()" (openResetPasswordDrawerEvent)="openResetPassword()">
 </app-login-drawer>

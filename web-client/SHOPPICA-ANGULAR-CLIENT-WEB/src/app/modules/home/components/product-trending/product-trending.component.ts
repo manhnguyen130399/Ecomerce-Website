@@ -12,17 +12,9 @@ import { throwError } from 'rxjs';
   styleUrls: ['./product-trending.component.css']
 })
 export class ProductTrendingComponent implements OnInit {
-  listProduct: Product[] = []
 
   constructor(private readonly productService: ProductService) { }
-
-  ngOnInit() {
-    this.productService.getProductBestSellerByStore().subscribe(res => {
-      if (res.code === "OK") {
-        this.listProduct = res.data;
-      }
-    })
-  }
+  listProduct: Product[] = [];
 
   customOptions: OwlOptions = {
     loop: true,
@@ -43,5 +35,13 @@ export class ProductTrendingComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
+  };
+
+  ngOnInit() {
+    this.productService.getProductBestSellerByStore().subscribe(res => {
+      if (res.code === 'OK') {
+        this.listProduct = res.data;
+      }
+    });
   }
 }

@@ -24,12 +24,12 @@ export class AllProductComponent implements OnInit {
   ) {
     this.router.params.subscribe(params => {
       this.storeId = params.id;
-      this.shareService.storeInfoSuccessEvent(params.id)
+      this.shareService.storeInfoSuccessEvent(params.id);
     });
 
   }
   ngOnInit(): void {
-    this.loadCategoryByStore()
+    this.loadCategoryByStore();
   }
 
   loadCategoryByStore() {
@@ -38,7 +38,7 @@ export class AllProductComponent implements OnInit {
       .pipe(finalize(() => this.loaderService.hideLoader('store')))
       .subscribe((res) => {
         this.categories = res.data.content;
-      })
+      });
 
   }
 

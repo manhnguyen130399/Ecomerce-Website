@@ -48,12 +48,12 @@ export class InformationComponent implements OnInit {
       this.ghnService.getProvinces(),
       this.shareService.customerInfoEmitted$
     ]).subscribe(res => {
-      if (res[0].code == 200) {
+      if (res[0].code === 200) {
         this.listProvince = res[0].data;
       }
       this.customer = this.shippingAddress ? this.shippingAddress : res[1];
       this.setFormValue();
-    })
+    });
 
     this.checkoutService.stepChange(1);
   }
@@ -67,7 +67,7 @@ export class InformationComponent implements OnInit {
       ward: [null, Validators.required],
       district: [null, Validators.required],
       apartment: [null, Validators.required],
-    })
+    });
   }
 
   setFormValue() {
@@ -75,7 +75,7 @@ export class InformationComponent implements OnInit {
       this.districtSelectedId = this.customer.address.districtId;
       this.wardSelectedId = this.customer.address.wardId;
       const province = this.listProvince.find(x => x.ProvinceID == this.customer.address.provinceId);
-      const apartment = this.customer.address.addressName.split("-")[0];
+      const apartment = this.customer.address.addressName.split('-')[0];
       this.orderForm.controls.province.setValue(province);
       this.orderForm.controls.apartment.setValue(apartment);
     }
@@ -94,44 +94,44 @@ export class InformationComponent implements OnInit {
 
   loadDistricts(provinceID: number) {
     this.ghnService.getDistricts(provinceID).subscribe(res => {
-      if (res.code == 200) {
+      if (res.code === 200) {
         this.listDistrict = res.data;
-        const district = this.districtSelectedId !== 0 ? this.listDistrict.find(x => x.DistrictID == this.districtSelectedId) : this.listDistrict[0];
+        const district = this.districtSelectedId !== 0 ? this.listDistrict.find(x => x.DistrictID === this.districtSelectedId) : this.listDistrict[0];
         this.orderForm.controls.district.setValue(district);
         this.districtSelectedId = 0;
       }
-    })
+    });
   }
 
   loadWards(districtID: number) {
     this.ghnService.getWards(districtID).subscribe(res => {
-      if (res.code == 200) {
+      if (res.code === 200) {
         this.listWard = res.data;
-        const ward = this.wardSelectedId !== 0 ? this.listWard.find(x => x.WardCode == this.wardSelectedId) : this.listWard[0];
+        const ward = this.wardSelectedId !== 0 ? this.listWard.find(x => x.WardCode === this.wardSelectedId) : this.listWard[0];
         this.orderForm.controls.ward.setValue(ward);
         this.wardSelectedId = 0;
       }
-    })
+    });
   }
 
   gotoShipping() {
-    const province = this.orderForm.get("province").value;
-    const district = this.orderForm.get("district").value;
-    const ward = this.orderForm.get("ward").value;
-    const apartment = this.orderForm.get("apartment").value;
+    const province = this.orderForm.get('province').value;
+    const district = this.orderForm.get('district').value;
+    const ward = this.orderForm.get('ward').value;
+    const apartment = this.orderForm.get('apartment').value;
     const address: Address = {
       provinceId: province.ProvinceID,
       districtId: district.DistrictID,
       wardId: parseInt(ward.WardCode),
       addressName: `${apartment} - ${ward.WardName} - ${district.DistrictName} - Tỉnh ${province.ProvinceName}`
-    }
+    };
 
     const shippingAddress: ShippingAddress = {
-      customerName: this.orderForm.get("customerName").value,
-      phone: this.orderForm.get("phone").value,
-      email: this.orderForm.get("email").value,
-      address: address
-    }
+      customerName: this.orderForm.get('customerName').value,
+      phone: this.orderForm.get('phone').value,
+      email: this.orderForm.get('email').value,
+      address
+    };
 
     this.storageService.setObject(environment.shippingAddressKey, shippingAddress);
 

@@ -1,3 +1,4 @@
+import { ModalService } from './../../../core/services/modal/modal.service';
 import { Router } from '@angular/router';
 import { OldCartItem } from './../../../core/model/cart/old-cart-item';
 import { ProductService } from './../../../core/services/product/product.service';
@@ -25,6 +26,7 @@ export class CartItemComponent implements OnInit {
     private readonly cartService: CartService,
     private readonly shareService: ShareService,
     private readonly productService: ProductService,
+    private readonly modalService: ModalService,
     private readonly router: Router
   ) { }
   ngOnInit(): void {
@@ -32,9 +34,9 @@ export class CartItemComponent implements OnInit {
   }
 
   viewProductDetail(id) {
-    this.shareService.closeCartDrawerEvent();
-    this.shareService.closeQuickShopEvent();
-    this.shareService.closeQuickViewEvent();
+    this.modalService.closeCartDrawerEvent();
+    this.modalService.closeQuickShopEvent();
+    this.modalService.closeQuickViewEvent();
     this.router.navigate(['/product/detail', id]);
   }
 
@@ -42,8 +44,8 @@ export class CartItemComponent implements OnInit {
     const request: CartRequest = {
       productDetailId: this.item.productDetailId,
       price: this.item.price,
-      quantity: quantity
-    }
+      quantity
+    };
     this.loadingEvent.emit(true);
     this.cartService.changeQuantity(request)
       .pipe(
@@ -51,11 +53,11 @@ export class CartItemComponent implements OnInit {
       )
       .subscribe(res => {
         if (res.isSuccessed) {
-          this.changeQuantityEvent.emit((this.item.quantity - quantity) * this.item.price)
+          this.changeQuantityEvent.emit((this.item.quantity - quantity) * this.item.price);
           this.item.quantity = quantity;
 
         }
-      })
+      });
   }
 
   deleteItem() {
@@ -63,7 +65,7 @@ export class CartItemComponent implements OnInit {
       productDetailId: this.item.productDetailId,
       quantity: this.item.quantity,
       price: this.item.price
-    }
+    };
     this.loadingEvent.emit(true);
     this.cartService.deleteCartItem(request)
       .pipe(
@@ -75,11 +77,11 @@ export class CartItemComponent implements OnInit {
             productDetailId: this.item.productDetailId,
             quantity: this.item.quantity,
             price: this.item.price,
-          }
+          };
           this.deleteItemEvent.emit(body);
         }
 
-      })
+      });
   }
 
   editItem() {
@@ -89,14 +91,14 @@ export class CartItemComponent implements OnInit {
         finalize(() => this.loadingEvent.emit(false))
       )
       .subscribe(res => {
-        if (res.code == "OK") {
-          this.shareService.openQuickShopEvent(res.data);
+        if (res.code == 'OK') {
+          this.modalService.openQuickShopEvent(res.data);
           const data: OldCartItem = {
             oldProductDetailId: this.item.productDetailId,
             quantity: this.item.quantity
-          }
+          };
           this.shareService.editCartItemEvent(data);
         }
-      })
+      });
   }
 }

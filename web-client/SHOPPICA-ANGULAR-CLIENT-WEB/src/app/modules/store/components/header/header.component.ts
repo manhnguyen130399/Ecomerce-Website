@@ -21,11 +21,11 @@ export class HeaderComponent implements OnInit {
   ) {
     this.shareService.loadStoreInfoSEmitted$.subscribe((res) => {
       this.storeId = res;
-    })
+    });
   }
 
   ngOnInit(): void {
-    this.loadStoreDataInfo()
+    this.loadStoreDataInfo();
 
   }
 
@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
       .pipe(finalize(() => this.loaderService.hideLoader('store')))
       .subscribe((res) => {
         this.store = res.data;
-      })
+      });
   }
 
 }

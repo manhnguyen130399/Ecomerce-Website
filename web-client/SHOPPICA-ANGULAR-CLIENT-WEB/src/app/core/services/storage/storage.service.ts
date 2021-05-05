@@ -30,7 +30,7 @@ export class StorageService {
 
   getValue<T>(key: string): T {
     const obj = JSON.parse(this.storage[key] || null);
-    return <T>obj || null;
+    return obj as T || null;
   }
 
   remove(key: string) {
@@ -46,6 +46,6 @@ export class StorageService {
   }
 
   get isStorageEmpty(): boolean {
-    return this.length == 0;
+    return this.length === 0;
   }
 }

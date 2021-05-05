@@ -14,7 +14,7 @@ export class NgTabsComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit() {
-    let activeTabs = this.tabs.filter((tab) => tab.active);
+    const activeTabs = this.tabs.filter((tab) => tab.active);
 
     if (activeTabs.length === 0) {
       this.selectTab(this.tabs.first);

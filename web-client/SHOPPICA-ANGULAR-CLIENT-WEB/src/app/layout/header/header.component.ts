@@ -1,3 +1,4 @@
+import { ModalService } from './../../core/services/modal/modal.service';
 import { map } from 'rxjs/operators';
 import { ProductService } from '@core/services/product/product.service';
 import { ShareService } from './../../core/services/share/share.service';
@@ -31,25 +32,26 @@ export class HeaderComponent implements OnInit {
     private readonly router: Router,
     private readonly shareService: ShareService,
     private readonly storageService: StorageService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private readonly modalService: ModalService
   ) { }
 
   ngOnInit(): void {
     this.shareService.loginSuccessEmitted$.subscribe((loginStatus) => {
       this.isLogged = loginStatus;
-    })
+    });
 
     this.shareService.changeNumCartItemEmitted$.subscribe((num) => {
       this.numCartItems = num;
-    })
+    });
 
     this.shareService.wishlistEmitted$.subscribe((wishListIds) => {
       this.wishlistIds = wishListIds;
-    })
+    });
 
     this.shareService.gotoCartPageEmitted$.subscribe((isGotoPage: boolean) => {
       this.goToCartPage = isGotoPage;
-    })
+    });
 
     this.isLogged = this.authService.isAuthenticated();
 
@@ -60,13 +62,13 @@ export class HeaderComponent implements OnInit {
     if (this.isLogged) {
       this.productService.getWishList().pipe(
         map(res => {
-          if (res.code === "OK") {
+          if (res.code === 'OK') {
             return res.data.content.map(x => x.id);
           }
         })
       ).subscribe(res => {
         this.shareService.wishListEmitEvent(res);
-      })
+      });
     }
   }
 
@@ -82,16 +84,20 @@ export class HeaderComponent implements OnInit {
 
   openLogin() {
     if (!this.authService.isAuthenticated()) {
-      this.shareService.openLoginDrawerEvent();
+      this.modalService.openLoginDrawerEvent();
       this.isShowRegisterDrawer = false;
       this.isShowResetPasswordDrawer = false;
     }
   }
 
+  openMenu() {
+    this.modalService.openMenuDrawerEvent();
+  }
+
   openShoppingCartDrawer() {
     this.goToCartPage
       ? this.router.navigate(['/cart'])
-      : this.shareService.openCartDrawerEvent();
+      : this.modalService.openCartDrawerEvent();
 
   }
 

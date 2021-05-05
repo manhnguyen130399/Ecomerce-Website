@@ -22,7 +22,7 @@ import { Promotion } from '@core/model/promotion/promotion';
 })
 export class ProductGroupComponent implements OnInit {
 
-  visible: boolean = false;
+  visible = false;
   shippingFee: number;
   promotionInUse: Promotion;
   store: Store;
@@ -46,7 +46,7 @@ export class ProductGroupComponent implements OnInit {
   buildForm() {
     this.couponForm = this.formBuilder.group({
       couponCode: [null]
-    })
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -59,13 +59,13 @@ export class ProductGroupComponent implements OnInit {
     this.storeService.getStoreById(id).pipe(
       finalize(() => this.loaderService.hideLoader('checkout'))
     ).subscribe(res => {
-      if (res.code === "OK") {
+      if (res.code === 'OK') {
         this.store = res.data;
         this.store.address = JSON.parse(res.data.address);
         this.calculateShippingFee();
         this.checkoutService.productPriceChange(this.getTotalPrice());
       }
-    })
+    });
   }
 
   getTotalPrice() {
@@ -87,7 +87,7 @@ export class ProductGroupComponent implements OnInit {
 
   useCouponCode() {
     const code = this.couponForm.controls.couponCode.value;
-    let validCoupons = this.store.promotions.filter(
+    const validCoupons = this.store.promotions.filter(
       x => x.code == code
     );
 
@@ -100,30 +100,30 @@ export class ProductGroupComponent implements OnInit {
         this.checkoutService.discountChange(-this.promotionInUse.discount);
       }
       this.promotionInUse = null;
-      this.couponForm.controls.couponCode.setErrors({ 'incorrect': true });
+      this.couponForm.controls.couponCode.setErrors({ incorrect: true });
     }
 
   }
 
   emittedOrderGroup() {
-    let orderDetails = this.cartGroup.cartItems.map(element => {
+    const orderDetails = this.cartGroup.cartItems.map(element => {
       return {
         productDetailId: element.productDetailId,
         productName: element.productName,
         quantity: element.quantity,
         totalPriceProduct: element.quantity * element.price
-      }
+      };
     });
 
-    let orderGroup: OrderGroup = {
-      notes: "",
+    const orderGroup: OrderGroup = {
+      notes: '',
       total: this.cartGroup.cartItems.map(x => x.price * x.quantity).reduce((a, b) => a + b),
       storeId: this.cartGroup.storeId,
       discount: this.promotionInUse?.discount,
       promotionId: this.promotionInUse?.id,
       shippingCost: this.shippingFee,
-      orderDetails: orderDetails
-    }
+      orderDetails
+    };
     this.checkoutService.orderGroupEmitted(orderGroup);
   }
 

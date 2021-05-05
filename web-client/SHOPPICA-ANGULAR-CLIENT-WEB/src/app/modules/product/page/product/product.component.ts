@@ -21,10 +21,10 @@ import { combineLatest } from 'rxjs';
 export class ProductComponent implements OnInit {
   isShowFilter = false;
   productCol: number;
-  baseParams: BaseParams = new BaseParams(0, 12);
+  baseParams: BaseParams = new BaseParams(0, 4);
   productOptions: ProductOptions = new ProductOptions();
   listProduct: Product[] = [];
-  total: number = 0;
+  total = 0;
   countFilter = 0;
   loaded = true;
 
@@ -43,12 +43,10 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
 
-    combineLatest(
-      [
-        this.activatedRoute.params,
-        this.activatedRoute.queryParams
-      ]
-    )
+    combineLatest([
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams
+    ])
       .pipe(
         switchMap((data) => {
           this.getCategory(data[0]);
@@ -58,14 +56,13 @@ export class ProductComponent implements OnInit {
           return this.productService.getListProduct(this.productOptions, this.baseParams);
         }),
       ).subscribe(res => {
-
-        if (res.code === "OK") {
+        if (res.code === 'OK') {
           this.listProduct = res.data.content;
           this.total = res.data.totalElements;
         }
-        this.loaderService.hideLoader('product')
+        this.loaderService.hideLoader('product');
         this.loaded = true;
-      })
+      });
 
     if (window.innerWidth <= 992) {
       this.productCol = 12;
@@ -77,29 +74,31 @@ export class ProductComponent implements OnInit {
 
   getCategory(params) {
     this.currentCategory = params.category;
-    this.productOptions.categoryNames = params.category === "all" ? null : params.category;
+    this.productOptions.categoryNames = params.category === 'all' ? null : params.category;
   }
 
   getFilter(queryParams) {
     this.countFilter = Object.keys(queryParams).length;
+    if (!queryParams.size && !queryParams.color && !queryParams.brand && !queryParams.price) {
+      this.clearFilter();
+      return;
+    }
     if (queryParams.color) {
       this.selectedColor = queryParams.color;
       this.productOptions.colorNames = [queryParams.color];
     }
-    else if (queryParams.size) {
+    if (queryParams.size) {
       this.selectedSize = queryParams.size;
-      this.productOptions.sizeNames = [queryParams.size]
+      this.productOptions.sizeNames = [queryParams.size];
     }
-    else if (queryParams.brand) {
+    if (queryParams.brand) {
       this.selectedBrand = queryParams.brand;
       this.productOptions.brandNames = [queryParams.brand];
     }
-    else if (queryParams.price) {
+    if (queryParams.price) {
+      console.log(queryParams)
       this.selectedPrice = queryParams.price;
-      this.productOptions.prices = queryParams.price.split("-");
-    }
-    else {
-      this.clearFilter();
+      this.productOptions.prices = queryParams.price.split('-');
     }
   }
 
@@ -116,12 +115,15 @@ export class ProductComponent implements OnInit {
   }
 
   loadListProduct() {
-
+    this.loaderService.showLoader('product');
     this.productService.getListProduct(this.productOptions, this.baseParams).pipe(
-
+      finalize(() => this.loaderService.hideLoader('product'))
     ).subscribe(res => {
-
-    })
+      if (res.code === 'OK') {
+        this.listProduct = res.data.content;
+        this.total = res.data.totalElements;
+      }
+    });
   }
 
   changePageIndex(page: number) {
@@ -144,10 +146,10 @@ export class ProductComponent implements OnInit {
     this.productOptions.sizeNames = [];
     this.productOptions.brandNames = [];
     this.productOptions.prices = [];
-    this.selectedBrand = "";
-    this.selectedColor = "";
-    this.selectedSize = "";
-    this.selectedPrice = "";
+    this.selectedBrand = '';
+    this.selectedColor = '';
+    this.selectedSize = '';
+    this.selectedPrice = '';
   }
 
   clearSize() {
@@ -158,7 +160,7 @@ export class ProductComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     this.productOptions.sizeNames = [];
-    this.selectedSize = "";
+    this.selectedSize = '';
   }
 
   clearColor() {
@@ -169,7 +171,7 @@ export class ProductComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     this.productOptions.colorNames = [];
-    this.selectedColor = "";
+    this.selectedColor = '';
   }
 
   clearBrand() {
@@ -180,7 +182,7 @@ export class ProductComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     this.productOptions.brandNames = [];
-    this.selectedBrand = "";
+    this.selectedBrand = '';
   }
 
   clearPrice() {
@@ -191,7 +193,7 @@ export class ProductComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
     this.productOptions.prices = [];
-    this.selectedPrice = "";
+    this.selectedPrice = '';
   }
 
 }

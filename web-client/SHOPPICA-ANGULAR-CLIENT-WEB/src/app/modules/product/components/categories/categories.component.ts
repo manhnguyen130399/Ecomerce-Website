@@ -22,7 +22,7 @@ export class CategoriesComponent implements OnInit {
 
     this.activatedRoute.params.subscribe((params) => {
       this.currentCategory = params.category;
-    })
+    });
   }
 
   selectCategory(category: Category) {
@@ -31,7 +31,7 @@ export class CategoriesComponent implements OnInit {
 
   getListCategory() {
     this.categoryService.getAllCategory().subscribe((res) => {
-      if (res.code === "OK") {
+      if (res.code === 'OK') {
         this.listCategory = [
           {
             id: -1,

@@ -14,9 +14,9 @@ export class ProductService {
   constructor(private readonly httpClient: HttpClient) { }
 
   getListProduct(productOption: ProductOptions, baseParams: BaseParams) {
-    let params = new HttpParams()
+    const params = new HttpParams()
       .append('page', `${baseParams.pageIndex}`)
-      .append('pageSize', `${baseParams.pageSize}`)
+      .append('pageSize', `${baseParams.pageSize}`);
 
     return this.httpClient.post(`${environment.productServiceUrl}/api/product/product-all-store`, productOption,
       { params }).pipe(
@@ -40,31 +40,31 @@ export class ProductService {
     }
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/best-seller`, { params }).pipe(catchError(error => {
       return of(error.error);
-    }))
+    }));
   }
 
   getProductByStore(pageIndex: number, pageSize: number, body: Object) {
     const params = new HttpParams()
       .append('page', (pageIndex - 1).toString())
-      .append('pageSize', pageSize.toString())
+      .append('pageSize', pageSize.toString());
     return this.httpClient.post(`${environment.productServiceUrl}/api/product`, body, { params }).pipe(catchError(error => {
       return of(error.error);
-    }))
+    }));
   }
 
   searchProductByFullText(pageIndex: number, pageSize: number, keyword: string) {
     const params = new HttpParams().append('page', (pageIndex - 1).toString())
       .append('pageSize', pageSize.toString())
-      .append('keyword', keyword)
+      .append('keyword', keyword);
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/fulltext-search`, { params }).pipe(catchError(error => {
       return of(error.error);
-    }))
+    }));
   }
 
   addToWishList(productId: number) {
     const body = {};
-    let params = new HttpParams()
-      .append('productId', `${productId}`)
+    const params = new HttpParams()
+      .append('productId', `${productId}`);
 
     return this.httpClient.post(`${environment.productServiceUrl}/api/wish-list/create`, body, { params }).pipe(
       catchError(error => {
@@ -84,10 +84,10 @@ export class ProductService {
 
   getWishList(baseParams?: BaseParams) {
 
-    let params = new HttpParams()
+    const params = new HttpParams();
     if (baseParams) {
-      params.append('page', `${baseParams.pageIndex}`)
-      params.append('pageSize', `${baseParams.pageSize}`)
+      params.append('page', `${baseParams.pageIndex}`);
+      params.append('pageSize', `${baseParams.pageSize}`);
     }
 
     return this.httpClient.get(`${environment.productServiceUrl}/api/wish-list`, { params }).pipe(

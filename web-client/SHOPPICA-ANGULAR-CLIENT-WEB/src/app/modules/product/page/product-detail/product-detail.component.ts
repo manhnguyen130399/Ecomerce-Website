@@ -41,7 +41,7 @@ export class ProductDetailComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
-  }
+  };
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly productService: ProductService,
@@ -56,10 +56,10 @@ export class ProductDetailComponent implements OnInit {
       this.productService.getProductById(this.productId).pipe(
         finalize(() => this.loaderService.hideLoader('productDetail'))
       ).subscribe(res => {
-        if (res.code == "OK") {
+        if (res.code == 'OK') {
           this.product = res.data;
         }
-      })
+      });
     });
 
   }

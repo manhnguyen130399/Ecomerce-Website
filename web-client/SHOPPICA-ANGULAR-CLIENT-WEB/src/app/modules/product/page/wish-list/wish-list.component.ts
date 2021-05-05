@@ -18,12 +18,12 @@ export class WishListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loaderService.showLoader("wishlist");
+    this.loaderService.showLoader('wishlist');
     this.productService.getWishList({ pageIndex: 0, pageSize: 12 })
       .pipe(
-        finalize(() => this.loaderService.hideLoader("wishlist"))
+        finalize(() => this.loaderService.hideLoader('wishlist'))
       ).subscribe(res => {
-        if (res.code == "OK") {
+        if (res.code == 'OK') {
           this.listProduct = res.data.content;
         }
       });

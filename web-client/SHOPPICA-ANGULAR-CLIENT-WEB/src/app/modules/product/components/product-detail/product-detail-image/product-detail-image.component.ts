@@ -9,13 +9,10 @@ import { NzImage, NzImageService } from 'ng-zorro-antd/image';
   styleUrls: ['./product-detail-image.component.css']
 })
 export class ProductDetailImageComponent implements OnInit {
+  constructor(private nzImageService: NzImageService) { }
 
   @Input() listImage: ProductImage[] = [];
   listImageZoom: NzImage[] = [];
-  constructor(private nzImageService: NzImageService) { }
-
-  ngOnInit(): void {
-  }
 
   customOptions: OwlOptions = {
     loop: true,
@@ -32,6 +29,9 @@ export class ProductDetailImageComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
+  };
+
+  ngOnInit(): void {
   }
 
   enLargeImage() {
@@ -39,7 +39,7 @@ export class ProductDetailImageComponent implements OnInit {
       this.listImageZoom.push({
         src: x.image,
         height: '700px',
-      })
+      });
     });
     this.nzImageService.preview(this.listImageZoom, { nzZoom: 1, nzRotate: 0 });
   }

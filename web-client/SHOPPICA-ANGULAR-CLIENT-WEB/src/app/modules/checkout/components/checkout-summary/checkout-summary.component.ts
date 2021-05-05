@@ -25,15 +25,15 @@ export class CheckoutSummaryComponent implements OnInit {
 
     this.checkoutService.productPriceEmitted$.subscribe((price: number) => {
       this.subtotal += price;
-    })
+    });
 
     this.checkoutService.shippingPriceEmitted$.subscribe((shipping: number) => {
       this.shippingPrice += shipping;
-    })
+    });
 
     this.checkoutService.discountEmitted$.subscribe((discount: number) => {
       this.discount += discount;
-    })
+    });
   }
 
 }

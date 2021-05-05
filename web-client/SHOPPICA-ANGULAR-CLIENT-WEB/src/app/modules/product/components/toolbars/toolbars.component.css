@@ -18,11 +18,12 @@
 
 .view a.view-page {
   color: #878787;
-  height: 26px;
+  height: 23px;
   transition: 0.25s;
   position: relative;
   margin-right: 10px;
   display: block;
+  border: 1px solid currentcolor;
 }
 
 .view a.view-page.active {

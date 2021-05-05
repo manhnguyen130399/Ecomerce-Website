@@ -1,3 +1,4 @@
+import { ModalService } from './../../../core/services/modal/modal.service';
 import { LoaderService } from './../../../shared/modules/loader/loader.service';
 import { Router } from '@angular/router';
 import { CartRequest } from './../../../core/model/cart/cart-request';
@@ -25,28 +26,29 @@ export class ShoppingCartDrawerComponent implements OnInit {
     showPrice: true,
     size: 'large',
     shortDetail: true
-  }
+  };
 
   constructor(
     private readonly authService: AuthService,
     private readonly shareService: ShareService,
     private readonly cartService: CartService,
     private readonly router: Router,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    private readonly modalService: ModalService
   ) { }
 
   ngOnInit(): void {
     this.shareService.cartEmitted$.subscribe((cart) => {
       this.cart = cart;
-    })
+    });
 
-    this.shareService.openCartDrawerEmitted$.subscribe(() => {
+    this.modalService.openCartDrawerEmitted$.subscribe(() => {
       this.isVisible = true;
-    })
+    });
 
-    this.shareService.closeCartDrawerEmitted$.subscribe(data => {
+    this.modalService.closeCartDrawerEmitted$.subscribe(data => {
       this.isVisible = false;
-    })
+    });
 
     if (this.authService.isAuthenticated()) {
       this.cartService.getCartById().subscribe((res) => {
@@ -54,7 +56,7 @@ export class ShoppingCartDrawerComponent implements OnInit {
           this.cart = res.data;
           this.shareService.cartEmitEvent(res.data);
         }
-      })
+      });
     }
   }
 

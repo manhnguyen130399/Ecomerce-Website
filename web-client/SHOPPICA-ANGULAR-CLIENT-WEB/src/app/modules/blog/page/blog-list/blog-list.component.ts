@@ -33,12 +33,12 @@ export class BlogListComponent implements OnInit {
       finalize(() => this.loaderService.hideLoader('blog'))
     ).subscribe((res) => {
       this.listBlog = res.data.content;
-      this.total = res.data.totalElements
+      this.total = res.data.totalElements;
     });
   }
 
   onQueryPageIndexChange(event) {
-    this.loadDataBlogs(event, this.pageSize, null)
+    this.loadDataBlogs(event, this.pageSize, null);
   }
 
   viewItem(id: number) {
@@ -46,7 +46,7 @@ export class BlogListComponent implements OnInit {
   }
 
   viewBlogByCategory(item: string) {
-    const last = item.indexOf(" "); // remove Quantity
-    this.loadDataBlogs(this.pageIndex, this.pageSize, item.substring(0, last))
+    const last = item.indexOf(' '); // remove Quantity
+    this.loadDataBlogs(this.pageIndex, this.pageSize, item.substring(0, last));
   }
 }

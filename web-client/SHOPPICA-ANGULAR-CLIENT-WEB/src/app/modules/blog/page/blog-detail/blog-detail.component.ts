@@ -21,7 +21,7 @@ export class BlogDetailComponent implements OnInit {
     content: null,
     image: null,
     comments: null
-  }
+  };
 
   constructor(
     private readonly blogService: BlogService,
@@ -38,13 +38,13 @@ export class BlogDetailComponent implements OnInit {
   }
 
   getBlogById(id: number) {
-    this.loaderService.showLoader('blog')
+    this.loaderService.showLoader('blog');
     this.blogService.getBlogById(id).pipe(
       finalize(() => this.loaderService.hideLoader('blog')))
       .subscribe((res) => {
         const data = res.data;
         this.blog = data;
-      })
+      });
   }
 
   viewBlogByCategory(value: string) {
@@ -52,7 +52,7 @@ export class BlogDetailComponent implements OnInit {
   }
 
   appendComment(value: Comment) {
-    this.blog.comments.unshift(value)
+    this.blog.comments.unshift(value);
   }
 
 }

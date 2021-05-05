@@ -16,13 +16,13 @@ export class StoreInfoService {
   getStoreInfoById(id: number) {
     return this.httpClient.get<BaseResponse<Store>>(`${environment.productServiceUrl}/api/store/${id}`).pipe(catchError((error) => {
       return of(error.error);
-    }))
+    }));
   }
 
   getOrderState(id: number) {
-    const params = new HttpParams().append("storeId", id.toString());
+    const params = new HttpParams().append('storeId', id.toString());
     return this.httpClient.get(`${environment.orderServiceUrl}/api/orders/getBestSeller`, { params }).pipe(catchError((error) => {
       return of(error.error);
-    }))
+    }));
   }
 }

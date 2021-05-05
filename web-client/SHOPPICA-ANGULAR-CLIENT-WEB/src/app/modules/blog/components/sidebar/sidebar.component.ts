@@ -19,41 +19,41 @@ export class SidebarComponent implements OnInit {
   listCartItem: CartItem[] = [
     {
       id: 1,
-      productName: "T-shirt product",
+      productName: 'T-shirt product',
       price: 99,
       image: '/assets/images/products/product-2.jpg',
       quantity: 12,
     },
     {
       id: 2,
-      productName: "T-shirt product",
+      productName: 'T-shirt product',
       price: 99,
       image: '/assets/images/products/product-3.jpg',
       quantity: 12,
     },
     {
       id: 3,
-      productName: "T-shirt Top",
+      productName: 'T-shirt Top',
       price: 99,
       image: '/assets/images/products/product-1.jpg',
       quantity: 12,
     },
-  ]
+  ];
   cartItemOptions: CartItemOptions = {
     showPrice: true,
     size: 'small'
-  }
+  };
   constructor(private readonly blogService: BlogService, private readonly router: Router) { }
 
   ngOnInit(): void {
-    this.loadDataForSideBar()
+    this.loadDataForSideBar();
   }
 
   loadDataForSideBar() {
     this.blogService.getDataForSideBlog().subscribe((res) => {
       this.listBlog = res.data.blogRecents;
       this.categories = res.data.categories;
-    })
+    });
   }
 
   viewItem(id: number) {

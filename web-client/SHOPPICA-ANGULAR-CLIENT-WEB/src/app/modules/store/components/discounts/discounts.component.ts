@@ -13,31 +13,18 @@ import { finalize } from 'rxjs/operators';
 })
 export class DiscountsComponent implements OnInit {
 
-  storeId: number;
-  listDiscount: Promotion[];
-
   constructor(
     private readonly shareService: ShareService,
     private readonly storeService: StoreService,
     private readonly loaderService: LoaderService
   ) {
     this.shareService.loadStoreInfoSEmitted$.subscribe((it) => {
-      this.storeId = it
-    })
+      this.storeId = it;
+    });
   }
 
-  ngOnInit(): void {
-    this.loadDataPromotionDataByStore();
-  }
-
-  loadDataPromotionDataByStore() {
-    this.loaderService.showLoader('store');
-    this.storeService.getStoreById(this.storeId)
-      .pipe(finalize(() => this.loaderService.hideLoader('store')))
-      .subscribe((res) => {
-        this.listDiscount = res.data.promotions
-      })
-  }
+  storeId: number;
+  listDiscount: Promotion[];
 
   customOptions: OwlOptions = {
     loop: true,
@@ -58,6 +45,19 @@ export class DiscountsComponent implements OnInit {
     },
     nav: true,
     navText: ['<', '>']
+  };
+
+  ngOnInit(): void {
+    this.loadDataPromotionDataByStore();
+  }
+
+  loadDataPromotionDataByStore() {
+    this.loaderService.showLoader('store');
+    this.storeService.getStoreById(this.storeId)
+      .pipe(finalize(() => this.loaderService.hideLoader('store')))
+      .subscribe((res) => {
+        this.listDiscount = res.data.promotions;
+      });
   }
 
 }

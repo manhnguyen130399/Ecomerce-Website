@@ -13,8 +13,8 @@ import { finalize } from 'rxjs/operators';
 export class StoreInfoComponent implements OnInit {
   createdAt: Date;
   totalProduct: number;
-  cancel: number = 0;
-  complete: number = 0;
+  cancel = 0;
+  complete = 0;
   storeId: number;
 
   constructor(
@@ -39,18 +39,18 @@ export class StoreInfoComponent implements OnInit {
     this.storeService.getOrderState(storeId)
       .pipe(finalize(() => this.loaderService.hideLoader('store')))
       .subscribe((res) => {
-        const orderStates = res.data.orderStates
+        const orderStates = res.data.orderStates;
         const sum = orderStates.reduce((a, { quantity }) => a + quantity, 0);
         this.complete = orderStates[2].quantity * 100 / sum;
         this.cancel = orderStates[3].quantity * 100 / sum;
-      })
+      });
   }
 
   getStoreInfo(id: number) {
     this.storeService.getStoreInfoById(id).subscribe((res) => {
       this.createdAt = res.data.createdAt;
       this.totalProduct = res.data.totalProduct;
-    })
+    });
 
   }
 }

@@ -65,7 +65,7 @@ registerLocaleData(en);
     RouterModule.forRoot(routes,
       { scrollPositionRestoration: 'top' }
     ),
-    //socialLogin
+    // socialLogin
     SocialLoginModule,
     // jwt
     JwtModule.forRoot({

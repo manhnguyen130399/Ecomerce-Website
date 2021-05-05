@@ -18,7 +18,7 @@ export class FilterDrawerComponent implements OnInit {
   @Input() isShowFilter = false;
   @Output() closeFilterEvent = new EventEmitter<boolean>();
 
-  listColor: Color[] = []
+  listColor: Color[] = [];
 
   listSize: Size[] = [];
 
@@ -63,7 +63,7 @@ export class FilterDrawerComponent implements OnInit {
 
     this.activatedRoute.params.subscribe((data) => {
       this.currentCategory = data.category;
-    })
+    });
   }
 
   closeMenu() {
@@ -72,7 +72,7 @@ export class FilterDrawerComponent implements OnInit {
 
   loadAllBrand() {
     this.brandService.getAllBrand().subscribe((res) => {
-      if (res.code == "OK") {
+      if (res.code == 'OK') {
         this.listBrand = res.data;
       }
     });
@@ -81,7 +81,7 @@ export class FilterDrawerComponent implements OnInit {
 
   loadAllSize() {
     this.sizeService.getAllSize().subscribe((res) => {
-      if (res.code == "OK") {
+      if (res.code == 'OK') {
         this.listSize = res.data;
       }
     });
@@ -90,7 +90,7 @@ export class FilterDrawerComponent implements OnInit {
 
   loadAllColor() {
     this.colorService.getAllColor().subscribe((res) => {
-      if (res.code == "OK") {
+      if (res.code == 'OK') {
         this.listColor = res.data;
       }
     });
@@ -98,44 +98,44 @@ export class FilterDrawerComponent implements OnInit {
 
   selectColor(color: Color) {
     this.closeMenu();
-    this.router.navigate(["/product/collection", this.currentCategory],
+    this.router.navigate(['/product/collection', this.currentCategory],
       {
         queryParams: {
           color: color.colorName.toLowerCase()
         },
         queryParamsHandling: 'merge'
-      })
+      });
   }
 
   selectSize(size: Size) {
     this.closeMenu();
-    this.router.navigate(["/product/collection", this.currentCategory],
+    this.router.navigate(['/product/collection', this.currentCategory],
       {
         queryParams: {
           size: size.sizeName.toLowerCase()
         },
         queryParamsHandling: 'merge'
-      })
+      });
   }
 
   selectBrand(brand: Brand) {
     this.closeMenu();
-    this.router.navigate(["/product/collection", this.currentCategory],
+    this.router.navigate(['/product/collection', this.currentCategory],
       {
         queryParams: {
           brand: brand.brandName.toLowerCase()
         },
         queryParamsHandling: 'merge'
-      })
+      });
   }
 
   selectPrice(price: Price) {
     this.closeMenu();
-    this.router.navigate(["/product/collection", this.currentCategory],
+    this.router.navigate(['/product/collection', this.currentCategory],
       {
         queryParams: {
           price: price.priceUrl
         }, queryParamsHandling: 'merge'
-      })
+      });
   }
 }

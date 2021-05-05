@@ -1,23 +1,23 @@
 import { LoaderService } from './shared/modules/loader/loader.service';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  @ViewChild("preload", { static: true }) loadElement: ElementRef;
+export class AppComponent implements OnInit {
+  @ViewChild('preload', { static: true }) loadElement: ElementRef;
 
 
-  isLoaded: boolean = false;
+  isLoaded = false;
   constructor(
     private route: Router,
     private readonly loaderService: LoaderService
   ) { }
   ngOnInit(): void {
-    document.getElementById("preload").className = "preload-none";
+    document.getElementById('preload').className = 'preload-none';
 
     this.route.events.subscribe(
       event => {
@@ -30,7 +30,7 @@ export class AppComponent {
       },
       error => {
         this.loaderService.hideLoader();
-      })
+      });
   }
 
 

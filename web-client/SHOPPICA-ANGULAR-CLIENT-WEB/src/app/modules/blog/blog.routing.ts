@@ -14,4 +14,4 @@ export const blogRoutes: Routes = [
     component: BlogDetailComponent
   }
 
-]
+];
