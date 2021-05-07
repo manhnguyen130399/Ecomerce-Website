@@ -22,5 +22,5 @@ public class AccountService implements IAccountService {
 				.getForObject(Constants.USER_URL + RestURL.GET_ACCOUNT_INFO_BY_USERNAME + username, AccountRes.class)
 				.getData();
 	}
-
+	
 }

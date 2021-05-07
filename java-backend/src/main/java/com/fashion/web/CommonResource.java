@@ -44,7 +44,7 @@ public class CommonResource extends BaseResource {
 
 	@Autowired
 	private IIndexingService indexingService;
-
+	
 	@PostMapping(URL)
 	public ResponseEntity<Map<String, Object>> generateQrCode(@RequestBody final String qrCode) throws Exception {
 		return success(commonService.generateLinkQrCode(qrCode));
@@ -73,5 +73,4 @@ public class CommonResource extends BaseResource {
 		indexingService.initiateIndexing();
 		return success(Constants.SUCCESS);
 	}
-
 }
