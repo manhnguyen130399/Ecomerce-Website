@@ -80,6 +80,12 @@ export class QuickViewComponent implements OnInit {
   }
 
   addToWishList(productId: number) {
+    if (!this.authService.isAuthenticated()) {
+      this.isVisible = false;
+      this.modalService.openLoginDrawerEvent();
+      return;
+    }
+
     if (this.inWishList) {
       this.router.navigate(['/product/wishlist']);
       return;

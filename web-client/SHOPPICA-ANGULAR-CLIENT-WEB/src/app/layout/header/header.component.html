@@ -57,7 +57,7 @@
               </ul>
             </nz-dropdown-menu>
           </li>
-          <li [routerLink]="['/product/wishlist']" class="text-hover flex al-center">
+          <li (click)="openWishList()" class="text-hover flex al-center">
             <nz-badge nzShowZero [nzCount]="wishlistIds.length">
               <i class="wishlist" nz-icon>
                 <svg height="1em" width="1.3em">

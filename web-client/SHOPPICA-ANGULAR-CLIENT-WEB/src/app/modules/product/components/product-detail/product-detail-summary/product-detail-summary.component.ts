@@ -67,6 +67,11 @@ export class ProductDetailSummaryComponent implements OnInit {
   }
 
   addToWishList(productId: number) {
+    if (!this.authService.isAuthenticated()) {
+      this.modalService.openLoginDrawerEvent();
+      return;
+    }
+
     if (this.inWishList) {
       this.router.navigate(['/product/wishlist']);
       return;

@@ -1,3 +1,4 @@
+import { AuthService } from './../../../core/services/auth/auth.service';
 import { ModalService } from './../../../core/services/modal/modal.service';
 import { finalize } from 'rxjs/operators';
 import { ProductService } from '@core/services/product/product.service';
@@ -29,7 +30,8 @@ export class ProductCardComponent implements OnInit {
   constructor(
     private readonly shareService: ShareService,
     private readonly productService: ProductService,
-    private readonly modalService: ModalService
+    private readonly modalService: ModalService,
+    private readonly authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +67,10 @@ export class ProductCardComponent implements OnInit {
   }
 
   addToWishList(productId: number) {
+    if (!this.authService.isAuthenticated()) {
+      this.modalService.openLoginDrawerEvent();
+      return;
+    }
     this.isChangeWishList = true;
     this.productService.addToWishList(productId)
       .pipe(

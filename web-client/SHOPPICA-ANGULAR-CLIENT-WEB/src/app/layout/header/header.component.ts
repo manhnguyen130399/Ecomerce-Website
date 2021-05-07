@@ -83,7 +83,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openLogin() {
-    if (!this.authService.isAuthenticated()) {
+    if (!this.isLogged) {
       this.modalService.openLoginDrawerEvent();
       this.isShowRegisterDrawer = false;
       this.isShowResetPasswordDrawer = false;
@@ -98,7 +98,12 @@ export class HeaderComponent implements OnInit {
     this.goToCartPage
       ? this.router.navigate(['/cart'])
       : this.modalService.openCartDrawerEvent();
+  }
 
+  openWishList() {
+    this.isLogged
+      ? this.router.navigate(['/product/wishlist'])
+      : this.modalService.openLoginDrawerEvent();
   }
 
   logout() {
