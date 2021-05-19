@@ -56,8 +56,6 @@ export class GhnService {
       to_district_id: toDistrict,
     };
 
-    console.log(body);
-
     return this.httpClient.post(`${environment.ghnAPIUrl}/v2/shipping-order/fee`, body, this.options).pipe(
       catchError(error => {
         return of(error.error);

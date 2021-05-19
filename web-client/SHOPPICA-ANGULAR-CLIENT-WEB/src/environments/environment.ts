@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   userServiceUrl: 'https://user-service-net.herokuapp.com',
+  recommendationServiceUrl: 'https://shopica-recommendation.herokuapp.com',
   orderServiceUrl: 'https://order-service-net.herokuapp.com',
   productServiceUrl: 'https://backend-java-api.herokuapp.com',
   localUserServiceUrl: 'https://localhost:5001',

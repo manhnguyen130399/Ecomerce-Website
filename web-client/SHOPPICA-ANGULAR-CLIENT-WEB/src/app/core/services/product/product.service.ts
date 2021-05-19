@@ -1,3 +1,4 @@
+import { JwtService } from './../jwt/jwt.service';
 import { catchError } from 'rxjs/operators';
 import { environment } from './../../../../environments/environment';
 import { ProductOptions } from './../../model/product/product-option';
@@ -11,7 +12,10 @@ import { of } from 'rxjs';
 })
 export class ProductService {
 
-  constructor(private readonly httpClient: HttpClient) { }
+  constructor(
+    private readonly httpClient: HttpClient,
+    private readonly jwtService: JwtService
+  ) { }
 
   getListProduct(productOption: ProductOptions, baseParams: BaseParams) {
     const params = new HttpParams()
@@ -25,6 +29,7 @@ export class ProductService {
         })
       );
   }
+
   getProductById(id: number) {
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/${id}`).pipe(
       catchError(error => {
@@ -39,6 +44,13 @@ export class ProductService {
       params = params.append('storeId', id.toString());
     }
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/best-seller`, { params }).pipe(catchError(error => {
+      return of(error.error);
+    }));
+  }
+
+  getProductRecommender() {
+    const userId = this.jwtService.getAccountId();
+    return this.httpClient.get(`${environment.recommendationServiceUrl}/predict/${userId}/`).pipe(catchError(error => {
       return of(error.error);
     }));
   }
