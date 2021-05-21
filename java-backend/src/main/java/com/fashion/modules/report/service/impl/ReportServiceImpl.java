@@ -11,6 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +48,8 @@ import com.fashion.modules.report.model.OrderVM;
 import com.fashion.modules.report.model.ReportRes;
 import com.fashion.modules.report.model.StateOrderReportVM;
 import com.fashion.modules.report.service.ReportService;
+import com.fashion.modules.store.model.StoreVM;
+import com.fashion.modules.store.service.StoreService;
 import com.fashion.service.impl.BaseService;
 
 @Service
@@ -49,8 +64,8 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 	@Autowired
 	private CategoryRepository cateRepo;
 
-//	@Autowired
-//	private CategoryService cateService;
+	@Autowired
+	private StoreService storeService;
 
 	@Autowired
 	private ProductDetailRepository productDetailRepo;
@@ -150,6 +165,88 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 			}
 		}
 		return Pair.of(revenues, sales);
+	}
+
+	@Override
+	public Pair<Workbook, String> getOrderReport(final String fromDate, final String toDate, final Integer top) {
+		final ReportRes res = getOrderByDate(fromDate, toDate, top, SortType.ascend);
+		res.getRevenue();
+		final Workbook wb = new HSSFWorkbook();
+		final StoreVM store = storeService.getStore(getCurrentStoreId());
+		final Sheet sheet = wb.createSheet(Constants.ORDER_REPORT);
+		final Row firstRow = sheet.createRow(0);
+		firstRow.createCell(0, CellType.STRING).setCellValue(Constants.OWNER);
+		firstRow.createCell(1, CellType.STRING).setCellValue(store.getOwner());
+		firstRow.createCell(2, CellType.STRING).setCellValue(Constants.CURRENT_REVENUE_OF_MONTH);
+		sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 6));
+		firstRow.createCell(7, CellType.NUMERIC).setCellValue(res.getRevenue().doubleValue());
+		sheet.addMergedRegion(new CellRangeAddress(0, 0, 7, 9));
+		final Cell orderTitle = sheet.createRow(1).createCell(0);
+		orderTitle.setCellValue(Constants.ORDER_REPORT);
+		orderTitle.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+		fontCell(orderTitle.getCellStyle(), wb);
+		sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 11));
+		final CellStyle cellStyle = cellStyle(wb);
+		buildHeader(sheet.createRow(2), cellStyle);
+		appendRevenues(res, sheet.createRow(3), cellStyle);
+		final Cell saleTitle = sheet.createRow(4).createCell(0);
+		saleTitle.setCellValue(Constants.SALE);
+		saleTitle.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+		fontCell(saleTitle.getCellStyle(), wb);
+		sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 11));
+		appendSales(res, sheet.createRow(5), cellStyle);
+		return Pair.of(wb, store.getStoreName());
+	}
+
+	private CellStyle cellStyle(final Workbook wb) {
+		final CellStyle cellStyle = wb.createCellStyle();
+		cellStyle.setBorderBottom(BorderStyle.THIN);
+		cellStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		cellStyle.setBorderRight(BorderStyle.THIN);
+		cellStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		cellStyle.setBorderTop(BorderStyle.THIN);
+		cellStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		cellStyle.setBorderLeft(BorderStyle.THIN);
+		cellStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		return cellStyle;
+	}
+
+	private void appendSales(final ReportRes res, final Row row, final CellStyle cellStyle) {
+		for (int i = 0; i < res.getSales().size(); i++) {
+			final Cell cell = row.createCell(i, CellType.NUMERIC);
+			cell.setCellValue(res.getSales().get(i));
+			cell.setCellStyle(cellStyle);
+		}
+	}
+
+	private void appendRevenues(final ReportRes res, final Row thirdRow, final CellStyle cellStyle) {
+		final List<Integer> revenues = res.getRevenues();
+		for (int i = 0; i < revenues.size(); i++) {
+			final Cell cell = thirdRow.createCell(i, CellType.NUMERIC);
+			cell.setCellValue(revenues.get(i));
+			cell.setCellStyle(cellStyle);
+		}
+	}
+
+	private void buildHeader(final Row secondRow, final CellStyle cellStyle) {
+		final List<String> months = Lists.newArrayList("Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug",
+				"Step", "Oct", "Nov", "Dec");
+		for (int i = 0; i < months.size(); i++) {
+			final Cell cell = secondRow.createCell(i, CellType.STRING);
+			cell.setCellValue(months.get(i));
+			cell.setCellStyle(cellStyle);
+			cell.getCellStyle().setAlignment(HorizontalAlignment.CENTER);
+			cell.getCellStyle().setFillForegroundColor(IndexedColors.GREY_50_PERCENT.index);
+
+		}
+	}
+
+	private void fontCell(final CellStyle cellStyle, final Workbook wb) {
+		final Font font = wb.createFont();
+		font.setFontName(HSSFFont.FONT_ARIAL);
+		font.setFontHeightInPoints((short) 15);
+		font.setBold(true);
+		cellStyle.setFont(font);
 	}
 
 }
