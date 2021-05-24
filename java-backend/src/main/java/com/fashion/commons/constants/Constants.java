@@ -151,5 +151,13 @@ public final class Constants {
 	public static final String SIZES = "sizes";
 	// promotion
 	public static final String PROMOTIONS = "promotions";
+	//
+	public static final String ORDER_REPORT = "Report Order ";
+	//
+	public static final String OWNER = "Owner ";
+	//
+	public static final String SALE = "Sale report";
+	//
+	public static final String CURRENT_REVENUE_OF_MONTH ="CURRENT REVENUE OF MONTH";
 
 }
