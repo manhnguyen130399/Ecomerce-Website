@@ -52,6 +52,7 @@ export class ProductCardComponent implements OnInit {
       this.listSize = getListSize(changes.product.currentValue.productDetails);
       this.listColor = getListColor(changes.product.currentValue.productDetails);
       this.colorSelected = this.listColor[0];
+      console.log(this.listSize)
       this.image = changes.product.currentValue.productImages[0].image;
       this.sizes = this.listSize.map(x => x.sizeName).join(', ');
 

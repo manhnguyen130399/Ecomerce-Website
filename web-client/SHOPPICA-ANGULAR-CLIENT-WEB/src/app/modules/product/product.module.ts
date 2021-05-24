@@ -37,7 +37,6 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { WishListComponent } from './page/wish-list/wish-list.component';
 import { CommentsModule } from '@shared/modules/comments/comments.module';
-import { LeaveCommentModule } from '@shared/modules/leave-comment/leave-comment.module';
 @NgModule({
   declarations: [
     CategoriesComponent,
@@ -67,7 +66,6 @@ import { LeaveCommentModule } from '@shared/modules/leave-comment/leave-comment.
     FormsModule,
     LoaderModule,
     CommentsModule,
-    LeaveCommentModule,
     // custom modules
     ProductCarouselModule,
     ProductCardModule,

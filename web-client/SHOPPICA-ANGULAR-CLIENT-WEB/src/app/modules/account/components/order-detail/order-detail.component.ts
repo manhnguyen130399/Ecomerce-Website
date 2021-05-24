@@ -2,9 +2,10 @@ import { LoaderService } from './../../../../shared/modules/loader/loader.servic
 import { OrderResponse } from './../../../../core/model/order/order-response';
 import { switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CheckoutService } from '@core/services/checkout/checkout.service';
-
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 @Component({
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
@@ -13,6 +14,8 @@ import { CheckoutService } from '@core/services/checkout/checkout.service';
 export class OrderDetailComponent implements OnInit {
   order: OrderResponse;
   isLoading = false;
+  @ViewChild('screen') screen: ElementRef;
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly checkoutService: CheckoutService,
@@ -29,11 +32,22 @@ export class OrderDetailComponent implements OnInit {
     ).subscribe(res => {
       if (res.isSuccessed) {
         this.order = res.data;
-        console.log(this.order.discount);
       }
       this.isLoading = false;
       this.loaderService.hideLoader('order-detail');
     });
   }
 
+
+  downLoadInvoice() {
+    const pdf = new jsPDF('p', 'pt', 'a4');
+    html2canvas(this.screen.nativeElement, {
+      width: 800,
+      height: 1000,
+    }).then(canvas => {
+      let base64 = canvas.toDataURL('image/png');
+      pdf.addImage(base64, 'png', 40, 40, 515, 600);
+      pdf.save(`invoice(${this.order.id}).pdf`);
+    });
+  }
 }

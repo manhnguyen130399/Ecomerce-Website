@@ -1,6 +1,7 @@
 .order-detail {
   position: relative;
   min-height: 300px;
+  padding: 0 20px;
 }
 
 .image {
@@ -13,6 +14,26 @@ p {
 
 .header .title {
   font-size: 23px;
+}
+
+.header .title span{
+  font-size: 20px;
+}
+
+.header .title span .PENDING{
+  color: gray;
+}
+
+.header .title span .DELIVER{
+  color: yellow;
+}
+
+.header .title span .COMPLETE{
+  color: green;
+}
+
+.header .title span .CANCEL{
+  color: red;
 }
 
 .header .date {

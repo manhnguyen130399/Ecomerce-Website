@@ -8,10 +8,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { shareIcons } from '../../share-icon';
 import { FormsModule } from '@angular/forms';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { CommentComponent } from './components/comment/comment.component';
+import { CommentInputComponent } from './components/comment-input/comment-input.component';
 
 
 @NgModule({
-  declarations: [CommentsComponent],
+  declarations: [CommentsComponent, CommentComponent, CommentInputComponent],
   imports: [
     CommonModule,
     NzPaginationModule,
@@ -19,7 +21,8 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzIconModule,
     NzAvatarModule,
     FormsModule,
-    NzInputModule
+    NzInputModule,
+    NzIconModule.forChild(shareIcons),
   ],
   exports: [
     CommentsComponent
