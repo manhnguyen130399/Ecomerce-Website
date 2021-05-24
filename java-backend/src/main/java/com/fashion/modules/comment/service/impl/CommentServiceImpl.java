@@ -5,14 +5,20 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fashion.commons.constants.ErrorMessage;
+import com.fashion.domain.UserContext;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.model.AccountVM;
 import com.fashion.modules.blog.domain.Blog;
 import com.fashion.modules.blog.repository.BlogRepository;
 import com.fashion.modules.comment.domain.Comment;
+import com.fashion.modules.comment.domain.UserComment;
+import com.fashion.modules.comment.domain.UserLikeCommentId;
 import com.fashion.modules.comment.model.CommentReq;
 import com.fashion.modules.comment.model.CommentVM;
+import com.fashion.modules.comment.model.RatingReq;
 import com.fashion.modules.comment.repository.CommentRepository;
+import com.fashion.modules.comment.repository.UserCommentRepository;
 import com.fashion.modules.comment.service.CommentService;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.repository.ProductRepository;
@@ -34,6 +40,9 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 	@Autowired
 	private IAccountService accountService;
 
+	@Autowired
+	private UserCommentRepository userCommentRepo;
+
 	@Override
 	@Transactional
 	public CommentVM createComment(final CommentReq req) {
@@ -47,17 +56,17 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		if (productId != null) {
 			final Product product = productRepo.getOne(productId);
 			if (product == null) {
-				throw new InvalidArgumentException(" Can't found product ");
+				throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_PRODUCT);
 			}
 			comment.setProduct(product);
 		} else if (blogId != null) {
 			final Blog blog = blogRepo.findOneById(blogId);
 			if (blog == null) {
-				throw new InvalidArgumentException(" Can't found blog ");
+				throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_BLOG);
 			}
 			comment.setBlog(blog);
 		} else {
-			throw new InvalidArgumentException(" Can't create comment. Because can't found product or blog ");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_PRODUCT_AND_BLOG);
 		}
 
 		return convertToVM(commentRepo.save(comment));
@@ -74,10 +83,10 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 
 	private void checkUserComment(final Comment comment) {
 		if (comment == null) {
-			throw new InvalidArgumentException(" Can't found comment.");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_COMMENT);
 		}
 		if (comment.getAccountId() != getUserContext().getAccountId()) {
-			throw new InvalidArgumentException(" You can't owner this comment.");
+			throw new InvalidArgumentException(ErrorMessage.NOT_OWNER_COMMENT);
 		}
 	}
 
@@ -89,24 +98,54 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		commentRepo.deleteById(id);
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	@Transactional
 	public CommentVM likeComment(final Integer id, final boolean isLike, final int time) {
 		final Comment comment = commentRepo.findOneById(id);
 		if (comment == null) {
-			throw new InvalidArgumentException(" Can't found comment.");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_COMMENT);
 		}
+		final UserLikeCommentId userLikeCommentId = new UserLikeCommentId(getUserContext().getAccountId(), id);
 		final boolean increment = time == 0;
-		if (isLike) {
-			Integer oldLike = comment.getLike();
-			final boolean isLikeNull = oldLike == null;
-			comment.setLike(increment ? (isLikeNull ? 1 : ++oldLike) : (isLikeNull ? 0 : --oldLike));
+		UserComment userComment = userCommentRepo.findByUserLikeCommentId(userLikeCommentId);
+		if (userComment == null || userComment.getIsLike() != isLike) {
+			userComment = new UserComment();
+			userComment.setUserLikeCommentId(userLikeCommentId);
+			userComment.setIsLike(isLike);
+			userCommentRepo.save(userComment);
+			comment.setUserComment(java.util.Collections.singleton(userComment));
+			if (isLike) {
+				Integer oldLike = comment.getLike();
+				final boolean isLikeNull = oldLike == null;
+				comment.setLike(increment ? (isLikeNull ? 1 : ++oldLike) : (isLikeNull ? 0 : --oldLike));
+			} else {
+				Integer oldDislike = comment.getDislike();
+				final boolean isDislikeNull = oldDislike == null;
+				comment.setDislike(increment ? (isDislikeNull ? 1 : ++oldDislike) : (isDislikeNull ? 0 : --oldDislike));
+			}
 		} else {
-			Integer oldDislike = comment.getDislike();
-			final boolean isDislikeNull = oldDislike == null;
-			comment.setDislike(increment ? (isDislikeNull ? 1 : ++oldDislike) : (isDislikeNull ? 0 : --oldDislike));
+			throw new InvalidArgumentException(ErrorMessage.HAS_LIKE_COMMENT);
 		}
 		return convertToVM(comment);
+	}
+
+	@Override
+	@Transactional
+	public CommentVM rating(final RatingReq req) {
+		final UserContext context = getUserContext();
+		final Integer accountId = context.getAccountId();
+		Comment comment = commentRepo.getCommentByAccountIdAndProductId(accountId, req.getProductId());
+		if (comment != null) {
+			comment.setRating(req.getRate());
+		} else {
+			comment = new Comment();
+			comment.setAccountId(accountId);
+			comment.setEmail(context.getUsername());
+			comment.setProduct(productRepo.getOne(req.getProductId()));
+			comment.setRating(req.getRate());
+		}
+		return mapper.map(commentRepo.save(comment), CommentVM.class);
 	}
 
 }

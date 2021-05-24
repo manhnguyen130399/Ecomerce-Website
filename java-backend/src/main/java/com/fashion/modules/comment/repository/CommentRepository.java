@@ -19,5 +19,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 			+ "	WHERE p.id IN (:productIds) AND s.id =:storeId ") //
 	Integer getCommentInProductIds(@Param("storeId") Integer storeId, @Param("productIds") List<Integer> productIds);
 	
+	Comment getCommentByAccountIdAndProductId(Integer accountId, Integer productId);
+	
 
 }

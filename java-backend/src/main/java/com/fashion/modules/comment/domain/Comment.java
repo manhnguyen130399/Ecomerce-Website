@@ -2,6 +2,7 @@ package com.fashion.modules.comment.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -63,6 +65,28 @@ public class Comment implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "blog_id")
 	private Blog blog;
+	
+	@Column(name = "rating")
+	private Integer rating;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "comment")
+	private Set<UserComment> userComment;
+
+	public Set<UserComment> getUserComment() {
+		return userComment;
+	}
+
+	public void setUserComment(final Set<UserComment> userComment) {
+		this.userComment = userComment;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(final Integer rating) {
+		this.rating = rating;
+	}
 
 	public Integer getId() {
 		return id;
@@ -140,7 +164,7 @@ public class Comment implements Serializable {
 		return dislike;
 	}
 
-	public void setDislike(Integer dislike) {
+	public void setDislike(final Integer dislike) {
 		this.dislike = dislike;
 	}
 

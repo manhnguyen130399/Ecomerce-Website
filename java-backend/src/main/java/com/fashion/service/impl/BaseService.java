@@ -3,6 +3,7 @@ package com.fashion.service.impl;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -78,7 +79,8 @@ public class BaseService implements IBaseService {
 			return new ProductDetailVM(it.getId(), size.getId(), size.getSizeName(), color.getId(),
 					color.getColorName(), color.getcolorCode(), it.getQuantity());
 		}).collect(Collectors.toSet()));
-		vm.setComments(product.getComments().stream().filter(i -> i.getEmail() != null)
+		vm.setComments(product.getComments().stream()
+				.filter(i -> i.getEmail() != null && StringUtils.isNotEmpty(i.getContent()))
 				.sorted(Comparator.comparing(Comment::getCreatedAt).reversed()).map(it -> convertToVM(it))
 				.collect(Collectors.toList()));
 		return vm;

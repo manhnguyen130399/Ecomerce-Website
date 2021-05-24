@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fashion.commons.constants.Constants;
 import com.fashion.modules.comment.model.CommentReq;
+import com.fashion.modules.comment.model.RatingReq;
 import com.fashion.modules.comment.service.CommentService;
 import com.fashion.web.BaseResource;
 
@@ -53,6 +54,11 @@ public class CommentResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> like(@PathVariable final Integer id, @RequestParam final boolean isLike,
 			@RequestParam final int time) {
 		return success(commentService.likeComment(id, isLike, time));
+	}
+	
+	@PostMapping(URL + "/rating")
+	public ResponseEntity<Map<String, Object>> rating(@RequestBody final RatingReq req) {
+		return success(commentService.rating(req));
 	}
 
 }
