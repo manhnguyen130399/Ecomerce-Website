@@ -1,3 +1,7 @@
+.blog-list{
+  position: relative;
+}
+
 .blog-page .content {
   margin: 60px 0;
 }

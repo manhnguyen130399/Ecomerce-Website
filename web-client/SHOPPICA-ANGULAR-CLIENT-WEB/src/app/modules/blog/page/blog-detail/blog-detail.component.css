@@ -1,6 +1,10 @@
+.container {
+  position: relative;
+}
+
 .blog-detail {
   margin-top: 50px;
-  padding-bottom: 60px;
+  padding-bottom: 30px;
   border-bottom: 1px solid #e8e9eb;
 }
 

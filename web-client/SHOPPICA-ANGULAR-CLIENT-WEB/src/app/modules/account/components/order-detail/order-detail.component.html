@@ -1,9 +1,11 @@
-<div class="order-detail">
+<div #screen class="order-detail">
   <app-loader [id]="'order-detail'"></app-loader>
   <div *ngIf="order" class="header flex jc-space-between al-center">
-    <p class="title">Order detail #{{order.id}} - <strong>{{order.state}}</strong></p>
+    <p class="title">#{{order.id}} <span>Order detail - <strong [ngClass]="order.state">{{order.state}}</strong></span>
+    </p>
     <p class="date">Order date: {{order.created_at | date:'mediumDate'}}</p>
   </div>
+  <p><a (click)="downLoadInvoice()">View Invoice</a></p>
   <div *ngIf="order" class="address">
     <p class="customer-name">{{order.customerName}}</p>
     <p>Address: {{order.address.addressName}}</p>

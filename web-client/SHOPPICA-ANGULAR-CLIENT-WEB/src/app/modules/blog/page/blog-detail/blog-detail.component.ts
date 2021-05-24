@@ -1,3 +1,5 @@
+import { ShareService } from './../../../../core/services/share/share.service';
+import { AuthService } from './../../../../core/services/auth/auth.service';
 import { LoaderService } from '@shared/modules/loader/loader.service';
 import { formatDistance } from 'date-fns';
 import { Blog } from '@core/model/blog/blog';
@@ -12,47 +14,32 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./blog-detail.component.css'],
 })
 export class BlogDetailComponent implements OnInit {
-  blog: Blog = {
-    id: null,
-    summary: null,
-    title: null,
-    author: null,
-    createdAt: null,
-    content: null,
-    image: null,
-    comments: null
-  };
+  blog: Blog;
+  isAuthenticated = false;
 
   constructor(
     private readonly blogService: BlogService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly loaderService: LoaderService
+    private readonly authService: AuthService,
+    private readonly loaderService: LoaderService,
+    private readonly shareService: ShareService
   ) {
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.getBlogById(params.id);
+      this.getBlogById(params.blogId);
     });
   }
 
   getBlogById(id: number) {
-    this.loaderService.showLoader('blog');
+    this.loaderService.showLoader('blog-detail');
     this.blogService.getBlogById(id).pipe(
-      finalize(() => this.loaderService.hideLoader('blog')))
+      finalize(() => this.loaderService.hideLoader('blog-detail')))
       .subscribe((res) => {
         const data = res.data;
         this.blog = data;
       });
-  }
-
-  viewBlogByCategory(value: string) {
-    this.router.navigate(['/blog']);
-  }
-
-  appendComment(value: Comment) {
-    this.blog.comments.unshift(value);
   }
 
 }

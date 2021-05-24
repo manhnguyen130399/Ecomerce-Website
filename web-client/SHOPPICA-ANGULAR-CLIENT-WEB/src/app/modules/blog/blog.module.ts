@@ -21,7 +21,6 @@ import { QuillModule } from 'ngx-quill';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { LoaderModule } from '@shared/modules/loader/loader.module';
 import { CommentsModule } from '@shared/modules/comments/comments.module';
-import { LeaveCommentModule } from '@shared/modules/leave-comment/leave-comment.module';
 
 
 @NgModule({
@@ -46,7 +45,6 @@ import { LeaveCommentModule } from '@shared/modules/leave-comment/leave-comment.
     LoaderModule,
     NzButtonModule,
     CommentsModule,
-    LeaveCommentModule,
     NzIconModule.forChild(shareIcons),
     QuillModule.forRoot(),
     RouterModule.forChild(blogRoutes)

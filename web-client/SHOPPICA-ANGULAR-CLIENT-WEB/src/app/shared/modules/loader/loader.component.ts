@@ -10,6 +10,7 @@ import { Loader } from './loader';
 export class LoaderComponent implements OnInit {
   @Input() id = 'global';
   @Input() background = '#ffffff';
+  @Input() flexStart = false;
   show: boolean;
   constructor(
     private readonly loaderService: LoaderService

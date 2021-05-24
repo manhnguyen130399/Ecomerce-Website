@@ -38,10 +38,13 @@ export class ProductService {
     );
   }
 
-  getProductBestSellerByStore(id?: number) {
+  getProductBestSellerByStore(pageSize?: number, id?: number) {
     let params = new HttpParams();
     if (id) {
       params = params.append('storeId', id.toString());
+    }
+    if (pageSize) {
+      params = params.append('pageSize', pageSize.toString());
     }
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/best-seller`, { params }).pipe(catchError(error => {
       return of(error.error);

@@ -97,7 +97,7 @@ export class AddressComponent implements OnInit {
     this.ghnService.getWards(districtID).subscribe(res => {
       if (res.code === 200) {
         this.listWard = res.data;
-        const ward = this.wardSelectedId !== 0 ? this.listWard.find(x => x.WardCode === this.wardSelectedId) : this.listWard[0];
+        const ward = this.wardSelectedId !== 0 ? this.listWard.find(x => x.WardCode == this.wardSelectedId) : this.listWard[0];
         this.addressForm.controls.ward.setValue(ward);
         this.wardSelectedId = 0;
       }

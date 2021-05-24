@@ -3,7 +3,7 @@
     <div class="title">Blog Categories</div>
     <div class="content">
       <ul *ngFor="let item of categories">
-        <li class="text-hover" (click)="addNewItem(item)" >+ {{ item | titlecase }}</li>
+        <li class="text-hover" (click)="filterChange(item)">+ {{ item | titlecase }}</li>
       </ul>
     </div>
   </div>
@@ -12,28 +12,22 @@
     <div class="title">Recent Post</div>
     <div class="content">
       <div *ngFor="let blog of listBlog" class="single-post flex">
-        <div (click)="viewItem(blog.id)">
-          <div class="post_image">
-            <img [src]="blog.image" alt="" />
-          </div>
-          <div class="post_info">
-            <div class="info_title text-hover">{{ blog.title }}</div>
-            <div class="info_date">{{ blog.created_at | date: "medium" }}</div>
-          </div>
+        <div class="post_image">
+          <img (click)="viewItem(blog.id)" [src]="blog.image" alt="" />
+        </div>
+        <div class="post_info">
+          <div (click)="viewItem(blog.id)" class="info_title text-hover">{{ blog.title }}</div>
+          <div class="info_date">{{ blog.createdAt | date: "mediumDate" }}</div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="filter-section">
-    <div class="title">Sale Products</div>
+    <div class="title">Best Sellers</div>
     <div class="content">
-      <div *ngFor="let item of listCartItem" class="cart-item">
-        <app-cart-item
-          [cartItemOptions]="cartItemOptions"
-          (deleteItemEvent)="deleteItem($event)"
-          [item]="item"
-        >
+      <div *ngFor="let item of bestSellerProducts" class="cart-item">
+        <app-cart-item [cartItemOptions]="cartItemOptions" [item]="item">
         </app-cart-item>
       </div>
     </div>
@@ -42,9 +36,9 @@
   <div class="filter-section">
     <div class="title">Blog Tags</div>
     <div class="content blog-tag">
-      <ul *ngFor="let item of categories">
-        <li>
-          <a (click)="addNewItem(item)">{{ item | titlecase }}</a>
+      <ul>
+        <li *ngFor="let item of categories">
+          <a (click)="filterChange(item)">{{ item | titlecase }}</a>
         </li>
       </ul>
     </div>

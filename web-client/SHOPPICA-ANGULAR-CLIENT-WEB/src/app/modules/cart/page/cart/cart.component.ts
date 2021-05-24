@@ -1,3 +1,4 @@
+import { ProductService } from './../../../../core/services/product/product.service';
 import { LoaderService } from './../../../../shared/modules/loader/loader.service';
 import { finalize, delay } from 'rxjs/operators';
 import { CartService } from './../../../../core/services/cart/cart.service';
@@ -42,7 +43,8 @@ export class CartComponent implements OnInit {
   };
   constructor(
     private readonly shareService: ShareService,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    private readonly productService: ProductService
   ) { }
 
   ngOnInit(): void {
@@ -55,6 +57,8 @@ export class CartComponent implements OnInit {
       }
 
     });
+
+    this.getRecommenderProducts();
   }
 
   loadingEvent(isLoad: boolean) {
@@ -71,5 +75,11 @@ export class CartComponent implements OnInit {
 
   changeQuantity(priceChange: number) {
     this.cart.total -= priceChange;
+  }
+
+  getRecommenderProducts() {
+    this.productService.getProductRecommender().subscribe(res => {
+      this.listProduct = res;
+    })
   }
 }

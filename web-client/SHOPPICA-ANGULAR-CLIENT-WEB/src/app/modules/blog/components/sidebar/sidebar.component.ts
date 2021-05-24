@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+import { ProductService } from './../../../../core/services/product/product.service';
 
 import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
@@ -14,9 +16,8 @@ export class SidebarComponent implements OnInit {
 
   listBlog: Blog[];
   categories: string[];
-  @Output() newItemEvent = new EventEmitter<string>();
 
-  listCartItem: CartItem[] = [
+  bestSellerProducts: CartItem[] = [
     {
       id: 1,
       productName: 'T-shirt product',
@@ -43,10 +44,31 @@ export class SidebarComponent implements OnInit {
     showPrice: true,
     size: 'small'
   };
-  constructor(private readonly blogService: BlogService, private readonly router: Router) { }
+
+  constructor(
+    private readonly blogService: BlogService,
+    private readonly router: Router,
+    private readonly productService: ProductService
+  ) { }
 
   ngOnInit(): void {
     this.loadDataForSideBar();
+    this.loadBestSellerProduct();
+  }
+
+  loadBestSellerProduct() {
+    this.productService.getProductBestSellerByStore(3).subscribe(res => {
+      if (res.code === 'OK') {
+        this.bestSellerProducts = res.data.map(p => {
+          return {
+            productId: p.id,
+            productName: p.productName,
+            price: p.price,
+            image: p.productImages[0]?.image,
+          }
+        });
+      }
+    });
   }
 
   loadDataForSideBar() {
@@ -60,8 +82,15 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/blog/detail/', id]);
   }
 
-  addNewItem(value: string) {
-    this.newItemEvent.emit(value);
+  filterChange(value: string) {
+    const categoryName = value.split(' ')[0];
+    this.router.navigate(['/blog'],
+      {
+        queryParams: {
+          category: categoryName
+        },
+        queryParamsHandling: 'merge'
+      });
   }
 
 }
