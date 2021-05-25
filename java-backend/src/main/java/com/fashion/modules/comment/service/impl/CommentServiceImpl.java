@@ -98,36 +98,82 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		commentRepo.deleteById(id);
 	}
 
-	@SuppressWarnings("null")
 	@Override
 	@Transactional
-	public CommentVM likeComment(final Integer id, final boolean isLike, final int time) {
+	public CommentVM likeComment(final Integer id, final boolean isLike) {
 		final Comment comment = commentRepo.findOneById(id);
 		if (comment == null) {
 			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_COMMENT);
 		}
 		final UserLikeCommentId userLikeCommentId = new UserLikeCommentId(getUserContext().getAccountId(), id);
-		final boolean increment = time == 0;
 		UserComment userComment = userCommentRepo.findByUserLikeCommentId(userLikeCommentId);
-		if (userComment == null || userComment.getIsLike() != isLike) {
-			userComment = new UserComment();
-			userComment.setUserLikeCommentId(userLikeCommentId);
-			userComment.setIsLike(isLike);
-			userCommentRepo.save(userComment);
-			comment.setUserComment(java.util.Collections.singleton(userComment));
-			if (isLike) {
-				Integer oldLike = comment.getLike();
-				final boolean isLikeNull = oldLike == null;
-				comment.setLike(increment ? (isLikeNull ? 1 : ++oldLike) : (isLikeNull ? 0 : --oldLike));
-			} else {
-				Integer oldDislike = comment.getDislike();
-				final boolean isDislikeNull = oldDislike == null;
-				comment.setDislike(increment ? (isDislikeNull ? 1 : ++oldDislike) : (isDislikeNull ? 0 : --oldDislike));
-			}
+		final Integer currentLike = comment.getLike();
+		final Integer currentDislike = comment.getDislike();
+		if (userComment == null) {
+			userComment = updateCommentAndCreateUserComment(isLike, comment, userLikeCommentId, currentLike,
+					currentDislike);
 		} else {
-			throw new InvalidArgumentException(ErrorMessage.HAS_LIKE_COMMENT);
+			final boolean hasLiked = userComment.isLiked();
+			final boolean hasDisliked = userComment.isDisliked();
+			final boolean hasLikedAndNotDisliked = hasLiked && !hasDisliked;
+			final boolean hasDislikedAndNotLiked = !hasLiked && hasDisliked;
+			if (isLike) {
+				likeComment(comment, userComment, currentLike, currentDislike, hasLikedAndNotDisliked,
+						hasDislikedAndNotLiked);
+			} else {
+				dislikeComment(comment, userComment, currentLike, currentDislike, hasLikedAndNotDisliked,
+						hasDislikedAndNotLiked);
+			}
 		}
+		userCommentRepo.save(userComment);
+		comment.setUserComment(java.util.Collections.singleton(userComment));
 		return convertToVM(comment);
+	}
+
+	private UserComment updateCommentAndCreateUserComment(final boolean isLike, final Comment comment,
+			final UserLikeCommentId userLikeCommentId, final Integer currentLike, final Integer currentDislike) {
+		final UserComment userComment = new UserComment();
+		userComment.setUserLikeCommentId(userLikeCommentId);
+		if (isLike) {
+			comment.setLike(currentLike + 1);
+			userComment.setLiked(isLike);
+		} else {
+			comment.setDislike(currentDislike + 1);
+			userComment.setDisliked(isLike);
+		}
+		return userComment;
+	}
+
+	private void dislikeComment(final Comment comment, UserComment userComment, final Integer currentLike,
+			final Integer currentDislike, final boolean hasLikedAndNotDisliked, final boolean hasDislikedAndNotLiked) {
+		if (hasDislikedAndNotLiked) {
+			userComment.setDisliked(false);
+			comment.setDislike(currentDislike - 1);
+		} else if (hasLikedAndNotDisliked) {
+			userComment.setDisliked(true);
+			userComment.setLiked(false);
+			comment.setDislike(currentDislike + 1);
+			comment.setLike(currentLike - 1);
+		} else {
+			userComment.setDisliked(true);
+			comment.setDislike(currentDislike + 1);
+		}
+	}
+
+	private void likeComment(final Comment comment, UserComment userComment, final Integer currentLike,
+			final Integer currentDislike, final boolean hasLikedAndNotDisliked, final boolean hasDislikedAndNotLiked) {
+		if (hasLikedAndNotDisliked) {
+			userComment.setLiked(false);
+			comment.setLike(currentLike - 1);
+		} else if (hasDislikedAndNotLiked) {
+			userComment.setLiked(true);
+			userComment.setDisliked(false);
+			comment.setLike(currentLike + 1);
+			comment.setDislike(currentDislike - 1);
+		} else {
+			userComment.setLiked(true);
+			comment.setLike(currentLike + 1);
+		}
 	}
 
 	@Override
@@ -146,6 +192,16 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 			comment.setRating(req.getRate());
 		}
 		return mapper.map(commentRepo.save(comment), CommentVM.class);
+	}
+
+	@Override
+	public boolean checkInteractive(Integer id, boolean isLike) {
+		final UserComment userComment = userCommentRepo
+				.findByUserLikeCommentId(new UserLikeCommentId(getUserContext().getAccountId(), id));
+		if (userComment == null) {
+			return false;
+		}
+		return isLike && userComment.isLiked() ? true : !isLike && userComment.isDisliked() ? true : false;
 	}
 
 }

@@ -7,14 +7,13 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class CommentService {
+export class CommentService  {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  likeComment(id: number, time: number, isLike: boolean) {
+  likeComment(id: number, isLike: boolean) {
     const params = new HttpParams()
-      .append('isLike', isLike.toString())
-      .append('time', time.toString());
+      .append('isLike', isLike.toString());
     return this.httpClient.get<Comment>(`${environment.productServiceUrl}/api/comment/${id}`, { params }).pipe(
       catchError((error) => {
         return of(error.error);
@@ -49,6 +48,13 @@ export class CommentService {
         return of(error.error);
       })
     );
+  }
+
+  checkInteractive(id: number, isLike: boolean):Promise<boolean> {
+    const params = new HttpParams().append('id', id.toString())
+      .append('isLike', isLike.toString());
+    return this.httpClient.get<boolean>(`${environment.productServiceUrl}/api/comment/interactive`, { params }
+    ).toPromise();
   }
 
 }

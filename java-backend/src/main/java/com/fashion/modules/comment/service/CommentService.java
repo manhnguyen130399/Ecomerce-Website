@@ -12,8 +12,10 @@ public interface CommentService {
 
 	void deleteComment(Integer id);
 
-	CommentVM likeComment(Integer id, boolean isLike, int time);
+	CommentVM likeComment(Integer id, boolean isLike);
 	
 	CommentVM rating(RatingReq req);
+	
+	boolean checkInteractive(Integer id, boolean isLike);
 
 }

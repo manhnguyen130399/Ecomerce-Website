@@ -4,6 +4,7 @@ import { CommentService } from './../../../../../core/services/comment/comment.s
 import { JwtService } from './../../../../../core/services/jwt/jwt.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Comment } from '@core/model/comment/comment';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-comment',
@@ -15,8 +16,6 @@ export class CommentComponent implements OnInit {
   @Input() comment: Comment;
   @Output() deleteCommentEvent = new EventEmitter<number>();
   accountId: number;
-  timeLike = 0;
-  timeDislike = 0;
   isShowEditInput = false;
   constructor(
     private readonly jwtService: JwtService,
@@ -45,59 +44,51 @@ export class CommentComponent implements OnInit {
     });
   }
 
-  like(id: number) {
+  async like(id: number) {
+    const liked = await this.commentService.checkInteractive(id, true);
     if (this.hasLogin()) {
-      if (this.timeDislike == 1) {
-        this.dislike(id);
-      }
-      if (this.timeLike == 0) {
-        this.updateLikeForComment(id, this.timeLike, true);
+      this.updateLikeForComment(id, true);
+      if (!liked["data"]) {
         this.comment.like++;
-        this.timeLike = 1;
       } else {
-        this.downLike(id);
+        this.comment.like--;
+      }
+      const disliked = await this.commentService.checkInteractive(id, false);
+      if (disliked["data"]) {
+        this.comment.dislike--;
       }
     }
   }
 
-  private downLike(id: number) {
-    this.updateLikeForComment(id, this.timeLike, true);
-    this.comment.like--;
-    this.timeLike = 0;
-  }
 
-  private updateLikeForComment(id: number, timeLike: number, isLike: boolean) {
-    this.commentService.likeComment(id, timeLike, isLike).subscribe((res) => {
+
+  private updateLikeForComment(id: number, isLike: boolean) {
+    this.commentService.likeComment(id, isLike).subscribe((res) => {
     });
   }
 
   private hasLogin() {
     if (!this.authService.isAuthenticated()) {
-      this.messageService.warning("123123");
+      this.messageService.warning("Login... please!");
       return false;
     }
     return true;
   }
 
-  dislike(id: number): void {
+  async dislike(id: number) {
+    const disliked = await this.commentService.checkInteractive(id, false);
     if (this.hasLogin()) {
-      if (this.timeLike == 1) {
-        this.downLike(id);
-      }
-      if (this.timeDislike == 0) {
-        this.updateLikeForComment(id, this.timeDislike, false);
+      this.updateLikeForComment(id, false);
+      if (!disliked["data"]) {
         this.comment.dislike++;
-        this.timeDislike = 1;
       } else {
-        this.downDislike(id);
+        this.comment.dislike--;
+      }
+      const liked = await this.commentService.checkInteractive(id, true);
+      if (liked["data"]) {
+        this.comment.like--;
       }
     }
-  }
-
-  private downDislike(id: number) {
-    this.updateLikeForComment(id, this.timeDislike, false);
-    this.comment.dislike--;
-    this.timeDislike = 0;
   }
 
 }
