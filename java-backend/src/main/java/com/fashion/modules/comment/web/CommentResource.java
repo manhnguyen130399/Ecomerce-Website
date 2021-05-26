@@ -39,20 +39,26 @@ public class CommentResource extends BaseResource {
 
 	@PutMapping(URL + "/{id}")
 	public ResponseEntity<Map<String, Object>> updateComment(@RequestBody final String content,
-			@PathVariable final Integer id) {
+			@PathVariable(required = true) final Integer id) {
 		return success(commentService.updateComment(content, id));
 	}
 
 	@DeleteMapping(URL + "/{id}")
-	public ResponseEntity<Map<String, Object>> deleteComment(@PathVariable final Integer id) {
+	public ResponseEntity<Map<String, Object>> deleteComment(@PathVariable(required = true) final Integer id) {
 		commentService.deleteComment(id);
 		return success(Constants.SUCCESS);
 	}
 
 	@GetMapping(URL + "/{id}")
-	public ResponseEntity<Map<String, Object>> like(@PathVariable final Integer id, @RequestParam final boolean isLike,
-			@RequestParam final int time) {
-		return success(commentService.likeComment(id, isLike, time));
+	public ResponseEntity<Map<String, Object>> like(@PathVariable(required = true) final Integer id,
+			@RequestParam(required = true) final boolean isLike) {
+		return success(commentService.likeComment(id, isLike));
+	}
+
+	@GetMapping(URL + "/interactive/{id}")
+	public ResponseEntity<Map<String, Object>> checkInteractiveComment(
+			@PathVariable(required = true) final Integer id) {
+		return success(commentService.checkInteractive(id));
 	}
 
 }

@@ -48,7 +48,6 @@ export class ProductCardComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.product !== undefined) {
-
       this.listSize = getListSize(changes.product.currentValue.productDetails);
       this.listColor = getListColor(changes.product.currentValue.productDetails);
       this.colorSelected = this.listColor[0];

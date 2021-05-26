@@ -1,18 +1,26 @@
 package com.fashion.modules.comment.service.impl;
 
+import java.util.Map;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.beust.jcommander.internal.Maps;
+import com.fashion.commons.constants.Constants;
+import com.fashion.commons.constants.ErrorMessage;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.model.AccountVM;
 import com.fashion.modules.blog.domain.Blog;
 import com.fashion.modules.blog.repository.BlogRepository;
 import com.fashion.modules.comment.domain.Comment;
+import com.fashion.modules.comment.domain.UserComment;
+import com.fashion.modules.comment.domain.UserLikeCommentId;
 import com.fashion.modules.comment.model.CommentReq;
 import com.fashion.modules.comment.model.CommentVM;
 import com.fashion.modules.comment.repository.CommentRepository;
+import com.fashion.modules.comment.repository.UserCommentRepository;
 import com.fashion.modules.comment.service.CommentService;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.repository.ProductRepository;
@@ -34,6 +42,9 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 	@Autowired
 	private IAccountService accountService;
 
+	@Autowired
+	private UserCommentRepository userCommentRepo;
+
 	@Override
 	@Transactional
 	public CommentVM createComment(final CommentReq req) {
@@ -47,17 +58,18 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		if (productId != null) {
 			final Product product = productRepo.getOne(productId);
 			if (product == null) {
-				throw new InvalidArgumentException(" Can't found product ");
+				throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_PRODUCT);
 			}
 			comment.setProduct(product);
+			comment.setRating(req.getRating());
 		} else if (blogId != null) {
 			final Blog blog = blogRepo.findOneById(blogId);
 			if (blog == null) {
-				throw new InvalidArgumentException(" Can't found blog ");
+				throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_BLOG);
 			}
 			comment.setBlog(blog);
 		} else {
-			throw new InvalidArgumentException(" Can't create comment. Because can't found product or blog ");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_PRODUCT_AND_BLOG);
 		}
 
 		return convertToVM(commentRepo.save(comment));
@@ -74,10 +86,10 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 
 	private void checkUserComment(final Comment comment) {
 		if (comment == null) {
-			throw new InvalidArgumentException(" Can't found comment.");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_COMMENT);
 		}
 		if (comment.getAccountId() != getUserContext().getAccountId()) {
-			throw new InvalidArgumentException(" You can't owner this comment.");
+			throw new InvalidArgumentException(ErrorMessage.NOT_OWNER_COMMENT);
 		}
 	}
 
@@ -91,22 +103,96 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 
 	@Override
 	@Transactional
-	public CommentVM likeComment(final Integer id, final boolean isLike, final int time) {
+	public CommentVM likeComment(final Integer id, final boolean isLike) {
 		final Comment comment = commentRepo.findOneById(id);
 		if (comment == null) {
-			throw new InvalidArgumentException(" Can't found comment.");
+			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_COMMENT);
 		}
-		final boolean increment = time == 0;
-		if (isLike) {
-			Integer oldLike = comment.getLike();
-			final boolean isLikeNull = oldLike == null;
-			comment.setLike(increment ? (isLikeNull ? 1 : ++oldLike) : (isLikeNull ? 0 : --oldLike));
+		final UserLikeCommentId userLikeCommentId = new UserLikeCommentId(getUserContext().getAccountId(), id);
+		UserComment userComment = userCommentRepo.findByUserLikeCommentId(userLikeCommentId);
+		final Integer currentLike = comment.getLike();
+		final Integer currentDislike = comment.getDislike();
+		if (userComment == null) {
+			userComment = updateCommentAndCreateUserComment(isLike, comment, userLikeCommentId, currentLike,
+					currentDislike);
 		} else {
-			Integer oldDislike = comment.getDislike();
-			final boolean isDislikeNull = oldDislike == null;
-			comment.setDislike(increment ? (isDislikeNull ? 1 : ++oldDislike) : (isDislikeNull ? 0 : --oldDislike));
+			final boolean hasLiked = userComment.isLiked();
+			final boolean hasDisliked = userComment.isDisliked();
+			final boolean hasLikedAndNotDisliked = hasLiked && !hasDisliked;
+			final boolean hasDislikedAndNotLiked = !hasLiked && hasDisliked;
+			if (isLike) {
+				likeComment(comment, userComment, currentLike, currentDislike, hasLikedAndNotDisliked,
+						hasDislikedAndNotLiked);
+			} else {
+				dislikeComment(comment, userComment, currentLike, currentDislike, hasLikedAndNotDisliked,
+						hasDislikedAndNotLiked);
+			}
 		}
+		userCommentRepo.save(userComment);
+		comment.setUserComment(java.util.Collections.singleton(userComment));
 		return convertToVM(comment);
+	}
+
+	private UserComment updateCommentAndCreateUserComment(final boolean isLike, final Comment comment,
+			final UserLikeCommentId userLikeCommentId, final Integer currentLike, final Integer currentDislike) {
+		final UserComment userComment = new UserComment();
+		userComment.setUserLikeCommentId(userLikeCommentId);
+		if (isLike) {
+			comment.setLike(currentLike + 1);
+			userComment.setLiked(isLike);
+		} else {
+			comment.setDislike(currentDislike + 1);
+			userComment.setDisliked(isLike);
+		}
+		return userComment;
+	}
+
+	private void dislikeComment(final Comment comment, UserComment userComment, final Integer currentLike,
+			final Integer currentDislike, final boolean hasLikedAndNotDisliked, final boolean hasDislikedAndNotLiked) {
+		if (hasDislikedAndNotLiked) {
+			userComment.setDisliked(false);
+			comment.setDislike(currentDislike - 1);
+		} else if (hasLikedAndNotDisliked) {
+			userComment.setDisliked(true);
+			userComment.setLiked(false);
+			comment.setDislike(currentDislike + 1);
+			comment.setLike(currentLike - 1);
+		} else {
+			userComment.setDisliked(true);
+			comment.setDislike(currentDislike + 1);
+		}
+	}
+
+	private void likeComment(final Comment comment, UserComment userComment, final Integer currentLike,
+			final Integer currentDislike, final boolean hasLikedAndNotDisliked, final boolean hasDislikedAndNotLiked) {
+		if (hasLikedAndNotDisliked) {
+			userComment.setLiked(false);
+			comment.setLike(currentLike - 1);
+		} else if (hasDislikedAndNotLiked) {
+			userComment.setLiked(true);
+			userComment.setDisliked(false);
+			comment.setLike(currentLike + 1);
+			comment.setDislike(currentDislike - 1);
+		} else {
+			userComment.setLiked(true);
+			comment.setLike(currentLike + 1);
+		}
+	}
+
+	@Override
+	@Transactional
+	public Map<String, Boolean> checkInteractive(final Integer id) {
+		final UserComment userComment = userCommentRepo
+				.findByUserLikeCommentId(new UserLikeCommentId(getUserContext().getAccountId(), id));
+		final Map<String, Boolean> res = Maps.newHashMap();
+		if (userComment == null) {
+			res.put(Constants.LIKED, false);
+			res.put(Constants.DISLIKED, false);
+		} else {
+			res.put(Constants.LIKED, userComment.isLiked());
+			res.put(Constants.DISLIKED, userComment.isDisliked());
+		}
+		return res;
 	}
 
 }

@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
+import com.fashion.modules.product.model.ProductDetailReq;
 import com.fashion.modules.product.model.ProductFilterRequest;
 import com.fashion.modules.product.model.ProductReq;
 import com.fashion.modules.product.model.ProductRes;
@@ -125,5 +126,11 @@ public class ProductResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam final String keyword) {
 		return success(productService.searchProductByKeyword(page, pageSize, keyword));
+	}
+	
+	@PostMapping(URL + "/update-quantity-product-detail")
+	public ResponseEntity<Map<String, Object>> updateQuantityProductDetail(
+			@RequestBody final List<ProductDetailReq> req) {
+		return success(productService.updateQuantityProductDetail(req));
 	}
 }

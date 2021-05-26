@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -58,6 +59,7 @@ import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.product.domain.ProductImage;
 import com.fashion.modules.product.model.BestSellerData;
 import com.fashion.modules.product.model.BestSellerRes;
+import com.fashion.modules.product.model.ProductDetailReq;
 import com.fashion.modules.product.model.ProductDetailVM;
 import com.fashion.modules.product.model.ProductFilterRequest;
 import com.fashion.modules.product.model.ProductImageVM;
@@ -485,5 +487,29 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		return new PageImpl<ProductVM>(Collections.emptyList());
 
 	}
+
+	@Override
+	@Transactional
+	public String updateQuantityProductDetail(final List<ProductDetailReq> req) {
+		final Set<Integer> productDetailIds = req.stream().map(it -> it.getProductDetailID())
+				.collect(Collectors.toSet());
+		final Map<Integer, ProductDetail> productDetails = productDetailRepo.getProductDetailByIds(productDetailIds)
+				.stream().collect(Collectors.toMap(ProductDetail::getId, Function.identity()));
+		final List<ProductDetail> newList = Lists.newArrayList();
+		req.stream().forEach(it -> {
+			final ProductDetail proDetail = productDetails.get(it.getProductDetailID());
+			final Integer currentQuantity = proDetail.getQuantity();
+			final Integer saleQuantity = it.getQuantity();
+			if (currentQuantity >= saleQuantity) {
+				proDetail.setQuantity(currentQuantity - saleQuantity);
+			} else {
+				throw new InvalidArgumentException(ErrorMessage.NOT_ENOUGH + proDetail.getProduct().getProductName());
+			}
+			newList.add(proDetail);
+		});
+		productDetailRepo.saveAll(newList);
+		return Constants.SUCCESS;
+	}
+	
 
 }

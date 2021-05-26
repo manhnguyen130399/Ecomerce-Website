@@ -14,5 +14,12 @@ public class ErrorMessage {
 	public static final String INVALID_PROMOTION = " Invalid code ";
 	public static final String DUPLICATED_CODE = " Duplicated code ";
 	public static final String NOT_FOUND_STORE = " Not found store ";
+	public static final String NOT_FOUND_PRODUCT = " Not found product";
+	public static final String NOT_FOUND_BLOG = " Not found blog";
+	public static final String NOT_FOUND_PRODUCT_AND_BLOG = " Not found product and blog";
+	public static final String NOT_FOUND_COMMENT = " Not found comment";
+	public static final String NOT_OWNER_COMMENT = "Not owner comment";
+	public static final String HAS_LIKE_COMMENT = "Has like comment";
+	public static final String NOT_ENOUGH =" Not enough quantity with product name by: ";
 
 }
