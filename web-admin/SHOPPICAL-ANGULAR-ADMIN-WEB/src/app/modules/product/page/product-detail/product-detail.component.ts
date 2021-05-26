@@ -76,6 +76,7 @@ export class ProductDetailComponent implements OnInit {
           this.productForm.controls.price.setValue(product.price);
           this.productForm.controls.categoryId.setValue(product.categoryId);
           this.productForm.controls.brandId.setValue(product.brandId);
+          this.productForm.controls.description.setValue(product.description);
 
           product.productImages.forEach((productImage, index) => {
             let file = {
@@ -104,6 +105,7 @@ export class ProductDetailComponent implements OnInit {
       price: [null, [Validators.required, Validators.min(0)]],
       brandId: [null, Validators.required],
       categoryId: [null, Validators.required],
+      description:[null]
     })
   }
 
@@ -138,6 +140,7 @@ export class ProductDetailComponent implements OnInit {
       id: null,
       categoryName: null,
       brandName: null,
+      description: this.productForm.get("description").value,
       productName: this.productForm.get("productName").value,
       price: this.productForm.get("price").value,
       categoryId: this.productForm.get("categoryId").value,

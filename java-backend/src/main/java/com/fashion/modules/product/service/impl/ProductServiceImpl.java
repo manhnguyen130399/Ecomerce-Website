@@ -132,6 +132,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		product.setPrice(req.getPrice());
 		product.setStore(store);
 		product.setProductName(req.getProductName());
+		product.setDescription(req.getDescription());
 		final Brand brand = brandRepo.findOneByIdAndStoreId(req.getBrandId(), storeId);
 		if (brand == null) {
 			throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_BRAND);
@@ -180,6 +181,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		product.setPrice(req.getPrice());
 		product.setStore(store);
 		product.setProductName(req.getProductName());
+		product.setDescription(req.getDescription());
 		final List<String> productImages = req.getImages();
 		if (CollectionUtils.isNotEmpty(productImages)) {
 			product.setProductImages(appendProductImages(req, product));
@@ -490,6 +492,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
+	@CacheEvict(value = Constants.PRODUCTS, allEntries = true)
 	public String updateQuantityProductDetail(final List<ProductDetailReq> req) {
 		final Set<Integer> productDetailIds = req.stream().map(it -> it.getProductDetailID())
 				.collect(Collectors.toSet());
