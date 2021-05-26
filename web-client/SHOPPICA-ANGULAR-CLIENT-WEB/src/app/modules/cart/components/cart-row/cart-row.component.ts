@@ -1,3 +1,4 @@
+import { ShareService } from '@core/services/share/share.service';
 import { CartService } from './../../../../core/services/cart/cart.service';
 import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
 import { CartItem } from '@core/model/cart/cart-item';
@@ -15,15 +16,16 @@ export class CartRowComponent implements OnInit {
   @Input() item: CartItem;
   @Input() mode: string;
   @Output() isLoading = new EventEmitter<boolean>();
-  @Output() deleteItemEvent = new EventEmitter<CartRequest>();
-  @Output() changeQuantityEvent = new EventEmitter<number>();
   cartItemOptions: CartItemOptions = {
     showActions: false,
     showSize: true,
     showColor: true,
   };
 
-  constructor(private readonly cartService: CartService) { }
+  constructor(
+    private readonly cartService: CartService,
+    private readonly shareService: ShareService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -39,10 +41,6 @@ export class CartRowComponent implements OnInit {
     this.isLoading.emit(isLoad);
   }
 
-  deleteItem(cartDeleted: CartRequest) {
-    this.deleteItemEvent.emit(cartDeleted);
-  }
-
   changeQuantity(quantity: number) {
     const request: CartRequest = {
       productDetailId: this.item.productDetailId,
@@ -56,8 +54,8 @@ export class CartRowComponent implements OnInit {
       )
       .subscribe(res => {
         if (res.isSuccessed) {
-          this.changeQuantityEvent.emit((this.item.quantity - quantity) * this.item.price);
           this.item.quantity = quantity;
+          this.shareService.cartEmitEvent(res.data);
         }
       });
   }

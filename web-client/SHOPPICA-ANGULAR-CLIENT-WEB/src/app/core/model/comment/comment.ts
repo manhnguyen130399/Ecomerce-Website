@@ -7,4 +7,5 @@ export interface Comment {
   like: number;
   dislike: number;
   accountId: number;
+  rating: number;
 }

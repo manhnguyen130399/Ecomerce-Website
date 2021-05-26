@@ -18,9 +18,8 @@ import { CartRequest } from '@core/model/cart/cart-request';
 export class CartComponent implements OnInit {
   cart: Cart;
   initialLoading = true;
-  listProduct: Product[] = [
-
-  ];
+  disableGotoCheckout = false;
+  listProduct: Product[] = [];
   customOptions: OwlOptions = {
     loop: false,
     autoplay: true,
@@ -54,6 +53,7 @@ export class CartComponent implements OnInit {
         this.cart = cart;
         this.loaderService.hideLoader('cart-page');
         this.initialLoading = false;
+        this.disableGotoCheckout = this.cart.cartItems.filter(x => x.quantity <= x.available).length == 0
       }
 
     });
@@ -65,16 +65,6 @@ export class CartComponent implements OnInit {
     isLoad
       ? this.loaderService.showLoader('cart-item')
       : this.loaderService.hideLoader('cart-item');
-  }
-
-  deleteItem(cartDeleted: CartRequest) {
-    this.cart.total -= cartDeleted.quantity * cartDeleted.price;
-    this.cart.cartItems = this.cart.cartItems.filter(c => c.productDetailId != cartDeleted.productDetailId);
-    this.shareService.changeNumCartItemEvent(this.cart.cartItems.length);
-  }
-
-  changeQuantity(priceChange: number) {
-    this.cart.total -= priceChange;
   }
 
   getRecommenderProducts() {

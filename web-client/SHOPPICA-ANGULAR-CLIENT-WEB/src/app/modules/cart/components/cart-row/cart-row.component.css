@@ -1,5 +1,11 @@
 .cart-row {
+  position: relative;
   border-bottom: 1px solid rgb(244, 244, 244);
+}
+
+.item-disable {
+  color: red;
+  font-size: 22px;
 }
 
 @media (max-width: 768px) {

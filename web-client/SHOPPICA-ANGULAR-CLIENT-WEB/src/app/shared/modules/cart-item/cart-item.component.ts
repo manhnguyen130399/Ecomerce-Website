@@ -1,3 +1,4 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { ModalService } from './../../../core/services/modal/modal.service';
 import { Router } from '@angular/router';
 import { OldCartItem } from './../../../core/model/cart/old-cart-item';
@@ -19,15 +20,13 @@ export class CartItemComponent implements OnInit {
 
   @Input() item: CartItem;
   @Input() cartItemOptions: CartItemOptions;
-  @Output() deleteItemEvent = new EventEmitter<CartRequest>();
-  @Output() changeQuantityEvent = new EventEmitter<number>();
   @Output() loadingEvent = new EventEmitter<boolean>();
   constructor(
     private readonly cartService: CartService,
     private readonly shareService: ShareService,
     private readonly productService: ProductService,
     private readonly modalService: ModalService,
-    private readonly router: Router
+    private readonly router: Router,
   ) { }
   ngOnInit(): void {
 
@@ -41,10 +40,11 @@ export class CartItemComponent implements OnInit {
   }
 
   changeQuantity(quantity: number) {
+
     const request: CartRequest = {
       productDetailId: this.item.productDetailId,
       price: this.item.price,
-      quantity
+      quantity: quantity
     };
     this.loadingEvent.emit(true);
     this.cartService.changeQuantity(request)
@@ -53,10 +53,10 @@ export class CartItemComponent implements OnInit {
       )
       .subscribe(res => {
         if (res.isSuccessed) {
-          this.changeQuantityEvent.emit((this.item.quantity - quantity) * this.item.price);
           this.item.quantity = quantity;
-
+          this.shareService.cartEmitEvent(res.data);
         }
+
       });
   }
 
@@ -73,12 +73,7 @@ export class CartItemComponent implements OnInit {
       )
       .subscribe(res => {
         if (res.isSuccessed) {
-          const body: CartRequest = {
-            productDetailId: this.item.productDetailId,
-            quantity: this.item.quantity,
-            price: this.item.price,
-          };
-          this.deleteItemEvent.emit(body);
+          this.shareService.cartEmitEvent(res.data);
         }
 
       });
