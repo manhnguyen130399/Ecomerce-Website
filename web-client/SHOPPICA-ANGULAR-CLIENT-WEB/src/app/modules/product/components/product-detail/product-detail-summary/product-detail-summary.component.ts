@@ -1,9 +1,10 @@
+import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 import { ModalService } from './../../../../../core/services/modal/modal.service';
 import { Router } from '@angular/router';
 import { ProductService } from './../../../../../core/services/product/product.service';
 import { ShareService } from './../../../../../core/services/share/share.service';
 import { CartService } from './../../../../../core/services/cart/cart.service';
-import { getProductDetailId } from '@core/model/cart/cart-helper';
+import { getAvailableQuantity, getInCartQuantity, getProductDetailId } from '@core/model/cart/cart-helper';
 import { CartRequest } from './../../../../../core/model/cart/cart-request';
 import { environment } from '@env';
 import { GhnService } from '@core/services/ghn/ghn.service';
@@ -18,6 +19,7 @@ import { Store } from '@core/model/store/store';
 import { finalize } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import { getListColor, getListSize } from '@core/model/product/product-helper';
+import { Cart } from '@core/model/cart/cart';
 
 @Component({
   selector: 'app-product-detail-summary',
@@ -34,6 +36,7 @@ export class ProductDetailSummaryComponent implements OnInit {
   listSize: Size[] = [];
   colorSelected: Color;
   sizeSelected: Size;
+  cart: Cart;
   listObservable: Observable<any>[] = [];
   date = new Date();
   shippingFee: number;
@@ -51,10 +54,15 @@ export class ProductDetailSummaryComponent implements OnInit {
     private readonly shareService: ShareService,
     private readonly productService: ProductService,
     private readonly router: Router,
-    private readonly modalService: ModalService
+    private readonly modalService: ModalService,
+    private readonly messageService: NzMessageService
   ) { }
 
   ngOnInit(): void {
+    this.shareService.cartEmitted$.subscribe((cart) => {
+      this.cart = cart;
+    });
+
     this.shareService.wishlistEmitted$.subscribe(listIds => {
       this.listWishIds = listIds;
       if (listIds.indexOf(this.product?.id) !== -1) {
@@ -135,6 +143,16 @@ export class ProductDetailSummaryComponent implements OnInit {
   addToCart() {
     if (!this.authService.isAuthenticated()) {
       this.modalService.openLoginDrawerEvent();
+      return;
+    }
+    const productDetailId = getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id)
+    const availableQuantity = getAvailableQuantity(this.product.productDetails, productDetailId);
+    const inCartQuantity = getInCartQuantity(this.cart.cartItems, productDetailId);
+
+    if (this.quantity + inCartQuantity > availableQuantity) {
+      let errorStr = `${this.product.productName}(${this.colorSelected.colorName} - ${this.sizeSelected.sizeName}) only ${availableQuantity} product is available.`;
+      errorStr += inCartQuantity > 0 ? `Your cart has ${inCartQuantity} product.` : "";
+      this.messageService.error(errorStr)
       return;
     }
 

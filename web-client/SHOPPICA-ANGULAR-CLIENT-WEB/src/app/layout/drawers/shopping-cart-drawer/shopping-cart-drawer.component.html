@@ -31,8 +31,7 @@
           <app-loader [id]="'shoppingCart'" [background]="'#ffffffab'"></app-loader>
           <div class="cart-items custom-scroll-bar">
             <app-cart-item (loadingEvent)="loadingEvent($event)" [cartItemOptions]="cartItemOptions"
-              *ngFor="let item of cart.cartItems" (changeQuantityEvent)="changeQuantity($event)"
-              (deleteItemEvent)="deleteItem($event)" [item]="item">
+              *ngFor="let item of cart.cartItems" [item]="item">
             </app-cart-item>
           </div>
         </div>
@@ -45,8 +44,8 @@
           <div class="action">
             <button (click)="viewCart()" nzShape="round" nzSize="large" nz-button [nzType]="'default'">VIEW
               CART</button>
-            <button (click)="viewCheckout()" nzShape="round" nzSize="large" nz-button class="drawer-form-button "
-              [nzType]="'primary'" nz-button>CHECK OUT</button>
+            <button (click)="viewCheckout()" [disabled]="disableGotoCheckout" nzShape="round" nzSize="large" nz-button
+              class="drawer-form-button " [nzType]="'primary'" nz-button>CHECK OUT</button>
           </div>
           <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
         </div>

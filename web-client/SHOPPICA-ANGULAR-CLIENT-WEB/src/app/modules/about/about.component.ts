@@ -17,7 +17,8 @@ export class AboutComponent implements OnInit {
     like: null,
     createdAt: null,
     dislike: null,
-    accountId: null
+    accountId: null,
+    rating: 2
   };
 
   listComment: Comment[] = [

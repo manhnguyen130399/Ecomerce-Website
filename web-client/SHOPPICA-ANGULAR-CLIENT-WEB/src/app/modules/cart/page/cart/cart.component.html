@@ -46,8 +46,7 @@
         <app-loader [background]="'#ffffffab'" [id]="'cart-item'"></app-loader>
         <div *ngIf="cart" class="cart-content">
           <div *ngFor="let item of cart.cartItems" class="cart-item">
-            <app-cart-row (changeQuantityEvent)="changeQuantity($event)" (deleteItemEvent)="deleteItem($event)"
-              (isLoading)="loadingEvent($event)" [mode]="'cart'" [item]="item"></app-cart-row>
+            <app-cart-row (isLoading)="loadingEvent($event)" [mode]="'cart'" [item]="item"></app-cart-row>
           </div>
         </div>
       </div>
@@ -64,7 +63,8 @@
 
           </div>
           <div class="flex  al-flex-end fd-column">
-            <button [routerLink]="['/checkout/information']" class="checkout-btn" nz-button nzType="primary">CHECK
+            <button [routerLink]="['/checkout/information']" [disabled]="disableGotoCheckout" class="checkout-btn"
+              nz-button nzType="primary">CHECK
               OUT</button>
             <img class="trust-img" src="/assets/images/trust_img2_360x.png" alt="">
           </div>

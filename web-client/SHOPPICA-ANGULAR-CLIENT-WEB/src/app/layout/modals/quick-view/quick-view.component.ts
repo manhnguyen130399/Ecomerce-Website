@@ -1,3 +1,4 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { ModalService } from './../../../core/services/modal/modal.service';
 import { AuthService } from './../../../core/services/auth/auth.service';
 import { ProductService } from './../../../core/services/product/product.service';
@@ -13,8 +14,9 @@ import { Product } from '../../../core/model/product/product';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductImage } from '@core/model/product/product-image';
 import { getListColor, getListSize } from '@core/model/product/product-helper';
-import { getProductDetailId } from '@core/model/cart/cart-helper';
+import { getAvailableQuantity, getInCartQuantity, getProductDetailId } from '@core/model/cart/cart-helper';
 import { finalize } from 'rxjs/operators';
+import { Cart } from '@core/model/cart/cart';
 
 @Component({
   selector: 'app-quick-view',
@@ -30,6 +32,7 @@ export class QuickViewComponent implements OnInit {
   colorSelected: Color;
   sizeSelected: Size;
   product: Product;
+  cart: Cart;
   isAddingToCart = false;
   isChangeWishList = false;
   inWishList = false;
@@ -55,10 +58,15 @@ export class QuickViewComponent implements OnInit {
     private readonly cartService: CartService,
     private readonly productService: ProductService,
     private readonly authService: AuthService,
-    private readonly modalService: ModalService
+    private readonly modalService: ModalService,
+    private readonly messageService: NzMessageService
   ) { }
 
   ngOnInit(): void {
+    this.shareService.cartEmitted$.subscribe((cart) => {
+      this.cart = cart;
+    });
+
     this.modalService.openQuickViewEmitted$.subscribe((product) => {
       this.product = product;
       this.isVisible = true;
@@ -138,11 +146,23 @@ export class QuickViewComponent implements OnInit {
       return;
     }
 
+    const productDetailId = getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id)
+    const availableQuantity = getAvailableQuantity(this.product.productDetails, productDetailId);
+    const inCartQuantity = getInCartQuantity(this.cart.cartItems, productDetailId);
+
+    if (this.quantity + inCartQuantity > availableQuantity) {
+      let errorStr = `${this.product.productName}(${this.colorSelected.colorName} - ${this.sizeSelected.sizeName}) only ${availableQuantity} product is available.`;
+      errorStr += inCartQuantity > 0 ? `Your cart has ${inCartQuantity} product.` : "";
+      this.messageService.error(errorStr)
+      return;
+    }
+
     const body: CartRequest = {
-      productDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id),
+      productDetailId: productDetailId,
       quantity: this.quantity,
       price: this.product.price,
     };
+
     this.isAddingToCart = true;
     this.cartService.addToCart(body)
       .pipe(

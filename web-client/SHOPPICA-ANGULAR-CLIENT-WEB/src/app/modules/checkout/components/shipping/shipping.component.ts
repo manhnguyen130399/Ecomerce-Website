@@ -58,7 +58,7 @@ export class ShippingComponent implements OnInit {
       listStoreId.forEach(id => {
         const cartGroup: CartGroup = {
           storeId: id,
-          cartItems: this.cart.cartItems.filter(x => x.storeId == id)
+          cartItems: this.cart.cartItems.filter(x => x.storeId == id && x.quantity <= x.available)
         };
         this.cartGroups.push(cartGroup);
       });
@@ -67,9 +67,10 @@ export class ShippingComponent implements OnInit {
 
   getListStore(cart: Cart) {
     const distinctStoreId = new Set<number>();
-    cart.cartItems.forEach(element => {
-      distinctStoreId.add(element.storeId);
-    });
+    cart.cartItems.filter(x => x.quantity <= x.available)
+      .forEach(element => {
+        distinctStoreId.add(element.storeId);
+      });
 
     return [...distinctStoreId];
   }
@@ -91,11 +92,10 @@ export class ShippingComponent implements OnInit {
         this.storageService.remove(environment.shippingAddressKey);
         this.router.navigate(['/home']);
         this.messageService.success('Order successfully!');
-        this.shareService.cartEmitEvent(new Cart());
+        this.cart.cartItems = this.cart.cartItems.filter(x => x.quantity > x.available);
+        this.cart.total = 0;
+        this.shareService.changeNumCartItemEvent(this.cart.cartItems.length);
       }
-      console.log(res);
     });
-    console.log(order);
-
   }
 }

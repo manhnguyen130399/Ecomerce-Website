@@ -1,3 +1,4 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { ModalService } from './../../../core/services/modal/modal.service';
 import { AuthService } from './../../../core/services/auth/auth.service';
 import { finalize } from 'rxjs/operators';
@@ -13,8 +14,9 @@ import { ShareService } from './../../../core/services/share/share.service';
 import { Product } from '../../../core/model/product/product';
 import { Component, OnInit } from '@angular/core';
 import { getListColor, getListSize } from '@core/model/product/product-helper';
-import { getProductDetailId } from '@core/model/cart/cart-helper';
+import { getAvailableQuantity, getInCartQuantity, getProductDetailId } from '@core/model/cart/cart-helper';
 import { CartItemUpdate } from '@core/model/cart/cart-item-update';
+import { Cart } from '@core/model/cart/cart';
 
 @Component({
   selector: 'app-quick-shop',
@@ -28,6 +30,7 @@ export class QuickShopComponent implements OnInit {
   listColor: Color[] = [];
   colorSelected: Color;
   sizeSelected: Size;
+  cart: Cart;
   cartItem;
   quantity = 1;
   isAddingToCart = false;
@@ -42,11 +45,16 @@ export class QuickShopComponent implements OnInit {
     private readonly router: Router,
     private readonly cartService: CartService,
     private readonly authService: AuthService,
-    private readonly modalService: ModalService
+    private readonly modalService: ModalService,
+    private readonly messageService: NzMessageService
   ) { }
 
 
   ngOnInit(): void {
+    this.shareService.cartEmitted$.subscribe((cart) => {
+      this.cart = cart;
+    });
+
     this.addToCartMode();
     this.editCartMode();
     this.closeQuickShop();
@@ -85,7 +93,6 @@ export class QuickShopComponent implements OnInit {
     });
   }
 
-
   setCartItem(product: Product) {
     this.cartItem = {
       productName: product.productName,
@@ -109,15 +116,28 @@ export class QuickShopComponent implements OnInit {
       this.modalService.openLoginDrawerEvent();
       return;
     }
-    this.editMode ? this.editCart() : this.addToCart();
+
+    const productDetailId = getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id)
+    const availableQuantity = getAvailableQuantity(this.product.productDetails, productDetailId);
+    const inCartQuantity = getInCartQuantity(this.cart.cartItems, productDetailId);
+
+    if (this.quantity + inCartQuantity > availableQuantity) {
+      let errorStr = `${this.product.productName}(${this.colorSelected.colorName} - ${this.sizeSelected.sizeName}) only ${availableQuantity} product is available.`;
+      errorStr += inCartQuantity > 0 ? `Your cart has ${inCartQuantity} product.` : "";
+      this.messageService.error(errorStr)
+      return;
+    }
+
+    this.editMode ? this.editCart(productDetailId) : this.addToCart(productDetailId);
   }
 
-  addToCart() {
+  addToCart(productDetailId: number) {
     const body: CartRequest = {
-      productDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id),
+      productDetailId: productDetailId,
       quantity: this.quantity,
       price: this.product.price,
     };
+
     this.isAddingToCart = true;
     this.cartService.addToCart(body)
       .pipe(
@@ -132,12 +152,12 @@ export class QuickShopComponent implements OnInit {
       });
   }
 
-  editCart() {
+  editCart(productDetailId: number) {
     const body: CartItemUpdate = {
       oldProductDetailId: this.oldProductDetailId,
       quantity: this.quantity,
       price: this.product.price,
-      newProductDetailId: getProductDetailId(this.product.productDetails, this.colorSelected.id, this.sizeSelected.id)
+      newProductDetailId: productDetailId
     };
 
     this.isAddingToCart = true;

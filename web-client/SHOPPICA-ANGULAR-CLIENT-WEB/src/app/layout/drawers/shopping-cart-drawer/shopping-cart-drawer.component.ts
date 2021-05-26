@@ -18,6 +18,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 export class ShoppingCartDrawerComponent implements OnInit {
   cart: Cart;
   isVisible: boolean;
+  disableGotoCheckout = false;
 
   cartItemOptions: CartItemOptions = {
     showActions: true,
@@ -40,10 +41,12 @@ export class ShoppingCartDrawerComponent implements OnInit {
   ngOnInit(): void {
     this.shareService.cartEmitted$.subscribe((cart) => {
       this.cart = cart;
+      this.disableGotoCheckout = this.cart.cartItems.filter(x => x.quantity <= x.available).length == 0
     });
 
     this.modalService.openCartDrawerEmitted$.subscribe(() => {
       this.isVisible = true;
+      this.disableGotoCheckout = this.cart.cartItems.filter(x => x.quantity <= x.available).length == 0
     });
 
     this.modalService.closeCartDrawerEmitted$.subscribe(data => {
@@ -53,7 +56,6 @@ export class ShoppingCartDrawerComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       this.cartService.getCartById().subscribe((res) => {
         if (res.isSuccessed) {
-          this.cart = res.data;
           this.shareService.cartEmitEvent(res.data);
         }
       });
@@ -64,20 +66,10 @@ export class ShoppingCartDrawerComponent implements OnInit {
     this.isVisible = false;
   }
 
-  deleteItem(cartDeleted: CartRequest) {
-    this.cart.total -= cartDeleted.quantity * cartDeleted.price;
-    this.cart.cartItems = this.cart.cartItems.filter(c => c.productDetailId != cartDeleted.productDetailId);
-    this.shareService.changeNumCartItemEvent(this.cart.cartItems.length);
-  }
-
   loadingEvent(isLoad: boolean) {
     isLoad
       ? this.loaderService.showLoader('shoppingCart')
       : this.loaderService.hideLoader('shoppingCart');
-  }
-
-  changeQuantity(priceChange: number) {
-    this.cart.total -= priceChange;
   }
 
   viewCart() {
