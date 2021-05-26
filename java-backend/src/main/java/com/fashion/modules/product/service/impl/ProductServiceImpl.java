@@ -500,7 +500,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			final ProductDetail proDetail = productDetails.get(it.getProductDetailID());
 			final Integer currentQuantity = proDetail.getQuantity();
 			final Integer saleQuantity = it.getQuantity();
-			if (currentQuantity > saleQuantity) {
+			if (currentQuantity >= saleQuantity) {
 				proDetail.setQuantity(currentQuantity - saleQuantity);
 			} else {
 				throw new InvalidArgumentException(ErrorMessage.NOT_ENOUGH + proDetail.getProduct().getProductName());
