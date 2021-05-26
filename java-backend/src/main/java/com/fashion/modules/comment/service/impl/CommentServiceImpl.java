@@ -1,12 +1,15 @@
 package com.fashion.modules.comment.service.impl;
 
+import java.util.Map;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.beust.jcommander.internal.Maps;
+import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.ErrorMessage;
-import com.fashion.domain.UserContext;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.model.AccountVM;
 import com.fashion.modules.blog.domain.Blog;
@@ -16,7 +19,6 @@ import com.fashion.modules.comment.domain.UserComment;
 import com.fashion.modules.comment.domain.UserLikeCommentId;
 import com.fashion.modules.comment.model.CommentReq;
 import com.fashion.modules.comment.model.CommentVM;
-import com.fashion.modules.comment.model.RatingReq;
 import com.fashion.modules.comment.repository.CommentRepository;
 import com.fashion.modules.comment.repository.UserCommentRepository;
 import com.fashion.modules.comment.service.CommentService;
@@ -59,6 +61,7 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 				throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_PRODUCT);
 			}
 			comment.setProduct(product);
+			comment.setRating(req.getRating());
 		} else if (blogId != null) {
 			final Blog blog = blogRepo.findOneById(blogId);
 			if (blog == null) {
@@ -178,30 +181,18 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 
 	@Override
 	@Transactional
-	public CommentVM rating(final RatingReq req) {
-		final UserContext context = getUserContext();
-		final Integer accountId = context.getAccountId();
-		Comment comment = commentRepo.getCommentByAccountIdAndProductId(accountId, req.getProductId());
-		if (comment != null) {
-			comment.setRating(req.getRate());
-		} else {
-			comment = new Comment();
-			comment.setAccountId(accountId);
-			comment.setEmail(context.getUsername());
-			comment.setProduct(productRepo.getOne(req.getProductId()));
-			comment.setRating(req.getRate());
-		}
-		return mapper.map(commentRepo.save(comment), CommentVM.class);
-	}
-
-	@Override
-	public boolean checkInteractive(Integer id, boolean isLike) {
+	public Map<String, Boolean> checkInteractive(final Integer id) {
 		final UserComment userComment = userCommentRepo
 				.findByUserLikeCommentId(new UserLikeCommentId(getUserContext().getAccountId(), id));
+		final Map<String, Boolean> res = Maps.newHashMap();
 		if (userComment == null) {
-			return false;
+			res.put(Constants.LIKED, false);
+			res.put(Constants.DISLIKED, false);
+		} else {
+			res.put(Constants.LIKED, userComment.isLiked());
+			res.put(Constants.DISLIKED, userComment.isDisliked());
 		}
-		return isLike && userComment.isLiked() ? true : !isLike && userComment.isDisliked() ? true : false;
+		return res;
 	}
 
 }

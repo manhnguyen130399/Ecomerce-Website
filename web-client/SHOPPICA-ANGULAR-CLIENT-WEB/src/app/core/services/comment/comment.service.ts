@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class CommentService  {
+export class CommentService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
@@ -50,10 +50,8 @@ export class CommentService  {
     );
   }
 
-  checkInteractive(id: number, isLike: boolean):Promise<boolean> {
-    const params = new HttpParams().append('id', id.toString())
-      .append('isLike', isLike.toString());
-    return this.httpClient.get<boolean>(`${environment.productServiceUrl}/api/comment/interactive`, { params }
+  checkInteractive(id: number): Promise<Object> {
+    return this.httpClient.get<Object>(`${environment.productServiceUrl}/api/comment/interactive/${id}`
     ).toPromise();
   }
 

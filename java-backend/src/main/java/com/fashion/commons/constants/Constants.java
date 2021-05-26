@@ -70,7 +70,7 @@ public final class Constants {
 	public static final String NONE = "";
 	public static final String BLANK = " ";
 	public static final String REGEX_BLANK = "\\s+";
-	//ROLE
+	// ROLE
 	public static final String ROLE_PREFIX = "ROLE_";
 
 	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
@@ -158,6 +158,9 @@ public final class Constants {
 	//
 	public static final String SALE = "Sale report";
 	//
-	public static final String CURRENT_REVENUE_OF_MONTH ="CURRENT REVENUE OF MONTH";
+	public static final String CURRENT_REVENUE_OF_MONTH = "CURRENT REVENUE OF MONTH";
+
+	public static final String LIKED = "liked";
+	public static final String DISLIKED = "disliked";
 
 }

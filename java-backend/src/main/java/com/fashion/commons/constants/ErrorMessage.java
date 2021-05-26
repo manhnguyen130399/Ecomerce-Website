@@ -20,5 +20,6 @@ public class ErrorMessage {
 	public static final String NOT_FOUND_COMMENT = " Not found comment";
 	public static final String NOT_OWNER_COMMENT = "Not owner comment";
 	public static final String HAS_LIKE_COMMENT = "Has like comment";
+	public static final String NOT_ENOUGH =" Not enough quantity with product name by: ";
 
 }

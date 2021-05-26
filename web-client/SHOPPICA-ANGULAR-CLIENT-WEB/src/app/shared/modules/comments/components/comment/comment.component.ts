@@ -45,16 +45,18 @@ export class CommentComponent implements OnInit {
   }
 
   async like(id: number) {
-    const liked = await this.commentService.checkInteractive(id, true);
+    const res = await this.commentService.checkInteractive(id);
+    const liked = res["data"]["liked"];
+    const disliked = res["data"]["disliked"];
+
     if (this.hasLogin()) {
       this.updateLikeForComment(id, true);
-      if (!liked["data"]) {
+      if (!liked) {
         this.comment.like++;
       } else {
         this.comment.like--;
       }
-      const disliked = await this.commentService.checkInteractive(id, false);
-      if (disliked["data"]) {
+      if (disliked) {
         this.comment.dislike--;
       }
     }
@@ -76,16 +78,17 @@ export class CommentComponent implements OnInit {
   }
 
   async dislike(id: number) {
-    const disliked = await this.commentService.checkInteractive(id, false);
+    const res = await this.commentService.checkInteractive(id);
+    const liked = res["data"]["liked"];
+    const disliked = res["data"]["disliked"];
     if (this.hasLogin()) {
       this.updateLikeForComment(id, false);
-      if (!disliked["data"]) {
+      if (!disliked) {
         this.comment.dislike++;
       } else {
         this.comment.dislike--;
       }
-      const liked = await this.commentService.checkInteractive(id, true);
-      if (liked["data"]) {
+      if (liked) {
         this.comment.like--;
       }
     }

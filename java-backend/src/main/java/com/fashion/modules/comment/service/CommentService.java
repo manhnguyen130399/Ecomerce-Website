@@ -1,8 +1,9 @@
 package com.fashion.modules.comment.service;
 
+import java.util.Map;
+
 import com.fashion.modules.comment.model.CommentReq;
 import com.fashion.modules.comment.model.CommentVM;
-import com.fashion.modules.comment.model.RatingReq;
 
 public interface CommentService {
 
@@ -14,8 +15,6 @@ public interface CommentService {
 
 	CommentVM likeComment(Integer id, boolean isLike);
 	
-	CommentVM rating(RatingReq req);
-	
-	boolean checkInteractive(Integer id, boolean isLike);
+	Map<String, Boolean> checkInteractive(Integer id);
 
 }
