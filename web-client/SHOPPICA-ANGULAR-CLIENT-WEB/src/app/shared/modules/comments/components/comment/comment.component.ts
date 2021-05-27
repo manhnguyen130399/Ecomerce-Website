@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from './../../../../../core/services/auth/auth.service';
 import { CommentService } from './../../../../../core/services/comment/comment.service';
@@ -17,14 +18,21 @@ export class CommentComponent implements OnInit {
   @Output() deleteCommentEvent = new EventEmitter<number>();
   accountId: number;
   isShowEditInput = false;
+  isProductComment = false;
   constructor(
     private readonly jwtService: JwtService,
     private readonly commentService: CommentService,
     private readonly authService: AuthService,
     private readonly messageService: NzMessageService,
+    private readonly activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(params => {
+      if (params.productId) {
+        this.isProductComment = true;
+      }
+    })
     this.accountId = this.jwtService.getAccountId();
   }
 
@@ -46,6 +54,7 @@ export class CommentComponent implements OnInit {
 
   async like(id: number) {
     const res = await this.commentService.checkInteractive(id);
+
     const liked = res["data"]["liked"];
     const disliked = res["data"]["disliked"];
 

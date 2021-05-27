@@ -20,6 +20,7 @@
 @import "~ng-zorro-antd/radio/style/index.min.css";
 @import "~ng-zorro-antd/badge/style/index.min.css";
 @import "~ng-zorro-antd/table/style/index.min.css";
+@import "~ng-zorro-antd/progress/style/index.min.css";
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&display=swap");
@@ -425,8 +426,24 @@ ul {
   font-size: 15px;
 }
 
+.review-rating .ant-rate-star i {
+  font-size: 35px;
+}
+
+.comment-detail .ant-rate-star i {
+  font-size: 12px;
+}
+
+.comment-detail .ant-rate-star:not(:last-child) {
+  margin-right: 3px;
+}
+
 .comment .ant-rate-star:not(:last-child) {
   margin-right: 4px;
+}
+
+.filter-element .ant-rate-disabled .ant-rate-star {
+  cursor: pointer;
 }
 
 .owl-theme .owl-nav .owl-prev {

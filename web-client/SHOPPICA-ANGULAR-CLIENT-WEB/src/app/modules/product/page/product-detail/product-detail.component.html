@@ -13,7 +13,7 @@
     <div *ngIf="product" class="description">
       <app-ng-tabs>
         <app-tab-content tabTitle="Description">
-          <app-description></app-description>
+          <app-description [description]="product.description"></app-description>
         </app-tab-content>
         <app-tab-content tabTitle="Warranty & Shipping">
           <app-warranty-shipping></app-warranty-shipping>

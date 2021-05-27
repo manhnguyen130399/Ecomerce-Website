@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { LoaderService } from './shared/modules/loader/loader.service';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
@@ -14,7 +15,8 @@ export class AppComponent implements OnInit {
   isLoaded = false;
   constructor(
     private route: Router,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    private titleService: Title
   ) { }
   ngOnInit(): void {
     document.getElementById('preload').className = 'preload-none';
@@ -25,6 +27,8 @@ export class AppComponent implements OnInit {
           this.loaderService.showLoader();
         }
         else if (event instanceof NavigationEnd) {
+          const title = this.getTitle(this.route.routerState, this.route.routerState.root).join(' | ');
+          this.titleService.setTitle(`${title} | Shopica`);
           this.loaderService.hideLoader();
         }
       },
@@ -33,5 +37,16 @@ export class AppComponent implements OnInit {
       });
   }
 
+  getTitle(state, parent) {
+    const data = [];
+    if (parent && parent.snapshot.data && parent.snapshot.data.title) {
+      data.push(parent.snapshot.data.title);
+    }
+
+    if (state && parent) {
+      data.push(... this.getTitle(state, state.firstChild(parent)));
+    }
+    return data;
+  }
 
 }

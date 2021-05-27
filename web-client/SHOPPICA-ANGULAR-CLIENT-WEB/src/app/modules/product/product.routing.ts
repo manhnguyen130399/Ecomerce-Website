@@ -5,15 +5,24 @@ import { Routes } from '@angular/router';
 export const productRoutes: Routes = [
   {
     path: 'collection/:category',
-    component: ProductComponent
+    component: ProductComponent,
+    data: {
+      title: 'Product'
+    }
   },
   {
     path: 'detail/:productId',
-    component: ProductDetailComponent
+    component: ProductDetailComponent,
+    data: {
+      title: 'Product-detail'
+    }
   },
   {
     path: 'wishlist',
-    component: WishListComponent
+    component: WishListComponent,
+    data: {
+      title: 'Wishlist'
+    }
   },
   {
     path: '',

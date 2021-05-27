@@ -1,3 +1,4 @@
+import { OrderDetailResponse } from './../../../../core/model/order/order-detail-response';
 import { LoaderService } from './../../../../shared/modules/loader/loader.service';
 import { OrderResponse } from './../../../../core/model/order/order-response';
 import { switchMap } from 'rxjs/operators';
@@ -14,6 +15,8 @@ import html2canvas from "html2canvas";
 export class OrderDetailComponent implements OnInit {
   order: OrderResponse;
   isLoading = false;
+  isOpenReviewModal = false;
+  orderDetail: OrderDetailResponse;
   @ViewChild('screen') screen: ElementRef;
 
   constructor(
@@ -49,5 +52,10 @@ export class OrderDetailComponent implements OnInit {
       pdf.addImage(base64, 'png', 40, 40, 515, 600);
       pdf.save(`invoice(${this.order.id}).pdf`);
     });
+  }
+
+  openReviewModal(orderDetail: OrderDetailResponse) {
+    this.orderDetail = orderDetail;
+    this.isOpenReviewModal = true;
   }
 }

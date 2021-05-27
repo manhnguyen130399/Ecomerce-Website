@@ -18,6 +18,7 @@
         <th [nzAlign]="'center'">Price</th>
         <th [nzAlign]="'center'">Quantity</th>
         <th [nzAlign]="'center'">Total</th>
+        <th [nzAlign]="'center'">Review</th>
       </tr>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
               <p [routerLink]="['/product/detail',data.productId]" class="text-hover">{{data.productName}}</p>
               <div class="color">Color: <span>{{data.colorName}}</span> </div>
               <div class="size">Size: <span>{{data.sizeName}}</span></div>
+
             </div>
 
           </div>
@@ -38,6 +40,8 @@
         <td [nzAlign]="'center'">{{ data.price | currency}}</td>
         <td [nzAlign]="'center'">{{ data.quantity}}</td>
         <td [nzAlign]="'center'">{{ data.totalPriceProduct | currency}}</td>
+        <td [nzAlign]="'center'"><button (click)="openReviewModal(data)" [nzType]="'primary'" nz-button><i nz-icon
+              nzType="edit" nzTheme="outline"></i></button></td>
       </tr>
     </tbody>
   </nz-table>
@@ -79,3 +83,4 @@
     </div>
   </div>
 </div>
+<app-review [(isVisible)]="isOpenReviewModal" [orderDetail]="orderDetail"></app-review>

@@ -3,6 +3,7 @@
     <nz-avatar nz-comment-avatar nzIcon="user" nzSrc="{{ comment.customerImage }}">
     </nz-avatar>
     <nz-comment-content>
+      <nz-rate *ngIf="isProductComment" [ngModel]="comment.rating" nzDisabled></nz-rate>
       <p *ngIf="!isShowEditInput">
         {{ comment.content }}
       </p>

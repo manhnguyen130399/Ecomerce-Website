@@ -41,6 +41,7 @@ export class ProductDetailSummaryComponent implements OnInit {
   date = new Date();
   shippingFee: number;
   quantity: number;
+  rating: number;
   isAddingToCart = false;
   isChangeWishList = false;
   inWishList = false;
@@ -104,6 +105,8 @@ export class ProductDetailSummaryComponent implements OnInit {
       this.sizeSelected = this.listSize[0];
       this.getShippingFeeAndStore(changes.product.currentValue.storeId);
       this.quantity = 1;
+      this.rating = this.product.comments.length == 0 ? 0 :
+        this.product.comments.map(c => c.rating).reduce((prev, cur) => prev + cur) / this.product.comments.length;
     }
 
   }
