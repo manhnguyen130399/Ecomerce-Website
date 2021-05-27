@@ -24,6 +24,8 @@ public class ProductVM {
 	private Integer brandId;
 
 	private String brandName;
+	
+	private String description;
 
 	private Set<ProductDetailVM> productDetails;
 

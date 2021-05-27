@@ -28,5 +28,7 @@ public class CommentVM {
 	private Integer dislike;
 	
 	private Integer accountId;
+	
+	private Integer rating;
 
 }

@@ -8,6 +8,7 @@ export interface Product {
   categoryName: string;
   brandId: number;
   brandName: string;
+  description: string;
   productDetails: ProductDetail[];
   productImages: ProductImage[];
   images: string[]

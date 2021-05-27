@@ -60,6 +60,12 @@
           </nz-form-item>
         </div>
       </div>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="3" nzFor="description">Description</nz-form-label>
+        <nz-form-control [nzSpan]="19" nzErrorTip="Please input your description!">
+          <textarea rows="4" nz-input formControlName="description"></textarea>
+        </nz-form-control>
+      </nz-form-item>
     </div>
   </form>
 

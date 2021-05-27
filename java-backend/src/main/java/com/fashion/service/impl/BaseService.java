@@ -71,6 +71,7 @@ public class BaseService implements IBaseService {
 		vm.setCategoryId(category.getId());
 		vm.setPrice(product.getPrice());
 		vm.setProductName(product.getProductName());
+		vm.setDescription(product.getDescription());
 		vm.setProductImages(product.getProductImages().stream().map(it -> new ProductImageVM(it.getId(), it.getImage()))
 				.collect(Collectors.toSet()));
 		vm.setProductDetails(product.getProductDetails().stream().map(it -> {

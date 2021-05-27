@@ -29,6 +29,8 @@ public class ProductReq extends BaseReq {
 	private String brandName;
 
 	private String categoryName;
+	
+	private String description;
 
 	private Set<ProductDetailVM> productDetails;
 
