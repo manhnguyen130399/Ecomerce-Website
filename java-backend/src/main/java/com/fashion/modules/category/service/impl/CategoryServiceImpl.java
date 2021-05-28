@@ -38,12 +38,16 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	@Transactional
 	@CacheEvict(value = Constants.CATEGORIES)
 	public CategoryVM createCategory(final CategoryVM req) {
-		final Category category = mapper.map(req, Category.class);
 		final Store store = getStore(getUserContext());
+		final Integer id = req.getId();
+		final boolean isNotNull = id != null;
+		final Category category = isNotNull ? cateRepo.getOne(id) : mapper.map(req, Category.class);
 		category.setStores(Collections.singleton(store));
-		category.setCreatedBy(getUserContext().getUsername());
-		category.setImage(req.getImage());
-		cateRepo.save(category);
+		if (!isNotNull) {
+			category.setCreatedBy(getUserContext().getUsername());
+			category.setImage(req.getImage());
+			cateRepo.save(category);
+		}
 		return mapper.map(category, CategoryVM.class);
 	}
 
@@ -55,7 +59,6 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
-	@Cacheable(value = Constants.CATEGORIES)
 	public Page<CategoryVM> findAllByStore(final Integer page, final Integer pageSize, final String categoryName,
 			final SortType sortOrder, final String sortField, final Integer storeId) {
 		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
@@ -74,10 +77,8 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 			final String categoryName, final SortType sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
 		final Integer storeId = store.getId();
-		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
 		final Category category = cateRepo.findOneByIdAndStoreId(id, storeId);
-		store.setCategories(cateRepo.findAllByStoreId(storeId, pageable).getContent().stream()
-				.filter(it -> !it.equals(category)).collect(Collectors.toSet()));
+		category.getStores().remove(store);
 		final List<CategoryVM> content = findAllByStore(page, pageSize, categoryName, sortOrder, sortField, storeId)
 				.getContent();
 		if (CollectionUtils.isEmpty(content)) {

@@ -40,10 +40,14 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 	public SizeVM createSize(final SizeVM size) {
 		final UserContext userContext = getUserContext();
 		final Store store = getStore(userContext);
-		final Size sizeData = mapper.map(size, Size.class);
-		sizeData.setCreatedBy(userContext.getUsername());
+		final Integer id = size.getId();
+		final boolean idNull = id == null;
+		final Size sizeData = !idNull ? sizeRepo.getOne(id) : mapper.map(size, Size.class);
 		sizeData.setStores(Collections.singleton(store));
-		sizeRepo.save(sizeData);
+		if (idNull) {
+			sizeData.setCreatedBy(userContext.getUsername());
+			sizeRepo.save(sizeData);
+		}
 		return mapper.map(sizeData, SizeVM.class);
 	}
 
@@ -55,7 +59,6 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
-	@Cacheable(value = Constants.SIZES)
 	public Page<SizeVM> findAllByStore(final Integer page, final Integer pageSize, final String sizeName,
 			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(sizeName)) {
@@ -74,10 +77,9 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 	public SizeVM deleteSize(final Integer id, final Integer page, final Integer pageSize, final String sizeName,
 			final SortType sortOrder, final String sortField) {
 		final Integer storeId = getCurrentStoreId();
-		final List<Size> sizes = sizeRepo.findAllByStoreId(storeId, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
 		final Size size = sizeRepo.findOneByIdAndStoreId(id, storeId);
 		final Store store = getStore(getUserContext());
-		store.setSizes(sizes.stream().filter(it -> !it.equals(size)).collect(Collectors.toSet()));
+		size.getStores().remove(store);
 		final List<SizeVM> content = findAllByStore(page, pageSize, sizeName, sortOrder, sortField).getContent();
 		if (CollectionUtils.isNotEmpty(content)) {
 			final SizeVM last = Iterables.getLast(content);

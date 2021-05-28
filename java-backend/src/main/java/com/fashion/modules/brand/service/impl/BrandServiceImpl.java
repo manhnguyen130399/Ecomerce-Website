@@ -14,7 +14,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fashion.commons.constants.Constants;
@@ -39,10 +38,14 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	@CacheEvict(value = Constants.BRANDS, allEntries = true)
 	public BrandVM createBrand(final BrandVM req) {
 		final Store store = getStore(getUserContext());
-		final Brand brand = new Brand();
-		brand.setBrandName(req.getBrandName());
+		final Integer id = req.getId();
+		final boolean isNotNull = id != null;
+		final Brand brand = isNotNull ? brandRepo.getOne(id) : new Brand();
 		brand.setStores(Collections.singleton(store));
-		brandRepo.save(brand);
+		if (!isNotNull) {
+			brand.setBrandName(req.getBrandName());
+			brandRepo.save(brand);
+		}
 		return mapper.map(brand, BrandVM.class);
 	}
 
@@ -54,7 +57,6 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	@Cacheable(value = Constants.BRANDS)
 	public Page<BrandVM> findAllByStore(final Integer page, final Integer pageSize, final String brandName,
 			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(brandName)) {
@@ -73,9 +75,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 			final SortType sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
 		final Brand brand = brandRepo.findOneByIdAndStoreId(id, store.getId());
-		final Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
-		final List<Brand> brands = brandRepo.findAllByStoreId(store.getId(), pageable).getContent();
-		store.setBrands(brands.stream().filter(it -> !it.equals(brand)).collect(Collectors.toSet()));
+		brand.getStores().remove(store);
 		final List<BrandVM> content = findAllByStore(page, pageSize, brandName, sortOrder, sortField).getContent();
 		if (CollectionUtils.isEmpty(content)) {
 			return null;
