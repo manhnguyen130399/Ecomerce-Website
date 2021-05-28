@@ -12,11 +12,17 @@ export const checkoutRoutes: Routes = [
     children: [
       {
         path: 'information',
-        component: InformationComponent
+        component: InformationComponent,
+        data: {
+          title: 'Checkout-information'
+        },
       },
       {
         path: 'payment',
-        component: ShippingComponent
+        component: ShippingComponent,
+        data: {
+          title: 'Checkout-payment'
+        },
       },
     ]
   }

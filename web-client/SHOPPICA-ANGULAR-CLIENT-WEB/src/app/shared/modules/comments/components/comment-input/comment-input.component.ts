@@ -1,3 +1,4 @@
+import { CommentCreateRequest } from './../../../../../core/model/comment/comment-create-request';
 import { ActivatedRoute } from '@angular/router';
 import { CommentService } from './../../../../../core/services/comment/comment.service';
 import { finalize } from 'rxjs/operators';
@@ -14,7 +15,6 @@ export class CommentInputComponent implements OnInit {
   blogId: number;
   @Input() content: string;
   @Input() commentId: number;
-  @Input() productId: number;
   @Output() addNewCommentEvent = new EventEmitter<Comment>();
   @Output() editCommentEvent = new EventEmitter<Comment>();
   constructor(
@@ -34,7 +34,12 @@ export class CommentInputComponent implements OnInit {
   }
 
   addComment() {
-    this.commentService.comment(this.productId, this.blogId, this.content).pipe(
+    const request: CommentCreateRequest = {
+      blogId: this.blogId,
+      content: this.content,
+    }
+
+    this.commentService.comment(request).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe((res) => {
       if (res.code = 'OK') {

@@ -3,6 +3,9 @@ import { Routes } from '@angular/router';
 export const homeRoutes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    data: {
+      title: 'Home'
+    }
   }
 ];

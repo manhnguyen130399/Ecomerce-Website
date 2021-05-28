@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductOptions } from './../../../../core/model/product/product-option';
 import { BaseParams } from '@core/model/base-params';
 import { Category } from '@core/model/category/category';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Product } from '@core/model/product/product';
 import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
 import { stringify } from '@angular/compiler/src/util';
@@ -19,9 +19,10 @@ import { combineLatest } from 'rxjs';
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
+  @ViewChild('target') targetScrollTo: ElementRef;
   isShowFilter = false;
   productCol: number;
-  baseParams: BaseParams = new BaseParams(0, 4);
+  baseParams: BaseParams = new BaseParams(0, 6);
   productOptions: ProductOptions = new ProductOptions();
   listProduct: Product[] = [];
   total = 0;
@@ -128,6 +129,7 @@ export class ProductComponent implements OnInit {
 
   changePageIndex(page: number) {
     this.baseParams.pageIndex = page - 1;
+    this.targetScrollTo.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
     this.loadListProduct();
   }
 

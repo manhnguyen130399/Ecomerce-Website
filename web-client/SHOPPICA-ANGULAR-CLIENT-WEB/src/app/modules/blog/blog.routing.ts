@@ -5,13 +5,16 @@ export const blogRoutes: Routes = [
   {
     path: '',
     component: BlogListComponent,
-    children: [
-
-    ]
+    data: {
+      title: 'Blogs'
+    },
   },
   {
     path: 'detail/:blogId',
-    component: BlogDetailComponent
+    component: BlogDetailComponent,
+    data: {
+      title: 'Blog-detail'
+    },
   }
 
 ];

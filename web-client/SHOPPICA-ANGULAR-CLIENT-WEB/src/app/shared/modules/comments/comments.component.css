@@ -38,3 +38,9 @@ input {
   height: 35px;
   border-radius: 18px !important;
 }
+
+.comment-filter {
+  padding: 20px 0 60px 0;
+  border-bottom: 1px solid #e8e9eb;
+  margin-bottom: 20px;
+}

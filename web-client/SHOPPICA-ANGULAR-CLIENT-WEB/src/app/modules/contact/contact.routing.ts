@@ -3,6 +3,9 @@ import { Routes } from '@angular/router';
 export const contactRoutes: Routes = [
   {
     path: '',
-    component: ContactComponent
+    component: ContactComponent,
+    data: {
+      title: 'Contact'
+    }
   }
 ];

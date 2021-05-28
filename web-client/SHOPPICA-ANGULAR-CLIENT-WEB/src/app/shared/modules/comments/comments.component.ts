@@ -1,6 +1,7 @@
+import { ActivatedRoute } from '@angular/router';
 import { ShareService } from './../../../core/services/share/share.service';
 import { formatDistance } from 'date-fns';
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { Comment } from '@core/model/comment/comment';
 import { CommentService } from '@core/services/comment/comment.service';
 import { AuthService } from '@core/services/auth/auth.service';
@@ -18,23 +19,32 @@ import { identifierModuleUrl } from '@angular/compiler';
 export class CommentsComponent implements OnInit {
 
   @Input() comments: Comment[];
+  @ViewChild('target') targetScrollTo: ElementRef;
+  isProductComment: boolean;
   pageSize = 3;
   pageIndex = 1;
   customerImage: string;
-  subComments: Comment[] = [];
+  showComments: Comment[] = [];
+
+  currentData: Comment[] = [];
 
   isAuthenticated = false;
   constructor(
-    private readonly commentService: CommentService,
     private readonly authService: AuthService,
-    private readonly messageService: NzMessageService,
-    private readonly shareService: ShareService
+    private readonly shareService: ShareService,
+    private readonly activatedRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
     this.shareService.loginSuccessEmitted$.subscribe(isLogin => {
       this.isAuthenticated = isLogin;
+    })
+
+    this.activatedRoute.params.subscribe(params => {
+      if (params.productId) {
+        this.isProductComment = true;
+      }
     })
 
     this.isAuthenticated = this.authService.isAuthenticated();
@@ -45,14 +55,14 @@ export class CommentsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.comments != undefined) {
+    if (changes.comments.currentValue) {
+      this.currentData = changes.comments.currentValue;
       this.loadCurrentComments();
-
     }
   }
 
   loadCurrentComments() {
-    this.subComments = this.comments.slice((this.pageIndex - 1) * this.pageSize, this.pageIndex * this.pageSize);
+    this.showComments = this.currentData.slice((this.pageIndex - 1) * this.pageSize, this.pageIndex * this.pageSize);
   }
 
   addNewComment(comment: Comment) {
@@ -60,16 +70,36 @@ export class CommentsComponent implements OnInit {
       comment,
       ...this.comments
     ]
+    this.currentData = this.comments;
     this.loadCurrentComments();
   }
 
   deleteComment(id: number) {
     this.comments = this.comments.filter(item => item.id != id);
+    this.currentData = this.comments;
     this.loadCurrentComments();
   }
 
-  onQueryPageIndexChange(event) {
-    this.pageIndex = event;
+  onQueryPageIndexChange(pageIndex: number) {
+    this.pageIndex = pageIndex;
+    this.targetScrollTo.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
+    this.loadCurrentComments();
+  }
+
+  filterByRating(ratings: string[]) {
+    if (ratings.indexOf('desc') !== -1) {
+      this.currentData = this.comments.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    }
+    else {
+      this.currentData = this.comments.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    }
+
+    if (ratings.length == 1 && ratings.indexOf('desc') !== -1 || ratings.length == 0) {
+      this.currentData = this.comments;
+    }
+    else {
+      this.currentData = this.comments.filter(x => ratings.indexOf(x.rating.toString()) !== -1)
+    }
     this.loadCurrentComments();
   }
 }

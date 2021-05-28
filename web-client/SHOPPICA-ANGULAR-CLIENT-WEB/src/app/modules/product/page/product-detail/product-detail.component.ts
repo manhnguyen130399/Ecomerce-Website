@@ -64,7 +64,6 @@ export class ProductDetailComponent implements OnInit {
 
     this.productService.getProductRecommender().subscribe(res => {
       this.listProduct = res;
-      console.log(res)
     })
 
   }

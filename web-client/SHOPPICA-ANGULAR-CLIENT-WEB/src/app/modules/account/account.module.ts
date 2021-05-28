@@ -1,3 +1,5 @@
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { LoaderModule } from './../../shared/modules/loader/loader.module';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +26,7 @@ import { AddressComponent } from './components/address/address.component';
 import { LoginComponent } from './page/login/login.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { OrderDetailComponent } from './components/order-detail/order-detail.component';
+import { ReviewComponent } from './components/review/review.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,8 @@ import { OrderDetailComponent } from './components/order-detail/order-detail.com
     ChangePasswordComponent,
     AddressComponent,
     LoginComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    ReviewComponent
   ],
   imports: [
     CommonModule,
@@ -51,6 +55,8 @@ import { OrderDetailComponent } from './components/order-detail/order-detail.com
     NzMessageModule,
     NzRadioModule,
     NzTableModule,
+    NzModalModule,
+    NzRateModule,
     NzIconModule.forChild(shareIcons),
     RouterModule.forChild(accountRoutes)
   ]

@@ -9,6 +9,7 @@ import { Product } from '@core/model/product/product';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit } from '@angular/core';
 import { CartRequest } from '@core/model/cart/cart-request';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-cart',
@@ -43,7 +44,7 @@ export class CartComponent implements OnInit {
   constructor(
     private readonly shareService: ShareService,
     private readonly loaderService: LoaderService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
   ) { }
 
   ngOnInit(): void {

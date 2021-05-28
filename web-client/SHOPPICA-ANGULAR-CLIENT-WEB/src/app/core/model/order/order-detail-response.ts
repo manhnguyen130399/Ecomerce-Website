@@ -7,6 +7,6 @@ export interface OrderDetailResponse {
   sizeName: string;
   colorName: string;
   image: string;
-  productId: string;
+  productId: number;
   totalPriceProduct: number;
 }

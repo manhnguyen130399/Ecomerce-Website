@@ -1,3 +1,4 @@
+import { CommentCreateRequest } from './../../model/comment/comment-create-request';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@env';
@@ -21,13 +22,8 @@ export class CommentService {
     );
   }
 
-  comment(productId: number, blogId: number, content: string) {
-    const body = {
-      productId,
-      blogId,
-      content,
-    };
-    return this.httpClient.post<Comment>(`${environment.productServiceUrl}/api/comment/create`, body).pipe(
+  comment(request: CommentCreateRequest) {
+    return this.httpClient.post<Comment>(`${environment.productServiceUrl}/api/comment/create`, request).pipe(
       catchError((error) => {
         return of(error.error);
       })

@@ -16,32 +16,53 @@ export const accountRoutes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardComponent
+        component: DashboardComponent,
+        data: {
+          title: 'Account'
+        },
       },
       {
         path: 'addresses',
-        component: AddressComponent
+        component: AddressComponent,
+        data: {
+          title: 'Address'
+        },
       },
       {
         path: 'change-password',
-        component: ChangePasswordComponent
+        component: ChangePasswordComponent,
+        data: {
+          title: 'Change-password'
+        },
       },
       {
         path: 'order-history',
-        component: OrderHistoryComponent
+        component: OrderHistoryComponent,
+        data: {
+          title: 'Change-password'
+        },
       },
       {
         path: 'order-detail/:id',
-        component: OrderDetailComponent
+        component: OrderDetailComponent,
+        data: {
+          title: 'Order-detail'
+        },
       }
     ]
   },
   {
     path: 'reset',
-    component: ResetPasswordComponent
+    component: ResetPasswordComponent,
+    data: {
+      title: 'Reset-password'
+    },
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    data: {
+      title: 'Login'
+    },
   }
 ];
