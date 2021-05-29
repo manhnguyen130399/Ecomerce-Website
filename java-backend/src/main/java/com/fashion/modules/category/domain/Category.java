@@ -30,7 +30,7 @@ public class Category extends AbstractAuditingEntity {
 	private static final long serialVersionUID = -2657588185896188134L;
 
 	@Field
-	@Column(name = "category_name")
+	@Column(name = "category_name", unique = true)
 	private String categoryName;
 
 	@Column(name = "image")

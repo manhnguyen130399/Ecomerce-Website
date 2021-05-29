@@ -44,13 +44,13 @@ public class SizeResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllSizeByStore(
+	public ResponseEntity<Map<String, Object>> getSizes(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String sizeName,
 			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
-		return success(sizeService.findAllByStore(page, pageSize, sizeName, sortOrder, sortField));
+		return success(sizeService.getSizes(page, pageSize, sizeName, sortOrder, sortField));
 	}
 
 	@DeleteMapping(URL + "/{id}")
@@ -76,7 +76,7 @@ public class SizeResource extends BaseResource {
 	
 	@GetMapping(URL + "/size-all-store")
 	public ResponseEntity<Map<String, Object>> getAllSize() {
-		return success(sizeService.getAllSize());
+		return success(sizeService.getSizes());
 	}
 
 }

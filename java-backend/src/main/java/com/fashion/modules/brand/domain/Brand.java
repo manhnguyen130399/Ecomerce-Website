@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,11 +30,11 @@ public class Brand extends AbstractAuditingEntity {
 	private static final long serialVersionUID = -18569127290012608L;
 
 	@Field
-	@Column(name = "brand_name")
+	@Column(name = "brand_name", unique = true)
 	private String brandName;
 
 	@ContainedIn
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "brand", cascade = CascadeType.ALL)
 	private Set<Product> products = Sets.newHashSet();
 
 	@ManyToMany

@@ -51,6 +51,10 @@ public class CommonUtil {
 		return "${" + it + "}";
 	}
 	
+	public static String customLikeValueVariable(final String it) {
+		return Constants.PERCENT + it + Constants.PERCENT;
+	}
+	
 	public static String generateQrCode(final String qrCode, Integer size) {
 		final QRCodeWriter qrCodeWriter = new QRCodeWriter();
 		BitMatrix bitMatrix;

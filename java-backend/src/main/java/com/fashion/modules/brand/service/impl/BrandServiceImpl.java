@@ -1,6 +1,5 @@
 package com.fashion.modules.brand.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
+import com.fashion.domain.UserContext;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.brand.model.BrandVM;
 import com.fashion.modules.brand.repository.BrandRepository;
@@ -38,11 +38,16 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	@CacheEvict(value = Constants.BRANDS, allEntries = true)
 	public BrandVM createBrand(final BrandVM req) {
 		final Store store = getStore(getUserContext());
-		final Integer id = req.getId();
-		final boolean isNotNull = id != null;
-		final Brand brand = isNotNull ? brandRepo.getOne(id) : new Brand();
-		brand.setStores(Collections.singleton(store));
-		if (!isNotNull) {
+		final Brand existed = brandRepo.getByBrandName(req.getBrandName());
+		final boolean hasBrand = existed != null;
+		final Brand brand = hasBrand ? existed : new Brand();
+		if (hasBrand && store.getBrands().contains(brand)) {
+			return mapper.map(brand, BrandVM.class);
+		}
+		final Set<Store> stores = brand.getStores();
+		stores.add(store);
+		brand.setStores(stores);
+		if (!hasBrand) {
 			brand.setBrandName(req.getBrandName());
 			brandRepo.save(brand);
 		}
@@ -57,7 +62,21 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	public Page<BrandVM> findAllByStore(final Integer page, final Integer pageSize, final String brandName,
+	public Page<BrandVM> getBrands(final Integer page, final Integer pageSize, final String brandName,
+			final SortType sortOrder, final String sortField) {
+		return !isAdmin() ? getBrandsBySeller(page, pageSize, brandName, sortOrder, sortField)
+				: getBrandsByAdmin(page, pageSize, brandName, sortOrder, sortField);
+	}
+
+	private Page<BrandVM> getBrandsByAdmin(final Integer page, final Integer pageSize, final String brandName,
+			final SortType sortOrder, final String sortField) {
+		final PageRequest pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
+		return StringUtils.isEmpty(brandName) ? brandRepo.findAll(pageable).map(it -> mapper.map(it, BrandVM.class))
+				: brandRepo.getByBrandNameLike(CommonUtil.customLikeValueVariable(brandName), pageable)
+						.map(it -> mapper.map(it, BrandVM.class));
+	}
+
+	private Page<BrandVM> getBrandsBySeller(final Integer page, final Integer pageSize, final String brandName,
 			final SortType sortOrder, final String sortField) {
 		if (StringUtils.isEmpty(brandName)) {
 			return brandRepo
@@ -73,10 +92,14 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 	@CacheEvict(value = Constants.BRANDS, allEntries = true)
 	public BrandVM deleteBrand(final Integer id, final Integer page, final Integer pageSize, final String brandName,
 			final SortType sortOrder, final String sortField) {
-		final Store store = getStore(getUserContext());
-		final Brand brand = brandRepo.findOneByIdAndStoreId(id, store.getId());
-		brand.getStores().remove(store);
-		final List<BrandVM> content = findAllByStore(page, pageSize, brandName, sortOrder, sortField).getContent();
+		if (!isAdmin()) {
+			final Store store = getStore(getUserContext());
+			final Brand brand = brandRepo.findOneByIdAndStoreId(id, store.getId());
+			brand.getStores().remove(store);
+		} else {
+			brandRepo.deleteById(id);
+		}
+		final List<BrandVM> content = getBrands(page, pageSize, brandName, sortOrder, sortField).getContent();
 		if (CollectionUtils.isEmpty(content)) {
 			return null;
 		}
@@ -97,9 +120,17 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	@Cacheable(value = Constants.BRANDS)
-	public Set<BrandVM> getAllBrand() {
-		return brandRepo.findAll().stream().map(it -> mapper.map(it, BrandVM.class)).collect(Collectors.toSet());
+	public Set<BrandVM> getBrands() {
+		final Set<BrandVM> brands = brandRepo.findAll().stream().map(it -> mapper.map(it, BrandVM.class))
+				.collect(Collectors.toSet());
+		final UserContext context = getUserContext();
+		final Store store = context != null ? getStore(context) : null;
+		if (store == null) {
+			return brands;
+		}
+		final List<BrandVM> currentBrands = getBrands(0, Integer.MAX_VALUE, StringUtils.EMPTY, SortType.ascend,
+				Constants.FIELD_ID).getContent();
+		return brands.stream().filter(it -> !currentBrands.contains(it)).collect(Collectors.toSet());
 	}
 
 }

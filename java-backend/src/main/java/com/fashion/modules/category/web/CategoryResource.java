@@ -43,14 +43,14 @@ public class CategoryResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllCategoryByStore(
+	public ResponseEntity<Map<String, Object>> getCategories(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String categoryName,
 			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField,
 			@RequestParam(required = false, defaultValue = "0") final Integer storeId) {
-		return success(categoryService.findAllByStore(page, pageSize, categoryName, sortOrder, sortField, storeId));
+		return success(categoryService.getCategories(page, pageSize, categoryName, sortOrder, sortField, storeId));
 	}
 
 	@DeleteMapping(URL + "/{id}")
@@ -71,12 +71,12 @@ public class CategoryResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField,
 			@RequestParam(required = false, defaultValue = "0") final Integer storeId) {
-		return success(
-				categoryService.searchCategoryByKeywordAndStore(categoryName, sortOrder, sortField, page, pageSize, storeId));
+		return success(categoryService.searchCategoryByKeywordAndStore(categoryName, sortOrder, sortField, page,
+				pageSize, storeId));
 	}
-	
+
 	@GetMapping(URL + "/category-all-store")
 	public ResponseEntity<Map<String, Object>> getAllCategory() {
-		return success(categoryService.getAll());
+		return success(categoryService.getCategories());
 	}
 }

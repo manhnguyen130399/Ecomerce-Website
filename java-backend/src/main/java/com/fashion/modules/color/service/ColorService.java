@@ -13,7 +13,7 @@ public interface ColorService {
 
 	ColorVM findById(Integer id);
 
-	Page<ColorVM> findByAllStore(String colorName, SortType sortOrder, String sortField, Integer page,
+	Page<ColorVM> getColors(String colorName, SortType sortOrder, String sortField, Integer page,
 			Integer pageSize);
 
 	ColorVM deleteColor(Integer id, String colorName, SortType sortOrder, String sortField, Integer page,
@@ -22,6 +22,6 @@ public interface ColorService {
 	Page<ColorVM> searchColorByKeywordAndStore(String colorName, SortType sortOrder, String sortField, Integer page,
 			Integer pageSize);
 
-	Set<ColorVM> getAllColor();
+	Set<ColorVM> getColors();
 
 }

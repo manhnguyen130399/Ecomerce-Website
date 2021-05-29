@@ -42,13 +42,13 @@ public class BrandResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllBrandByStore(
+	public ResponseEntity<Map<String, Object>> getBrands(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String brandName,
 			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = "id") final String sortField) {
-		return success(brandService.findAllByStore(page, pageSize, brandName, sortOrder, sortField));
+		return success(brandService.getBrands(page, pageSize, brandName, sortOrder, sortField));
 	}
 
 	@DeleteMapping(URL + "/{id}")
@@ -70,10 +70,10 @@ public class BrandResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = "id") final String sortField) {
 		return success(brandService.seachBrandByStoreAndKeyword(brandName, sortOrder, page, pageSize, sortField));
 	}
-	
+
 	@GetMapping(URL + "/brand-all-store")
 	public ResponseEntity<Map<String, Object>> getAllBrands() {
-		return success(brandService.getAllBrand());
+		return success(brandService.getBrands());
 	}
 
 }

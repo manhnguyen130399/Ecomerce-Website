@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fashion.commons.enums.AccountType;
 import com.fashion.domain.UserContext;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.category.domain.Category;
@@ -85,6 +86,12 @@ public class BaseService implements IBaseService {
 				.sorted(Comparator.comparing(Comment::getCreatedAt).reversed()).map(it -> convertToVM(it))
 				.collect(Collectors.toList()));
 		return vm;
+	}
+
+	@Override
+	public boolean isAdmin() {
+		final UserContext context = getUserContext();
+		return context != null ? AccountType.ADMIN == context.getType() : false;
 	}
 
 }

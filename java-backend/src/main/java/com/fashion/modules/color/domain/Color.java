@@ -29,17 +29,17 @@ public class Color extends AbstractAuditingEntity {
 	private static final long serialVersionUID = 4254079776649399838L;
 
 	@Field
-	@Column(name = "color_name")
+	@Column(name = "color_name", unique = true)
 	private String colorName;
 
-	@Column(name = "color_code")
+	@Column(name = "color_code", unique = true)
 	private String colorCode;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "store_has_color", joinColumns = @JoinColumn(name = "color_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private Set<Store> stores = Sets.newHashSet();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "color")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "color", cascade = CascadeType.ALL)
 	private Set<ProductDetail> productDetails = Sets.newHashSet();
 
 	public String getColorName() {

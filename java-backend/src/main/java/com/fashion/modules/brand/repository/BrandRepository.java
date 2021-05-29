@@ -19,6 +19,8 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
 			+ " WHERE b.id = :id AND st.id = :storeId ")
 	Brand findOneByIdAndStoreId(@Param("id") Integer id, @Param("storeId") Integer storeId);
 	
+	Brand getByBrandName(String brandName);
+	
 	@Query(value = " SELECT b "
 			+ " FROM Brand b " 
 			+ " LEFT JOIN b.stores st "
@@ -33,5 +35,7 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
 	Page<Brand> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("id") Integer id, Pageable page);
 	
 	List<Brand> findBrandByIdIn(Collection<Integer> ids);
+	
+	Page<Brand> getByBrandNameLike(String brandName, Pageable page);
 
 }

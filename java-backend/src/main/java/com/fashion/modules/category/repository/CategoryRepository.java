@@ -13,14 +13,11 @@ import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.category.model.CategoryEntryMap;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-	
-	@Query(value = " SELECT c "
-			+ " FROM Category c " 
-			+ " LEFT JOIN c.stores st "
+
+	@Query(value = " SELECT c " + " FROM Category c " + " LEFT JOIN c.stores st "
 			+ " WHERE c.id = :id AND st.id = :storeId ")
 	Category findOneByIdAndStoreId(@Param("id") Integer id, @Param("storeId") Integer storeId);
-	
-	
+
 	@Query(value = " SELECT new com.fashion.modules.category.model.CategoryEntryMap(c.categoryName, COUNT(p.id)) "//
 			+ " FROM Category c "//
 			+ " LEFT JOIN c.stores st"//
@@ -29,19 +26,20 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 			+ " GROUP BY c.id ") //
 	List<CategoryEntryMap> getCategoryAndCountProduct(@Param("storeId") Integer storeId);
 
-	@Query(value = " SELECT c "
-			+ " FROM Category c " 
-			+ " LEFT JOIN c.stores st "
-			+ " WHERE st.id = :id ")
-	Page<Category> findAllByStoreId(@Param("id")Integer id, Pageable page);
-	
+	@Query(value = " SELECT c " + " FROM Category c " + " LEFT JOIN c.stores st " + " WHERE st.id = :id ")
+	Page<Category> findAllByStoreId(@Param("id") Integer id, Pageable page);
+
 	@Query(value = " SELECT c "//
 			+ " FROM Category c " //
 			+ " LEFT JOIN c.stores st "//
 			+ " WHERE st.id = :id "//
 			+ " AND c.categoryName LIKE %:keyword% ") //
 	Page<Category> searchByKeywordAndStore(@Param("keyword") String keyword, @Param("id") Integer id, Pageable page);
-	
+
 	List<Category> findCategoryByIdIn(Collection<Integer> ids);
+
+	Category getByCategoryName(String categoryName);
+
+	Page<Category> getByCategoryNameLike(String categoryName, Pageable page);
 
 }

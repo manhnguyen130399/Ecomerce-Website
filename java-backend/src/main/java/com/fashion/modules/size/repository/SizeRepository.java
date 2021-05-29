@@ -22,6 +22,8 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
 			+ " LEFT JOIN s.stores st " 
 			+ " WHERE st.id = :id ")
 	Page<Size> findAllByStoreId(@Param("id") Integer id, Pageable page);
+	
+	Size getBySizeName(String sizeName);
 
 	@Query(value = " SELECT s "//
 			+ " FROM Size s "//
@@ -29,4 +31,6 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
 			+ " WHERE s.sizeName LIKE %:keyword% "//
 			+ " AND st.id = :id ") //
 	Page<Size> searchSizeByKeyword(@Param("keyword") String keyword, Integer id, Pageable page);
+
+	Page<Size> getBySizeNameLike(String sizeName, Pageable pageable);
 }

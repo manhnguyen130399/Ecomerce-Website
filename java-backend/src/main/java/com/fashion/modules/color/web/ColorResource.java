@@ -41,13 +41,13 @@ public class ColorResource extends BaseResource {
 	}
 
 	@GetMapping(URL)
-	public ResponseEntity<Map<String, Object>> getAllColorByStore(
+	public ResponseEntity<Map<String, Object>> getColors(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
 			@RequestParam(required = false, defaultValue = Constants.NONE) final String colorName,
 			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder,
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
-		return success(colorService.findByAllStore(colorName, sortOrder, sortField, page, pageSize));
+		return success(colorService.getColors(colorName, sortOrder, sortField, page, pageSize));
 	}
 
 	@DeleteMapping(URL + "/{id}")
@@ -69,10 +69,10 @@ public class ColorResource extends BaseResource {
 			@RequestParam(required = false, defaultValue = Constants.FIELD_ID) final String sortField) {
 		return success(colorService.searchColorByKeywordAndStore(colorName, sortOrder, sortField, page, pageSize));
 	}
-	
+
 	@GetMapping(URL + "/color-all-store")
 	public ResponseEntity<Map<String, Object>> getAllColor() {
-		return success(colorService.getAllColor());
+		return success(colorService.getColors());
 
 	}
 }

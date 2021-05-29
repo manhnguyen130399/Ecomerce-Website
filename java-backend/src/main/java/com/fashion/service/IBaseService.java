@@ -14,5 +14,7 @@ public interface IBaseService {
 	Integer getCurrentStoreId();
 	
 	CommentVM convertToVM (Comment comment);
+	
+	boolean isAdmin();
 
 }

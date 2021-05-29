@@ -1,6 +1,5 @@
 package com.fashion.modules.category.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
+import com.fashion.domain.UserContext;
 import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.category.model.CategoryVM;
 import com.fashion.modules.category.repository.CategoryRepository;
@@ -39,11 +39,16 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	@CacheEvict(value = Constants.CATEGORIES)
 	public CategoryVM createCategory(final CategoryVM req) {
 		final Store store = getStore(getUserContext());
-		final Integer id = req.getId();
-		final boolean isNotNull = id != null;
-		final Category category = isNotNull ? cateRepo.getOne(id) : mapper.map(req, Category.class);
-		category.setStores(Collections.singleton(store));
-		if (!isNotNull) {
+		final Category existed = cateRepo.getByCategoryName(req.getCategoryName());
+		final boolean hasCategory = existed != null;
+		final Category category = hasCategory ? existed : mapper.map(req, Category.class);
+		if (hasCategory && store.getCategories().contains(category)) {
+			return mapper.map(category, CategoryVM.class);
+		}
+		final Set<Store> stores = category.getStores();
+		stores.add(store);
+		category.setStores(stores);
+		if (!hasCategory) {
 			category.setCreatedBy(getUserContext().getUsername());
 			category.setImage(req.getImage());
 			cateRepo.save(category);
@@ -59,15 +64,27 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
-	public Page<CategoryVM> findAllByStore(final Integer page, final Integer pageSize, final String categoryName,
+	public Page<CategoryVM> getCategories(final Integer page, final Integer pageSize, final String categoryName,
 			final SortType sortOrder, final String sortField, final Integer storeId) {
 		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
+		return !isAdmin() ? getCategoriesSeller(page, pageSize, categoryName, sortOrder, sortField, storeId, pageable)
+				: getCategoriesByAdmin(categoryName, pageable);
+	}
+
+	private Page<CategoryVM> getCategoriesByAdmin(final String categoryName, final Pageable pageable) {
+		return StringUtils.isEmpty(categoryName)
+				? cateRepo.findAll(pageable).map(it -> mapper.map(it, CategoryVM.class))
+				: cateRepo.getByCategoryNameLike(CommonUtil.customLikeValueVariable(categoryName), pageable)
+						.map(it -> mapper.map(it, CategoryVM.class));
+	}
+
+	private Page<CategoryVM> getCategoriesSeller(final Integer page, final Integer pageSize, final String categoryName,
+			final SortType sortOrder, final String sortField, final Integer storeId, final Pageable pageable) {
 		if (StringUtils.isEmpty(categoryName)) {
 			return cateRepo.findAllByStoreId(storeId != 0 ? storeId : getCurrentStoreId(), pageable)
 					.map(it -> mapper.map(it, CategoryVM.class));
 		}
 		return searchCategoryByKeywordAndStore(categoryName, sortOrder, sortField, page, pageSize, storeId);
-
 	}
 
 	@Override
@@ -76,10 +93,14 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 	public CategoryVM deleteCategory(final Integer id, final Integer page, final Integer pageSize,
 			final String categoryName, final SortType sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
-		final Integer storeId = store.getId();
-		final Category category = cateRepo.findOneByIdAndStoreId(id, storeId);
-		category.getStores().remove(store);
-		final List<CategoryVM> content = findAllByStore(page, pageSize, categoryName, sortOrder, sortField, storeId)
+		final Integer storeId = store != null ? store.getId() : 0;
+		if (!isAdmin()) {
+			final Category category = cateRepo.findOneByIdAndStoreId(id, storeId);
+			category.getStores().remove(store);
+		} else {
+			cateRepo.deleteById(id);
+		}
+		final List<CategoryVM> content = getCategories(page, pageSize, categoryName, sortOrder, sortField, storeId)
 				.getContent();
 		if (CollectionUtils.isEmpty(content)) {
 			return null;
@@ -102,9 +123,17 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
-	@Cacheable(value = Constants.CATEGORIES)
-	public Set<CategoryVM> getAll() {
-		return cateRepo.findAll().stream().map(it -> mapper.map(it, CategoryVM.class)).collect(Collectors.toSet());
+	public Set<CategoryVM> getCategories() {
+		final Set<CategoryVM> res = cateRepo.findAll().stream().map(it -> mapper.map(it, CategoryVM.class))
+				.collect(Collectors.toSet());
+		final UserContext context = getUserContext();
+		final Store store = context != null ? getStore(context) : null;
+		if (store == null) {
+			return res;
+		}
+		final List<CategoryVM> currentCategories = getCategories(0, Integer.MAX_VALUE, StringUtils.EMPTY,
+				SortType.ascend, Constants.FIELD_ID, store.getId()).getContent();
+		return res.stream().filter(it -> !currentCategories.contains(it)).collect(Collectors.toSet());
 	}
 
 }

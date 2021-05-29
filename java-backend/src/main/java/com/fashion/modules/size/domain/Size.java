@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ public class Size extends AbstractAuditingEntity {
 	@Field
 	private String sizeName;
 
-	@Column(name = "size_name")
+	@Column(name = "size_name", unique = true)
 	public String getSizeName() {
 		return sizeName;
 	}
@@ -53,7 +54,7 @@ public class Size extends AbstractAuditingEntity {
 	@JoinTable(name = "store_has_size", joinColumns = @JoinColumn(name = "size_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
 	private Set<Store> stores = Sets.newHashSet();
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "size")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "size", cascade = CascadeType.ALL)
 	private Set<ProductDetail> productDetails = Sets.newHashSet();
 
 	public Set<Store> getStores() {

@@ -13,13 +13,13 @@ public interface SizeService {
 
 	SizeVM findById(Integer id);
 
-	Page<SizeVM> findAllByStore(Integer page, Integer pageSize, String sizeName, SortType sortOrder, String sortField);
+	Page<SizeVM> getSizes(Integer page, Integer pageSize, String sizeName, SortType sortOrder, String sortField);
 
 	SizeVM deleteSize(Integer id, Integer page, Integer pageSize, String sizeName, SortType sortOrder,
 			String sortField);
 
 	Page<SizeVM> searchByKeyword(String keyword, Integer page, Integer pageSize, SortType sortOrder, String sortField);
 	
-	Set<SizeVM>getAllSize();
+	Set<SizeVM>getSizes();
 
 }

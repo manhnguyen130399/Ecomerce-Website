@@ -81,10 +81,18 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST, "/api/product").permitAll()//
 				.antMatchers(HttpMethod.GET, "/api/category").permitAll()//
 				.antMatchers(HttpMethod.POST, "/api/blog/create").hasRole(seller)//
-				.antMatchers("/api/brand/**").hasRole(seller)//
-				.antMatchers("/api/category/**").hasRole(seller)//
-				.antMatchers("/api/color/**").hasRole(seller)//
-				.antMatchers("/api/size/**").hasRole(seller)//
+				.antMatchers(HttpMethod.GET, "/api/brand/**").hasAnyRole(admin, seller)//
+				.antMatchers(HttpMethod.GET, "/api/category/**").hasAnyRole(admin, seller)//
+				.antMatchers(HttpMethod.GET, "/api/color/**").hasAnyRole(admin, seller)//
+				.antMatchers(HttpMethod.GET, "/api/size/**").hasAnyRole(admin, seller)//
+				.antMatchers(HttpMethod.DELETE, "/api/brand/**").hasAnyRole(admin, seller)//
+				.antMatchers(HttpMethod.DELETE, "/api/category/**").hasAnyRole(admin, seller)//
+				.antMatchers(HttpMethod.DELETE, "/api/color/**").hasAnyRole(admin, seller)//
+				.antMatchers(HttpMethod.DELETE, "/api/size/**").hasAnyRole(admin, seller)//
+				.antMatchers(HttpMethod.POST, "/api/brand/**").hasRole(seller)//
+				.antMatchers(HttpMethod.POST, "/api/category/**").hasRole(seller)//
+				.antMatchers(HttpMethod.POST, "/api/color/**").hasRole(seller)//
+				.antMatchers(HttpMethod.POST, "/api/size/**").hasRole(seller)//
 				.antMatchers("/api/product/**").hasRole(seller)//
 				.antMatchers(HttpMethod.PUT, "/api/store/**").hasRole(seller)//
 				.antMatchers(HttpMethod.POST, "/api/promotion/**").hasRole(seller)//
@@ -93,7 +101,7 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.DELETE, "/api/blog/**").hasRole(admin)//
 				.antMatchers(HttpMethod.GET, "/api/store").hasRole(admin)//
 				.antMatchers(HttpMethod.DELETE, "/api/store/**").hasRole(admin)//
-			
+
 				.antMatchers("/api/complain/**").hasRole(admin)//
 				.antMatchers("/api/**")//
 				.authenticated();
