@@ -38,6 +38,14 @@ export class SizeService implements BaseService<Size>{
     )
   }
 
+  getAllStore() {
+    return this.httpClient.get(`${environment.productServiceUrl}/api/size/size-all-store`).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    )
+  }
+
   create(data: Size): Observable<BaseResponse<Size>> {
     return this.httpClient.post<BaseResponse<Size>>(`${environment.productServiceUrl}/api/size/create`, data).pipe(
       catchError(error => {

@@ -22,7 +22,7 @@ export class ProductComponent implements OnInit {
   @ViewChild('target') targetScrollTo: ElementRef;
   isShowFilter = false;
   productCol: number;
-  baseParams: BaseParams = new BaseParams(0, 6);
+  baseParams: BaseParams = new BaseParams(0, 12);
   productOptions: ProductOptions = new ProductOptions();
   listProduct: Product[] = [];
   total = 0;

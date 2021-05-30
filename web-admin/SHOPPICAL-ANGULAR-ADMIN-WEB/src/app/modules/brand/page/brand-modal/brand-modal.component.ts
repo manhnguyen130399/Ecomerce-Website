@@ -15,11 +15,12 @@ import { finalize } from 'rxjs/operators';
 export class BrandModalComponent extends BaseModalComponent<Brand> implements OnInit {
 
   @Input() isVisible = false;
-  @Input() modalTitle = "Add brand";
+  @Input() modalTitle = "ADD BRAND";
   @Input() brandObject: Brand;
   @Output() cancelModalEvent = new EventEmitter<string>();
   @Output() okModalEvent = new EventEmitter<Brand>();
-
+  brands: string[] = [];
+  isLoadingBrandInSelect = false;
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly brandService: BrandService,
@@ -30,6 +31,7 @@ export class BrandModalComponent extends BaseModalComponent<Brand> implements On
 
   ngOnInit(): void {
     this.buildForm();
+    this.getBrandAllStore();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -39,6 +41,24 @@ export class BrandModalComponent extends BaseModalComponent<Brand> implements On
     }
   }
 
+  addItem(input: HTMLInputElement): void {
+    if (this.brands.indexOf(input.value) === -1 && input.value) {
+      this.brands = [...this.brands, input.value];
+      input.value = null;
+    }
+  }
+
+  getBrandAllStore() {
+    this.isLoadingBrandInSelect = true;
+    this.brandService.getBrandAllStore().pipe(
+      finalize(() => this.isLoadingBrandInSelect = false)
+    ).subscribe(res => {
+      if (res.code === 'OK') {
+        this.brands = res.data.map(x => x.brandName).sort((a, b) => a.localeCompare(b));
+      }
+    })
+  }
+
   buildForm() {
     this.baseForm = this.formBuilder.group({
       brandName: [null, [Validators.required]]
@@ -46,8 +66,8 @@ export class BrandModalComponent extends BaseModalComponent<Brand> implements On
   }
 
   submitForm() {
-    let brand = { id: null, brandName: this.baseForm.get("brandName").value.trim() };
-    super.create(brand, this.okModalEvent, this.messageService);
+    super.create(this.baseForm.value, this.okModalEvent, this.messageService);
+    this.getBrandAllStore();
   }
 
   handleCancel(): void {

@@ -105,7 +105,7 @@ export class ProductDetailComponent implements OnInit {
       price: [null, [Validators.required, Validators.min(0)]],
       brandId: [null, Validators.required],
       categoryId: [null, Validators.required],
-      description:[null]
+      description: [null]
     })
   }
 
@@ -179,7 +179,9 @@ export class ProductDetailComponent implements OnInit {
           if (res.code == 'OK') {
             this.messageService.create('success', `Create product successfully!`);
             this.productForm.reset();
-            this.listProductDetail =[];
+            this.listProductDetail = [];
+            this.listImage = [];
+
           }
         });
     }

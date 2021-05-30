@@ -1,5 +1,5 @@
 import { LoaderService } from '@shared/modules/loader/loader.service';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BlogService } from '@core/services/blog/blog.service';
 import { Blog } from '@core/model/blog/blog';
@@ -11,6 +11,7 @@ import { finalize, switchMap, delay } from 'rxjs/operators';
 })
 export class BlogListComponent implements OnInit {
 
+  @ViewChild('target') targetScrollTo: ElementRef;
   listBlog: Blog[];
   pageIndex = 1;
   pageSize = 6;
@@ -45,6 +46,7 @@ export class BlogListComponent implements OnInit {
 
   onQueryPageIndexChange(pageNumber: number) {
     this.pageIndex = pageNumber;
+    this.targetScrollTo.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
     this.loaderService.showLoader('filter-blog')
     this.blogService.getAllBlog(pageNumber, this.pageSize, this.currentCategory).pipe(
       finalize(() => {

@@ -14,14 +14,14 @@ export const checkoutRoutes: Routes = [
         path: 'information',
         component: InformationComponent,
         data: {
-          title: 'Checkout-information'
+          title: 'Checkout Information'
         },
       },
       {
         path: 'payment',
         component: ShippingComponent,
         data: {
-          title: 'Checkout-payment'
+          title: 'Checkout Payment'
         },
       },
     ]

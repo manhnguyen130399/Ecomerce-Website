@@ -45,7 +45,11 @@ namespace ORDER_SERVICE_NET.Controllers
 
             if (!result.IsSuccessed) return BadRequest(result);
 
-            return Ok(result);
+            var cart = await _cartService.GetById(request.AccountId);
+
+            if (!cart.IsSuccessed) return BadRequest(cart);
+
+            return Ok(cart);
         }
 
         [HttpPost("AddToCart")]
@@ -105,7 +109,11 @@ namespace ORDER_SERVICE_NET.Controllers
 
             if (!result.IsSuccessed) return BadRequest(result);
 
-            return Ok(result);
+            var cart = await _cartService.GetById(request.AccountId);
+
+            if (!cart.IsSuccessed) return BadRequest(cart);
+
+            return Ok(cart);
         }
     }
 }

@@ -1,19 +1,36 @@
-<nz-modal [(nzVisible)]="isVisible" nzOkText="Save Change" nzClassName="form-modal" [nzTitle]="modalTitle"
-  [nzClosable]="false" [nzOkDisabled]="baseForm.invalid" [nzOkLoading]="isLoadingButton" (nzOnCancel)="cancelModal()"
+<nz-modal [(nzVisible)]="isVisible" nzOkText="OK" nzClassName="form-modal" [nzTitle]="modalTitle" [nzClosable]="false"
+  [nzOkDisabled]="baseForm.invalid" [nzOkLoading]="isLoadingButton" (nzOnCancel)="cancelModal()"
   (nzOnOk)="submitForm()">
   <ng-container *nzModalContent>
     <form nz-form [formGroup]="baseForm">
       <nz-form-item>
-        <nz-form-label [nzSpan]="6" nzFor="colorName">Color Name</nz-form-label>
+        <nz-form-label [nzSpan]="6" nzFor="sizeName">Select Color</nz-form-label>
         <nz-form-control [nzSpan]="14" nzErrorTip="Please input your color name!">
-          <input nz-input type="text" formControlName="colorName">
+          <nz-select (ngModelChange)="changeColor($event)" [nzDropdownRender]="renderTemplate"
+            [nzLoading]="isLoadingColorInSelect" formControlName="colorName" nzShowSearch nzAllowClear
+            nzPlaceHolder="Select a Color">
+            <nz-option nzCustomContent *ngFor="let item of colors" [nzLabel]="item.colorName" [nzValue]="item">
+              <div class="select-color-item">
+                <p>{{item.colorName}}</p>
+                <span *ngIf="item.id !== -1" [ngStyle]="{'background-color':item.colorCode}"></span>
+              </div>
+            </nz-option>
+          </nz-select>
+          <ng-template #renderTemplate>
+            <nz-divider></nz-divider>
+            <div class="input-container">
+              <input type="text" nz-input #inputElement />
+              <a class="add-item" (click)="addItem(inputElement)"><i nz-icon nzType="plus"></i> Add item</a>
+            </div>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
+
       <nz-form-item>
-        <nz-form-label [nzSpan]="6">ColorHex</nz-form-label>
-        <nz-form-control [nzSpan]="4">
-          <input nz-input class="form-control ml-2 mr-2" [value]="colorCode" [style.background]="colorCode"
-            [(colorPicker)]="colorCode" (colorPickerClose)="updateColor($event)" />
+        <nz-form-label [nzSpan]="6">Color Hex</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+          <input nz-input formControlName="colorCode" [cpDisabled]="disable" class="form-control ml-2 mr-2"
+            [value]="colorCode" [style.background]="colorCode" [(colorPicker)]="colorCode" />
         </nz-form-control>
       </nz-form-item>
     </form>

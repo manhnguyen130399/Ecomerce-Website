@@ -14,8 +14,10 @@ import { BaseModalComponent } from '@app/modules/common/base-modal-component';
 })
 export class SizeModalComponent extends BaseModalComponent<Size> implements OnInit {
   @Input() isVisible = false;
-  @Input() modalTitle = "Add size";
+  @Input() modalTitle = "ADD SIZE";
   @Input() sizeObject: Size;
+  sizes: string[];
+  isLoadingSizeInSelect = false;
   @Output() cancelModalEvent = new EventEmitter<string>();
   @Output() okModalEvent = new EventEmitter<Size>();
 
@@ -28,6 +30,7 @@ export class SizeModalComponent extends BaseModalComponent<Size> implements OnIn
 
   ngOnInit(): void {
     this.buildForm();
+    this.getAllSize();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -37,19 +40,36 @@ export class SizeModalComponent extends BaseModalComponent<Size> implements OnIn
     }
   }
 
+  getAllSize() {
+    this.isLoadingSizeInSelect = true;
+    this.sizeService.getAllStore().pipe(
+      finalize(() => this.isLoadingSizeInSelect = false)
+    ).subscribe(res => {
+      if (res.code === 'OK') {
+        this.sizes = res.data.map(x => x.sizeName).sort((a, b) => a.localeCompare(b));
+      }
+    })
+  }
+
   buildForm() {
     this.baseForm = this.formBuilder.group({
-      sizeName: [null, [Validators.required]]
+      sizeName: [null, Validators.required],
     })
   }
 
   submitForm() {
-    let size = { id: null, sizeName: this.baseForm.get("sizeName").value.trim() };
-    super.create(size, this.okModalEvent, this.messageService);
+    super.create(this.baseForm.value, this.okModalEvent, this.messageService);
+    this.getAllSize();
   }
 
   cancelModal(): void {
     super.cancel(this.cancelModalEvent);
   }
 
+  addItem(input: HTMLInputElement): void {
+    if (this.sizes.indexOf(input.value) === -1 && input.value) {
+      this.sizes = [...this.sizes, input.value];
+      input.value = null;
+    }
+  }
 }

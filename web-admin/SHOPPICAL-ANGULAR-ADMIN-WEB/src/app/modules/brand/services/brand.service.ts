@@ -39,6 +39,14 @@ export class BrandService implements BaseService<Brand> {
     )
   }
 
+  getBrandAllStore() {
+    return this.httpClient.get(`${environment.productServiceUrl}/api/brand/brand-all-store`).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    )
+  }
+
   create(brand: Brand): Observable<BaseResponse<Brand>> {
     return this.httpClient.post<BaseResponse<Brand>>(`${environment.productServiceUrl}/api/brand/create`, brand).pipe(
       catchError(error => {

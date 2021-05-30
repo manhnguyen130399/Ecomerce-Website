@@ -13,7 +13,7 @@ export const blogRoutes: Routes = [
     path: 'detail/:blogId',
     component: BlogDetailComponent,
     data: {
-      title: 'Blog-detail'
+      title: 'Blog Detail'
     },
   }
 

@@ -16,5 +16,6 @@ namespace ORDER_SERVICE_NET.Services.CartServices
         Task<APIResult<bool>> ChangeQuantity(CartItemCreateRequest request);
         Task<APIResult<bool>> DeleteItem(CartItemCreateRequest request);
         Task<APIResult<bool>> DeleteAll(int accountId);
+        Task<APIResult<bool>> DeleteItems(List<UpdateProductDetailQuantityRequest> request, int accountId);
     }
 }

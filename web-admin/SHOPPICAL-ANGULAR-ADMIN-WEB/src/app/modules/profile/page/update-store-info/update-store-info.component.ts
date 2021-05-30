@@ -77,15 +77,17 @@ export class UpdateStoreInfoComponent implements OnInit {
 
   setFormValue(value: Store) {
     const address = JSON.parse(value.address);
-    const province = this.listProvince.find(x => x.ProvinceID == address.provinceId);
-    this.districtIdSelected = address.districtId;
-    this.wardIdSelected = address.wardId;
+    if (address) {
+      const province = this.listProvince.find(x => x.ProvinceID == address.provinceId);
+      this.districtIdSelected = address.districtId;
+      this.wardIdSelected = address.wardId;
+      this.storeUpdateForm.controls.province.setValue(province);
+    }
     this.initialStoreNameValue = value.storeName;
     this.storeUpdateForm.controls.storeName.setValue(value.storeName);
     this.storeUpdateForm.controls.closeTime.setValue(new Date(`${this.epochTime}T${value.closeTime}`));
     this.storeUpdateForm.controls.openTime.setValue(new Date(`${this.epochTime}T${value.openTime}`));
     this.storeUpdateForm.controls.owner.setValue(value.owner);
-    this.storeUpdateForm.controls.province.setValue(province);
     this.storeUpdateForm.controls.website.setValue(value.website);
 
     let listImage = [];

@@ -1,4 +1,5 @@
-﻿using ORDER_SERVICE_NET.ViewModels.Commons;
+﻿using ORDER_SERVICE_NET.ViewModels.Carts;
+using ORDER_SERVICE_NET.ViewModels.Commons;
 using ORDER_SERVICE_NET.ViewModels.Orders;
 using ORDER_SERVICE_NET.ViewModels.Products;
 using System;
@@ -11,6 +12,7 @@ namespace ORDER_SERVICE_NET.Services.ProductServices
     public interface IProductService
     {
         Task<APIResult<List<ProductView>>> GetListProduct(List<int> productDetailIdList);
+        Task<APIResult<string>> UpdateQuantityProductDetail(List<UpdateProductDetailQuantityRequest> request);
         Task<APIResult<string>> GetOrderQrCode(string request);
     }
 }

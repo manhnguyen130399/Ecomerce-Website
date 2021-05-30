@@ -91,6 +91,8 @@ export class UpdateInfoComponent implements OnInit {
       ward: [null, Validators.required],
       district: [null, Validators.required],
     })
+
+    this.sellerUpdateForm.controls.email.disable();
   }
 
   existEmailValidator = (control: FormControl) => {

@@ -45,20 +45,15 @@
               <div class="rating flex jc-center al-center fd-column">
                 <div class="title">4.5 / 5.0 </div>
                 <div class="subtitle">14k+</div>
-
               </div>
               <div class="border-left"></div>
               <div class="follow  flex jc-center al-center fd-column">
-                <div class="title">5k+</div>
-                <div class="subtitle">Follow</div>
+                <button [nzShape]="'circle'" [routerLink]="['/store/home/',store.id]" nz-tooltip
+                  [nzTooltipTitle]="'View shop'" nz-button><i nz-icon nzType="eye" nzTheme="outline"></i></button>
               </div>
             </div>
           </div>
 
-          <div class="seller-action">
-            <button [routerLink]="['/store/home/',store.id]" nz-button>View Shop</button>
-            <button nz-button>Follow</button>
-          </div>
         </div>
       </app-tab-content>
       <app-tab-content *ngIf="userAddress" tabTitle="Shipping">

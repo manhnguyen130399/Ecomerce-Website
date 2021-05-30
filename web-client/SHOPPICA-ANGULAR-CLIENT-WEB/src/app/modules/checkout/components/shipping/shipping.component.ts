@@ -14,7 +14,7 @@ import { ShippingAddress } from './../../../../core/model/user/shipping-address'
 import { ShareService } from '@core/services/share/share.service';
 
 import { Cart } from '../../../../core/model/cart/cart';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { environment } from '@env';
 import { Order } from '@core/model/order/order';
 
@@ -24,7 +24,7 @@ import { Order } from '@core/model/order/order';
   styleUrls: ['./shipping.component.css']
 })
 export class ShippingComponent implements OnInit {
-  @ViewChild(ProductGroupComponent) productGroupComponent: ProductGroupComponent;
+  @ViewChildren(ProductGroupComponent) productGroupComponents: QueryList<ProductGroupComponent>;
   @ViewChild(PaymentComponent) paymentComponent: PaymentComponent;
   cartGroups: CartGroup[];
   orderGroups: OrderGroup[] = [];
@@ -46,6 +46,7 @@ export class ShippingComponent implements OnInit {
     this.getCart();
     this.checkoutService.stepChange(2);
     this.checkoutService.orderGroupEmitted$.subscribe((orderGroup: OrderGroup) => {
+      console.log(orderGroup);
       this.orderGroups.push(orderGroup);
     });
   }
@@ -77,7 +78,9 @@ export class ShippingComponent implements OnInit {
 
   createOrder() {
     this.isCreatingOrder = true;
-    this.productGroupComponent.emittedOrderGroup();
+    this.productGroupComponents.toArray().forEach(x => {
+      x.emittedOrderGroup()
+    });
     const order: Order = {
       ...this.shippingAddress,
       ...this.paymentComponent.getPaymentMethod(),
@@ -85,6 +88,7 @@ export class ShippingComponent implements OnInit {
         ...this.orderGroups
       ]
     };
+
     this.checkoutService.createOrder(order).pipe(
       finalize(() => this.isCreatingOrder = false)
     ).subscribe(res => {

@@ -19,14 +19,14 @@ export const storeRoutes: Routes = [
         path: 'info/:id',
         component: StoreInfoComponent,
         data: {
-          title: 'Store-Info'
+          title: 'Store Info'
         },
       },
       {
         path: 'allProduct/:id',
         component: AllProductComponent,
         data: {
-          title: 'Store-Products'
+          title: 'Store Products'
         },
       }
     ]

@@ -24,6 +24,8 @@ export class SizeListComponent extends BaseListComponent<Size> implements OnInit
   searchByName() {
     this.baseParams.filters = [{ key: "sizeName", value: this.searchValue }];
     super.search();
+    console.log(this.listData);
+
   }
 
   onQueryParamsChange = (params: NzTableQueryParams) => {

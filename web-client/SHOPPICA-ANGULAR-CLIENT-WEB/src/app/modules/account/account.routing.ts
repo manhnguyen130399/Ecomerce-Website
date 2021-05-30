@@ -32,21 +32,21 @@ export const accountRoutes: Routes = [
         path: 'change-password',
         component: ChangePasswordComponent,
         data: {
-          title: 'Change-password'
+          title: 'Change Password'
         },
       },
       {
         path: 'order-history',
         component: OrderHistoryComponent,
         data: {
-          title: 'Change-password'
+          title: 'Change Password'
         },
       },
       {
         path: 'order-detail/:id',
         component: OrderDetailComponent,
         data: {
-          title: 'Order-detail'
+          title: 'Order Detail'
         },
       }
     ]
@@ -55,7 +55,7 @@ export const accountRoutes: Routes = [
     path: 'reset',
     component: ResetPasswordComponent,
     data: {
-      title: 'Reset-password'
+      title: 'Reset Password'
     },
   },
   {

@@ -1,5 +1,5 @@
 .store-header {
-  background-image: url("https://salt.tikicdn.com/ts/tmp/38/fc/4d/70c667e7ed1962b38bade309807c45a2.jpg");
+  background-image: url("/assets/images/blogs/background-2.jpg");
   margin-top: 70px;
   padding: 30px 30px 20px 30px;
   position: relative;
@@ -76,5 +76,9 @@
 }
 
 .store-header_menu .menu ul li:hover::after {
+  width: 24px;
+}
+
+.store-header_menu .menu ul li.active::after {
   width: 24px;
 }

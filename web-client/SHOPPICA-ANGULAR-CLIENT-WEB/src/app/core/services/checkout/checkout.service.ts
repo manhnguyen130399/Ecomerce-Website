@@ -46,7 +46,7 @@ export class CheckoutService {
 
 
   createOrder(order: Order) {
-    return this.httpClient.post(`${environment.localOrderServiceUrl}/api/orders/create`, order).pipe(
+    return this.httpClient.post(`${environment.orderServiceUrl}/api/orders/create`, order).pipe(
       catchError(error => {
         return of(error.error);
       })

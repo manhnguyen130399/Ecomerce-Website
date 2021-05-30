@@ -161,6 +161,7 @@ namespace ORDER_SERVICE_NET.Services.CartServices
                 BrandName = x.l.BrandName,
                 ProductDetailId = x.l.ProductDetailId,
                 StoreId = x.l.StoreId,
+                Available = x.l.Quantity,
                 Image = x.l.Image,
                 ProductId = x.l.ProductId
             }).ToList();
@@ -168,7 +169,7 @@ namespace ORDER_SERVICE_NET.Services.CartServices
             var result = new CartView()
             {
                 Id = carts.Id,
-                Total = carts.Total,
+                Total = cartItemView.Where(x => x.Quantity <= x.Available).Sum(x => x.Price * x.Quantity),
                 CartItems = cartItemView
             };
 
@@ -237,6 +238,35 @@ namespace ORDER_SERVICE_NET.Services.CartServices
                 return new APIResultErrors<bool>();
             }
             return new APIResultErrors<bool>();
+        }
+
+        public async Task<APIResult<bool>> DeleteItems(List<UpdateProductDetailQuantityRequest> cartItemRequests, int accountId)
+        {
+            var cart = await _context.Carts
+                .Include(c => c.CartDetail)
+                .FirstOrDefaultAsync(c => c.AccountId == accountId);
+
+            if (cart != null)
+            {
+
+                foreach (var cartItemRequest in cartItemRequests)
+                {
+                    var cartDetail = cart.CartDetail.FirstOrDefault(c => c.ProductDetailId == cartItemRequest.ProductDetailID);
+
+                    if (cartDetail != null)
+                    {
+                        cart.Total -= cartDetail.Quantity * cartItemRequest.Price;
+
+                        _context.CartDetail.Remove(cartDetail);
+                    }
+
+                }
+
+                await _context.SaveChangesAsync();
+
+                return new APIResultSuccess<bool>();
+            }
+            return new APIResultErrors<bool>("Can not find this cart");
         }
     }
 }

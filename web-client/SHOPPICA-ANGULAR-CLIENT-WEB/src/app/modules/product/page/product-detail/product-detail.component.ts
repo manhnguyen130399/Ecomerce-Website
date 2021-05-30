@@ -1,3 +1,4 @@
+import { AuthService } from '@core/services/auth/auth.service';
 import { ShareService } from './../../../../core/services/share/share.service';
 import { CartRequest } from './../../../../core/model/cart/cart-request';
 import { LoaderService } from './../../../../shared/modules/loader/loader.service';
@@ -46,7 +47,7 @@ export class ProductDetailComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly productService: ProductService,
     private readonly loaderService: LoaderService,
-    private readonly shareService: ShareService
+    private readonly authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -62,9 +63,16 @@ export class ProductDetailComponent implements OnInit {
       });
     });
 
-    this.productService.getProductRecommender().subscribe(res => {
-      this.listProduct = res;
-    })
+    if (this.authService.isAuthenticated()) {
+      this.productService.getProductRecommender().subscribe(res => {
+        this.listProduct = res;
+      })
+    }
+    else {
+      this.productService.getProductBestSellerByStore().subscribe(res => {
+        this.listProduct = res.data;
+      })
+    }
 
   }
 

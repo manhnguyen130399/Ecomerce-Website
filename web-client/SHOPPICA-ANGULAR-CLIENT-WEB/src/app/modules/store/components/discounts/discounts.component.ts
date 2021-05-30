@@ -28,19 +28,19 @@ export class DiscountsComponent implements OnInit {
 
   customOptions: OwlOptions = {
     loop: true,
-    autoplay: false,
+    autoplay: true,
     dots: false,
     autoHeight: true,
     autoWidth: true,
     responsive: {
-      100: {
-        items: 1
-      },
-      700: {
+      400: {
         items: 2
       },
-      1050: {
+      600: {
         items: 3
+      },
+      768: {
+        items: 4
       }
     },
     nav: true,

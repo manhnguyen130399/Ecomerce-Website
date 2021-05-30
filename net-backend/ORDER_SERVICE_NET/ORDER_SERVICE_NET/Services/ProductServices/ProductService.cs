@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using ORDER_SERVICE_NET.Services.Commons;
+using ORDER_SERVICE_NET.ViewModels.Carts;
 using ORDER_SERVICE_NET.ViewModels.Commons;
 using ORDER_SERVICE_NET.ViewModels.Orders;
 using ORDER_SERVICE_NET.ViewModels.Products;
@@ -39,6 +40,20 @@ namespace ORDER_SERVICE_NET.Services.ProductServices
         public async Task<APIResult<string>> GetOrderQrCode(string request)
         {
             var response = await _httpClient.PostStringAsyncWithAuth("qr", request, _httpContextAccessor);
+            if (response.IsSuccessStatusCode)
+            {
+                using (HttpContent content = response.Content)
+                {
+                    var data = await content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<APIResultSuccess<string>>(data);
+                }
+            }
+            return JsonConvert.DeserializeObject<APIResultErrors<string>>(null);
+        }
+
+        public async Task<APIResult<string>> UpdateQuantityProductDetail(List<UpdateProductDetailQuantityRequest> request)
+        {
+            var response = await _httpClient.PostAsJsonAsyncWithAuth("product/update-quantity-product-detail", request, _httpContextAccessor);
             if (response.IsSuccessStatusCode)
             {
                 using (HttpContent content = response.Content)

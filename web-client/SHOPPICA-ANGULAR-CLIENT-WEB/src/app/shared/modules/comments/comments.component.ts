@@ -50,7 +50,10 @@ export class CommentsComponent implements OnInit {
     this.isAuthenticated = this.authService.isAuthenticated();
 
     this.shareService.customerInfoEmitted$.subscribe(data => {
-      this.customerImage = data.image;
+      if (data) {
+        this.customerImage = data.image;
+      }
+
     })
   }
 

@@ -67,6 +67,8 @@ namespace ORDER_SERVICE_NET.Controllers
 
             var storeId = Convert.ToInt32(HttpContext.User.FindFirstValue("storeId"));
 
+            request.IsAdmin = HttpContext.User.FindFirstValue(ClaimTypes.Role) == "Admin";
+
             request.StoreId = storeId;
 
             var result = await _orderService.GetByDate(request);

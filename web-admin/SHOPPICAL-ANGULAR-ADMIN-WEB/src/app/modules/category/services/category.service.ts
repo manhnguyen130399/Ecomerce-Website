@@ -54,6 +54,18 @@ export class CategoryService implements BaseService<Category> {
       );
   }
 
+  getAllStore() {
+    return this.httpClient
+      .get<BaseResponse<Category>>(
+        `${environment.productServiceUrl}/api/category/category-all-store`,
+      )
+      .pipe(
+        catchError((err) => {
+          return of(err.error);
+        })
+      );
+  }
+
   getAll(baseParams: BaseParams) {
     let params = new HttpParams()
       .append('page', `${baseParams.pageIndex - 1}`)

@@ -30,10 +30,18 @@ export class ColorService implements BaseService<Color> {
         params = params.append(filter.key, filter.value);
       });
     }
-    return this.httpClient
-      .get<BaseResponse<Color>>(`${environment.productServiceUrl}/api/color`, {
-        params,
-      })
+    return this.httpClient.get<BaseResponse<Color>>(`${environment.productServiceUrl}/api/color`, {
+      params,
+    })
+      .pipe(
+        catchError((error) => {
+          return of(error.error);
+        })
+      );
+  }
+
+  getColorAllStore() {
+    return this.httpClient.get<BaseResponse<Color>>(`${environment.productServiceUrl}/api/color/color-all-store`)
       .pipe(
         catchError((error) => {
           return of(error.error);

@@ -12,5 +12,6 @@ namespace ORDER_SERVICE_NET.ViewModels.Orders
         public int Top { get; set; }
         public string SortOrder { get; set; }
         public int StoreId { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

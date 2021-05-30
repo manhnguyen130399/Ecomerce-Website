@@ -13,6 +13,7 @@ namespace ORDER_SERVICE_NET.ViewModels.Carts
         public string SizeName { get; set; }
         public string BrandName { get; set; }
         public int Quantity { set; get; }
+        public int Available { set; get; }
         public int ProductDetailId { set; get; }
         public int ProductId { set; get; }
         public string Image { get; set; }

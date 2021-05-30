@@ -8,6 +8,7 @@ using ORDER_SERVICE_NET.Services.CartServices;
 using ORDER_SERVICE_NET.Services.ProductServices;
 using ORDER_SERVICE_NET.Utilities;
 using ORDER_SERVICE_NET.ViewModels.Address;
+using ORDER_SERVICE_NET.ViewModels.Carts;
 using ORDER_SERVICE_NET.ViewModels.Commons;
 using ORDER_SERVICE_NET.ViewModels.Commons.Pagging;
 using ORDER_SERVICE_NET.ViewModels.OrderDetails;
@@ -46,6 +47,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                 var qrCodeData = await _productService.GetOrderQrCode(qrString);
                 string address = JsonConvert.SerializeObject(request.Address);
                 List<Orders> listOrders = new List<Orders>();
+                var cartItems = new List<UpdateProductDetailQuantityRequest>();
 
                 foreach (var orderStore in request.OrderOneStores)
                 {
@@ -76,6 +78,14 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                             TotalPriceProduct = item.TotalPriceProduct,
                             Created_at = DateTime.Now,
                         };
+                        var cartItem = new UpdateProductDetailQuantityRequest
+                        {
+                            Quantity = item.Quantity,
+                            Price = item.TotalPriceProduct / item.Quantity,
+                            ProductDetailID = item.ProductDetailId
+                        };
+
+                        cartItems.Add(cartItem);
                         order.OrderDetail.Add(orderDetail);
                     }
 
@@ -98,9 +108,20 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                     }
                 }
 
+                // update cary
+                if (request.AccountId != 0)
+                {
+                    _cartService.DeleteItems(cartItems, request.AccountId);
+                }
+
+                //update product detail quantity
+
+                _productService.UpdateQuantityProductDetail(cartItems);
+
                 await _context.SaveChangesAsync();
 
-                foreach(var item in listOrders)
+
+                foreach (var item in listOrders)
                 {
                     var notify = new Notify()
                     {
@@ -114,11 +135,6 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 
                     _context.Notify.Add(notify);
                     await _hubContext.Clients.User(item.StoreId.ToString()).SendAsync("NewOrderNotify", notify);
-                }
-
-                if (request.AccountId != 0)
-                {
-                    _cartService.DeleteAll(request.AccountId);
                 }
 
                 await _context.SaveChangesAsync();
@@ -280,10 +296,13 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
 
         public async Task<APIResult<List<OrderView>>> GetByDate(OrderRequestByDate request)
         {
-            var listOrder = from o in _context.Orders.Include(o => o.OrderDetail)
+            var listOrder = request.IsAdmin 
+                ? from o in _context.Orders.Include(o => o.OrderDetail)
+                                              where  o.Created_at.CompareTo(request.FromDate) > 0 && o.Created_at.CompareTo(request.ToDate) < 0
+                                              select o
+                : from o in _context.Orders.Include(o => o.OrderDetail)
                             where o.StoreId == request.StoreId && o.Created_at.CompareTo(request.FromDate) > 0 && o.Created_at.CompareTo(request.ToDate) < 0
                             select o;
-
 
             var data = await listOrder
                 .OrderByDescending(x => x.Created_at)
