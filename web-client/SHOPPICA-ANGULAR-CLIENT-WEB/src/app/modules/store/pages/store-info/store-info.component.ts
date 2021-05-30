@@ -20,12 +20,10 @@ export class StoreInfoComponent implements OnInit {
   constructor(
     private readonly router: ActivatedRoute,
     private readonly storeService: StoreInfoService,
-    private readonly shareService: ShareService,
     private readonly loaderService: LoaderService
   ) {
-    this.router.params.subscribe(params => {
-      this.storeId = params.id;
-      this.shareService.storeInfoSuccessEvent(this.storeId);
+    this.router.parent.params.subscribe(params => {
+      this.storeId = params.storeId;
     });
   }
 
@@ -35,9 +33,7 @@ export class StoreInfoComponent implements OnInit {
   }
 
   getCancelAndCompleteOrderState(storeId: number) {
-    this.loaderService.showLoader('store');
     this.storeService.getOrderState(storeId)
-      .pipe(finalize(() => this.loaderService.hideLoader('store')))
       .subscribe((res) => {
         const orderStates = res.data.orderStates;
         const sum = orderStates.reduce((a, { quantity }) => a + quantity, 0);

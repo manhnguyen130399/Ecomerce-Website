@@ -12,7 +12,7 @@
   content: "";
   transition: 0.5s;
   position: absolute;
-  bottom: -5px;
+  bottom: 0;
   background-color: black;
   width: 0;
   margin-left: auto;
@@ -49,6 +49,7 @@
 .product-footer {
   text-align: center;
   margin-top: 40px;
+  padding: 20px 0;
 }
 
 .product-footer a {
@@ -68,4 +69,15 @@
   color: white;
   border-color: #56cfe1;
   background: #56cfe1;
+}
+
+.product-row {
+  position: relative;
+  min-height: 500px;
+}
+
+.not-found {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
 }

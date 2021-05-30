@@ -5,25 +5,25 @@ import { Routes } from '@angular/router';
 import { HomeStoreComponent } from './pages/home-store/home-store.component';
 export const storeRoutes: Routes = [
   {
-    path: '',
+    path: ':storeId',
     component: IndexComponent,
     children: [
       {
-        path: 'home/:id',
+        path: 'home',
         component: HomeStoreComponent,
         data: {
           title: 'Store'
         },
       },
       {
-        path: 'info/:id',
+        path: 'info',
         component: StoreInfoComponent,
         data: {
           title: 'Store Info'
         },
       },
       {
-        path: 'allProduct/:id',
+        path: 'allProduct',
         component: AllProductComponent,
         data: {
           title: 'Store Products'

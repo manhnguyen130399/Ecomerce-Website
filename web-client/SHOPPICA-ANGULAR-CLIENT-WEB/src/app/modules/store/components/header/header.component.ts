@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { LoaderService } from '@shared/modules/loader/loader.service';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Store } from '@core/model/store/store';
@@ -15,24 +16,28 @@ export class HeaderComponent implements OnInit {
   store: Store;
   storeId: number;
   constructor(
-    private readonly shareService: ShareService,
     private readonly storeService: StoreService,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    private readonly activatedRoute: ActivatedRoute
   ) {
-    this.shareService.loadStoreInfoSEmitted$.subscribe((res) => {
-      this.storeId = res;
-    });
+
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe((param) => {
+      this.storeId = param.storeId;
+      console.log(param);
+
+    });
     this.loadStoreDataInfo();
+
 
   }
 
   loadStoreDataInfo() {
-    this.loaderService.showLoader('store');
+    this.loaderService.showLoader('global-store');
     this.storeService.getStoreById(this.storeId)
-      .pipe(finalize(() => this.loaderService.hideLoader('store')))
+      .pipe(finalize(() => this.loaderService.hideLoader('global-store')))
       .subscribe((res) => {
         this.store = res.data;
       });

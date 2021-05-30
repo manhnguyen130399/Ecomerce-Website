@@ -1,9 +1,10 @@
-<app-loader [id]="'store'"></app-loader>
 <div nz-row class="all-product">
   <div nz-col [nzMd]="5" [nzXs]="8" class="side-bar">
     <div class="title">List Categories</div>
     <ul *ngFor="let item of categories">
-      <li>{{item.categoryName}}</li>
+      <li [class.active]="currentCategoryName === item.categoryName.toLowerCase()"
+        (click)="selectCategory(item.categoryName)">
+        {{item.categoryName}}</li>
     </ul>
   </div>
   <div nz-col [nzMd]="19" [nzXs]="16" class="content">

@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { LoaderService } from '@shared/modules/loader/loader.service';
 import { Product } from '../../../../core/model/product/product';
 import { OwlOptions } from 'ngx-owl-carousel-o';
@@ -38,22 +39,24 @@ export class BestSellerComponent implements OnInit {
   constructor(
     private readonly storeService: ShareService,
     private readonly productService: ProductService,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    private readonly activatedRoute: ActivatedRoute
   ) {
-    this.storeService.loadStoreInfoSEmitted$.subscribe((res) => {
-      this.storeId = res;
-    });
+
 
   }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe((param) => {
+      this.storeId = param?.storeId;
+    });
     this.getProductBestSellerByStore(this.storeId);
   }
 
   getProductBestSellerByStore(id: number) {
     this.loaderService.showLoader('store');
     this.productService.getProductBestSellerByStore(id).
-      pipe(finalize(() => this.loaderService.hideLoader('store')))
+      pipe()
       .subscribe((res) => {
         this.listProduct = res.data;
       });

@@ -1,4 +1,3 @@
-<app-loader [id]="'store'"></app-loader>
 <div *ngIf="store" class="store-header">
   <div class="background"></div>
   <div class="flex al-center content">
@@ -15,9 +14,9 @@
   <div class="store-header_menu jc-space-between flex al-center">
     <div class="menu">
       <ul class="flex">
-        <li [routerLinkActive]="['active']" [routerLink]="['/store/home',store.id]">Store</li>
-        <li [routerLinkActive]="['active']" [routerLink]="['/store/allProduct',store.id]">All product</li>
-        <li [routerLinkActive]="['active']" [routerLink]="['/store/info', store.id ]">Store profile</li>
+        <li [routerLinkActive]="['active']" [routerLink]="['/store',store.id,'home']">Store</li>
+        <li [routerLinkActive]="['active']" [routerLink]="['/store',store.id,'allProduct']">All product</li>
+        <li [routerLinkActive]="['active']" [routerLink]="['/store', store.id,'info' ]">Store profile</li>
       </ul>
     </div>
     <!-- <div class="store-header_search">

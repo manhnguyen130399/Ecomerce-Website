@@ -6,7 +6,8 @@ import { ProductService } from '@core/services/product/product.service';
 import { CategoryService } from '@core/services/category/category.service';
 import { Category } from '@core/model/category/category';
 import { finalize } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-all-product',
@@ -15,33 +16,41 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AllProductComponent implements OnInit {
   storeId: number;
+  currentCategoryName: string;
   categories: Category[] = [];
   constructor(
     private readonly categoryService: CategoryService,
-    private readonly router: ActivatedRoute,
-    private readonly shareService: ShareService,
-    private readonly loaderService: LoaderService
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
   ) {
-    this.router.params.subscribe(params => {
-      this.storeId = params.id;
-      this.shareService.storeInfoSuccessEvent(params.id);
+    this.activatedRoute.parent.params.subscribe(params => {
+      this.storeId = params.storeId;
     });
 
   }
   ngOnInit(): void {
     this.loadCategoryByStore();
+
+    this.activatedRoute.queryParams.subscribe(qp => {
+      this.currentCategoryName = qp.category;
+    })
   }
 
   loadCategoryByStore() {
-    this.loaderService.showLoader('store');
     this.categoryService.getCategoryByStore(this.storeId)
-      .pipe(finalize(() => this.loaderService.hideLoader('store')))
       .subscribe((res) => {
         this.categories = res.data.content;
       });
-
   }
 
-
+  selectCategory(categoryName: string) {
+    this.router.navigate(['/store/', this.storeId, 'allProduct'],
+      {
+        queryParams: {
+          category: categoryName.toLowerCase()
+        },
+        queryParamsHandling: 'merge'
+      });
+  }
 
 }

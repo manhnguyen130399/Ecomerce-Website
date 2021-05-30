@@ -13,10 +13,7 @@ import { finalize } from 'rxjs/operators';
 export class HomeStoreComponent implements OnInit {
   isLoading = true;
 
-  constructor(private readonly shareService: ShareService, private readonly router: ActivatedRoute) {
-    this.router.params.subscribe(params => {
-      this.shareService.storeInfoSuccessEvent(params.id);
-    });
+  constructor() {
   }
 
   ngOnInit(): void {

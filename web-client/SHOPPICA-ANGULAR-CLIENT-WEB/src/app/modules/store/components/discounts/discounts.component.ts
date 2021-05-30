@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { LoaderService } from '@shared/modules/loader/loader.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit } from '@angular/core';
@@ -16,11 +17,9 @@ export class DiscountsComponent implements OnInit {
   constructor(
     private readonly shareService: ShareService,
     private readonly storeService: StoreService,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    private readonly activatedRoute: ActivatedRoute
   ) {
-    this.shareService.loadStoreInfoSEmitted$.subscribe((it) => {
-      this.storeId = it;
-    });
   }
 
   storeId: number;
@@ -34,7 +33,7 @@ export class DiscountsComponent implements OnInit {
     autoWidth: true,
     responsive: {
       400: {
-        items: 2
+        items: 3
       },
       600: {
         items: 3
@@ -48,15 +47,20 @@ export class DiscountsComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.activatedRoute.parent.params.subscribe((param) => {
+      this.storeId = param?.storeId;
+    });
     this.loadDataPromotionDataByStore();
   }
 
   loadDataPromotionDataByStore() {
-    this.loaderService.showLoader('store');
     this.storeService.getStoreById(this.storeId)
-      .pipe(finalize(() => this.loaderService.hideLoader('store')))
+      .pipe()
       .subscribe((res) => {
+
         this.listDiscount = res.data.promotions;
+        console.log(this.listDiscount);
+
       });
   }
 
