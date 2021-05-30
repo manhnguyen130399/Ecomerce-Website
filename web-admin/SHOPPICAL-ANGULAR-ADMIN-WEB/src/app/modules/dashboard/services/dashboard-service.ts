@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class DashboardService {
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) { }
 
   getData(fromDate: string, toDate: string, top: number) {
     let params = new HttpParams()
@@ -22,6 +22,23 @@ export class DashboardService {
         `${environment.productServiceUrl}/api/report/by-date`,
         { params }
       )
+      .pipe(
+        catchError((error) => {
+          return of(error.error);
+        })
+      );
+  }
+
+  exportExcel(fromDate: string, toDate: string, top: number) {
+    let params = new HttpParams()
+      .append('fromDate', fromDate)
+      .append('toDate', toDate)
+      .append('Top', top.toString())
+      .append('sortOrder', 'ascend');
+    return this.httpClient
+      .get(
+        `${environment.productServiceUrl}/api/report/export-excel`, { responseType:'blob', params })
+
       .pipe(
         catchError((error) => {
           return of(error.error);

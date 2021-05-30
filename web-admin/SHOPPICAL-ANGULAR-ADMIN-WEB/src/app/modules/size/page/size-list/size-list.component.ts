@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { Size } from '../../models/size';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { pipe } from 'rxjs';
+import { UtilitiesService } from '@app/core/services/utilities/utilities.service';
 
 
 @Component({
@@ -14,11 +15,12 @@ import { pipe } from 'rxjs';
   styleUrls: ['./size-list.component.css']
 })
 export class SizeListComponent extends BaseListComponent<Size> implements OnInit {
-  constructor(private readonly sizeService: SizeService) {
+  constructor(private readonly sizeService: SizeService, private readonly utilitiesService: UtilitiesService) {
     super(sizeService);
   }
 
   ngOnInit(): void {
+    this.isAdmin = this.utilitiesService.getRole() === 'Admin';
   }
 
   searchByName() {

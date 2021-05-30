@@ -1,4 +1,4 @@
-<div class="table-operations">
+<div *ngIf="!isAdmin" class="table-operations">
   <app-color-modal [color]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)"
     (okModalEvent)="closeModal($event)">
   </app-color-modal>

@@ -1,4 +1,4 @@
-<div class="table-operations">
+<div *ngIf="!isAdmin" class="table-operations">
   <app-category-modal [category]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)"
     (okModalEvent)="closeModal($event)">
   </app-category-modal>

@@ -4,6 +4,7 @@ import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 import { State } from '../../models/state';
 import { CategoryReport } from '../../models/category';
+import { saveAs } from 'file-saver';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -21,7 +22,9 @@ export class DashboardComponent implements OnInit {
   revenues: number[];
   sales: number[];
   date = null;
-  constructor(private readonly dashboardService: DashboardService) {}
+  from: string = moment().startOf('month').format('YYYY-MM-DD');
+  to: string = moment().endOf('month').format('YYYY-MM-DD');
+  constructor(private readonly dashboardService: DashboardService) { }
 
   ngOnInit(): void {
     this.loadData();
@@ -30,16 +33,14 @@ export class DashboardComponent implements OnInit {
   onChange(result: Date[]): void {
     this.isLoading = true;
     this.getData(
-      moment(result[0]).format('YYYY-MM-DD'),
-      moment(result[1]).format('YYYY-MM-DD')
+      this.from = moment(result[0]).format('YYYY-MM-DD'),
+      this.to = moment(result[1]).format('YYYY-MM-DD')
     );
   }
 
   loadData() {
     this.isLoading = true;
-    const fromDate = moment().startOf('month').format('YYYY-MM-DD');
-    const toDate = moment().endOf('month').format('YYYY-MM-DD');
-    this.getData(fromDate, toDate);
+    this.getData(this.from, this.to);
   }
 
   private getData(from, to) {
@@ -52,11 +53,18 @@ export class DashboardComponent implements OnInit {
         this.order = data.order;
         this.reviews = data.reviews;
         this.customer = data.customer;
-        this.time = 'Current month';
+        this.time = moment(from).format("M") == moment().startOf('month').format('M') && moment(from).format("M") == moment().endOf('month').format('M') ? 'Current Month' : moment(from).format("MMMM")
         this.state = data.state;
         this.category = data.category;
         this.revenues = data.revenues;
         this.sales = data.sales;
       });
   }
+
+  exportExcel() {
+    this.dashboardService.exportExcel(this.from, this.to, 1000).subscribe((res) => {
+      saveAs(res, `Report ${this.from} - ${this.to}.xls`);
+    })
+  }
+
 }

@@ -86,8 +86,8 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 			final List<ProductDetail> productDetailByIds = productDetailRepo.getProductDetailByIds(productDetailIds);
 			final List<Integer> productId = productDetailByIds.parallelStream().map(it -> it.getProduct().getId())
 					.collect(Collectors.toList());
-			res.setRevenue(orders.parallelStream().map(it -> it.getTotal()).findAny().get());
 			res.setReviews(commentRepo.getCommentInProductIds(getCurrentStoreId(), productId));
+			res.setRevenue(BigDecimal.valueOf(orders.parallelStream().mapToInt(it -> it.getTotal().intValue()).sum()));
 			res.setState(new StateOrderReportVM(getOrderStateNumber(OrderState.COMPLETE, orders, total),
 					getOrderStateNumber(OrderState.CANCEL, orders, total),
 					getOrderStateNumber(OrderState.PENDING, orders, total),
@@ -98,7 +98,7 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 		}
 		final List<CategoryEntryMap> categories = cateRepo.getCategoryAndCountProduct(getCurrentStoreId());
 		res.setCategory(categories);
-		res.setCustomer(orders.size());
+		res.setCustomer(total);
 		res.setOrder(total);
 		final Pair<List<Integer>, List<Integer>> revenuesAndSale = appendDataReport(getRevenuesAndSalesReport());
 		res.setRevenues(revenuesAndSale.getLeft());
@@ -150,8 +150,8 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 			final Pair<Map<Integer, Long>, Map<Integer, Long>> revenuesAndSales) {
 		final Map<Integer, Long> left = revenuesAndSales.getLeft();
 		final Map<Integer, Long> right = revenuesAndSales.getRight();
-		List<Integer> revenues = Lists.newArrayList();
-		List<Integer> sales = Lists.newArrayList();
+		final List<Integer> revenues = Lists.newArrayList();
+		final List<Integer> sales = Lists.newArrayList();
 		for (int i = 1; i <= 12; i++) {
 			if (left.get(i) == null) {
 				revenues.add(0);
@@ -172,11 +172,12 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 		final ReportRes res = getOrderByDate(fromDate, toDate, top, SortType.ascend);
 		res.getRevenue();
 		final Workbook wb = new HSSFWorkbook();
-		final StoreVM store = storeService.getStore(getCurrentStoreId());
+		final Integer currentStoreId = getCurrentStoreId();
+		final StoreVM store = currentStoreId > 0 ? storeService.getStore(currentStoreId) : null;
 		final Sheet sheet = wb.createSheet(Constants.ORDER_REPORT);
 		final Row firstRow = sheet.createRow(0);
 		firstRow.createCell(0, CellType.STRING).setCellValue(Constants.OWNER);
-		firstRow.createCell(1, CellType.STRING).setCellValue(store.getOwner());
+		firstRow.createCell(1, CellType.STRING).setCellValue(store != null ? store.getOwner() : Constants.ADMIN);
 		firstRow.createCell(2, CellType.STRING).setCellValue(Constants.CURRENT_REVENUE_OF_MONTH);
 		sheet.addMergedRegion(new CellRangeAddress(0, 0, 2, 6));
 		firstRow.createCell(7, CellType.NUMERIC).setCellValue(res.getRevenue().doubleValue());
@@ -195,7 +196,7 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 		fontCell(saleTitle.getCellStyle(), wb);
 		sheet.addMergedRegion(new CellRangeAddress(4, 4, 0, 11));
 		appendSales(res, sheet.createRow(5), cellStyle);
-		return Pair.of(wb, store.getStoreName());
+		return Pair.of(wb, store != null ? store.getStoreName() : "Admin");
 	}
 
 	private CellStyle cellStyle(final Workbook wb) {

@@ -3,6 +3,7 @@ import { Category } from '@modules/category/models/category';
 import { CategoryService } from '@modules/category/services/category.service';
 import { BaseListComponent } from '@app/modules/common/base-list-component';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { UtilitiesService } from '@app/core/services/utilities/utilities.service';
 
 @Component({
   selector: 'app-category-list',
@@ -11,11 +12,12 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 })
 export class CategoryListComponent extends BaseListComponent<Category> implements OnInit {
 
-  constructor(private readonly categoryService: CategoryService) {
+  constructor(private readonly categoryService: CategoryService, private readonly utilitiesService: UtilitiesService) {
     super(categoryService);
   }
 
   ngOnInit(): void {
+    this.isAdmin = this.utilitiesService.getRole() === 'Admin';
   }
 
   searchByName() {

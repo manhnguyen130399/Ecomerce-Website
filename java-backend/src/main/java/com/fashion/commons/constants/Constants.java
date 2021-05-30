@@ -157,6 +157,7 @@ public final class Constants {
 	public static final String OWNER = "Owner ";
 	//
 	public static final String SALE = "Sale report";
+	public static final String ADMIN = "Admin";
 	//
 	public static final String CURRENT_REVENUE_OF_MONTH = "CURRENT REVENUE OF MONTH";
 

@@ -7,7 +7,9 @@
     </ng-template>
 </div>
 <br>
-<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize" [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)" [nzData]="listData" nzTableLayout="fixed">
+<nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize"
+    [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading"
+    (nzQueryParams)="onQueryParamsChange($event)" [nzData]="listData" nzTableLayout="fixed">
     <thead>
         <tr>
             <th nzAlign="center" nzColumnKey="id" [nzSortFn]="true">Id</th>
@@ -30,7 +32,10 @@
             <td nzAlign="center">{{ data.closeTime }}</td>
             <td nzAlign="center">{{ data.website }}</td>
             <td nzAlign="center" class="btn-action">
-                <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm nzPopconfirmTitle="Are you sure delete this size?" (nzOnConfirm)="delete(data.id)" nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
+                <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm
+                    nzPopconfirmTitle="Are you sure delete this size?" (nzOnConfirm)="delete(data.id)"
+                    nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete"
+                        nzTheme="outline"></i></button>
             </td>
         </tr>
     </tbody>

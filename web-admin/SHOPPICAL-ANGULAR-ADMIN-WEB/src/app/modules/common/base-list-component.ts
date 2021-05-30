@@ -11,6 +11,7 @@ export class BaseListComponent<T extends BaseModel> {
   total = 1;
   searchValue = '';
   baseParams = new BaseParams();
+  isAdmin :boolean = false;
 
   listData: T[] = [];
   selectedData: T;

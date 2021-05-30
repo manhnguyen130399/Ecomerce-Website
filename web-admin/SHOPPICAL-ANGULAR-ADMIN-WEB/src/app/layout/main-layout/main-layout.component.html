@@ -40,16 +40,16 @@
 
       <li nz-submenu nzTitle="Option" nzIcon="expand-alt">
         <ul>
-          <li *ngIf="!isAdmin" nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/admin/category']">Category</a>
           </li>
-          <li *ngIf="!isAdmin" nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/admin/size']">Size</a>
           </li>
-          <li *ngIf="!isAdmin" nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/admin/color']">Color</a>
           </li>
-          <li *ngIf="!isAdmin" nz-menu-item nzMatchRouter>
+          <li nz-menu-item nzMatchRouter>
             <a [routerLink]="['/admin/brand']">Brand</a>
           </li>
           <li *ngIf="!isAdmin" nz-menu-item nzMatchRouter>

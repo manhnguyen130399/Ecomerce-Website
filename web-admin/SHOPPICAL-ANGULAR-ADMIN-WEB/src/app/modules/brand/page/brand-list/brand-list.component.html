@@ -1,4 +1,4 @@
-<div class="table-operations">
+<div *ngIf="!isAdmin" class="table-operations">
   <app-brand-modal [brandObject]="selectedData" [isVisible]="isShowModal" (cancelModalEvent)="closeModal($event)"
     (okModalEvent)="closeModal($event)">
   </app-brand-modal>
@@ -30,8 +30,8 @@
         <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm
           nzPopconfirmTitle="Are you sure delete this brand?" (nzOnConfirm)="delete(data.id)"
           nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
-        <button nz-button (click)="edit(data)" [disabled]="true" nzType="primary">Edit<i nz-icon nzType="edit"
-            nzTheme="outline"></i></button>
+        <!-- <button nz-button (click)="edit(data)" [disabled]="true" nzType="primary">Edit<i nz-icon nzType="edit"
+            nzTheme="outline"></i></button> -->
       </td>
     </tr>
   </tbody>
