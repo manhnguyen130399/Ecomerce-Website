@@ -16,11 +16,12 @@ export class BestSellerComponent implements OnInit {
   storeId: number;
   listProduct: Product[];
   customOptions: OwlOptions = {
-    loop: false,
+    loop: true,
     autoplay: true,
     dots: false,
     autoHeight: true,
     autoWidth: true,
+    skip_validateItems: true,
     responsive: {
       400: {
         items: 2
@@ -37,26 +38,20 @@ export class BestSellerComponent implements OnInit {
   };
 
   constructor(
-    private readonly storeService: ShareService,
     private readonly productService: ProductService,
-    private readonly loaderService: LoaderService,
     private readonly activatedRoute: ActivatedRoute
   ) {
-
-
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((param) => {
+    this.activatedRoute.parent.params.subscribe((param) => {
       this.storeId = param?.storeId;
     });
-    this.getProductBestSellerByStore(this.storeId);
+    this.getProductBestSellerByStore();
   }
 
-  getProductBestSellerByStore(id: number) {
-    this.loaderService.showLoader('store');
-    this.productService.getProductBestSellerByStore(id).
-      pipe()
+  getProductBestSellerByStore() {
+    this.productService.getProductBestSellerByStore(5, this.storeId)
       .subscribe((res) => {
         this.listProduct = res.data;
       });

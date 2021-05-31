@@ -11,7 +11,9 @@ import { Component, OnInit } from '@angular/core';
 export class ProductBestSellerComponent implements OnInit {
 
   constructor(private readonly productService: ProductService) { }
-  listProduct: Product[] = [];
+  saleProduct: Product[] = [];
+  trendingProduct: Product[] = [];
+  newArrivalProduct: Product[] = [];
 
   customOptions: OwlOptions = {
     loop: false,
@@ -35,11 +37,13 @@ export class ProductBestSellerComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.productService.getProductBestSellerByStore().subscribe(res => {
+    this.productService.getListNewArrival(0, 15).subscribe(res => {
       if (res.code === 'OK') {
-        this.listProduct = res.data;
+        this.newArrivalProduct = res.data.content.slice(0, 4);
+        this.saleProduct = res.data.content.slice(5, 9);
+        this.trendingProduct = res.data.content.slice(10, 14);
       }
-    });
+    })
   }
 
 }

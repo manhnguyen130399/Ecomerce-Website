@@ -42,10 +42,8 @@ export class ProductsComponent implements OnInit, AfterContentInit {
     this.activatedRoute.queryParams.pipe(
       debounceTime(500),
       switchMap(queryParams => {
-        if (queryParams.category) {
-          this.currentCategory = queryParams.category;
-          return this.loadProductByStore();
-        }
+        this.currentCategory = queryParams ? queryParams.category : '';
+        return this.loadProductByStore();
       })
     ).subscribe(res => {
       if (res.code == "OK") {

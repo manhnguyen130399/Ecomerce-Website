@@ -1,7 +1,7 @@
 <div class="banner-holder">
   <div nz-row [nzGutter]="24">
     <div nz-col [nzMd]="12" [nzXs]="24">
-      <div class="column women-sale">
+      <div [routerLink]="['/product/collection/women']" class="column women-sale">
         <div class="background"></div>
         <div class="content">
           <h3>Up to 70%</h3>
@@ -10,7 +10,7 @@
       </div>
     </div>
     <div nz-col [nzMd]="12" [nzXs]="24">
-      <div class="column man-sale">
+      <div [routerLink]="['/product/collection/man']" class="column man-sale">
         <div class="background"></div>
         <div class="content">
           <h3>Men Collection</h3>

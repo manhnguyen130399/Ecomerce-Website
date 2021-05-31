@@ -40,7 +40,6 @@ export class ToolbarsComponent implements OnInit {
   }
 
   provinceChange(value: string): void {
-    console.log(value);
     this.sortChangeValueEvent.emit(value);
   }
 }

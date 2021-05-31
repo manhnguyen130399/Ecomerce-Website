@@ -14,7 +14,7 @@
 }
 
 .women-sale .background {
-  background-image: url("/assets/images/summer-sale.jpg");
+  background-image: url("assets/images/summer-sale.jpg");
   background-size: cover;
   background-position: center center;
   transition: 2s;
@@ -23,7 +23,7 @@
 }
 
 .man-sale .background {
-  background-image: url("/assets/images/man.jpg");
+  background-image: url("assets/images/man.jpg");
   background-size: cover;
   background-position: center center;
   transition: 2s;

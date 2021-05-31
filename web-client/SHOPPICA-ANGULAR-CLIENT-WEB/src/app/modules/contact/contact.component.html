@@ -1,5 +1,5 @@
 <div class="contact-page mt-70">
-  <app-header-page [image]="'/assets/images/contact.jpg'" [pageName]="'Contact Us'"></app-header-page>
+  <app-header-page [image]="'assets/images/contact.jpg'" [pageName]="'Contact Us'"></app-header-page>
   <div class="container">
     <div class="content" [nzGutter]="24" nz-row>
       <div class="contact-form" nz-col [nzMd]="12" [nzXs]="24">
@@ -15,7 +15,7 @@
 
           <!-- email -->
           <nz-form-item>
-            <nz-form-label nzSpan="10" nzRequired  nzFor="email" email>Your Email:</nz-form-label>
+            <nz-form-label nzSpan="10" nzRequired nzFor="email" email>Your Email:</nz-form-label>
             <nz-form-control nzSpan="24" nzErrorTip="The input is not valid E-mail!">
               <input nz-input formControlName="email" />
             </nz-form-control>
@@ -23,7 +23,7 @@
 
           <!-- phone -->
           <nz-form-item>
-            <nz-form-label nzSpan="10"  nzFor="phone" phone>Your Phone:</nz-form-label>
+            <nz-form-label nzSpan="10" nzFor="phone" phone>Your Phone:</nz-form-label>
             <nz-form-control nzSpan="24" nzErrorTip="The input is not valid Phone!">
               <input nz-input formControlName="phone" />
             </nz-form-control>

@@ -124,6 +124,10 @@
               "devServerTarget": "SHOPPICA-ANGULAR-CLIENT-WEB:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }

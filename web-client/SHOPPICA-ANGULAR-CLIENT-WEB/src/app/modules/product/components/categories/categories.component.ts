@@ -36,7 +36,7 @@ export class CategoriesComponent implements OnInit {
           {
             id: -1,
             categoryName: 'All',
-            image: '/assets/images/blogs/blog-background.jpg'
+            image: 'assets/images/blogs/blog-background.jpg'
           },
           ...res.data
         ];

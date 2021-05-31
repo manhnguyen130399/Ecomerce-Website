@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BaseParams } from '@core/model/base-params';
 import { of } from 'rxjs';
+import { ProductSort } from '@core/model/product/product-sort';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,22 @@ export class ProductService {
       );
   }
 
+  getListNewArrival(pageIndex: number, pageSize: number) {
+    const params = new HttpParams()
+      .append('page', `${pageIndex}`)
+      .append('pageSize', `${pageSize}`);
+
+    let productOptions = new ProductOptions();
+    productOptions.sortType = ProductSort.NEW_OLD;
+
+    return this.httpClient.post(`${environment.productServiceUrl}/api/product/product-all-store`, productOptions,
+      { params }).pipe(
+        catchError(error => {
+          return of(error.error);
+        })
+      );
+  }
+
   getProductById(id: number) {
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/${id}`).pipe(
       catchError(error => {
@@ -38,13 +55,13 @@ export class ProductService {
     );
   }
 
-  getProductBestSellerByStore(pageSize?: number, id?: number) {
+  getProductBestSellerByStore(top?: number, storeId?: number) {
     let params = new HttpParams();
-    if (id) {
-      params = params.append('storeId', id.toString());
+    if (storeId) {
+      params = params.append('storeId', storeId.toString());
     }
-    if (pageSize) {
-      params = params.append('pageSize', pageSize.toString());
+    if (top) {
+      params = params.append('top', top.toString());
     }
     return this.httpClient.get(`${environment.productServiceUrl}/api/product/best-seller`, { params }).pipe(catchError(error => {
       return of(error.error);

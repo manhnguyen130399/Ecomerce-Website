@@ -1,3 +1,5 @@
+import { FormsModule } from '@angular/forms';
+import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { SectionTitleModule } from './../../shared/modules/section-title/section-title.module';
@@ -23,6 +25,8 @@ import { AboutComponent } from './about.component';
     CarouselModule,
     NzToolTipModule,
     NzGridModule,
+    NzRateModule,
+    FormsModule,
     NzIconModule.forChild(shareIcons),
     RouterModule.forChild(aboutRoutes)
   ]

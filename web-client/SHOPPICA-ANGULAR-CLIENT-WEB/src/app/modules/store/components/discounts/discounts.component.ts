@@ -31,16 +31,14 @@ export class DiscountsComponent implements OnInit {
     dots: false,
     autoHeight: true,
     autoWidth: true,
+    skip_validateItems: true,
     responsive: {
       400: {
-        items: 3
+        items: 2
       },
       600: {
         items: 3
       },
-      768: {
-        items: 4
-      }
     },
     nav: true,
     navText: ['<', '>']

@@ -24,7 +24,10 @@ export const environment = {
   ],
   social: {
     google: {
-      clientId: "403185955334-84f9955tsbj1am79opiicik5fgnpoomg.apps.googleusercontent.com"
+      clientId: '775013219718-ctvm42dg7sg8m0p0ceocd0eg7msqof3h.apps.googleusercontent.com'
+    },
+    facebook: {
+      clientID: '4903591429710865'
     }
   }
 };

@@ -10,6 +10,6 @@
         true}" [routerLink]="['/account/order-history']">Order History</li>
     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:
       true}" [routerLink]="['/product/wishlist']">Wishlist</li>
-    <li>Logout</li>
+    <li (click)="logout()">Logout</li>
   </ul>
 </div>

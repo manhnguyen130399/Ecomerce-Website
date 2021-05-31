@@ -11,5 +11,8 @@ export class ProductOptions {
     this.brandNames = [];
     this.sizeNames = [];
     this.colorNames = [];
+    this.prices = [];
+    this.categoryNames = null;
+    this.productNames = null;
   }
 }

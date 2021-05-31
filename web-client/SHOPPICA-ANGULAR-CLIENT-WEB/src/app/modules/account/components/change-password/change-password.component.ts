@@ -36,7 +36,7 @@ export class ChangePasswordComponent implements OnInit {
   buildForm() {
     this.changePasswordForm = this.formBuilder.group({
       currentPassword: [null, this.loginMethod === LoginMethod.SOCIAL ? [] : [Validators.required]],
-      newPassword: [null, [Validators.required]],
+      newPassword: [null, [Validators.required, this.confirmationValidator]],
       confirmPassword: [null, [Validators.required, this.confirmationValidator]],
     });
   }
@@ -45,7 +45,7 @@ export class ChangePasswordComponent implements OnInit {
     if (!control.value) {
       return { required: true };
     }
-    if (control.value !== this.changePasswordForm.controls.newPassword.value) {
+    if (control.value !== this.changePasswordForm.controls.newPassword.value || control.value !== this.changePasswordForm.controls.confirmPassword.value) {
       return { error: true, confirm: true };
     }
     return null;

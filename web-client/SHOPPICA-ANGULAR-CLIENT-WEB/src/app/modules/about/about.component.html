@@ -1,5 +1,5 @@
 <div class="about-page mt-70">
-  <app-header-page [pageName]="'ABOUT US'" [image]="'/assets/images/blogs/background-2.jpg'"></app-header-page>
+  <app-header-page [pageName]="'ABOUT US'" [image]="'assets/images/blogs/background-2.jpg'"></app-header-page>
   <div class="container">
     <div class="about-text">
       <h1>Hello! We’re Shopica</h1>
@@ -78,14 +78,19 @@
     <div class="members">
       <div nz-row [nzGutter]="36" class="member">
         <div class="avatar" nz-col [nzMd]="10" [nzXs]="24">
-          <img src="http://cvresumetemplate.com/maha-personal-cv-resume-html-template/assets/images/ab-img.png">
+          <img src="assets/images/avatar-6.jpg">
         </div>
         <div class="member-info" nz-col [nzMd]="14" [nzXs]="24">
           <h2>About Me Trung Hieu</h2>
-          <h3>Back-end developer</h3>
+          <h3>.Net developer</h3>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elnecess itatibus aperiam voluptas rem nam, dolorem
             dolores reiciend obcaecati quas iusto beatae ab asperiores explicabo laudan illum, volupt atem corrupti
-            blanditiis fugit enim.</p>
+            blanditiis fugit enim. Necess itatibu aperiam voluptas rem nam Lorem ipsum dolor sit amet, con sectetur
+            adipisicing elit. Suscipit ullam ea assumenda facilis quo omnis fugit ipsum molest iae volupt atem et.
+            Beatae architecto hic repudiandae! Quod fugit consequuntur provident, nemo ducimus Lorem ipsum dolor sit
+            amet, consectetur adipisicing elit. Deleniti, nulla, odit ipsum fugit dicta tempore expedita dolorem
+            voluptatum dolore veniam totam, quae et ea possimus. Expedita, eum facilis minus aliquam! Necess itatibu
+            aperiam voluptas rem nam Lorem ipsum dolor sit amet, con sectetur adipisicing elit. Suscipit.</p>
 
           <div nz-row>
             <div nz-col [nzSm]="12" [nzXs]="24">
@@ -110,10 +115,7 @@
             dolores reiciend obcaecati quas iusto beatae ab asperiores explicabo laudan illum, volupt atem corrupti
             blanditiis fugit enim. Necess itatibu aperiam voluptas rem nam Lorem ipsum dolor sit amet, con sectetur
             adipisicing elit. Suscipit ullam ea assumenda facilis quo omnis fugit ipsum molest iae volupt atem et.
-            Beatae architecto hic repudiandae! Quod fugit consequuntur provident, nemo ducimus Lorem ipsum dolor sit
-            amet, consectetur adipisicing elit. Deleniti, nulla, odit ipsum fugit dicta tempore expedita dolorem
-            voluptatum dolore veniam totam, quae et ea possimus. Expedita, eum facilis minus aliquam! Necess itatibu
-            aperiam voluptas rem nam Lorem ipsum dolor sit amet, con sectetur adipisicing elit. Suscipit.</p>
+            Beatae architecto hic repudiandae!</p>
 
           <div nz-row>
             <div nz-col [nzSpan]="12">
@@ -123,13 +125,14 @@
             </div>
             <div nz-col [nzSpan]="12">
               <p>Phone: +84 943043284</p>
-              <p>Github: <a>https://github.com/manhnguyen130399</a></p>
+              <p>Github: <a href="https://github.com/manhnguyen130399"
+                  target="_blank">https://github.com/manhnguyen130399</a></p>
               <p>Nationality: Vietnamese</p>
             </div>
           </div>
         </div>
         <div class="avatar" nz-col [nzMd]="7" [nzXs]="24">
-          <img src="/assets/images/profile.png">
+          <img src="assets/images/avatar-3.jpg">
         </div>
       </div>
     </div>
@@ -140,11 +143,14 @@
       <div class="content">
         <owl-carousel-o [options]="customOptions">
           <ng-template *ngFor="let comment of listComment" carouselSlide>
+
             <div class="column">
               <div class="comment-avatar flex jc-center">
                 <img [src]="comment.customerImage" alt="">
               </div>
+
               <div class="comment-content">
+                <nz-rate nzDisabled [ngModel]="comment.rating"></nz-rate>
                 <p>{{comment.content}}</p>
                 <h3>{{comment.customerName}}</h3>
               </div>

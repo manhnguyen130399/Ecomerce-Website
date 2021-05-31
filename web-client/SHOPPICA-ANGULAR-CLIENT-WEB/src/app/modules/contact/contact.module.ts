@@ -1,3 +1,4 @@
+import { NzMessageModule } from 'ng-zorro-antd/message';
 import { shareIcons } from './../../shared/share-icon';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -19,14 +20,12 @@ import { contactRoutes } from './contact.routing';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-
-
     HeaderPageModule,
-
     NzInputModule,
     NzGridModule,
     NzFormModule,
     NzButtonModule,
+    NzMessageModule,
     NzIconModule.forChild(shareIcons),
 
     RouterModule.forChild(contactRoutes)

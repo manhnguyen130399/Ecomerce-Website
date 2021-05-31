@@ -3,7 +3,7 @@
 }
 
 .title {
-  background-image: url("/assets/images/products/cart.jpg");
+  background-image: url("assets/images/products/cart.jpg");
   background-position: center center;
   background-size: cover;
   height: 120px;

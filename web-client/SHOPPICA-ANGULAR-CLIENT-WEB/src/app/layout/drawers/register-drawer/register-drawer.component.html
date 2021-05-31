@@ -22,6 +22,9 @@
               <ng-container *ngIf="control.hasError('duplicated')">
                 The email is already in use!
               </ng-container>
+              <ng-container *ngIf="control.hasError('email')">
+                Please input valid email!
+              </ng-container>
             </ng-template>
           </nz-form-control>
         </nz-form-item>
@@ -33,6 +36,7 @@
           </nz-form-control>
         </nz-form-item>
         <!-- form error -->
+
         <div class="form-error" *ngIf="registerForm.errors">
           <p>{{registerForm.errors.error}}</p>
         </div>

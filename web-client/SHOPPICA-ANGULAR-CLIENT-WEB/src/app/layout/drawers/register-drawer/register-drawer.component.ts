@@ -30,7 +30,7 @@ export class RegisterDrawerComponent implements OnInit {
   buildForm() {
     this.registerForm = this.formBuilder.group({
       fullName: [null, Validators.required],
-      email: [null, [Validators.required], existEmailValidator(this.authService)],
+      email: [null, [Validators.required, Validators.email], existEmailValidator(this.authService)],
       password: [null, Validators.required],
     });
   }
@@ -44,6 +44,8 @@ export class RegisterDrawerComponent implements OnInit {
   }
 
   submitForm() {
+    console.log(this.registerForm.errors);
+
     // validate
     for (const i in this.registerForm.controls) {
       this.registerForm.controls[i].markAsDirty();

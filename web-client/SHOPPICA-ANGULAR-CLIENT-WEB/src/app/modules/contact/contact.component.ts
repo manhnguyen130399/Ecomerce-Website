@@ -1,3 +1,5 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { finalize } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ContactService } from '../../core/services/contact/contact.service';
@@ -9,12 +11,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./contact.component.css'],
 })
 export class ContactComponent implements OnInit {
-  isLoading: true;
+  isLoading = false;
   contactForm!: FormGroup;
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly contactService: ContactService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly messageService: NzMessageService
   ) { }
 
   ngOnInit(): void {
@@ -24,8 +27,8 @@ export class ContactComponent implements OnInit {
   buildForm() {
     this.contactForm = this.formBuilder.group({
       name: [null, Validators.required],
-      email: [null, Validators.required],
-      phone: [null],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, [Validators.pattern(/^(^\+251|^251|^0)?9\d{8}$/)]],
       content: [null, Validators.required],
     });
   }
@@ -34,12 +37,17 @@ export class ContactComponent implements OnInit {
     this.checkInput();
     const value = this.contactForm.value;
     if (this.contactForm.valid) {
+      this.isLoading = true;
       this.contactService
         .createContact(this.contactForm.value)
+        .pipe(
+          finalize(() => this.isLoading = false)
+        )
         .subscribe((res) => {
           if (res.code == 'OK') {
             this.contactForm.reset();
             this.router.navigate(['/home']);
+            this.messageService.success('Thanks you for your contact!')
           }
         });
     }

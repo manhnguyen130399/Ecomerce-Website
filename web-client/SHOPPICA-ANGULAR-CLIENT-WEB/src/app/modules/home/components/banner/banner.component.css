@@ -18,15 +18,15 @@ nz-carousel {
 }
 
 .content.banner-1 .background {
-  background-image: url("/assets/images/banners/banner-3.jpg");
+  background-image: url("assets/images/banners/banner-3.jpg");
 }
 
 .content.banner-3 .background {
-  background-image: url("/assets/images/banners/banner-2.jpg");
+  background-image: url("assets/images/banners/banner-2.jpg");
 }
 
 .content.banner-2 .background {
-  background-image: url("/assets/images/banners/banner-1.jpg");
+  background-image: url("assets/images/banners/banner-1.jpg");
   transition: 5s;
   transform: scale(1.2);
 }
