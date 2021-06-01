@@ -19,7 +19,7 @@ export class SearchModalComponent implements OnInit {
   pageIndex = 1;
   pageSize = 6;
   listProduct: Product[];
-  imgAnalyzer: string = "http://127.0.0.1:5000/api/image-analyzer";
+  imgAnalyzer: string = "http://54.254.175.238:5000/api/image-analyzer";
 
   constructor(
     private readonly formBuilder: FormBuilder,
