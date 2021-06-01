@@ -38,9 +38,9 @@ public interface ProductService {
 
 	Page<ProductVM> getAllOrFilterProduct(ProductFilterRequest req, Integer page, Integer pageSize);
 
-	List<ProductVM> getBestSellerProductByStore(Integer storeId);
+	List<ProductVM> getBestSellerProductByStore(Integer storeId, Integer Top);
 
-	Page<ProductVM> searchProductByKeyword(Integer page, Integer pageSize, String keyword);
+	Page<ProductVM> searchProductByKeyword(Integer page, Integer pageSize, List<String> keywords);
 
 	String updateQuantityProductDetail(List<ProductDetailReq> req);
 

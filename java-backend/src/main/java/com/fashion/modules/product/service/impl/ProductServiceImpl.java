@@ -16,7 +16,6 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.search.Query;
 import org.apache.poi.ss.usermodel.Row;
@@ -259,8 +258,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@Transactional
 	public Page<ProductVM> filterProduct(final Integer page, final Integer pageSize, final ProductReq req) {
 		final Integer storeId = req.getStoreId();
-		return productRepo
-				.filterProduct(page, pageSize, storeId != null ? storeId : getCurrentStoreId(), req)
+		return productRepo.filterProduct(page, pageSize, storeId != null ? storeId : getCurrentStoreId(), req)
 				.map(it -> convertProductToVM(it));
 	}
 
@@ -418,11 +416,11 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	@Cacheable(Constants.BEST_SELLER)
-	public List<ProductVM> getBestSellerProductByStore(final Integer storeId) {
+	@Cacheable(Constants.PRODUCTS)
+	public List<ProductVM> getBestSellerProductByStore(final Integer storeId, final Integer Top) {
 		final BestSellerData data = getBestSellerByStore(storeId);
 		return productRepo
-				.getBestSeller(storeId,
+				.getBestSeller(storeId, Top,
 						data.getProductDetails().stream().map(it -> it.getProductDetailId())
 								.collect(Collectors.toSet()))
 				.stream().map(i -> convertProductToVM(i)).collect(Collectors.toList());
@@ -441,14 +439,16 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public Page<ProductVM> searchProductByKeyword(final Integer page, final Integer pageSize, final String keyword) {
-		if (StringUtils.isNotEmpty(keyword)) {
+	public Page<ProductVM> searchProductByKeyword(final Integer page, final Integer pageSize,
+			final List<String> keywords) {
+		if (CollectionUtils.isNotEmpty(keywords)) {
 			final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(em);
 			final QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
 					.forEntity(Product.class).get();
-			final Query productQuery = qb.keyword().onFields("productName", "price", "brand.brandName",
-					"productDetails.color.colorName", "category.categoryName", "productDetails.size.sizeName")
-					.matching(keyword).createQuery();
+			final Query productQuery = qb.keyword()
+					.onFields("productName", "price", "brand.brandName", "productDetails.color.colorName",
+							"category.categoryName", "productDetails.size.sizeName")
+					.matching(String.join(",", keywords)).createQuery();
 			final org.hibernate.search.jpa.FullTextQuery fullTextQuery = fullTextEntityManager
 					.createFullTextQuery(productQuery, Product.class);
 			final List<Product> products = fullTextQuery.getResultList();
@@ -513,6 +513,5 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		productDetailRepo.saveAll(newList);
 		return Constants.SUCCESS;
 	}
-	
 
 }

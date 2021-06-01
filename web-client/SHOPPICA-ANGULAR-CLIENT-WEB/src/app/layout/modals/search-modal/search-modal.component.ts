@@ -1,11 +1,10 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CartItemOptions } from '@shared/modules/cart-item/models/cart-item-options.model';
-import { CartItem } from '@core/model/cart/cart-item';
 import { Product } from '@core/model/product/product';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '@core/services/product/product.service';
-import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'app-search-modal',
@@ -20,11 +19,13 @@ export class SearchModalComponent implements OnInit {
   pageIndex = 1;
   pageSize = 6;
   listProduct: Product[];
+  imgAnalyzer: string = "http://127.0.0.1:5000/api/image-analyzer";
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly productService: ProductService,
-    private readonly router: Router
+    private readonly router: Router,
+    private msg: NzMessageService
 
   ) { }
 
@@ -42,9 +43,9 @@ export class SearchModalComponent implements OnInit {
     this.closeSearchModalEvent.emit();
   }
 
-  searchProductFullText(keyword: string) {
+  searchProductFullText(keywords: string[]) {
     this.productService.searchProductByFullText(this.pageIndex
-      , this.pageSize, keyword).subscribe((res) => {
+      , this.pageSize, keywords).subscribe((res) => {
         if (res.code == 'OK') {
           this.listProduct = res.data.content;
           this.searchForm.reset();
@@ -52,13 +53,27 @@ export class SearchModalComponent implements OnInit {
       });
   }
 
+
   submitForm() {
-    this.searchProductFullText(this.searchForm.get('keyword').value);
+    this.searchProductFullText([this.searchForm.get('keyword').value]);
   }
 
   viewDetail(id: number) {
     this.handleCancel();
     this.router.navigate(['/product/detail/', id]);
 
+  }
+
+  handleChange(info: NzUploadChangeParam): void {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      this.msg.success(`${info.file.name} file uploaded successfully`);
+      this.searchProductFullText(info.file.response.data);
+
+    } else if (info.file.status === 'error') {
+      this.msg.error(`${info.file.name} file upload failed.`);
+    }
   }
 }

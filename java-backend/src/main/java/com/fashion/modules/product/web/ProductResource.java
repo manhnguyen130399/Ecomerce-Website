@@ -106,7 +106,7 @@ public class ProductResource extends BaseResource {
 		}
 		return success(Collections.emptyList());
 	}
-	
+
 	@PostMapping(URL + "/product-all-store")
 	public ResponseEntity<Map<String, Object>> getAllProductOrFilter(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
@@ -114,20 +114,21 @@ public class ProductResource extends BaseResource {
 			@RequestBody final ProductFilterRequest req) {
 		return success(productService.getAllOrFilterProduct(req, page, pageSize));
 	}
-	
+
 	@GetMapping(URL + "/best-seller")
-	public ResponseEntity<Map<String, Object>> getBestSeller(@RequestParam(required = false) final Integer id) {
-		return success(productService.getBestSellerProductByStore(id));
+	public ResponseEntity<Map<String, Object>> getBestSeller(@RequestParam(required = false) final Integer storeId,
+			@RequestParam(required = false) final Integer Top) {
+		return success(productService.getBestSellerProductByStore(storeId, Top));
 	}
-	
+
 	@GetMapping(URL + "/fulltext-search")
 	public ResponseEntity<Map<String, Object>> searchProductByKeyword(
 			@RequestParam(required = false, defaultValue = "0") final Integer page,
 			@RequestParam(required = false, defaultValue = "50") final Integer pageSize,
-			@RequestParam final String keyword) {
-		return success(productService.searchProductByKeyword(page, pageSize, keyword));
+			@RequestParam final List<String> keywords) {
+		return success(productService.searchProductByKeyword(page, pageSize, keywords));
 	}
-	
+
 	@PostMapping(URL + "/update-quantity-product-detail")
 	public ResponseEntity<Map<String, Object>> updateQuantityProductDetail(
 			@RequestBody final List<ProductDetailReq> req) {

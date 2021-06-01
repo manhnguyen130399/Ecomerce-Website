@@ -16,6 +16,7 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 @NgModule({
   declarations: [],
   imports: [
@@ -31,6 +32,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
     NzCarouselModule,
     NzRateModule,
     NzMessageModule,
+    NzUploadModule,
     NzDropDownModule,
     NzBadgeModule,
     NzIconModule.forRoot(shareIcons)
@@ -51,7 +53,8 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
     NzRateModule,
     NzMessageModule,
     NzDropDownModule,
-    NzBadgeModule
+    NzBadgeModule,
+    NzUploadModule
   ],
   providers: []
 })

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderPageComponent } from './header-page.component';
+import { SharedModule } from '@shared/shared.module';
 
 
 
@@ -9,7 +10,8 @@ import { HeaderPageComponent } from './header-page.component';
     HeaderPageComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule
   ],
   exports: [
     HeaderPageComponent

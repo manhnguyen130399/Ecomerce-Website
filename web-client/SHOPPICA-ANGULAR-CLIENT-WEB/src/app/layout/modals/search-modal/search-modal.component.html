@@ -1,13 +1,20 @@
-<nz-modal [nzWidth]="'90%'" [nzBodyStyle]="{'height':'100%','padding':'0'}" [nzStyle]="{'height':'95%'}" [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzCentered [nzFooter]="null" [nzMaskClosable]="true" nzWrapClassName="search-modal" nzTitle="">
+<nz-modal [nzWidth]="'90%'" [nzBodyStyle]="{'height':'100%','padding':'0'}" [nzStyle]="{'height':'95%'}"
+    [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()" nzCentered [nzFooter]="null" [nzMaskClosable]="true"
+    nzWrapClassName="search-modal" nzTitle="">
     <ng-container *nzModalContent>
         <div class="search">
-            <form class="search-form" [nzLayout]="'vertical'" nz-form [formGroup]="searchForm" (ngSubmit)="submitForm()">
+            <form class="search-form" [nzLayout]="'vertical'" nz-form [formGroup]="searchForm"
+                (ngSubmit)="submitForm()">
                 <nz-form-control nzSpan="24">
                     <nz-input-group class="product-name" [nzSuffix]="suffixIconSearch">
                         <input placeholder="Search for products" nz-input formControlName="keyword" />
                     </nz-input-group>
                     <ng-template #suffixIconSearch>
-                        <i nz-icon nzType="camera" nzTheme="outline"></i>
+                        <nz-upload nzAction="{{imgAnalyzer}}"
+                            [nzHeaders]="{ authorization: 'authorization-text' }" (nzChange)="handleChange($event)">
+                            <i nz-icon nz-tooltip nzTooltipTitle="Choose product image want to " nzType="camera"
+                                nzTheme="outline"></i>
+                        </nz-upload>
                     </ng-template>
                 </nz-form-control>
             </form>
@@ -15,9 +22,11 @@
             <div class="search-header">Search Results: </div>
             <div class="search-content custom-scroll-bar">
                 <div nz-row>
-                    <div *ngFor="let product of listProduct" nz-col [nzXl]="4" [nzMd]="6" [nzSm]="8" [nzXs]="12" class="item">
+                    <div *ngFor="let product of listProduct" nz-col [nzXl]="4" [nzMd]="6" [nzSm]="8" [nzXs]="12"
+                        class="item">
                         <div class="product-image">
-                            <a (click)="viewDetail(product.id)"><img src="{{product.productImages[0].image}}" alt=""></a>
+                            <a (click)="viewDetail(product.id)"><img src="{{product.productImages[0].image}}"
+                                    alt=""></a>
                         </div>
                         <div class="product-info">
                             <p class="product-info_name text-hover">{{product.productName}}</p>

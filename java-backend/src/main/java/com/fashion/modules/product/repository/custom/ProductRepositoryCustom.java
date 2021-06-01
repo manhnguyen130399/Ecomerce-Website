@@ -15,6 +15,6 @@ public interface ProductRepositoryCustom {
 
 	Page<Product> filterProduct(ProductFilterRequest req, Integer page, Integer pageSize);
 	
-	List<Product> getBestSeller(Integer storeId, Collection<Integer> ids);
+	List<Product> getBestSeller(Integer storeId, Integer Top, Collection<Integer> ids);
 
 }

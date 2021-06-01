@@ -184,7 +184,7 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 	}
 
 	@Override
-	public List<Product> getBestSeller(final Integer storeId, final Collection<Integer> ids) {
+	public List<Product> getBestSeller(final Integer storeId, final Integer Top, final Collection<Integer> ids) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append(" SELECT DISTINCT p ");
 		builder.append(" FROM Product p ");
@@ -199,7 +199,7 @@ public class ProductRepositoryCustomImpl extends BaseRepository implements Produ
 		}
 		final TypedQuery<Product> query = getEm().createQuery(builder.toString(), Product.class);
 		query.setParameter("ids", ids);
-		query.setMaxResults(10);
+		query.setMaxResults(Top != null ? Top : 10);
 		if (hasStoreId) {
 			query.setParameter("storeId", storeId);
 		}
