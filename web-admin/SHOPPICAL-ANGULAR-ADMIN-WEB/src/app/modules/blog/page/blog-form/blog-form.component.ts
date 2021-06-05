@@ -60,6 +60,7 @@ export class BlogFormComponent implements OnInit {
     this.blog.title = this.baseForm.get('title').value;
     this.blog.content = this.baseForm.get('content').value;
     this.blog.summary = this.baseForm.get('summary').value;
+    this.isLoadingButtonSubmit = true;
     this.blogService
       .create(this.blog)
       .pipe(finalize(() => (this.isLoadingButtonSubmit = false)))

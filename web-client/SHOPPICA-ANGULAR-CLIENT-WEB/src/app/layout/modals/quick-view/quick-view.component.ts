@@ -70,21 +70,28 @@ export class QuickViewComponent implements OnInit {
     this.modalService.openQuickViewEmitted$.subscribe((product) => {
       this.product = product;
       this.isVisible = true;
+      this.quantity = 1;
       this.listSize = getListSize(product.productDetails);
       this.listColor = getListColor(product.productDetails);
       this.colorSelected = this.listColor[0];
       this.sizeSelected = this.listSize[0];
       this.setImages(product.productImages);
+      this.checkWishList();
     });
+
     this.shareService.wishlistEmitted$.subscribe(listIds => {
       this.listWishIds = listIds;
-      if (listIds.indexOf(this.product?.id) !== -1) {
-        this.inWishList = true;
-      }
-      else {
-        this.inWishList = false;
-      }
+      this.checkWishList();
     });
+  }
+
+  checkWishList() {
+    if (this.listWishIds.indexOf(this.product?.id) !== -1) {
+      this.inWishList = true;
+    }
+    else {
+      this.inWishList = false;
+    }
   }
 
   addToWishList(productId: number) {

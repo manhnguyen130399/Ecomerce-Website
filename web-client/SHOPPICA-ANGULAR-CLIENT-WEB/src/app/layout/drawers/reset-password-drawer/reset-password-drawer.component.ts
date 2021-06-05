@@ -31,11 +31,21 @@ export class ResetPasswordDrawerComponent implements OnInit {
 
   buildForm() {
     this.firstForm = this.formBuilder.group({
-      email: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
     });
   }
 
   sendCode() {
+    // validate
+    for (const i in this.firstForm.controls) {
+      this.firstForm.controls[i].markAsDirty();
+      this.firstForm.controls[i].updateValueAndValidity();
+    }
+
+    if (this.firstForm.invalid) {
+      return;
+    }
+
     this.isLoading = true;
     const email = this.firstForm.controls.email.value;
     this.authService.sendVerifyCode(email).pipe(

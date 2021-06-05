@@ -30,7 +30,6 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.verifyToken = this.activatedRoute.snapshot.queryParamMap.get('token');
-    console.log(this.verifyToken);
     this.email = this.storageService.get(environment.emailToken);
   }
 

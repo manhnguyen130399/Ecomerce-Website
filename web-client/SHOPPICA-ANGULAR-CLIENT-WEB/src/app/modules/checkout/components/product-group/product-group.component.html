@@ -1,5 +1,5 @@
 <div class="cart-group">
-  <div *ngIf="store" class="cart-group-name text-hover flex al-center">
+  <div *ngIf="store" [routerLink]="['/store',store.id,'home']" class="cart-group-name text-hover flex al-center">
     <img height="30" [src]="store.logo">
     {{store.storeName}}
   </div>

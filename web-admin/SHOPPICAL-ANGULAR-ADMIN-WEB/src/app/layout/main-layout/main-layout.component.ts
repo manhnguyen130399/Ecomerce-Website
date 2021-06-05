@@ -57,7 +57,7 @@ export class MainLayoutComponent implements OnInit {
   }
 
   playNotifySound() {
-    this.audioElement.nativeElement.insertAdjacentHTML("beforeend", "<audio autoplay><source src='/assets/musics/notification.mp3'></audio>")
+    this.audioElement.nativeElement.insertAdjacentHTML("beforeend", "<audio autoplay><source src='assets/musics/notification.mp3'></audio>")
     setTimeout(() => {
       const childElements = this.audioElement.nativeElement.childNodes;
       for (let child of childElements) {

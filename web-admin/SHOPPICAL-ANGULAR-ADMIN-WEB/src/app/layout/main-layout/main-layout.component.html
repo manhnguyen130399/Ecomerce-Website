@@ -2,8 +2,8 @@
   <nz-sider class="menu-sidebar" nzCollapsible="true" nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed"
     [nzTrigger]="null">
     <div class="sidebar-logo">
-      <a href="http://localhost:4200/admin" target="_blank">
-        <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
+      <a [routerLink]="['/admin/dashboard']">
+        <img src="assets/images/logo2.svg" alt="logo">
         <h1>Shopica Seller Center</h1>
       </a>
     </div>
@@ -110,7 +110,7 @@
             </ng-template>
 
             <span nz-dropdown [nzDropdownMenu]="menu">
-              <img src="/assets/images/avatar.jpg" width="34" height="34">
+              <img src="assets/images/avatar.jpg" width="34" height="34">
               {{sellerName}}
               <i nz-icon nzType="down"></i>
             </span>

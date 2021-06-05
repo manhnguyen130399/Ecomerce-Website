@@ -179,7 +179,7 @@ export class ProductComponent implements OnInit {
   clearBrand() {
     this.router.navigate(['/product/collection', this.currentCategory], {
       queryParams: {
-        Brand: null,
+        brand: null,
       },
       queryParamsHandling: 'merge'
     });

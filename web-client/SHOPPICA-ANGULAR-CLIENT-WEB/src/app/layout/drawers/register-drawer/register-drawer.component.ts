@@ -44,8 +44,6 @@ export class RegisterDrawerComponent implements OnInit {
   }
 
   submitForm() {
-    console.log(this.registerForm.errors);
-
     // validate
     for (const i in this.registerForm.controls) {
       this.registerForm.controls[i].markAsDirty();
