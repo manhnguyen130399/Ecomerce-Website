@@ -19,9 +19,9 @@
         <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
           <td nzAlign="center">{{ data.id }}</td>
           <td nzAlign="center">{{ data.productName }}</td>
-          <td nzAlign="center">{{ data.price |currency:'$':'symbol':'3.0' }}</td>
+          <td nzAlign="center">{{ data.price |currency }}</td>
           <td nzAlign="center">{{ data.quantity }} </td>
-          <td nzAlign="center">{{ data.totalPriceProduct | currency:'$':'symbol':'3.0' }}</td>
+          <td nzAlign="center">{{ data.totalPriceProduct | currency }}</td>
 
         </tr>
       </tbody>
@@ -60,9 +60,9 @@
           | <span (click)="updateState(order.id,'CANCEL')" class="cancel">CANCEL</span>
         </div>
         <p><b>Time : </b> {{order.created_at | date:'medium'}} </p>
-        <p><b>Total : </b> {{order.total |currency:'$':'symbol':'3.0' }} </p>
-        <p><b>Discount : </b> {{order.discount |currency:'$':'symbol':'3.0' }} </p>
-        <p><b>Shipping Cost : </b> {{order.shippingCost |currency:'$':'symbol':'3.0' }} </p>
+        <p><b>Total : </b> {{order.total |currency }} </p>
+        <p><b>Discount : </b> {{order.discount |currency }} </p>
+        <p><b>Shipping Cost : </b> {{order.shippingCost |currency }} </p>
       </div>
 
     </div>

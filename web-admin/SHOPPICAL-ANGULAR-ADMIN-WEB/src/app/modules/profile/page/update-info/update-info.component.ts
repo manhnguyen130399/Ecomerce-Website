@@ -26,8 +26,8 @@ export class UpdateInfoComponent implements OnInit {
   listProvince: Province[] = [];
   listWard: Ward[] = [];
   listDistrict: District[] = [];
-  districtIdSelected: number = -1;
-  wardIdSelected: number = -1;
+  districtIdSelected = -1;
+  wardIdSelected: string = '-1';
   backendUrl = `${environment.productServiceUrl}/api/upload`;
   isLoadingSubmit = false;
   isLoadingSellerDetail = true;
@@ -125,13 +125,13 @@ export class UpdateInfoComponent implements OnInit {
     })
   }
 
-  loadWards(districtID: number,) {
+  loadWards(districtID: number) {
     this.ghnService.getWards(districtID).subscribe(res => {
       if (res.code == 200) {
         this.listWard = res.data;
-        const wardSelect = this.wardIdSelected !== -1 ? this.listWard.find(x => x.WardCode == this.wardIdSelected) : this.listWard[0];
+        const wardSelect = this.wardIdSelected !== '-1' ? this.listWard.find(x => x.WardCode == this.wardIdSelected) : this.listWard[0];
         this.sellerUpdateForm.controls.ward.setValue(wardSelect)
-        this.wardIdSelected = -1;
+        this.wardIdSelected = '-1';
       }
     })
   }
@@ -148,10 +148,12 @@ export class UpdateInfoComponent implements OnInit {
     const province = this.sellerUpdateForm.get("province").value;
     const district = this.sellerUpdateForm.get("district").value;
     const ward = this.sellerUpdateForm.get("ward").value;
+
+
     const address: Address = {
       provinceId: province.ProvinceID,
       districtId: district.DistrictID,
-      wardId: parseInt(ward.WardCode),
+      wardId: ward.WardCode,
       addressName: `${ward.WardName} - ${district.DistrictName} - tỉnh ${province.ProvinceName}`
     }
     const sellerInfo: Seller = {
@@ -162,7 +164,7 @@ export class UpdateInfoComponent implements OnInit {
       address: address,
       image: "",
     }
-    console.log(this.fileList[0]);
+
     if (this.fileList[0].status === "done") {
       sellerInfo.image = this.fileList[0].response.data[0];
     }
@@ -177,11 +179,10 @@ export class UpdateInfoComponent implements OnInit {
       ).subscribe(res => {
         if (res.isSuccessed) {
           this.messageService.create("success", "update info successfully");
+          this.profileService.changeUserName(sellerInfo.sellerName);
         }
       });
   }
-
-
 
 
 }

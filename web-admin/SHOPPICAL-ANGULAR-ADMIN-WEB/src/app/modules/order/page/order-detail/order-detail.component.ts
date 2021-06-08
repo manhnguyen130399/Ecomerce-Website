@@ -1,4 +1,4 @@
-import { finalize } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { OrderService } from './../../services/order.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -26,31 +26,32 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.orderId = this.activatedRoute.snapshot.params.id;
-    if (this.orderId !== undefined) {
-      this.isLoading = true;
-      this.orderService.getOrderDetails(this.orderId)
-        .pipe(
-          finalize(() => this.isLoading = false)
-        )
-        .subscribe(res => {
-          if (res.isSuccessed) {
-            this.order = res.data;
-            this.order.created_at = new Date(res.data.created_at);
-            this.orderDetails = this.order.orderDetails;
-          }
-          else {
-            this.isHaveOrder = false;
-          }
+    this.activatedRoute.params.pipe(
+      switchMap(params => {
+        if (params.orderId) {
+          this.isLoading = true;
+          this.orderId = params.orderId;
+          return this.orderService.getOrderDetails(this.orderId);
         }
-        )
-    }
+      })
+    ).subscribe(res => {
+      if (res.isSuccessed) {
+        this.order = res.data;
+        this.order.created_at = new Date(res.data.created_at);
+        this.orderDetails = this.order.orderDetails;
+      }
+      else {
+        this.isHaveOrder = false;
+      }
+      this.isLoading = false
+    })
   }
+
 
   updateState(orderId: number, state: string) {
     this.orderService.updateState(orderId, state).subscribe(res => {
       if (res.isSuccessed) {
+        this.order.state = state;
         this.messageService.success("update state successfully");
       }
     })

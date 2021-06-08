@@ -8,12 +8,12 @@
       </a>
     </div>
     <ul class="main-menu" nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li [routerLink]="['/admin/dashboard']" nz-menu-item>
+      <li nzMatchRouter [routerLink]="['/admin/dashboard']" nz-menu-item>
         <i nz-icon nzType="bar-chart"></i>
         <span>Dashboard</span>
       </li>
 
-      <li *ngIf="!isAdmin" [routerLink]="['/admin/order']" nz-menu-item>
+      <li *ngIf="!isAdmin" nzMatchRouter [routerLink]="['/admin/order']" nz-menu-item>
         <i nz-icon nzType="ordered-list"></i>
         <span>Order</span>
       </li>
@@ -28,12 +28,12 @@
         </ul>
       </li>
 
-      <li *ngIf="!isAdmin" [routerLink]="['/admin/blog/create']" nz-menu-item>
+      <li *ngIf="!isAdmin" nzMatchRouter [routerLink]="['/admin/blog/create']" nz-menu-item>
         <i nz-icon nzType="form"></i>
         <span>Blog</span>
       </li>
 
-      <li *ngIf="isAdmin" [routerLink]="['/admin/blog']" nz-menu-item>
+      <li *ngIf="isAdmin" nzMatchRouter [routerLink]="['/admin/blog']" nz-menu-item>
         <i nz-icon nzType="form"></i>
         <span>Blog</span>
       </li>
@@ -86,7 +86,8 @@
                 Notifications
               </div>
               <div class="notify-content" *ngIf="listNotify.length > 0;else noNotify">
-                <div *ngFor="let item of listNotify" [routerLink]="['/order',item.orderId]" class="notify-item">
+                <div *ngFor="let item of listNotify" [routerLink]="['/admin/order/detail',item.orderId]"
+                  class="notify-item">
                   <div class="notify-icon">
                     <i nz-icon nzType="info-circle" style="font-size: 30px; color: #08c;" nzTheme="outline"></i>
                   </div>
@@ -96,7 +97,7 @@
                   </div>
                 </div>
               </div>
-              <div class="notify-footer">
+              <div [routerLink]="['/admin/order']" class="notify-footer">
                 View all
               </div>
             </ng-template>
@@ -111,7 +112,7 @@
 
             <span nz-dropdown [nzDropdownMenu]="menu">
               <img src="assets/images/avatar.jpg" width="34" height="34">
-              {{sellerName}}
+              {{isAdmin ? 'Admin': sellerName}}
               <i nz-icon nzType="down"></i>
             </span>
             <nz-dropdown-menu #menu="nzDropdownMenu">

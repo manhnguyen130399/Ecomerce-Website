@@ -1,42 +1,39 @@
 <div>
-    <nz-input-group [nzSuffix]="suffixIconSearch">
-        <input type="text" nz-input (keyup.enter)="searchByName()" placeholder="Search" [(ngModel)]="searchValue" />
-    </nz-input-group>
-    <ng-template #suffixIconSearch>
-        <i nz-icon nzType="search" (click)="searchByName()"></i>
-    </ng-template>
+  <nz-input-group [nzSuffix]="suffixIconSearch">
+    <input type="text" nz-input (keyup.enter)="searchByName()" placeholder="Search" [(ngModel)]="searchValue" />
+  </nz-input-group>
+  <ng-template #suffixIconSearch>
+    <i nz-icon nzType="search" (click)="searchByName()"></i>
+  </ng-template>
 </div>
 <br>
 <nz-table #sortTable [nzFrontPagination]="false" [nzTotal]="total" [nzPageSize]="baseParams.pageSize"
-    [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading"
-    (nzQueryParams)="onQueryParamsChange($event)" [nzData]="listData" nzTableLayout="fixed">
-    <thead>
-        <tr>
-            <th nzAlign="center" nzColumnKey="id" [nzSortFn]="true">Id</th>
-            <th nzAlign="center">Store Name</th>
-            <th nzAlign="center">Address</th>
-            <th nzAlign="center">Owner</th>
-            <th nzAlign="center">Open</th>
-            <th nzAlign="center">Close</th>
-            <th nzAlign="center">Website</th>
-            <th nzAlign="center">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
-            <td nzAlign="center">{{ data.id }}</td>
-            <td nzAlign="center">{{ data.storeName }}</td>
-            <td nzAlign="center">{{ data.address }}</td>
-            <td nzAlign="center">{{ data.owner }}</td>
-            <td nzAlign="center">{{ data.openTime }}</td>
-            <td nzAlign="center">{{ data.closeTime }}</td>
-            <td nzAlign="center">{{ data.website }}</td>
-            <td nzAlign="center" class="btn-action">
-                <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm
-                    nzPopconfirmTitle="Are you sure delete this size?" (nzOnConfirm)="delete(data.id)"
-                    nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete"
-                        nzTheme="outline"></i></button>
-            </td>
-        </tr>
-    </tbody>
+  [nzPageIndex]="baseParams.pageIndex" nzBordered [nzLoading]="isLoading" (nzQueryParams)="onQueryParamsChange($event)"
+  [nzData]="listData" nzTableLayout="fixed">
+  <thead>
+    <tr>
+      <th [nzWidth]="'6%'" nzAlign="center" nzColumnKey="id" [nzSortFn]="true">Id</th>
+      <th [nzWidth]="'12%'" nzAlign="center">Store Name</th>
+      <th nzAlign="center">Address</th>
+      <th [nzWidth]="'10%'" nzAlign="center">Open</th>
+      <th [nzWidth]="'10%'" nzAlign="center">Close</th>
+      <th nzAlign="center">Website</th>
+      <th nzAlign="center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of sortTable.data; let odd=odd; let even = even" [ngClass]="{ odd: odd, even: even }">
+      <td nzAlign="center">{{ data.id }}</td>
+      <td nzAlign="center">{{ data.storeName }}</td>
+      <td nzAlign="center">{{ data.address.addressName }}</td>
+      <td nzAlign="center">{{ data.openTime }}</td>
+      <td nzAlign="center">{{ data.closeTime }}</td>
+      <td nzAlign="center"><a [href]="data.website" target="_blank">{{data.website}}</a> </td>
+      <td nzAlign="center" class="btn-action">
+        <button nz-button nzType="primary" nzPopconfirmOverlayClassName="delete-confirm-card" nz-popconfirm
+          nzPopconfirmTitle="Are you sure delete this size?" (nzOnConfirm)="delete(data.id)"
+          nzPopconfirmPlacement="left" nzDanger>Delete<i nz-icon nzType="delete" nzTheme="outline"></i></button>
+      </td>
+    </tr>
+  </tbody>
 </nz-table>

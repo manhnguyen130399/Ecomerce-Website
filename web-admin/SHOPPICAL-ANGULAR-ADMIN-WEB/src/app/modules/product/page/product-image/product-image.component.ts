@@ -24,12 +24,13 @@ export class ProductImageComponent implements OnInit {
 
   previewImage: string | undefined = '';
   previewVisible = false;
-  constructor(private readonly productService :ProductService) { }
+  constructor(
+    private readonly productService: ProductService
+  ) { }
 
   ngOnInit(): void {
 
   }
-
 
   handlePreview = async (file: NzUploadFile) => {
     if (!file.url && !file.preview) {
@@ -40,12 +41,15 @@ export class ProductImageComponent implements OnInit {
   };
 
   handleChange = (info: NzUploadChangeParam) => {
-    this.productService
-      .deleteImage(info.file.id)
-      .pipe()
-      .subscribe((data) => {console.log(data);
-      });
     this.listImageChange.emit(this.listImage);
+  }
+
+  removeFile = (file: NzUploadFile) => {
+    this.productService
+      .deleteImage(file.id)
+      .subscribe((data) => {
+      });
+    return true;
   }
 
 }

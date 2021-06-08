@@ -6,9 +6,9 @@
         <nz-form-label [nzSpan]="6">Size</nz-form-label>
         <nz-form-control [nzSpan]="14" nzErrorTip="Please input your size!">
           <nz-select [nzLoading]="isLoadingSizeInSelect" nzMode="multiple" [nzMaxTagCount]="3"
-            [(ngModel)]="listSizeSelected" (ngModelChange)="selectSize($event)" nzAllowClear nzShowSearch
+            [(ngModel)]="sizeIdsSelected" (ngModelChange)="generateProductDetail()" nzAllowClear nzShowSearch
             nzPlaceHolder="Select a size">
-            <nz-option *ngFor="let item of listSize" [nzLabel]="item.sizeName" [nzValue]="item">
+            <nz-option *ngFor="let item of listSize" [nzLabel]="item.sizeName" [nzValue]="item.id">
             </nz-option>
           </nz-select>
         </nz-form-control>
@@ -20,9 +20,9 @@
         <nz-form-label [nzSpan]="6">Color</nz-form-label>
         <nz-form-control [nzSpan]="14" nzErrorTip="Please input your color!">
           <nz-select nzMode="multiple" [nzLoading]="isLoadingColorInSelect" [nzMaxTagCount]="3"
-            [(ngModel)]="listColorSelected" (ngModelChange)="selectColor($event)" nzShowSearch nzAllowClear
+            [(ngModel)]="colorIdsSelected" (ngModelChange)="generateProductDetail()" nzShowSearch nzAllowClear
             nzPlaceHolder="Select a color">
-            <nz-option *ngFor="let item of listColor" [nzLabel]="item.colorName" [nzValue]="item">
+            <nz-option *ngFor="let item of listColor" [nzLabel]="item.colorName" [nzValue]="item.id">
             </nz-option>
           </nz-select>
         </nz-form-control>

@@ -3,8 +3,8 @@
   <nz-form-item>
     <div class="clearfix">
       <nz-upload [nzAction]="backEndUrl" [nzMultiple]="true" nzName="files" nzListType="picture-card"
-        [(nzFileList)]="listImage" (nzChange)="handleChange($event)" [nzShowButton]="listImage.length < 8"
-        [nzPreview]="handlePreview">
+        [(nzFileList)]="listImage" [nzRemove]="removeFile" (nzChange)="handleChange($event)"
+        [nzShowButton]="listImage.length < 8" [nzPreview]="handlePreview">
         <div>
           <i nz-icon nzType="plus"></i>
           <div style="margin-top: 8px">Upload</div>

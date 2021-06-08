@@ -71,7 +71,8 @@
 
   <app-product-image [(listImage)]="listImage"></app-product-image>
 
-  <app-product-option [(listProductDetail)]="listProductDetail"></app-product-option>
+  <app-product-option [listProductDetail]="listProductDetail" [colorIdsSelected]="colorIdsSelected"
+    [sizeIdsSelected]="sizeIdsSelected"></app-product-option>
 
   <div class="btn-submit">
     <button nz-button [nzLoading]="isLoadingButtonSubmit" [disabled]="productForm.invalid" (click)="submitForm()"

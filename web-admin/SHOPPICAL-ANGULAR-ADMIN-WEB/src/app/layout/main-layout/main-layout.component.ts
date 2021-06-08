@@ -6,6 +6,7 @@ import { NotifyService } from '@core/services/notify/notify.service';
 import { SignalrService } from '@core/services/signalr/signalr.service';
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Notify } from '@app/models/notifies/notify';
+import { ProfileService } from '@app/modules/profile/services/profile.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -26,7 +27,8 @@ export class MainLayoutComponent implements OnInit {
     private readonly notifyService: NotifyService,
     private readonly storageService: StorageService,
     private readonly router: Router,
-    private readonly utilitiesService: UtilitiesService
+    private readonly utilitiesService: UtilitiesService,
+    private readonly profileService: ProfileService
   ) { }
 
   ngOnInit(): void {
@@ -46,6 +48,10 @@ export class MainLayoutComponent implements OnInit {
 
     this.sellerName = this.utilitiesService.getName();
     this.isAdmin = this.utilitiesService.getRole() === "Admin";
+
+    this.profileService.currentUserName.subscribe(sellerName => {
+      this.sellerName = sellerName;
+    })
   }
 
   updateNumUnread() {
@@ -64,9 +70,6 @@ export class MainLayoutComponent implements OnInit {
         this.renderer.removeChild(this.audioElement.nativeElement, child);
       }
     }, 1000)
-  }
-  log() {
-
   }
 
   logout() {
