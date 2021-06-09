@@ -16,14 +16,16 @@ export class StoreListComponent
     super(storeService);
   }
 
-  pageIndex =0;
-  pageSize =5;
+  pageIndex = 0;
+  pageSize = 5;
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   searchByName() {
     this.baseParams.filters = [{ key: "storeName", value: this.searchValue }];
-    super.search();
+    // super.search();
+    console.log(this.listData);
+
   }
 
   onQueryParamsChange = (params: NzTableQueryParams) => {

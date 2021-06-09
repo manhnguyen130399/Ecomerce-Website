@@ -6,12 +6,12 @@ import { BaseParams } from '../../common/base-params';
 import { Observable, of } from 'rxjs';
 import { BaseResponse } from '@app/modules/common/base-response';
 import { environment } from '@env';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
 export class StoreService implements BaseService<Store> {
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) { }
 
   getAll(baseParams: BaseParams) {
     let params = new HttpParams()
@@ -30,10 +30,19 @@ export class StoreService implements BaseService<Store> {
       });
     }
     return this.httpClient
-      .get<BaseResponse<Store>>(`${environment.productServiceUrl}/api/store`, {
+      .get<any>(`${environment.productServiceUrl}/api/store`, {
         params
       })
       .pipe(
+        map(res => {
+          if (res.code == "OK") {
+            res.data.content.map(x => {
+              x.address = JSON.parse(x.address);
+              return x;
+            })
+          }
+          return res;
+        }),
         catchError((error) => {
           return of(error.error);
         })

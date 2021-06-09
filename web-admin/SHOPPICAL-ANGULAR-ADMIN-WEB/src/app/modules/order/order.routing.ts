@@ -7,7 +7,7 @@ export const orderRoute: Routes = [
     component: OrderListComponent
   },
   {
-    path: 'detail/:id',
+    path: 'detail/:orderId',
     component: OrderDetailComponent
   }
 ]

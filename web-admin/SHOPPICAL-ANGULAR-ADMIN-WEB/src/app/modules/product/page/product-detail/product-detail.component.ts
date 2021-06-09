@@ -1,17 +1,18 @@
 import { ProductDetail } from './../../model/product-detail';
 import { ProductService } from '@modules/product/services/product.service';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { BaseParams } from '@modules/common/base-params';
 import { BrandService } from '@modules/brand/services/brand.service';
 import { CategoryService } from '@modules/category/services/category.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { Brand } from '@modules/brand/models/brand';
 import { Category } from '@modules/category/models/category';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@env';
+import { ProductOptionComponent } from '../product-option/product-option.component';
 
 
 @Component({
@@ -20,6 +21,8 @@ import { environment } from '@env';
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
+
+  @ViewChild(ProductOptionComponent) productOption: ProductOptionComponent;
 
   backEndUrl = `${environment.productServiceUrl}/api/product/import`;
   isLoadingCategoryInSelect = true;
@@ -39,6 +42,8 @@ export class ProductDetailComponent implements OnInit {
 
   listProductDetail: ProductDetail[] = [];
 
+  sizeIdsSelected: number[] = [];
+  colorIdsSelected: number[] = [];
   productId: number;
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -55,10 +60,12 @@ export class ProductDetailComponent implements OnInit {
     this.loadBrand();
 
     //edit mode
-    this.productId = this.activatedRoute.snapshot.params.id;
-    if (this.productId !== undefined) {
-      this.loadProductEdit(this.productId);
-    }
+    this.activatedRoute.params.subscribe(params => {
+      if (params.productId) {
+        this.productId = params.productId
+        this.loadProductEdit(this.productId);
+      }
+    });
   }
 
   loadProductEdit(productId: number) {
@@ -68,36 +75,41 @@ export class ProductDetailComponent implements OnInit {
     )
       .subscribe(res => {
         if (res.code == "OK") {
-          let listProductDetail = [];
-          let listFile = [];
           const product = res.data;
-
           this.productForm.controls.productName.setValue(product.productName);
           this.productForm.controls.price.setValue(product.price);
           this.productForm.controls.categoryId.setValue(product.categoryId);
           this.productForm.controls.brandId.setValue(product.brandId);
           this.productForm.controls.description.setValue(product.description);
 
-          product.productImages.forEach((productImage, index) => {
-            let file = {
+          this.listImage = product.productImages.map((productImage, index) => {
+            return {
               uid: index,
               id: productImage.id,
               url: productImage.image,
               name: 'image.png',
             };
-            listFile.push(file);
           });
-          this.listImage = listFile;
 
+          console.log(product.productDetails);
 
-          product.productDetails.forEach(item => {
-            listProductDetail.push(item);
-          })
-
-          this.listProductDetail = listProductDetail;
+          this.listProductDetail = [...product.productDetails];
+          this.loadColorSizeSelected(product.productDetails)
         }
       });
   }
+
+  loadColorSizeSelected(productDetails) {
+    const sizeIds = new Set<number>();
+    const colorIds = new Set<number>();
+    productDetails.forEach(item => {
+      sizeIds.add(item.sizeId);
+      colorIds.add(item.colorId);
+    });
+    this.colorIdsSelected = [...colorIds];
+    this.sizeIdsSelected = [...sizeIds];
+  }
+
 
   buildForm() {
     this.productForm = this.formBuilder.group({
@@ -145,7 +157,7 @@ export class ProductDetailComponent implements OnInit {
       price: this.productForm.get("price").value,
       categoryId: this.productForm.get("categoryId").value,
       brandId: this.productForm.get("brandId").value,
-      productDetails: this.listProductDetail,
+      productDetails: this.productOption.getProductDetails(),
       productImages: [],
       images: []
     };

@@ -52,7 +52,7 @@ namespace USER_SERVICE_NET.Services.Emails
         {
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("Shopica Email Service",_emailConfiguration.From));
-            if (message.Recipients!=null)
+            if (message.Recipients!=null || message.Recipients.Count != 0)
             {
                 foreach(var email in message.Recipients)
                 {

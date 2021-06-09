@@ -78,7 +78,6 @@ nz-header {
 }
 
 .seller-info .ant-dropdown-trigger {
-  height: 100%;
   display: flex;
   cursor: pointer;
   align-items: center;

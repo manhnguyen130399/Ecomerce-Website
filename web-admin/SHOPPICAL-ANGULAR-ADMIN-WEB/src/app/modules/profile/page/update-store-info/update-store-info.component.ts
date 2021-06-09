@@ -1,3 +1,4 @@
+import { UtilitiesService } from '@app/core/services/utilities/utilities.service';
 import { DatePipe } from '@angular/common';
 import { SlugifyPipe } from './../../../../core/pipe/slugify.pipe';
 import { Address } from '@modules/profile/model/address';
@@ -29,7 +30,7 @@ export class UpdateStoreInfoComponent implements OnInit {
   listWard: Ward[] = [];
   listDistrict: District[] = [];
   districtIdSelected: number = -1;
-  wardIdSelected: number = -1;
+  wardIdSelected = '-1';
   backendUrl = `${environment.productServiceUrl}/api/upload`;
   isLoadingSubmit = false;
   isLoadingSellerDetail = true;
@@ -43,7 +44,8 @@ export class UpdateStoreInfoComponent implements OnInit {
     private readonly userService: UserService,
     private readonly messageService: NzMessageService,
     private readonly slugifyPipe: SlugifyPipe,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
+    private readonly utilitiesService: UtilitiesService
   ) { }
 
   ngOnInit(): void {
@@ -77,6 +79,7 @@ export class UpdateStoreInfoComponent implements OnInit {
 
   setFormValue(value: Store) {
     const address = JSON.parse(value.address);
+    const owner = this.utilitiesService.getName();
     if (address) {
       const province = this.listProvince.find(x => x.ProvinceID == address.provinceId);
       this.districtIdSelected = address.districtId;
@@ -87,7 +90,7 @@ export class UpdateStoreInfoComponent implements OnInit {
     this.storeUpdateForm.controls.storeName.setValue(value.storeName);
     this.storeUpdateForm.controls.closeTime.setValue(new Date(`${this.epochTime}T${value.closeTime}`));
     this.storeUpdateForm.controls.openTime.setValue(new Date(`${this.epochTime}T${value.openTime}`));
-    this.storeUpdateForm.controls.owner.setValue(value.owner);
+    this.storeUpdateForm.controls.owner.setValue(owner);
     this.storeUpdateForm.controls.website.setValue(value.website);
 
     let listImage = [];
@@ -130,44 +133,34 @@ export class UpdateStoreInfoComponent implements OnInit {
     })
   }
 
-  loadDistricts(provinceID: number, districtSelectId: number) {
+  loadDistricts(provinceID: number) {
     this.ghnService.getDistricts(provinceID).subscribe(res => {
       if (res.code == 200) {
         this.listDistrict = res.data;
-        if (districtSelectId == -1) {
-          this.storeUpdateForm.controls.district.setValue(this.listDistrict[0])
-        }
-        else {
-          const districtSelect = this.listDistrict.find(x => x.DistrictID == districtSelectId);
-          this.storeUpdateForm.controls.district.setValue(districtSelect)
-          this.districtIdSelected = -1;
-        }
+        const districtSelect = this.districtIdSelected !== -1 ? this.listDistrict.find(x => x.DistrictID == this.districtIdSelected) : this.listDistrict[0];
+        this.storeUpdateForm.controls.district.setValue(districtSelect)
+        this.districtIdSelected = -1;
       }
     })
   }
 
-  loadWards(districtID: number, wardSelectId: number) {
+  loadWards(districtID: number) {
     this.ghnService.getWards(districtID).subscribe(res => {
       if (res.code == 200) {
         this.listWard = res.data;
-        if (wardSelectId == -1) {
-          this.storeUpdateForm.controls.ward.setValue(this.listWard[0])
-        }
-        else {
-          const wardSelect = this.listWard.find(x => x.WardCode == wardSelectId);
-          this.storeUpdateForm.controls.ward.setValue(wardSelect)
-          this.wardIdSelected = -1;
-        }
+        const wardSelect = this.wardIdSelected !== '-1' ? this.listWard.find(x => x.WardCode == this.wardIdSelected) : this.listWard[0];
+        this.storeUpdateForm.controls.ward.setValue(wardSelect)
+        this.wardIdSelected = '-1';
       }
     })
   }
 
   provinceChange(province: Province): void {
-    this.loadDistricts(province.ProvinceID, this.districtIdSelected);
+    this.loadDistricts(province.ProvinceID);
   }
 
   districtChange(district: District): void {
-    this.loadWards(district.DistrictID, this.wardIdSelected);
+    this.loadWards(district.DistrictID);
   }
 
   submitForm() {
@@ -177,7 +170,7 @@ export class UpdateStoreInfoComponent implements OnInit {
     const address: Address = {
       provinceId: province.ProvinceID,
       districtId: district.DistrictID,
-      wardId: parseInt(ward.WardCode),
+      wardId: ward.WardCode,
       addressName: `${ward.WardName} - ${district.DistrictName} - tỉnh ${province.ProvinceName}`
     }
     const storeInfo: Store = {

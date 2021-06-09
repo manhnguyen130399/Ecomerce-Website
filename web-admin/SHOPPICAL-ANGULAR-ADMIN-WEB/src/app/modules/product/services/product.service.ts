@@ -13,7 +13,7 @@ import { BaseParams } from '@app/modules/common/base-params';
   providedIn: 'root',
 })
 export class ProductService implements BaseService<Product> {
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) { }
 
   getById(id: number) {
     return this.httpClient
@@ -39,8 +39,6 @@ export class ProductService implements BaseService<Product> {
   }
 
   update(product: Product): Observable<BaseResponse<Product>> {
-    console.log(product);
-
     return this.httpClient
       .put<BaseResponse<Product>>(
         `${environment.productServiceUrl}/api/product`,

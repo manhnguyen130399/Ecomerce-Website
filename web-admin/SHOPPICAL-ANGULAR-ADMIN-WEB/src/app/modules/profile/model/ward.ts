@@ -1,4 +1,4 @@
 export interface Ward {
-  WardCode: number;
+  WardCode: string;
   WardName: string;
 }

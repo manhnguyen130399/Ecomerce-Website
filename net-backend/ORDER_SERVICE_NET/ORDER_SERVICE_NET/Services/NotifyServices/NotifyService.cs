@@ -54,7 +54,8 @@ namespace ORDER_SERVICE_NET.Services.NotifyServices
                     Created_at = x.Created_at,
                     Type = x.Type,
                     StoreId = x.StoreId,
-                    IsRead = x.IsRead
+                    IsRead = x.IsRead,
+                    OrderId = x.OrderId
                 }).ToList();
 
             var result = new PaggingView<NotifyView>()

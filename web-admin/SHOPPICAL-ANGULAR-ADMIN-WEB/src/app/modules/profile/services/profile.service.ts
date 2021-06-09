@@ -4,16 +4,21 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { UtilitiesService } from '@core/services/utilities/utilities.service';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { Store } from '../model/store';
+import { StorageService } from '@app/core/services/storage/storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
 
+  private userNameSource = new Subject<string>();
+  currentUserName = this.userNameSource.asObservable();
+
   constructor(
     private readonly httpClient: HttpClient,
+    private readonly storageService: StorageService,
     private readonly utilitiesService: UtilitiesService) { }
 
   getSellerDetail() {
@@ -22,6 +27,13 @@ export class ProfileService {
         return of(error.error);
       })
     )
+  }
+
+  changeUserName(userName: string) {
+    let user = this.storageService.getObject(environment.tokenKey);
+    user.name = userName;
+    this.storageService.setObject(environment.tokenKey, user);
+    this.userNameSource.next(userName);
   }
 
   updateSellerInfo(sellerInfo: Seller) {

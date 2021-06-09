@@ -12,6 +12,7 @@ namespace ORDER_SERVICE_NET.ViewModels.Notifys
         public int StoreId { get; set; }
         public string Type { get; set; }
         public int IsRead { get; set; }
+        public int OrderId { get; set; }
         public DateTime? Created_at { get; set; }
     }
 }

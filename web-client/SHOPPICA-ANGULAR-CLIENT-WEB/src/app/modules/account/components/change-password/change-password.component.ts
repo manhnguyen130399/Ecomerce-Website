@@ -30,14 +30,19 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void {
     this.loginMethod = this.storageService.get(environment.loginMethod);
     this.buildForm();
+    this.changePasswordForm.valueChanges.subscribe(value => {
+      if (value.newPassword !== value.confirmPassword) {
+        this.changePasswordForm.setErrors({ error: "Two passwords is inconsistent!" });
+      }
+    })
   }
 
 
   buildForm() {
     this.changePasswordForm = this.formBuilder.group({
       currentPassword: [null, this.loginMethod === LoginMethod.SOCIAL ? [] : [Validators.required]],
-      newPassword: [null, [Validators.required, this.confirmationValidator]],
-      confirmPassword: [null, [Validators.required, this.confirmationValidator]],
+      newPassword: [null, [Validators.required]],
+      confirmPassword: [null, [Validators.required]],
     });
   }
 
@@ -45,7 +50,7 @@ export class ChangePasswordComponent implements OnInit {
     if (!control.value) {
       return { required: true };
     }
-    if (control.value !== this.changePasswordForm.controls.newPassword.value || control.value !== this.changePasswordForm.controls.confirmPassword.value) {
+    if (control.value !== this.changePasswordForm.controls.newPassword.value) {
       return { error: true, confirm: true };
     }
     return null;
