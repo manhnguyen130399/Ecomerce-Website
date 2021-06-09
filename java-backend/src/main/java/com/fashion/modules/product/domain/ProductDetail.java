@@ -2,7 +2,6 @@ package com.fashion.modules.product.domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +28,7 @@ public class ProductDetail extends AbstractAuditingEntity {
 	private Integer quantity;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	@ContainedIn
 	private Product product;
@@ -87,8 +86,5 @@ public class ProductDetail extends AbstractAuditingEntity {
 	public ProductDetail() {
 		super();
 	}
-	
-	
-	
 
 }

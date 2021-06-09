@@ -18,6 +18,7 @@ import javax.transaction.Transactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.search.Query;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -48,11 +49,17 @@ import com.fashion.commons.enums.AccountType;
 import com.fashion.commons.enums.SortType;
 import com.fashion.exception.InvalidArgumentException;
 import com.fashion.modules.brand.domain.Brand;
+import com.fashion.modules.brand.model.BrandVM;
 import com.fashion.modules.brand.repository.BrandRepository;
+import com.fashion.modules.brand.service.BrandService;
 import com.fashion.modules.category.domain.Category;
+import com.fashion.modules.category.model.CategoryVM;
 import com.fashion.modules.category.repository.CategoryRepository;
+import com.fashion.modules.category.service.CategoryService;
 import com.fashion.modules.color.domain.Color;
+import com.fashion.modules.color.model.ColorVM;
 import com.fashion.modules.color.repository.ColorRepository;
+import com.fashion.modules.color.service.ColorService;
 import com.fashion.modules.product.domain.Product;
 import com.fashion.modules.product.domain.ProductDetail;
 import com.fashion.modules.product.domain.ProductImage;
@@ -70,7 +77,9 @@ import com.fashion.modules.product.repository.ProductImageRepository;
 import com.fashion.modules.product.repository.ProductRepository;
 import com.fashion.modules.product.service.ProductService;
 import com.fashion.modules.size.domain.Size;
+import com.fashion.modules.size.model.SizeVM;
 import com.fashion.modules.size.repository.SizeRepository;
+import com.fashion.modules.size.service.SizeService;
 import com.fashion.modules.store.domain.Store;
 import com.fashion.service.impl.BaseService;
 import com.google.common.collect.Iterables;
@@ -95,6 +104,18 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Autowired
 	private SizeRepository sizeRepo;
+
+	@Autowired
+	private BrandService brandService;
+
+	@Autowired
+	private CategoryService categoryService;
+
+	@Autowired
+	private ColorService colorService;
+
+	@Autowired
+	private SizeService sizeService;
 
 	@Autowired
 	private ProductImageRepository imageRepo;
@@ -187,27 +208,50 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		}
 		final Set<ProductDetailVM> productDetails = req.getProductDetails();
 		if (CollectionUtils.isNotEmpty(productDetails)) {
-			product.setProductDetails(appendProductDetails(storeId, product, productDetails));
+			final List<ProductDetail> newDetails = appendProductDetails(storeId, product, productDetails);
+			final Set<Integer> ids = newDetails.stream().filter(i -> i.getId() != null).map(it -> it.getId())
+					.collect(Collectors.toSet());
+			productDetailRepo.deleteAll(product.getProductDetails().stream().filter(i -> !ids.contains(i.getId()))
+					.collect(Collectors.toSet()));
+			product.setProductDetails(newDetails);
 		}
 		product.setBrand(brandRepo.findOneByIdAndStoreId(req.getBrandId(), storeId));
 		product.setCategory(category);
-		productRepo.save(product);
 		return convertProductToVM(product);
 	}
 
-	private Set<ProductDetail> appendProductDetails(final Integer storeId, final Product product,
+	@Transactional
+	private List<ProductDetail> appendProductDetails(final Integer storeId, final Product product,
 			final Set<ProductDetailVM> productDetails) {
+		final Map<Integer, Size> sizeMap = sizeRepo
+				.findByIdInAndStoreId(productDetails.stream().filter(i -> i.getSizeId() != null)
+						.map(it -> it.getSizeId()).collect(Collectors.toSet()), storeId)
+				.stream().collect(Collectors.toMap(Size::getId, Function.identity()));
+		final Map<Integer, Color> colorMap = colorRepo
+				.findByIdInAndStore(productDetails.stream().filter(i -> i.getColorId() != null)
+						.map(it -> it.getColorId()).collect(Collectors.toSet()), storeId)
+				.stream().collect(Collectors.toMap(Color::getId, Function.identity()));
 		return productDetails.parallelStream().map(it -> {
-			final Size size = sizeRepo.findOneByIdAndStoreId(it.getSizeId(), storeId);
-			final Color color = colorRepo.findOneByIdAndStore(it.getColorId(), storeId);
+			final Size size = sizeMap.get(it.getSizeId());
+			final Color color = colorMap.get(it.getColorId());
 			if (size == null) {
 				throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_SIZE);
 			}
 			if (color == null) {
 				throw new InvalidArgumentException(ErrorMessage.NOT_FOUND_COLOR);
 			}
-			return new ProductDetail(it.getQuantity(), product, size, color);
-		}).collect(Collectors.toSet());
+			ProductDetail productDetail = new ProductDetail(it.getQuantity(), product, size, color);
+			final List<ProductDetail> productDetailExisteds = product.getProductDetails().stream()
+					.filter(i -> i.getColor().getId() == color.getId() && size.getId() == i.getSize().getId())
+					.collect(Collectors.toList());
+			if (CollectionUtils.isNotEmpty(productDetailExisteds)) {
+				productDetail = Iterables.getLast(productDetailExisteds, null);
+				productDetail.setColor(color);
+				productDetail.setSize(size);
+				productDetail.setQuantity(it.getQuantity());
+			}
+			return productDetail;
+		}).collect(Collectors.toList());
 	}
 
 	@Override
@@ -315,19 +359,22 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return products;
+		return products.stream().filter(it -> it.getProductName() != null).collect(Collectors.toList());
 	}
 
 	private ProductRes transferToProduct(final Map<String, Integer> colIndexs, final Row row) {
 		final ProductRes vm = new ProductRes();
-		vm.setProductName(row.getCell(colIndexs.get(PRODUCT_NAME)).getStringCellValue());
-		vm.setPrice(BigDecimal.valueOf(row.getCell(colIndexs.get(PRICE)).getNumericCellValue()));
-		vm.setBrandName(row.getCell(colIndexs.get(BRAND)).getStringCellValue());
-		vm.setCategoryName(row.getCell(colIndexs.get(CATEGORY)).getStringCellValue());
-		vm.setColorName(row.getCell(colIndexs.get(COLOR)).getStringCellValue());
-		vm.setSizeName(row.getCell(colIndexs.get(SIZE)).getStringCellValue());
-		vm.setQuantity((int) row.getCell(colIndexs.get(QUANTITY)).getNumericCellValue());
-		vm.setColorHex(row.getCell(colIndexs.get(COLOR_HEX)).getStringCellValue());
+		final Cell productName = row.getCell(colIndexs.get(PRODUCT_NAME));
+		if (productName != null) {
+			vm.setProductName(productName.getStringCellValue());
+			vm.setPrice(BigDecimal.valueOf(row.getCell(colIndexs.get(PRICE)).getNumericCellValue()));
+			vm.setBrandName(row.getCell(colIndexs.get(BRAND)).getStringCellValue());
+			vm.setCategoryName(row.getCell(colIndexs.get(CATEGORY)).getStringCellValue());
+			vm.setColorName(row.getCell(colIndexs.get(COLOR)).getStringCellValue());
+			vm.setSizeName(row.getCell(colIndexs.get(SIZE)).getStringCellValue());
+			vm.setQuantity((int) row.getCell(colIndexs.get(QUANTITY)).getNumericCellValue());
+			vm.setColorHex(row.getCell(colIndexs.get(COLOR_HEX)).getStringCellValue());
+		}
 		return vm;
 	}
 
@@ -375,11 +422,10 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 	private Product buildProductInternal(final ProductRes input, final Pair<List<Color>, Set<String>> colorPair,
 			final Pair<List<Size>, Set<String>> sizePair, final Pair<List<Category>, Set<String>> categoryPair,
 			final Pair<List<Brand>, Set<String>> brandPair) {
-		Product product = productRepo.findByProductName(input.getProductName());
+		Product product = productRepo.findByProductNameAndStoreId(input.getProductName(), getCurrentStoreId());
 		if (product == null) {
 			product = new Product();
 			final Store store = getStore(getUserContext());
-			final Set<Store> stores = Collections.singleton(store);
 			product.setStore(store);
 			product.setPrice(input.getPrice());
 			product.setProductName(input.getProductName());
@@ -389,19 +435,21 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			final String categoryName = input.getCategoryName();
 			product.setBrand(brandPair.getRight().contains(brandName)
 					? brandPair.getLeft().stream().filter(it -> it.getBrandName().equals(brandName)).findFirst().get()
-					: brandRepo.save(new Brand(brandName, stores)));
+					: mapper.map(brandService.createBrand(new BrandVM(brandName)), Brand.class));
 			product.setCategory(categoryPair.getRight().contains(categoryName)
 					? categoryPair.getLeft().stream().filter(it -> it.getCategoryName().equals(categoryName))
 							.findFirst().get()
-					: categoryRepo.save(new Category(categoryName, stores)));
+					: mapper.map(categoryService.createCategory(new CategoryVM(null, categoryName, null)),
+							Category.class));
 			final Color color = colorPair.getRight().contains(colorName)
 					? colorPair.getLeft().stream().filter(it -> it.getColorName().equals(colorName)).findFirst().get()
-					: colorRepo.save(new Color(colorName, stores, input.getColorHex()));
+					: mapper.map(colorService.createColor(new ColorVM(null, colorName, input.getColorHex())),
+							Color.class);
 			final Size size = sizePair.getRight().contains(sizeName)
 					? sizePair.getLeft().stream().filter(it -> it.getSizeName().equals(sizeName)).findFirst().get()
-					: sizeRepo.save(new Size(sizeName, stores));
+					: mapper.map(sizeService.createSize(new SizeVM(sizeName, null)), Size.class);
 			product.setProductDetails(
-					Collections.singleton(new ProductDetail(input.getQuantity(), product, size, color)));
+					Collections.singletonList(new ProductDetail(input.getQuantity(), product, size, color)));
 		}
 		return product;
 	}

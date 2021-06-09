@@ -1,6 +1,7 @@
 package com.fashion.modules.product.domain;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Access;
@@ -24,6 +25,7 @@ import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.comment.domain.Comment;
 import com.fashion.modules.store.domain.Store;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 @Entity
@@ -61,7 +63,7 @@ public class Product extends AbstractAuditingEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "store_id")
 	private Store store;
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -77,7 +79,7 @@ public class Product extends AbstractAuditingEntity {
 	@JsonIgnore
 	@IndexedEmbedded
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.ALL)
-	private Set<ProductDetail> productDetails = Sets.newHashSet();
+	private List<ProductDetail> productDetails = Lists.newArrayList();
 
 	@JsonIgnore
 	@IndexedEmbedded
@@ -132,11 +134,11 @@ public class Product extends AbstractAuditingEntity {
 		this.comments = comments;
 	}
 
-	public Set<ProductDetail> getProductDetails() {
+	public List<ProductDetail> getProductDetails() {
 		return productDetails;
 	}
 
-	public void setProductDetails(final Set<ProductDetail> productDetails) {
+	public void setProductDetails(final List<ProductDetail> productDetails) {
 		this.productDetails = productDetails;
 	}
 

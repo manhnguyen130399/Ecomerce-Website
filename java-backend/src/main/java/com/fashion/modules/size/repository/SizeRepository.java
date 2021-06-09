@@ -1,5 +1,8 @@
 package com.fashion.modules.size.repository;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +19,11 @@ public interface SizeRepository extends JpaRepository<Size, Integer> {
 			+ " WHERE s.id =:id AND st.id = :storeId ")
 	Size findOneByIdAndStoreId(@Param("id") final Integer id, @Param("storeId") final Integer storeId);
 	
+	@Query(value = " SELECT s " //
+			+ " FROM Size s " //
+			+ " LEFT JOIN s.stores st "//
+			+ " WHERE s.id IN (:ids) AND st.id = :storeId ")
+	List<Size> findByIdInAndStoreId(@Param("ids") final Collection<Integer> id, @Param("storeId") final Integer storeId);
 	
 	@Query(value = " SELECT s " 
 			+ " FROM Size s " 
