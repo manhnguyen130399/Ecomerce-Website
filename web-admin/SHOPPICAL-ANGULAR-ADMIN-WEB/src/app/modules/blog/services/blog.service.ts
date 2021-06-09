@@ -13,7 +13,7 @@ import { blogRoutes } from '../blog.routing';
   providedIn: 'root',
 })
 export class BlogService implements BaseService<Blog> {
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) { }
 
   getAll(baseParams: BaseParams) {
     let params = new HttpParams()
@@ -111,5 +111,13 @@ export class BlogService implements BaseService<Blog> {
         })
       );
 
+  }
+
+  getBlogById(id: number) {
+    return this.httpClient.get(`${environment.productServiceUrl}/api/blog/${id}`).pipe(
+      catchError((error) => {
+        return of(error.error);
+      })
+    );
   }
 }

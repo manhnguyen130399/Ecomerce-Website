@@ -1,10 +1,31 @@
-<nz-modal nzWidth="80%" [(nzVisible)]="isVisible" nzOkText="OK" nzClassName="form-modal" [nzTitle]="modalTitle" [nzClosable]="false" (nzOnCancel)="cancelViewBlog()" (nzOnOk)="cancelViewBlog()">
-    <ng-container *nzModalContent>
-        <div>
-            <h1 class="title">{{blog.title}}</h1>
-            <p class="right">Created: {{blog.createdAt|slice:1:11|date}}</p>
-            <quill-view-html [content]="blog.content" theme=" snow "> </quill-view-html>
-            <p class="right">Author: {{blog.author}}</p>
+<div class="container">
+  <div *ngIf="blog" class="blog-detail">
+    <div class="action">
+      <a [routerLink]="['/admin/blog']"><i nz-icon nzType="left" nzTheme="outline"></i>Return to list</a>
+      <div class="status">
+        <p>STATUS:</p>
+        <nz-select [(ngModel)]="blog.state" [nzDisabled]="isLoadingStatusUpdate" [nzLoading]="isLoadingStatusUpdate"
+          (ngModelChange)="updateStatus($event)">
+          <nz-option *ngFor="let item of states" [nzValue]="item" [nzLabel]="item"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="blog-image">
+      <img [src]="blog.image" alt="" />
+    </div>
+    <div class="blog-info">
+      <div class="blog-title text-hover">
+        {{ blog.title }}
+      </div>
+      <div class="sub-info flex">
+        <div class="blog-date">
+          <i nz-icon nzType="calendar" nzTheme="outline"></i> {{ blog.createdAt | date: "medium" }}
         </div>
-    </ng-container>
-</nz-modal>
+      </div>
+      <div [innerHTML]="blog.content" class="blog-content">
+      </div>
+    </div>
+
+  </div>
+  <nz-spin [ngClass]="{'isLoading':isLoading}" [nzSpinning]="isLoading" nzSimple></nz-spin>
+</div>

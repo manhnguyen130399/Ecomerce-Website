@@ -7,61 +7,49 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label nzSpan="3" nzRequired nzFor="content"
-        >Content</nz-form-label
-      >
+      <nz-form-label nzSpan="3" nzRequired nzFor="content">Content</nz-form-label>
       <nz-form-control>
-        <quill-editor
-          formControlName="content"
-          [styles]="{ height: '200px' }"
-        ></quill-editor>
+        <quill-editor formControlName="content" [styles]="{ height: '200px' }"></quill-editor>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzSpan="3" nzRequired>Summary</nz-form-label>
       <nz-form-control nzErrorTip="Please write summary!">
-        <textarea
-          formControlName="summary"
-          nz-input
-          rows="2"
-          placeholder="Write summary"
-        ></textarea>
+        <textarea formControlName="summary" nz-input rows="3" placeholder="Write summary"></textarea>
       </nz-form-control>
     </nz-form-item>
-    <nz-form-item>
-      <nz-form-label nzSpan="3" nzRequired>Category</nz-form-label>
-      <div nz-col [nzSpan]="4">
-      <nz-form-control>
-        <nz-select
-          formControlName="category"
-          (ngModelChange)="getTypeChange($event)"
-        >
-          <nz-option
-            *ngFor="let item of types"
-            nzValue="{{ item }}"
-            nzLabel="{{ item }}"
-          ></nz-option>
-        </nz-select>
-      </nz-form-control>
-       </div>
-    </nz-form-item>
-    <nz-form-item>
-       <nz-form-label nzSpan="3" nzRequired>Background</nz-form-label>
-      <div nz-col [nzSpan]="6">
-        <nz-upload nzAction="{{ backEndUrl }}" nzName="files" (nzChange)="handleChange($event)">
-          <button nz-button><i nz-icon nzType="upload"></i>Upload</button>
-        </nz-upload>
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label nzSpan="6" nzRequired>Category</nz-form-label>
+          <div nz-col [nzSpan]="14">
+            <nz-form-control>
+              <nz-select formControlName="category" (ngModelChange)="getTypeChange($event)">
+                <nz-option *ngFor="let item of types" nzValue="{{ item }}" nzLabel="{{ item }}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </div>
+        </nz-form-item>
       </div>
-    </nz-form-item>
+
+      <div nz-col [nzSpan]="12">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="10" nzRequired>Background</nz-form-label>
+          <div nz-col [nzSpan]="14">
+            <nz-upload class="background-uploader" [nzAction]="backEndUrl" nzName="files"
+              (nzChange)="handleChange($event)">
+              <button nz-button><i nz-icon nzType="upload"></i>Upload</button>
+            </nz-upload>
+          </div>
+        </nz-form-item>
+      </div>
+    </div>
+
+
   </form>
   <div class="btn-submit">
-    <button
-      nz-button
-      [nzLoading]="isLoadingButtonSubmit"
-      [disabled]="baseForm.invalid"
-      (click)="submitForm()"
-      nzType="primary"
-    >
+    <button nz-button [nzLoading]="isLoadingButtonSubmit" [disabled]="baseForm.invalid" (click)="submitForm()"
+      nzType="primary">
       Save change
     </button>
   </div>

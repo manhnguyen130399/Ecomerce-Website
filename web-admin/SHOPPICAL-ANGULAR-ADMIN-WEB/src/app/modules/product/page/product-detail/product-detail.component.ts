@@ -76,6 +76,7 @@ export class ProductDetailComponent implements OnInit {
       .subscribe(res => {
         if (res.code == "OK") {
           const product = res.data;
+
           this.productForm.controls.productName.setValue(product.productName);
           this.productForm.controls.price.setValue(product.price);
           this.productForm.controls.categoryId.setValue(product.categoryId);
@@ -90,8 +91,6 @@ export class ProductDetailComponent implements OnInit {
               name: 'image.png',
             };
           });
-
-          console.log(product.productDetails);
 
           this.listProductDetail = [...product.productDetails];
           this.loadColorSizeSelected(product.productDetails)

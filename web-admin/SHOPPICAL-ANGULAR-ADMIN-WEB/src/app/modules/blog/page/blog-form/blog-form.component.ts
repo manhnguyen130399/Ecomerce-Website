@@ -15,6 +15,8 @@ import { BlogService } from '../../services/blog.service';
 export class BlogFormComponent implements OnInit {
   baseForm: FormGroup;
   isLoadingButtonSubmit = false;
+  loading = false;
+  avatarUrl?: string;
   backEndUrl = `${environment.productServiceUrl}/api/upload`;
   blog: Blog = {
     id: null,
@@ -47,6 +49,8 @@ export class BlogFormComponent implements OnInit {
       image: [null],
       category: [null, [Validators.required]]
     });
+
+    this.baseForm.disable();
   }
 
   getBlogTypes() {
@@ -56,7 +60,6 @@ export class BlogFormComponent implements OnInit {
   }
 
   submitForm() {
-
     this.blog.title = this.baseForm.get('title').value;
     this.blog.content = this.baseForm.get('content').value;
     this.blog.summary = this.baseForm.get('summary').value;
@@ -79,10 +82,31 @@ export class BlogFormComponent implements OnInit {
   }
 
   handleChange(info: NzUploadChangeParam): void {
-    if (info.file.status === 'done') {
-      // console.log(info.file.response.data[0]);
-      this.blog.image = info.file.response.data[0];
+    // if (info.file.status === 'done') {
+    //   // console.log(info.file.response.data[0]);
+    //   this.blog.image = info.file.response.data[0];
+    // }
+
+    switch (info.file.status) {
+      case 'uploading':
+        this.loading = true;
+        break;
+      case 'done':
+        // Get this url from response in real world.
+        this.getBase64(info.file!.originFileObj!, (img: string) => {
+          this.loading = false;
+          this.avatarUrl = img;
+        });
+        break;
+      case 'error':
+        this.loading = false;
+        break;
     }
   }
 
+  private getBase64(img: File, callback: (img: string) => void): void {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result!.toString()));
+    reader.readAsDataURL(img);
+  }
 }

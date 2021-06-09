@@ -1,3 +1,4 @@
+import { finalize } from 'rxjs/operators';
 import { Complain } from '../../models/complain';
 import { BaseModalComponent } from '@app/modules/common/base-modal-component';
 import { ComplainService } from '../../service/complain.service';
@@ -33,9 +34,12 @@ export class ComplainModalComponent
   }
 
   submitForm() {
+    this.isLoadingButton = true;
     this.complainService.id.subscribe((data) => (this.id = data));
     this.complainService
-      .replyComplain(this.id, this.baseForm.get('message').value)
+      .replyComplain(this.id, this.baseForm.get('message').value).pipe(
+        finalize(() => this.isLoadingButton = false)
+      )
       .subscribe((res) => {
         if (res.code == 'OK') {
           this.cancelModal();
@@ -47,6 +51,7 @@ export class ComplainModalComponent
   cancelModal() {
     super.cancel(this.cancelModalEvent);
   }
+
   buildForm() {
     this.baseForm = this.formBuilder.group({
       message: [null, [Validators.required]],

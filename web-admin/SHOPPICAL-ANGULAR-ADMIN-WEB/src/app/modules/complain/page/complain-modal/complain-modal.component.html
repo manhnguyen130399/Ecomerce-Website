@@ -1,12 +1,14 @@
-<nz-modal [(nzVisible)]="isVisible" nzOkText="Reply" nzClassName="form-modal" [nzTitle]="modalTitle" [nzClosable]="false" [nzOkLoading]="isLoadingButton" (nzOnCancel)="cancelModal()" (nzOnOk)="submitForm()">
-    <ng-container *nzModalContent>
-        <form nz-form [formGroup]="baseForm">
-            <nz-form-item>
-                <nz-form-label [nzSpan]="6" nzFor="complain">Reply</nz-form-label>
-                <nz-form-control [nzSpan]="14" nzErrorTip="Please input your reply!">
-                    <input nz-input type="text" formControlName="message">
-                </nz-form-control>
-            </nz-form-item>
-        </form>
-    </ng-container>
+<nz-modal [(nzVisible)]="isVisible" [nzOkDisabled]="baseForm.invalid" nzOkText="Reply" nzClassName="form-modal"
+  [nzTitle]="modalTitle" [nzClosable]="false" [nzOkLoading]="isLoadingButton" (nzOnCancel)="cancelModal()"
+  (nzOnOk)="submitForm()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="baseForm">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="complain">Reply</nz-form-label>
+        <nz-form-control [nzSpan]="14" nzErrorTip="Please input your reply!">
+          <input nz-input type="text" formControlName="message">
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
 </nz-modal>

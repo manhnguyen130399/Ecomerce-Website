@@ -13,7 +13,9 @@ import {
   ClockCircleOutline,
   ReloadOutline,
   DashboardOutline,
-  EyeOutline
+  EyeOutline,
+  ArrowLeftOutline,
+  LeftOutline
 } from '@ant-design/icons-angular/icons';
 
 export const shareIcons: IconDefinition[] = [
@@ -31,4 +33,6 @@ export const shareIcons: IconDefinition[] = [
   ReloadOutline,
   DashboardOutline,
   EyeOutline,
+  ArrowLeftOutline,
+  LeftOutline
 ];

@@ -1,17 +1,53 @@
-.title{
-  text-align: center;
-  line-height: 1.2;
-  font-weight: 700;
-  color: #1b1b1b;
-  word-wrap: break-word;
-  word-break: break-word;
-  font-size: 2.5rem;
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  height: 100%;
 }
 
-.right{
-  text-align: right;
-  font-size: 10px;
-  color:darkcyan;
-  margin: 40px;
+.action {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.action a i {
+  margin-right: 3px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+}
+
+.status nz-select {
+  min-width: 200px;
+}
+
+.status p {
+  margin: 0 10px 0 0;
+}
+
+.blog-image img {
+  width: 100%;
+}
+
+.blog-info {
+  padding: 20px 0 30px;
+}
+
+.blog-title {
+  font-size: 24px;
+}
+
+.blog-date {
+  color: #6d6d6d;
+  margin-right: 20px;
+}
+
+.blog-content {
+  margin-top: 20px;
+}

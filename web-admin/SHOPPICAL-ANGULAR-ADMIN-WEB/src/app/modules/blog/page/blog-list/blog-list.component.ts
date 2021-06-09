@@ -18,7 +18,7 @@ export class BlogListComponent
     super(blogService);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onQueryParamsChange = (params: NzTableQueryParams) => {
     this.baseParams.filters = [{ key: 'title', value: this.searchValue }];
@@ -27,7 +27,9 @@ export class BlogListComponent
 
   searchByTitle() {
     this.baseParams.filters = [{ key: 'title', value: this.searchValue }];
-    super.search();
+    // super.search();
+    console.log(this.listData);
+
     this.searchValue = '';
   }
 

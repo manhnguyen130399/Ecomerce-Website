@@ -11,3 +11,11 @@
   margin-left: auto;
   height: 100%;
 }
+
+:host ::ng-deep .background-uploader > .ant-upload.ant-upload-select {
+  width: 100%;
+}
+
+:host ::ng-deep .background-uploader .ant-upload .ant-btn {
+  width: 100%;
+}

@@ -8,4 +8,5 @@ export interface Blog {
   author: string;
   createdAt: string;
   state: string;
+
 }
