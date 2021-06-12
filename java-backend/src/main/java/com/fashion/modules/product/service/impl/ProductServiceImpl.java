@@ -397,7 +397,6 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	@Cacheable(Constants.PRODUCTS)
 	public List<ProductVM> createProducts(final List<ProductRes> products) {
 		final Integer storeId = getCurrentStoreId();
 		final PageRequest page = PageRequest.of(0, Integer.MAX_VALUE);

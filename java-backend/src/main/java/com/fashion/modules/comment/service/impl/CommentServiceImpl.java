@@ -53,6 +53,8 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 		final AccountVM account = accountService.getAccountByUsername(getUserContext().getUsername());
 		comment.setAccountId(account.getId());
 		comment.setEmail(account.getUsername());
+		comment.setLike(0);
+		comment.setDislike(0);
 		final Integer productId = req.getProductId();
 		final Integer blogId = req.getBlogId();
 		if (productId != null) {
@@ -142,7 +144,7 @@ public class CommentServiceImpl extends BaseService implements CommentService {
 			userComment.setLiked(isLike);
 		} else {
 			comment.setDislike(currentDislike + 1);
-			userComment.setDisliked(isLike);
+			userComment.setDisliked(!isLike);
 		}
 		return userComment;
 	}
