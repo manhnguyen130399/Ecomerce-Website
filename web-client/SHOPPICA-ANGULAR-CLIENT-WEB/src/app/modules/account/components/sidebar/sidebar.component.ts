@@ -26,10 +26,6 @@ export class SidebarComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.shareService.cartEmitEvent(new Cart());
-    this.shareService.wishListEmitEvent([]);
-    this.storageService.remove(environment.shippingAddressKey);
-    this.shareService.shippingAddressChangeEvent(null);
     this.router.navigate(['/home']);
   }
 }

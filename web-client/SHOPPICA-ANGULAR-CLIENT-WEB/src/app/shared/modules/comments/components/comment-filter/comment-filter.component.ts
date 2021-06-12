@@ -26,7 +26,7 @@ export class CommentFilterComponent implements OnInit {
     }), {});
 
     this.ratingAverage = this.comments.length == 0 ? 0 :
-      this.comments.map(c => c.rating).reduce((prev, cur) => prev + cur) / this.comments.length;
+      Math.round(this.comments.map(c => c.rating).reduce((prev, cur) => prev + cur) / this.comments.length * 100) / 100;
   }
 
 

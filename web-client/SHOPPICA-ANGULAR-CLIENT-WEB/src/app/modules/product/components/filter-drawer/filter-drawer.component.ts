@@ -33,6 +33,18 @@ export class FilterDrawerComponent implements OnInit {
       priceName: '$51 - $100',
       priceUrl: '51-100',
     },
+    {
+      priceName: '$100 - $500',
+      priceUrl: '100-500',
+    },
+    {
+      priceName: '$501 - $1000',
+      priceUrl: '501-1000',
+    },
+    {
+      priceName: '$1001 - $3000',
+      priceUrl: '1001-3000',
+    },
   ];
 
   selectedColor: string;

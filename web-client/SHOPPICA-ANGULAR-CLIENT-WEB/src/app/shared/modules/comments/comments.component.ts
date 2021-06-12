@@ -37,7 +37,7 @@ export class CommentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.shareService.loginSuccessEmitted$.subscribe(isLogin => {
+    this.shareService.authenticateSourceEmitted$.subscribe(isLogin => {
       this.isAuthenticated = isLogin;
     })
 

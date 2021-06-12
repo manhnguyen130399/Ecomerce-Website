@@ -133,7 +133,7 @@ export class LoginDrawerComponent implements OnInit {
   }
 
   loginSuccessAction() {
-    this.shareService.loginSuccessEvent();
+    this.shareService.authenticateEvent(true);
     this.closeMenu();
     this.messageService.success('Login successfully!');
     this.loginForm.reset();

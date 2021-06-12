@@ -33,3 +33,18 @@
     font-size: 20px;
   }
 }
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 18px;
+  }
+
+  .text {
+    margin: 0 15px;
+  }
+
+  .section-title::before,
+  .section-title::after {
+    width: 40px;
+  }
+}

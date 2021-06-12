@@ -19,11 +19,9 @@ export class ProductDetailImageComponent implements OnInit {
     autoplay: false,
     dots: true,
     dotsData: true,
+    skip_validateItems: true,
     responsive: {
-      100: {
-        items: 1
-      },
-      400: {
+      0: {
         items: 1
       },
     },

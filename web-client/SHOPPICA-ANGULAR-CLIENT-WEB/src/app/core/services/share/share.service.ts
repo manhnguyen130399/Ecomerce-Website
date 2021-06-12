@@ -10,7 +10,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class ShareService {
 
-  private loginSuccess = new BehaviorSubject<boolean>(false);
+  private authenticateSource = new BehaviorSubject<boolean>(false);
   private gotoCartPage = new Subject<boolean>();
 
   private cart = new BehaviorSubject<Cart>(new Cart());
@@ -21,7 +21,7 @@ export class ShareService {
   private shippingAddress = new BehaviorSubject<ShippingAddress>(null);
   private storeId = new BehaviorSubject<number>(null);
 
-  loginSuccessEmitted$ = this.loginSuccess.asObservable();
+  authenticateSourceEmitted$ = this.authenticateSource.asObservable();
   gotoCartPageEmitted$ = this.gotoCartPage.asObservable();
 
 
@@ -33,8 +33,8 @@ export class ShareService {
   shippingAddressEmitted$ = this.shippingAddress.asObservable();
   loadStoreInfoSEmitted$ = this.storeId.asObservable();
 
-  loginSuccessEvent() {
-    this.loginSuccess.next(true);
+  authenticateEvent(isLogin: boolean) {
+    this.authenticateSource.next(isLogin);
   }
 
   changeGotoCartPage(isGotoPage: boolean) {

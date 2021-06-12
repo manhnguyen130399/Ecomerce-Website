@@ -46,7 +46,6 @@ export class ShippingComponent implements OnInit {
     this.getCart();
     this.checkoutService.stepChange(2);
     this.checkoutService.orderGroupEmitted$.subscribe((orderGroup: OrderGroup) => {
-      console.log(orderGroup);
       this.orderGroups.push(orderGroup);
     });
   }

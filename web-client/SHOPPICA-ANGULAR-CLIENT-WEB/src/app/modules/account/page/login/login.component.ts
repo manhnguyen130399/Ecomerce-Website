@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
-
+    this.authService.logout();
   }
 
   buildForm() {
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
 
 
   loginSuccessAction() {
-    this.shareService.loginSuccessEvent();
+    this.shareService.authenticateEvent(true);
     this.messageService.success('Login successfully!');
     this.router.navigate(['/home']);
     this.loginForm.reset();

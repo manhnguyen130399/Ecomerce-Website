@@ -1,3 +1,4 @@
+import { OwlOptions } from 'ngx-owl-carousel-o';
 import { ActivatedRoute } from '@angular/router';
 import { CategoryService } from './../../../../core/services/category/category.service';
 import { Category } from '@core/model/category/category';
@@ -12,6 +13,32 @@ export class CategoriesComponent implements OnInit {
   listCategory: Category[] = [];
   categorySelected: Category;
   currentCategory: string;
+
+  customOptions: OwlOptions = {
+    loop: true,
+    autoplay: true,
+    dots: false,
+    autoHeight: true,
+    autoWidth: true,
+    skip_validateItems: true,
+    responsive: {
+      300: {
+        items: 3
+      },
+      500: {
+        items: 4
+      },
+      768: {
+        items: 7
+      },
+      1050: {
+        items: 8
+      },
+      1200: {
+        items: 10
+      }
+    }
+  };
   constructor(
     private readonly categoryService: CategoryService,
     private readonly activatedRoute: ActivatedRoute

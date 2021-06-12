@@ -17,29 +17,8 @@ export class SidebarComponent implements OnInit {
   listBlog: Blog[];
   categories: string[];
 
-  bestSellerProducts: CartItem[] = [
-    {
-      id: 1,
-      productName: 'T-shirt product',
-      price: 99,
-      image: 'assets/images/products/product-2.jpg',
-      quantity: 12,
-    },
-    {
-      id: 2,
-      productName: 'T-shirt product',
-      price: 99,
-      image: 'assets/images/products/product-3.jpg',
-      quantity: 12,
-    },
-    {
-      id: 3,
-      productName: 'T-shirt Top',
-      price: 99,
-      image: 'assets/images/products/product-1.jpg',
-      quantity: 12,
-    },
-  ];
+  bestSellerProducts: CartItem[] = [];
+
   cartItemOptions: CartItemOptions = {
     showPrice: true,
     size: 'small'

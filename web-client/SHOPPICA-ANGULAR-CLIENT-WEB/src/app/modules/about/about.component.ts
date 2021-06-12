@@ -74,6 +74,7 @@ export class AboutComponent implements OnInit {
     dots: true,
     autoHeight: true,
     autoWidth: true,
+    skip_validateItems: true,
     responsive: {
       100: {
         items: 1

@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.shareService.loginSuccessEmitted$.subscribe((loginStatus) => {
+    this.shareService.authenticateSourceEmitted$.subscribe((loginStatus) => {
       this.isLogged = loginStatus;
     });
 
@@ -108,11 +108,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.shareService.cartEmitEvent(new Cart());
-    this.shareService.wishListEmitEvent([]);
-    this.storageService.remove(environment.shippingAddressKey);
-    this.shareService.shippingAddressChangeEvent(null);
-    this.isLogged = false;
     this.router.navigate(['/home']);
   }
 

@@ -1,5 +1,6 @@
-.blog-list{
+.blog-list {
   position: relative;
+  min-height: 500px;
 }
 
 .blog-page .content {
