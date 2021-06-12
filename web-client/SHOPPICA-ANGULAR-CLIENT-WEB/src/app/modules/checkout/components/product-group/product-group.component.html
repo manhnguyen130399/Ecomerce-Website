@@ -14,14 +14,14 @@
       <div class="notes-content">
         <div class="notes-area">
           <div class="discount-content">
-            <form nz-form [formGroup]="couponForm" class="login-form">
-              <nz-form-item [nzGutter]="12">
-                <nz-form-control nzErrorTip="Coupon code is invalid!">
+            <form nz-form [formGroup]="couponForm" class="login-form ">
+              <nz-form-item class="flex jc-center" [nzGutter]="12">
+                <nz-form-control [nzSm]="18" [nzXs]="14" nzErrorTip="Coupon code is invalid!">
                   <input class="coupon-input" placeholder="Coupon code" formControlName="couponCode" nz-input
                     type="text">
                 </nz-form-control>
-                <button class="apply-btn" (click)="useCouponCode()" nz-button nzType="primary" nz-col
-                  [nzSpan]="6">Apply</button>
+                <button class="apply-btn" (click)="useCouponCode()" nz-button nzType="primary" nz-col [nzSm]="6"
+                  [nzXs]="9">Apply</button>
               </nz-form-item>
             </form>
           </div>

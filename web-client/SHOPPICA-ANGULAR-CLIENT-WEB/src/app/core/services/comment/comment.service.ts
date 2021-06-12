@@ -46,9 +46,12 @@ export class CommentService {
     );
   }
 
-  checkInteractive(id: number): Promise<Object> {
-    return this.httpClient.get<Object>(`${environment.productServiceUrl}/api/comment/interactive/${id}`
-    ).toPromise();
+  checkInteractive(id: number) {
+    return this.httpClient.get<Object>(`${environment.productServiceUrl}/api/comment/interactive/${id}`).pipe(
+      catchError((error) => {
+        return of(error.error);
+      })
+    );
   }
 
 }

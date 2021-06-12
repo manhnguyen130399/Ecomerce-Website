@@ -1,18 +1,12 @@
 .category-sections {
-  margin-top: 70px;
   width: 100%;
-  overflow-x: auto;
 }
 
-.category-sections ul {
-  min-width: 720px;
+.item {
+  text-align: center;
+  padding: 15px;
 }
 
-.category-sections ul li {
-  padding: 10px 15px;
-  outline: none;
-}
-
-.category-sections ul li.active {
+.item.active {
   color: #56cfe1;
 }

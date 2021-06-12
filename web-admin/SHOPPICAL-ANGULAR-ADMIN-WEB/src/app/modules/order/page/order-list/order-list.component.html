@@ -23,9 +23,9 @@
       <td nzAlign="center">{{ data.id }}</td>
       <td nzAlign="center">{{ data.customerName }}</td>
       <td nzAlign="center">{{ data.state }}</td>
-      <td nzAlign="center">{{ data.total |currency:'$':'symbol':'3.0' }}</td>
-      <td nzAlign="center">{{ data.discount | currency:'$':'symbol':'3.0' }}</td>
-      <td nzAlign="center">{{ data.shippingCost | currency:'$':'symbol':'3.0' }}</td>
+      <td nzAlign="center">{{ data.total |currency }}</td>
+      <td nzAlign="center">{{ data.discount | currency }}</td>
+      <td nzAlign="center">{{ data.shippingCost | currency }}</td>
 
       <td nzAlign="center"><img height="50" (click)="showQrCode(data.qrCode)" src="{{ data.qrCode}}">
       </td>

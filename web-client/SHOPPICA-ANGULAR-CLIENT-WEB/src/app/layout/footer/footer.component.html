@@ -48,14 +48,14 @@
         </div>
         <div nz-col class="footer-column" [nzXs]="12" [nzSm]="12" [nzMd]="12" [nzLg]="5">
           <p class="title">
-            Services
+            Account
           </p>
           <div class="content has-animation">
             <ul>
-              <li>Wish List</li>
-              <li>Return</li>
-              <li>My Account</li>
-              <li>Order History</li>
+              <li [routerLink]="['/product/wishlist']">Wish List</li>
+              <li [routerLink]="['/account/addresses']">Shipping Address</li>
+              <li [routerLink]="['/account']">My Account</li>
+              <li [routerLink]="['/account/order-history']">Order History</li>
             </ul>
 
           </div>
@@ -66,10 +66,10 @@
           </p>
           <div class="content has-animation">
             <ul>
-              <li>About us</li>
-              <li>Delivery Information</li>
-              <li>Privacy Policy</li>
-              <li>Contact Us</li>
+              <li [routerLink]="['/about']">About us</li>
+              <li [routerLink]="['/product/collection/all']">Product</li>
+              <li [routerLink]="['/blog']">Blog</li>
+              <li [routerLink]="['/contact']">Contact Us</li>
             </ul>
 
           </div>

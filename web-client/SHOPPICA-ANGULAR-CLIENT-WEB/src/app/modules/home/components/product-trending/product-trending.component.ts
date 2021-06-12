@@ -19,11 +19,12 @@ export class ProductTrendingComponent implements OnInit {
   customOptions: OwlOptions = {
     loop: true,
     autoplay: true,
-    dots: true,
+    dots: false,
     autoHeight: true,
     autoWidth: true,
+    skip_validateItems: true,
     responsive: {
-      400: {
+      200: {
         items: 2
       },
       600: {
@@ -38,7 +39,7 @@ export class ProductTrendingComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.productService.getProductBestSellerByStore().subscribe(res => {
+    this.productService.getProductBestSellerByStore(5).subscribe(res => {
       if (res.code === 'OK') {
         this.listProduct = res.data;
       }

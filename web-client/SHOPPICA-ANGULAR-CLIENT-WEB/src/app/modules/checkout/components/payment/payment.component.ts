@@ -1,3 +1,4 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CheckoutService } from './../../../../core/services/checkout/checkout.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
@@ -19,7 +20,8 @@ export class PaymentComponent implements OnInit {
   transactionId = '';
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly checkoutService: CheckoutService
+    private readonly checkoutService: CheckoutService,
+    private readonly messageService: NzMessageService
   ) { }
 
 
@@ -78,6 +80,7 @@ export class PaymentComponent implements OnInit {
             return actions.order.capture().then(_details => {
               if (_details.status === 'COMPLETED') {
                 this.hiddenCash = true;
+                this.messageService.success('Thank for your payment!');
                 this.transactionId = _details.purchase_units[0].payments.captures[0].id;
               }
             });

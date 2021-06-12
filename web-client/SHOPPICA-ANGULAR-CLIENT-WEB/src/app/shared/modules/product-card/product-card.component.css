@@ -247,4 +247,11 @@
 }
 
 @media (max-width: 600px) {
+  .hover-btn button {
+    padding: 13px;
+  }
+
+  .hover-btn button i {
+    font-size: 14px;
+  }
 }

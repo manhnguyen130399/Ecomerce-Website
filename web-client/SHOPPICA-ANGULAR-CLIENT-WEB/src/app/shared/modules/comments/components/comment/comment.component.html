@@ -15,14 +15,14 @@
     </nz-comment-content>
     <nz-comment-action>
       <i class="comment-icon" nz-tooltip nzTitle="Like" nz-icon nzType="like"
-        [nzTheme]="comment.like > 0 ? 'twotone' : 'outline'" (click)="like(comment.id)"></i>
+        [nzTheme]="currentLike === 1 ? 'twotone' : 'outline'" (click)="updateLike(comment.id, true)"></i>
       <span class="count like">{{
         comment.like > 0 ? comment.like : ""
         }}</span>
     </nz-comment-action>
     <nz-comment-action>
       <i class="comment-icon" nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike"
-        [nzTheme]="comment.dislike > 0 ? 'twotone' : 'outline'" (click)="dislike(comment.id)"></i>
+        [nzTheme]="currentLike === -1 ? 'twotone' : 'outline'" (click)="updateLike(comment.id, false)"></i>
       <span class="count dislike">{{
         comment.dislike > 0 ? comment.dislike : ""
         }}</span>

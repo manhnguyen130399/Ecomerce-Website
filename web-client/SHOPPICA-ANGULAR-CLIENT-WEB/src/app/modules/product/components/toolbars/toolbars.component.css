@@ -1,6 +1,6 @@
 .toolbar-section {
   margin-bottom: 20px;
-  margin-top: 40px;
+  padding-top: 40px;
   padding-bottom: 5px;
   color: #878787;
   justify-content: space-between;
@@ -101,6 +101,12 @@
     display: none;
   }
   .view a.view-page.view_4 {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .view {
     display: none;
   }
 }

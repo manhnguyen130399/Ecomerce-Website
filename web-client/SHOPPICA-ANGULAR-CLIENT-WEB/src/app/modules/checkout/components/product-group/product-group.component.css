@@ -90,3 +90,9 @@ nz-form-item {
     padding-bottom: 30px;
   }
 }
+
+@media (max-width: 576px) {
+  .apply-btn {
+    margin-top: 10px;
+  }
+}

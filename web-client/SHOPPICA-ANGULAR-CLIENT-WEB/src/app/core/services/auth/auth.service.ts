@@ -1,3 +1,6 @@
+import { ActivatedRoute, Router } from '@angular/router';
+import { ShareService } from './../share/share.service';
+import { Cart } from './../../model/cart/cart';
 import { environment } from './../../../../environments/environment';
 import { JwtService } from './../jwt/jwt.service';
 import { BaseResponse } from '../../model/base-response';
@@ -22,7 +25,8 @@ export class AuthService {
     private readonly httpClient: HttpClient,
     private readonly jwtHelperService: JwtHelperService,
     private readonly storageService: StorageService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly shareService: ShareService,
   ) { }
 
 
@@ -84,8 +88,13 @@ export class AuthService {
 
 
   logout(): void {
+    this.shareService.cartEmitEvent(new Cart());
+    this.shareService.wishListEmitEvent([]);
+    this.shareService.shippingAddressChangeEvent(null);
     this.storageService.remove(environment.tokenKey);
     this.storageService.remove(environment.loginMethod);
+    this.storageService.remove(environment.shippingAddressKey);
+    this.shareService.authenticateEvent(false);
   }
 
   isAuthenticated(): boolean {

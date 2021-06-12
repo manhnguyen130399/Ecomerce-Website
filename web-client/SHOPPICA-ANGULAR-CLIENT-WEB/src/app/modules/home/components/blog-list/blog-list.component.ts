@@ -18,11 +18,9 @@ export class BlogListComponent implements OnInit {
     dots: false,
     autoHeight: false,
     autoWidth: true,
+    skip_validateItems: true,
     responsive: {
       300: {
-        items: 1
-      },
-      400: {
         items: 1
       },
       500: {

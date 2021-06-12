@@ -28,7 +28,7 @@ export class InformationComponent implements OnInit {
   shippingAddress: ShippingAddress;
   isLoading = false;
   districtSelectedId = 0;
-  wardSelectedId = 0;
+  wardSelectedId = '-1';
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -107,9 +107,9 @@ export class InformationComponent implements OnInit {
     this.ghnService.getWards(districtID).subscribe(res => {
       if (res.code === 200) {
         this.listWard = res.data;
-        const ward = this.wardSelectedId !== 0 ? this.listWard.find(x => x.WardCode == this.wardSelectedId) : this.listWard[0];
+        const ward = this.wardSelectedId !== '-1' ? this.listWard.find(x => x.WardCode == this.wardSelectedId) : this.listWard[0];
         this.orderForm.controls.ward.setValue(ward);
-        this.wardSelectedId = 0;
+        this.wardSelectedId = '-1';
       }
     });
   }
@@ -122,7 +122,7 @@ export class InformationComponent implements OnInit {
     const address: Address = {
       provinceId: province.ProvinceID,
       districtId: district.DistrictID,
-      wardId: parseInt(ward.WardCode),
+      wardId: ward.WardCode,
       addressName: `${apartment} - ${ward.WardName} - ${district.DistrictName} - Tỉnh ${province.ProvinceName}`
     };
 

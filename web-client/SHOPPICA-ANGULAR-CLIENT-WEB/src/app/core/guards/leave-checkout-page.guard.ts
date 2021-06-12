@@ -13,6 +13,7 @@ export class LeaveCheckoutPageGuard implements CanDeactivate<CheckoutComponent> 
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     component.showShoppingCartDrawer();
+
     return true;
   }
 

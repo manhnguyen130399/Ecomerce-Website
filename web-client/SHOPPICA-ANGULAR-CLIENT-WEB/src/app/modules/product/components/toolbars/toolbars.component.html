@@ -1,6 +1,6 @@
 <div class="container">
   <div nz-row class="toolbar-section">
-    <div nz-col [nzSpan]="6" class="filter flex text-hover al-center">
+    <div nz-col [nzXs]="12" [nzSm]="6" class="filter flex text-hover al-center">
       <p (click)="openFilterDrawer()">
         <i nz-icon>
           <svg t="1617682894108" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -13,13 +13,14 @@
         Filter
       </p>
     </div>
-    <div nz-col [nzSpan]="12" class="view flex jc-center al-center">
+    <div nz-col [nzSm]="12" class="view flex jc-center al-center">
       <a (click)="viewProduct(1)" [class.active]="numOnePage === 1" class="view-page view_1"></a>
       <a (click)="viewProduct(2)" [class.active]="numOnePage === 2" class="view-page view_2"></a>
       <a (click)="viewProduct(3)" [class.active]="numOnePage === 3" class="view-page view_3"></a>
       <a (click)="viewProduct(4)" [class.active]="numOnePage === 4" class="view-page view_4"></a>
     </div>
-    <div nz-col [nzSpan]="6" class="sort-by">
+
+    <div nz-col [nzXs]="12" [nzSm]="6" class="sort-by">
       <nz-select [nzDropdownClassName]="'sort-options'" class="select-none-border" [(ngModel)]="selectedProvince"
         (ngModelChange)="provinceChange($event)" nzPlaceHolder="Select a sort by">
         <nz-option nzValue="BESTSELLING" nzLabel="BEST SELLING"></nz-option>

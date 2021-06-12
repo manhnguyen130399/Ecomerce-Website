@@ -8,6 +8,7 @@
 
 .product-detail-image {
   position: relative;
+  width: 100%;
 }
 
 .recently-view {
