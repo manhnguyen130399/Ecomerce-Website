@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   time: string;
   state: State;
   isLoading = false;
+  downloading = false;
   category: CategoryReport[];
   revenues: number[];
   sales: number[];
@@ -62,7 +63,10 @@ export class DashboardComponent implements OnInit {
   }
 
   exportExcel() {
-    this.dashboardService.exportExcel(this.from, this.to, 1000).subscribe((res) => {
+    this.downloading = true;
+    this.dashboardService.exportExcel(this.from, this.to, 1000).pipe(
+      finalize(() => this.downloading = false)
+    ).subscribe((res) => {
       saveAs(res, `Report ${this.from} - ${this.to}.xls`);
     })
   }

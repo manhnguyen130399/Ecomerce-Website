@@ -179,7 +179,7 @@ export class UpdateInfoComponent implements OnInit {
       ).subscribe(res => {
         if (res.isSuccessed) {
           this.messageService.create("success", "update info successfully");
-          this.profileService.changeUserName(sellerInfo.sellerName);
+          this.profileService.changeSellerInfo(sellerInfo);
         }
       });
   }

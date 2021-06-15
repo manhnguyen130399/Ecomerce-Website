@@ -5,7 +5,7 @@
   </div>
   <div nz-col [nzSpan]="2">
     <button nz-button nzTooltipTitle="Export file" nzTooltipPlacement="topLeft" nz-tooltip nzShape="circle"><i nz-icon
-        nzType="download" (click)="exportExcel()"></i></button>
+        [nzType]="downloading ?'loading':'download'" (click)="exportExcel()"></i></button>
   </div>
 
   &nbsp;

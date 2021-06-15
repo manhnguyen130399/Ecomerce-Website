@@ -49,8 +49,6 @@ export class BlogFormComponent implements OnInit {
       image: [null],
       category: [null, [Validators.required]]
     });
-
-    this.baseForm.disable();
   }
 
   getBlogTypes() {

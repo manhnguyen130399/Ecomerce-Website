@@ -58,6 +58,14 @@ export class UtilitiesService {
     return null;
   }
 
+  getImage(): string {
+    this.user = this.storageService.getValue<TokenData>(environment.tokenKey);
+    if (this.user != null) {
+      return this.user.image;
+    }
+    return null;
+  }
+
 
   getAccountId(): number {
     this.user = this.storageService.getValue<TokenData>(environment.tokenKey);

@@ -13,8 +13,8 @@ import { StorageService } from '@app/core/services/storage/storage.service';
 })
 export class ProfileService {
 
-  private userNameSource = new Subject<string>();
-  currentUserName = this.userNameSource.asObservable();
+  private sellerSource = new Subject<Seller>();
+  currentSeller = this.sellerSource.asObservable();
 
   constructor(
     private readonly httpClient: HttpClient,
@@ -29,12 +29,14 @@ export class ProfileService {
     )
   }
 
-  changeUserName(userName: string) {
+  changeSellerInfo(seller: Seller) {
     let user = this.storageService.getObject(environment.tokenKey);
-    user.name = userName;
+    user.name = seller.sellerName;
+    user.image = seller.image;
     this.storageService.setObject(environment.tokenKey, user);
-    this.userNameSource.next(userName);
+    this.sellerSource.next(seller);
   }
+
 
   updateSellerInfo(sellerInfo: Seller) {
     return this.httpClient.patch(`${environment.userServiceUrl}/api/users/updateInfoForSeller`, sellerInfo).pipe(

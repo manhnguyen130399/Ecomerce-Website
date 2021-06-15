@@ -16,6 +16,7 @@ import { ProfileService } from '@app/modules/profile/services/profile.service';
 export class MainLayoutComponent implements OnInit {
   isCollapsed = false;
   sellerName: string;
+  sellerImage: string;
   @ViewChild('audioElement', { static: true }) private audioElement;
   listNotify: Notify[] = [];
   numUnRead = 0;
@@ -47,10 +48,12 @@ export class MainLayoutComponent implements OnInit {
     })
 
     this.sellerName = this.utilitiesService.getName();
+    this.sellerImage = this.utilitiesService.getImage();
     this.isAdmin = this.utilitiesService.getRole() === "Admin";
 
-    this.profileService.currentUserName.subscribe(sellerName => {
-      this.sellerName = sellerName;
+    this.profileService.currentSeller.subscribe(seller => {
+      this.sellerName = seller.sellerName;
+      this.sellerImage = seller.image;
     })
   }
 

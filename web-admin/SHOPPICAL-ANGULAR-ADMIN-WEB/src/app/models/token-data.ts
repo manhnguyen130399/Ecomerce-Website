@@ -7,4 +7,5 @@ export interface TokenData {
   storeId: number;
   isSocial: boolean;
   token: string;
+  image: string;
 }
