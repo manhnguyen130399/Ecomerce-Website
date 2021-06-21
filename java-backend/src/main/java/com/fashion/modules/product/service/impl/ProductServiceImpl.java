@@ -493,8 +493,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 			final QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder()
 					.forEntity(Product.class).get();
 			final Query productQuery = qb.keyword()
-					.onFields("productName", "price", "brand.brandName", "productDetails.color.colorName",
-							"category.categoryName", "productDetails.size.sizeName")
+					.onFields("productName", "price", "brand.brandName", "category.categoryName")
 					.matching(String.join(",", keywords)).createQuery();
 			final org.hibernate.search.jpa.FullTextQuery fullTextQuery = fullTextEntityManager
 					.createFullTextQuery(productQuery, Product.class);
