@@ -111,7 +111,7 @@
             </ng-template>
 
             <span nz-dropdown [nzDropdownMenu]="menu">
-              <img src="assets/images/avatar.jpg" width="34" height="34">
+              <img [src]="sellerImage" width="34" height="34">
               {{isAdmin ? 'Admin': sellerName}}
               <i nz-icon nzType="down"></i>
             </span>

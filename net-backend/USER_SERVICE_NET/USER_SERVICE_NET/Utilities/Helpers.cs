@@ -23,6 +23,7 @@ namespace USER_SERVICE_NET.Utilities
            {
                 new Claim(ClaimTypes.Role, user.Type.ToString()),
                 new Claim("accountId", user.Id.ToString()),
+                new Claim("image", user.ImageUrl),
                 new Claim("sub", user.Username),
                 new Claim("isSocial", isSocial.ToString()),
                 new Claim("storeId",  user.Seller.Count != 0 ? user.Seller.FirstOrDefault().StoreId.ToString() : "-1"),

@@ -91,7 +91,7 @@
     padding-left: 15px;
   }
 
-  .icon-btns ul li:nth-child(2),
+  .icon-btns ul li:nth-child(1),
   .icon-btns ul li:nth-child(3) {
     display: none;
   }
