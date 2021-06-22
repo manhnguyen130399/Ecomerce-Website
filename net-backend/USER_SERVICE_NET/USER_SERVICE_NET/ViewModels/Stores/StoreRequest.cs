@@ -18,5 +18,6 @@ namespace USER_SERVICE_NET.ViewModels.Stores
         public string Website { get; set; }
         public string OpenTime { get; set; }
         public string CloseTime { get; set; }
+        public string Logo { get; set; }
     }
 }

@@ -30,8 +30,9 @@ namespace USER_SERVICE_NET.ViewModels.Sellers
         public string StoreName { get; set; }
         public string OpenTime { get; set; }
         public string CloseTime { get; set; }
-
         public string Website { get; set; }
+        public string Logo { get; set; }
+
 
     }
 }

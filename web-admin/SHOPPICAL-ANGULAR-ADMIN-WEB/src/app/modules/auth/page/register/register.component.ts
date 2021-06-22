@@ -58,9 +58,11 @@ export class RegisterComponent implements OnInit {
       else {
         const data = {
           ...this.sellerRegisterObject,
+          imageUrl: `https://ui-avatars.com/api/?background=random&name=${this.sellerRegisterObject.fullName.trimStart().substring(0, 1)}`,
+          logo: `https://ui-avatars.com/api/?background=random&name=${formData.storeName.trimStart().substring(0, 1)}`,
           ...formData
         };
-        console.log(data);
+
         this.userService.sellerRegister(data).pipe(
           tap(result => {
             if (result.isSuccessed) {

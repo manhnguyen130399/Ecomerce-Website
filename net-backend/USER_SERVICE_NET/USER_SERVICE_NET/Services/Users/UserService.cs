@@ -98,6 +98,7 @@ namespace USER_SERVICE_NET.Services.Users
             storeRequest.OpenTime = request.OpenTime;
             storeRequest.CloseTime = request.CloseTime;
             storeRequest.Website = request.Website;
+            storeRequest.Logo = request.Logo;
 
             var store = await _communicateService.CreateStoreForSeller(storeRequest);
 
@@ -106,6 +107,7 @@ namespace USER_SERVICE_NET.Services.Users
                 Username = request.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 IsActive = 1,
+                ImageUrl =request.ImageUrl,
                 Type = AccountTypes.Seller,
                 Created_at = DateTime.Now,
                 Seller = new List<Seller>()
