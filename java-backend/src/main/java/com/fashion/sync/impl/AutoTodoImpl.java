@@ -13,7 +13,7 @@ public class AutoTodoImpl implements AutoTodo {
 	private IIndexingService indexingService;
 
 	@Override
-	@Scheduled(cron = "0 0 0 * * *")
+	@Scheduled(cron = "0 0 * * * *")
 	public void autoReindex() throws InterruptedException {
 		indexingService.initiateIndexing();
 	}
