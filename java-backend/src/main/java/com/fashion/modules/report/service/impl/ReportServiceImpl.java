@@ -1,7 +1,10 @@
 package com.fashion.modules.report.service.impl;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +38,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.beust.jcommander.internal.Lists;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.constants.RestURL;
+import com.fashion.commons.enums.AccountType;
 import com.fashion.commons.enums.OrderState;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
@@ -75,18 +79,24 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 
 	@Override
 	public ReportRes getOrderByDate(final String fromDate, final String toDate, final Integer top,
-			final SortType sortOrder) {
+			final SortType sortOrder) throws ParseException {
 		final ReportRes res = new ReportRes();
 		final List<OrderVM> orders = getOrderByDateFromRest(fromDate, toDate, top, sortOrder);
 		int total = orders.size();
+		final Integer storeId = getCurrentStoreId();
+		final boolean isNotAdmin = getUserContext().getType() != AccountType.ADMIN;
+		final boolean hasStore = storeId != null;
 		if (CollectionUtils.isNotEmpty(orders)) {
 			final Set<Integer> productDetailIds = orders.parallelStream()
 					.flatMap(it -> it.getOrderDetails().stream().map(i -> i.getProductDetailId()))
 					.collect(Collectors.toSet());
 			final List<ProductDetail> productDetailByIds = productDetailRepo.getProductDetailByIds(productDetailIds);
-			final List<Integer> productId = productDetailByIds.parallelStream().map(it -> it.getProduct().getId())
-					.collect(Collectors.toList());
-			res.setReviews(commentRepo.getCommentInProductIds(getCurrentStoreId(), productId));
+			final Set<Integer> productIds = productDetailByIds.parallelStream().map(it -> it.getProduct().getId())
+					.collect(Collectors.toSet());
+			final Date from = new SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD_HYPHEN).parse(fromDate);
+			final Date to = new SimpleDateFormat(Constants.DATE_FORMAT_YYYYMMDD_HYPHEN).parse(toDate);
+			res.setReviews(hasStore && isNotAdmin ? commentRepo.getCommentInProductIds(storeId, productIds, from, to)
+					: commentRepo.getCommentsFromTo(from, to));
 			res.setRevenue(BigDecimal.valueOf(orders.parallelStream().mapToInt(it -> it.getTotal().intValue()).sum()));
 			res.setState(new StateOrderReportVM(getOrderStateNumber(OrderState.COMPLETE, orders, total),
 					getOrderStateNumber(OrderState.CANCEL, orders, total),
@@ -96,7 +106,10 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 			res.setRevenue(BigDecimal.ZERO);
 			res.setReviews(0);
 		}
-		final List<CategoryEntryMap> categories = cateRepo.getCategoryAndCountProduct(getCurrentStoreId());
+		final List<CategoryEntryMap> categories = hasStore
+				&& isNotAdmin
+						? cateRepo.getCategoryAndCountProduct(storeId)
+						: cateRepo.getCategoryAndCountProductAllStore();
 		res.setCategory(categories);
 		res.setCustomer(total);
 		res.setOrder(total);
@@ -168,7 +181,7 @@ public class ReportServiceImpl extends BaseService implements ReportService {
 	}
 
 	@Override
-	public Pair<Workbook, String> getOrderReport(final String fromDate, final String toDate, final Integer top) {
+	public Pair<Workbook, String> getOrderReport(final String fromDate, final String toDate, final Integer top) throws ParseException {
 		final ReportRes res = getOrderByDate(fromDate, toDate, top, SortType.ascend);
 		res.getRevenue();
 		final Workbook wb = new HSSFWorkbook();
