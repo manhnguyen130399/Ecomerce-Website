@@ -28,7 +28,6 @@ import { ResetPasswordDrawerComponent } from './layout/drawers/reset-password-dr
 import { ShoppingCartDrawerComponent } from './layout/drawers/shopping-cart-drawer/shopping-cart-drawer.component';
 import { QuickViewComponent } from './layout/modals/quick-view/quick-view.component';
 import { QuickShopComponent } from './layout/modals/quick-shop/quick-shop.component';
-import { SearchDrawerComponent } from './layout/drawers/search-drawer/search-drawer.component';
 import { SearchModalComponent } from './layout/modals/search-modal/search-modal.component';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { environment } from '@env';
@@ -47,7 +46,6 @@ registerLocaleData(en);
     ShoppingCartDrawerComponent,
     QuickViewComponent,
     QuickShopComponent,
-    SearchDrawerComponent,
     SearchModalComponent,
 
   ],

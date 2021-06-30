@@ -62,6 +62,7 @@ export class ProductGroupComponent implements OnInit {
       if (res.code === 'OK') {
         this.store = res.data;
         this.store.address = JSON.parse(res.data.address);
+
         this.calculateShippingFee();
         this.checkoutService.productPriceChange(this.getTotalPrice());
       }

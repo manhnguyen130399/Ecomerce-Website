@@ -4,9 +4,9 @@
       <b>Shipping Address</b>
       <a [routerLink]="['/checkout/information']">Change</a>
     </div>
-    <div class="info flex al-center">
-      <b class="name">{{shippingAddress.customerName}}</b>
-      <b class="phone">{{shippingAddress.phone}}</b>
+    <div class="info ">
+      <div class="name"><b>{{shippingAddress.customerName}}</b> </div>
+      <div class="phone"><b>{{shippingAddress.phone}}</b></div>
     </div>
     <div class="address">{{shippingAddress.address.addressName}}</div>
   </div>

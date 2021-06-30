@@ -43,13 +43,3 @@
 .name {
   margin-right: 10px;
 }
-
-.name::after {
-  content: "";
-  width: 1px;
-  height: 18px;
-  background: rgb(224, 224, 224);
-  display: inline-block;
-  vertical-align: top;
-  margin-left: 10px;
-}

@@ -26,7 +26,7 @@ export class SearchModalComponent implements OnInit {
   keyword: string = '';
   avatarUrl?: string;
   listProduct: Product[] = [];
-  imgAnalyzer: string = "http://52.221.254.26:5000/api/image-analyzer";
+  imgAnalyzer: string = "https://ec2-18-141-185-211.ap-southeast-1.compute.amazonaws.com/api/image-analyzer";
   // imgAnalyzer: string = `${environment.productServiceUrl}/api/upload`;
 
   constructor(

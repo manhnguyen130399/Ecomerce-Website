@@ -101,14 +101,15 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         {
                             Used_at = DateTime.Now,
                             CustomerPhone = request.Phone,
-                            PromotionId = orderStore.PromotionId
+                            PromotionId = orderStore.PromotionId,
+                            Created_at = DateTime.Now,
                         };
 
                         _context.CustomerPromo.Add(promotion);
                     }
                 }
 
-                // update cary
+                // update cart
                 if (request.AccountId != 0)
                 {
                     _cartService.DeleteItems(cartItems, request.AccountId);
