@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/com.fashion.modules.product.domain.Product/

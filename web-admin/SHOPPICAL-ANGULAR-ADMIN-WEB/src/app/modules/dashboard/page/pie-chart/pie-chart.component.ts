@@ -13,14 +13,14 @@ export class PieChartComponent implements OnInit {
   @Input() state: State;
   pieChartData: number[];
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     if (this.state != null) {
       this.pieChartData = [
         this.state.complete,
         this.state.pending,
-        this.state.complete,
+        this.state.cancel,
         this.state.delivery,
       ];
     } else {

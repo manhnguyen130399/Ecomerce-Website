@@ -3,6 +3,7 @@ package com.fashion.modules.report.web;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +35,7 @@ public class ReportResource extends BaseResource {
 			@RequestParam(required = false) final  String fromDate,
 			@RequestParam(required = false) final String toDate,
 			@RequestParam(required = false, defaultValue = "10") final Integer top,
-			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder) {
+			@RequestParam(required = false, defaultValue = "ascend") final SortType sortOrder) throws ParseException {
 		return success(reportService.getOrderByDate(fromDate, toDate, top, sortOrder));
 	}
 	
@@ -42,7 +43,7 @@ public class ReportResource extends BaseResource {
 	public void exportPotentialInteractionReport(@RequestParam(required = false) final String fromDate,
 			@RequestParam(required = false) final String toDate,
 			@RequestParam(required = false, defaultValue = "10") final Integer top, final HttpServletResponse response)
-			throws IOException {
+			throws IOException, ParseException {
 		final Pair<Workbook, String> orderReport = reportService.getOrderReport(fromDate, toDate, top);
 		response.setContentType("application/octet-stream");
 		response.setHeader("Content-Disposition", "attachment; filename=" + orderReport.getRight() + ".xls");
