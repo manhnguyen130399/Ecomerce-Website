@@ -33,7 +33,6 @@ export class MainLayoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.notifyService.getAllNotify().subscribe(res => {
       if (res.isSuccessed) {
         this.listNotify = res.data.content;

@@ -7,8 +7,10 @@ export const environment = {
   userServiceUrl: "https://user-service-net.herokuapp.com",
   orderServiceUrl: "https://order-service-net.herokuapp.com",
   productServiceUrl: "https://backend-java-api.herokuapp.com",
+  messageServiceUrl: 'https://localhost:5003',
   localUserServiceUrl: "https://localhost:5001",
   localOrderServiceUrl: "https://localhost:5002",
+  localMessageServiceUrl: 'https://localhost:5003',
   ghnAPIUrl: "https://dev-online-gateway.ghn.vn/shiip/public-api",
   tokenKey: "token",
   verifyKey: "verifyKey",
@@ -17,8 +19,10 @@ export const environment = {
     "user-service-net.herokuapp.com",
     "order-service-net.herokuapp.com",
     "backend-java-api.herokuapp.com",
+    "aspnetclusters-37333-0.cloudclusters.net",
     "localhost:5001",
-    "localhost:5002"
+    "localhost:5002",
+    "localhost:5003"
   ]
 };
 

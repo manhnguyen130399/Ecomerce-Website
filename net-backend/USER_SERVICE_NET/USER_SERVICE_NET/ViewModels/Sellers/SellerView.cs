@@ -9,6 +9,7 @@ namespace USER_SERVICE_NET.ViewModels.Sellers
 {
     public class SellerView
     {
+        public int Id { get; set; }
         public string SellerName { get; set; }
         public AddressInfo Address { get; set; }
         public string Phone { get; set; }

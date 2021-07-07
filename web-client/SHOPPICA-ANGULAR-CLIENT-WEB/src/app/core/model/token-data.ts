@@ -4,6 +4,7 @@ export interface TokenData {
   sub: string;
   role: string;
   exp: number;
+  image: string;
   storeId: number;
   isSocial: boolean;
   token: string;

@@ -82,6 +82,22 @@ namespace USER_SERVICE_NET.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetSellerByStoreId")]
+        [Authorize]
+        public async Task<IActionResult> GetSellerByStoreId(int storeId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.GetSellerByStoreId(storeId);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
+
         [HttpGet("GetCutomerById")]
         [Authorize]
         public async Task<IActionResult> GetCutomerById()

@@ -318,6 +318,7 @@ namespace USER_SERVICE_NET.Services.Users
                 .Take(request.pageSize)
                 .Select(x => new CustomerView()
                 {
+                    Id = x.Account.Id,
                     CustomerName = x.CustomerName,
                     Address = x.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(x.Address) : null,
                     Phone = x.Phone,
@@ -360,6 +361,7 @@ namespace USER_SERVICE_NET.Services.Users
                 .Take(request.pageSize)
                 .Select(x => new SellerView()
             {
+                Id = x.s.Account.Id,
                 SellerName = x.s.SellerName,
                 Address = x.s.Address!=null? JsonConvert.DeserializeObject<AddressInfo>(x.s.Address):null,
                 Phone = x.s.Phone,
@@ -424,6 +426,7 @@ namespace USER_SERVICE_NET.Services.Users
             }
             var data = new SellerView()
             {
+                Id = seller.Account.Id,
                 SellerName = seller.SellerName,
                 Address = seller.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(seller.Address) : null,
                 Phone = seller.Phone,
@@ -444,6 +447,7 @@ namespace USER_SERVICE_NET.Services.Users
             }
             var data = new CustomerView()
             {
+                Id = customer.Account.Id,
                 CustomerName = customer.CustomerName,
                 Address = customer.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(customer.Address) : null,
                 Phone = customer.Phone,
@@ -453,6 +457,27 @@ namespace USER_SERVICE_NET.Services.Users
             };
 
             return new APIResultSuccess<CustomerView>(data);
+        }
+
+        public async Task<APIResult<SellerView>> GetSellerByStoreId(int storeId)
+        {
+            var seller = await _context.Seller.Include(x => x.Account).FirstOrDefaultAsync(a => a.StoreId == storeId);
+            if (seller == null)
+            {
+                return new APIResultErrors<SellerView>("Not found");
+            }
+            var data = new SellerView()
+            {
+                Id = seller.Account.Id,
+                SellerName = seller.SellerName,
+                Address = seller.Address != null ? JsonConvert.DeserializeObject<AddressInfo>(seller.Address) : null,
+                Phone = seller.Phone,
+                Email = seller.Email,
+                Gender = seller.Gender,
+                Image = seller.Account.ImageUrl,
+            };
+
+            return new APIResultSuccess<SellerView>(data);
         }
     }
 }

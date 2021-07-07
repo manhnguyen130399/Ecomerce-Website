@@ -45,6 +45,7 @@ export class AuthService {
             token: res.data
           };
           this.storageService.setObject(environment.tokenKey, user);
+
           return res;
         }
       }),

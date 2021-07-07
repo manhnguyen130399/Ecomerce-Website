@@ -4,6 +4,9 @@
   <app-loader></app-loader>
 </div>
 <app-footer></app-footer>
-<app-scroll-to-top></app-scroll-to-top>
+<!-- <app-scroll-to-top></app-scroll-to-top> -->
 <app-quick-shop></app-quick-shop>
 <app-quick-view></app-quick-view>
+<div *ngIf="showMessage">
+  <app-message></app-message>
+</div>

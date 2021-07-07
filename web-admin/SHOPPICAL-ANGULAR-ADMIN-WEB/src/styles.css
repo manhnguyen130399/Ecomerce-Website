@@ -24,6 +24,42 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
+.flex {
+  display: flex;
+}
+
+.fd-column {
+  flex-direction: column;
+}
+
+.al-center {
+  align-items: center;
+}
+
+.al-flex-start {
+  align-items: flex-start;
+}
+
+.al-flex-end {
+  align-items: flex-end;
+}
+
+.jc-center {
+  justify-content: center;
+}
+
+.jc-flex-end {
+  justify-content: flex-end;
+}
+
+.jc-flex-start {
+  justify-content: flex-start;
+}
+
+.jc-space-between {
+  justify-content: space-between;
+}
+
 .ant-layout-content {
   position: relative;
 }

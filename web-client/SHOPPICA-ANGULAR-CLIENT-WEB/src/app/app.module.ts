@@ -31,6 +31,7 @@ import { QuickShopComponent } from './layout/modals/quick-shop/quick-shop.compon
 import { SearchModalComponent } from './layout/modals/search-modal/search-modal.component';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from 'angularx-social-login';
 import { environment } from '@env';
+import { MessageComponent } from './layout/message/message.component';
 registerLocaleData(en);
 
 @NgModule({
@@ -47,6 +48,7 @@ registerLocaleData(en);
     QuickViewComponent,
     QuickShopComponent,
     SearchModalComponent,
+    MessageComponent,
 
   ],
   imports: [

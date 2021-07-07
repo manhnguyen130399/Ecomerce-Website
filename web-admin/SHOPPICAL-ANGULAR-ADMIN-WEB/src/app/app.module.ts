@@ -1,3 +1,8 @@
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { FormsModule } from '@angular/forms';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,7 +37,7 @@ registerLocaleData(en);
 @NgModule({
   declarations: [
     AppComponent,
-    AuthLayoutComponent
+    AuthLayoutComponent,
   ],
   imports: [
     BrowserModule,

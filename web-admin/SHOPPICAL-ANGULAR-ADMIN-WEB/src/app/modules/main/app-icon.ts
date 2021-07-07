@@ -15,7 +15,10 @@ import {
   ShoppingCartOutline,
   ShopOutline,
   ExclamationCircleOutline,
-  BarChartOutline
+  BarChartOutline,
+  MessageOutline,
+  SendOutline,
+  CloseOutline
 } from '@ant-design/icons-angular/icons';
 
 export const icons: IconDefinition[] = [
@@ -34,5 +37,8 @@ export const icons: IconDefinition[] = [
   ShoppingCartOutline,
   ShopOutline,
   ExclamationCircleOutline,
-  BarChartOutline
+  BarChartOutline,
+  MessageOutline,
+  SendOutline,
+  CloseOutline
 ];

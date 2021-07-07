@@ -1,14 +1,18 @@
 .scroll-to-top-btn {
   position: fixed;
-  right: 50px;
+  right: 100px;
   bottom: 40px;
   height: 45px;
   width: 45px;
-  border: 1px solid;
+  border: 1px solid #65676d;
   transition: 0.8s;
   transform: translateY(0);
   opacity: 1;
   z-index: 1000;
+}
+
+.scroll-to-top-btn i {
+  color: #65676d;
 }
 
 .hidden {

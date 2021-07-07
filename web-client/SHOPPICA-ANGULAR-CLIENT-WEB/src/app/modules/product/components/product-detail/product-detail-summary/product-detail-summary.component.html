@@ -47,9 +47,11 @@
                 <div class="subtitle">14k+</div>
               </div>
               <div class="border-left"></div>
-              <div class="follow  flex jc-center al-center fd-column">
-                <button [nzShape]="'circle'" [routerLink]="['/store',store.id,'home']" nz-tooltip
-                  [nzTooltipTitle]="'View shop'" nz-button><i nz-icon nzType="eye" nzTheme="outline"></i></button>
+              <div class="actions flex jc-center al-center ">
+                <button [routerLink]="['/store',store.id,'home']" nz-tooltip [nzTooltipTitle]="'View shop'" nz-button><i
+                    nz-icon nzType="eye" nzTheme="outline"></i>View</button>
+                <button (click)="openConversation()" nz-tooltip [nzTooltipTitle]="'Chat with shop'" nz-button><i nz-icon
+                    nzType="message" nzTheme="outline"></i>Chat</button>
               </div>
             </div>
           </div>

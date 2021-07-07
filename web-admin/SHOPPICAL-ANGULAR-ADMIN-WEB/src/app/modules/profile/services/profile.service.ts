@@ -46,8 +46,7 @@ export class ProfileService {
     )
   }
 
-  getStoreDetail() {
-    const storeId = this.utilitiesService.getStoreId();
+  getStoreDetail(storeId: number) {
     return this.httpClient.get(`${environment.productServiceUrl}/api/store/${storeId}`).pipe(
       catchError(error => {
         return of(error.error);

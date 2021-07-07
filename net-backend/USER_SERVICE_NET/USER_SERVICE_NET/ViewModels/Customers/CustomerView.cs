@@ -9,6 +9,7 @@ namespace USER_SERVICE_NET.ViewModels.Customers
 {
     public class CustomerView
     {
+        public int Id { get; set; }
         public string CustomerName { get; set; }
         public AddressInfo Address { get; set; }
         public string Phone { get; set; }

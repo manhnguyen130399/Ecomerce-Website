@@ -105,7 +105,8 @@ export class UpdateStoreInfoComponent implements OnInit {
 
 
   loadSellerInfo() {
-    this.profileService.getStoreDetail().subscribe(res => {
+    const storeId = this.utilitiesService.getStoreId();
+    this.profileService.getStoreDetail(storeId).subscribe(res => {
       if (res.code == "OK") {
         this.isLoadingSellerDetail = false;
         this.setFormValue(res.data);

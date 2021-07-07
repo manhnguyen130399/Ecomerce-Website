@@ -1,0 +1,270 @@
+.mr-10 {
+  margin-right: 10px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+.message-btn {
+  height: 45px;
+  width: 45px;
+  border: 1px solid #868991;
+}
+
+.message-icon {
+  position: fixed;
+  right: 50px;
+  bottom: 40px;
+  z-index: 1000;
+}
+
+.message-icon ::ng-deep .ant-badge .ant-badge-count {
+  top: 5px;
+  right: 2px;
+}
+
+.message-btn i {
+  color: #868991;
+}
+
+.message-frame {
+  z-index: 1000;
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  right: 95px;
+  bottom: 63px;
+  background: white;
+  border-radius: 2px 2px 0 0;
+  box-shadow: 0 0 7px 0 #999;
+  transition: 0.5s;
+  overflow: hidden;
+}
+
+.message-frame.no-message.show {
+  width: 300px;
+}
+
+.message-frame.show {
+  width: 600px;
+  height: 400px;
+  bottom: 0;
+  right: 110px;
+}
+
+.message-frame.show .conversation-detail,
+.message-frame.show .all-conversations {
+  opacity: 1;
+}
+
+.conversation-detail {
+  border-right: 1px solid #e6e7eb;
+  height: 100%;
+  transition: 0.4s;
+  opacity: 0;
+}
+
+.all-conversations {
+  height: 100%;
+  transition: 0.4s;
+  opacity: 0;
+}
+
+.all-conversations .conversations {
+  overflow: hidden;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.all-conversations .conversations .no-message {
+  text-align: center;
+  margin-top: 20px;
+  color: #878787;
+}
+
+.header {
+  padding: 0 0 0 15px;
+  display: flex;
+  flex: 0 0 50px;
+  justify-content: space-between;
+  border-bottom: 1px solid;
+  align-items: center;
+  border-bottom: 1px solid #e6e7eb;
+  box-shadow: 0 2px 3px 0 rgb(136 129 129 / 20%);
+  z-index: 2;
+}
+
+.conversation-detail .header {
+  justify-content: flex-start;
+}
+
+.conversation-detail .message-content {
+  overflow: hidden;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.conversation-detail .introduce {
+  margin-top: 20px;
+}
+
+.conversation-detail .introduce .info {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.conversation-detail .introduce .info .name {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.conversation-detail .introduce .info .follow {
+  font-size: 12px;
+  color: #878787;
+  margin-bottom: 3px;
+}
+
+.conversation-detail .message-content .messages {
+  margin: 20px 0 10px;
+}
+
+.conversation-detail .message-input {
+  padding: 10px 0;
+  border-top: 1px solid #e6e7eb;
+}
+
+.conversation-detail .message-input .input input {
+  border: 1px solid #cdced2;
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.conversation-detail .message-input .input {
+  flex: 1 0 auto;
+}
+
+.conversation-detail .message-input .attach-btn,
+.conversation-detail .message-input .send-btn {
+  height: 100%;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.conversation-detail .message-input .attach-btn {
+  padding: 0 6px;
+}
+
+.conversation-detail .message-input .attach-btn i {
+  font-size: 20px;
+  color: rgb(151, 151, 151);
+}
+
+.conversation-detail .message-input .send-btn i {
+  font-size: 18px;
+  color: rgb(151, 151, 151);
+}
+
+.header p {
+  margin-bottom: 0;
+}
+
+.header .title {
+  line-height: 17px;
+  font-size: 15px;
+  color: #878787;
+}
+
+.header .title i {
+  margin-right: 5px;
+  font-size: 17px;
+}
+
+.close-btn {
+  height: 100%;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.close-btn i {
+  font-size: 17px;
+  transition: 0.5s;
+}
+
+.close-btn:hover i {
+  color: #56cfe1;
+}
+
+.conversation-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.conversation-item:hover {
+  background: #eff5f7;
+}
+
+.conversation-item.active {
+  background: #eff5f7;
+}
+
+.avatar img {
+  border-radius: 50%;
+}
+
+.conversation-item .conversation-content {
+  flex: 1 0 auto;
+}
+
+.shop-info span {
+  line-height: 17px;
+}
+
+.shop-name {
+  font-size: 14px;
+}
+
+.last-message {
+  font-size: 13px;
+  color: #878787;
+}
+
+.shop-info.un-read .shop-name,
+.shop-info.un-read .last-message {
+  font-weight: bold;
+  color: black;
+}
+
+.message-time span {
+  font-size: 13px;
+}
+
+.message-time.un-read {
+  font-weight: bold;
+}
+
+.message.send {
+  margin: 4px 8px 0 0;
+  justify-content: flex-end;
+}
+
+.message.receive {
+  margin: 4px 0 0 8px;
+  justify-content: flex-start;
+}
+
+.message-content .text {
+  padding: 5px 12px;
+  background: #e4e6eb;
+  border-radius: 20px;
+  max-width: 70%;
+}
+
+.message.send .text {
+  background: #4f9aff;
+  color: white;
+}

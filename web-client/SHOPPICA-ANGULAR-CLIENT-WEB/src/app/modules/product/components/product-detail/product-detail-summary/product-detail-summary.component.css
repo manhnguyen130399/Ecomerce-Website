@@ -129,8 +129,15 @@
 }
 
 .seller-detail .rating,
-.seller-detail .follow {
+.seller-detail .actions {
   padding: 0 20px;
+}
+.seller-detail .actions button {
+  border-radius: 5px;
+}
+
+.seller-detail .actions button:first {
+  margin-right: 10px;
 }
 
 .border-left {

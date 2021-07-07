@@ -1,4 +1,7 @@
-import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
+import { Conversation } from '@core/model/message/conversation';
+import { Customer } from '@core/model/user/customer';
+import { ConservationRequest } from './../../../../../core/model/message/new-conservation-request';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { ModalService } from './../../../../../core/services/modal/modal.service';
 import { Router } from '@angular/router';
 import { ProductService } from './../../../../../core/services/product/product.service';
@@ -20,6 +23,8 @@ import { finalize } from 'rxjs/operators';
 import { forkJoin, Observable } from 'rxjs';
 import { getListColor, getListSize } from '@core/model/product/product-helper';
 import { Cart } from '@core/model/cart/cart';
+import { MessageService } from '@core/services/message/message.service';
+import { Seller } from '@core/model/message/seller';
 
 @Component({
   selector: 'app-product-detail-summary',
@@ -30,6 +35,8 @@ export class ProductDetailSummaryComponent implements OnInit {
 
   @Input() product: Product;
   store: Store;
+  storeOwner: Seller;
+  customer: Customer;
   userAddress: Address;
   storeAddress: Address;
   listColor: Color[] = [];
@@ -56,13 +63,16 @@ export class ProductDetailSummaryComponent implements OnInit {
     private readonly productService: ProductService,
     private readonly router: Router,
     private readonly modalService: ModalService,
-    private readonly messageService: NzMessageService
+    private readonly nzMessageService: NzMessageService,
+    private readonly messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
     this.shareService.cartEmitted$.subscribe((cart) => {
       this.cart = cart;
     });
+
+    this.getCustomerInfo();
 
     this.shareService.wishlistEmitted$.subscribe(listIds => {
       this.listWishIds = listIds;
@@ -104,11 +114,27 @@ export class ProductDetailSummaryComponent implements OnInit {
       this.colorSelected = this.listColor[0];
       this.sizeSelected = this.listSize[0];
       this.getShippingFeeAndStore(changes.product.currentValue.storeId);
+      this.getSellerInfo(changes.product.currentValue.storeId);
       this.quantity = 1;
       this.rating = this.product.comments.length == 0 ? 0 :
         this.product.comments.map(c => c.rating).reduce((prev, cur) => prev + cur) / this.product.comments.length;
     }
+  }
 
+  getCustomerInfo() {
+    this.shareService.customerInfoEmitted$.subscribe(customer => {
+      if (customer) {
+        this.customer = customer;
+      }
+    });
+  }
+
+  getSellerInfo(storeId: number) {
+    this.storeService.getSellerByStoreId(storeId).subscribe(res => {
+      if (res.isSuccessed) {
+        this.storeOwner = res.data;
+      }
+    })
   }
 
   getShippingFeeAndStore(storeId: number) {
@@ -157,7 +183,7 @@ export class ProductDetailSummaryComponent implements OnInit {
     if (this.quantity + inCartQuantity > availableQuantity) {
       let errorStr = `${this.product.productName}(${this.colorSelected.colorName} - ${this.sizeSelected.sizeName}) only ${availableQuantity} product is available.`;
       errorStr += inCartQuantity > 0 ? `Your cart has ${inCartQuantity} product.` : "";
-      this.messageService.error(errorStr)
+      this.nzMessageService.error(errorStr)
       return;
     }
 
@@ -177,5 +203,39 @@ export class ProductDetailSummaryComponent implements OnInit {
           this.modalService.openCartDrawerEvent();
         }
       });
+  }
+
+  openConversation() {
+    var conservationRequest: ConservationRequest = {
+      seller: {
+        id: this.storeOwner.id,
+        fullName: this.store.storeName,
+        email: this.storeOwner.email,
+        phone: this.storeOwner.phone,
+        image: this.store.logo
+      },
+      customer: {
+        id: this.customer.id,
+        fullName: this.customer.customerName,
+        email: this.customer.email,
+        phone: this.customer.phone,
+        image: this.customer.image
+      }
+    }
+
+    this.messageService.createNewConservation(conservationRequest).subscribe(res => {
+      if (res.isSuccess) {
+        const conversation: Conversation = {
+          id: res.data,
+          conversationImage: this.store.logo,
+          conversationTitle: this.store.storeName,
+          created_at: new Date(),
+          receive_id: this.storeOwner.id,
+          lastMessage: null
+        }
+
+        this.messageService.openConversation(conversation);
+      }
+    })
   }
 }

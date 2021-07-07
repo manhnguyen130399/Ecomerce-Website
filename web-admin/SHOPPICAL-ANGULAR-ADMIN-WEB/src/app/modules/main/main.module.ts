@@ -1,3 +1,8 @@
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { MessageComponent } from './../../layout/message/message.component';
 import { DashboardComponent } from './../dashboard/page/dashboard/dashboard.component';
 import { MainLayoutComponent } from '@layout/main-layout/main-layout.component';
 import { NgModule } from '@angular/core';
@@ -16,7 +21,8 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 
 @NgModule({
   declarations: [
-    MainLayoutComponent
+    MainLayoutComponent,
+    MessageComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +32,10 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
     NzBadgeModule,
     NzButtonModule,
     NzLayoutModule,
+    NzGridModule,
+    NzUploadModule,
+    FormsModule,
+    NzInputModule,
     RouterModule.forChild(mainRoutes),
     NzIconModule.forChild(icons),
   ],

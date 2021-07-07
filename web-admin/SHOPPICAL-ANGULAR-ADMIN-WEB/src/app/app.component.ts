@@ -11,8 +11,12 @@ export class AppComponent {
 
   }
   ngOnInit(): void {
-    this.signalrService.buildConnection();
-    this.signalrService.startConnection();
+    this.signalrService.buildChatConnection();
+    this.signalrService.buildNotifyConnection();
+    this.signalrService.startNotifyConnection();
+    this.signalrService.startChatConnection();
     this.signalrService.addNotifyDataListener();
+    this.signalrService.addReceiveMessageDataListener();
+
   }
 }

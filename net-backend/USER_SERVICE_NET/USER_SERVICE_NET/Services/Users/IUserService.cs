@@ -24,6 +24,7 @@ namespace USER_SERVICE_NET.Services.Users
         Task<APIResult<bool>> UpdateInfoForSeller(SellerUpdateRequest request);
         Task<APIResult<bool>> UpdateInfoForCustomer(CustomerUpdateRequest request);
         Task<APIResult<SellerView>> GetSellerById(int accountId);
+        Task<APIResult<SellerView>> GetSellerByStoreId(int storeId);
         Task<APIResult<CustomerView>> GetCustomerById(int accountId);
         Task<APIResult<string>> ChangePassword(ChangePasswordRequest request);
         Task<APIResult<string>> GenerateTokenResetPassword(string email);

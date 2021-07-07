@@ -3,6 +3,7 @@ import { StorageService } from './../storage/storage.service';
 import { Injectable } from '@angular/core';
 
 import { TokenData } from '../../model/token-data';
+import { UserMessage } from '@core/model/message/user-message';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class JwtService {
 
   getToken(): string {
     this.user = this.storageService.getValue<TokenData>(environment.tokenKey);
+
     if (this.user != null) {
       return this.user.token;
     }

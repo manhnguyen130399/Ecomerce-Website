@@ -18,4 +18,12 @@ export class StoreService {
       })
     );
   }
+
+  getSellerByStoreId(id: number) {
+    return this.httpClient.get(`${environment.userServiceUrl}/api/users/GetSellerByStoreId?storeId=${id}`).pipe(
+      catchError(error => {
+        return of(error.error);
+      })
+    );
+  }
 }
