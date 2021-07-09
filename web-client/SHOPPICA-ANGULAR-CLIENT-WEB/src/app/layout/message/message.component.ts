@@ -1,3 +1,7 @@
+import { Attachment } from './../../core/model/message/attachment';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzUploadFile, NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { environment } from '@env';
 import { SignalrService } from './../../core/services/signalr/signalr.service';
 import { Customer } from './../../core/model/user/customer';
 import { ShareService } from './../../core/services/share/share.service';
@@ -8,6 +12,8 @@ import { Conversation } from './../../core/model/message/conversation';
 import { Component, OnInit, ElementRef, ViewChild, Renderer2, AfterViewInit, AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Message } from '@core/model/message/message';
 import { MessageService } from '@core/services/message/message.service';
+import { Observable, Observer } from 'rxjs';
+import { fileMineTypes } from '@core/model/file-type';
 
 @Component({
   selector: 'app-message',
@@ -16,15 +22,18 @@ import { MessageService } from '@core/services/message/message.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageComponent implements OnInit {
+  uploadUrl = `${environment.productServiceUrl}/api/upload`;
   isShowMessagesFrame = false;
   accountId: number = -1;
   content: string;
   customer: Customer;
+  isLoad = true;
   numMessageUnRead: number;
   conversationSelected: Conversation;
   conversations: Conversation[] = [];
   messages: Message[] = [];
-  @ViewChild('messageContent', { static: true }) messageContent: ElementRef;
+  fileList: NzUploadFile[] = [];
+  @ViewChild('messageContent') messageContent: ElementRef;
   @ViewChild('audioElement', { static: true }) private audioElement;
 
 
@@ -34,7 +43,8 @@ export class MessageComponent implements OnInit {
     private readonly shareService: ShareService,
     private readonly renderer: Renderer2,
     private readonly signalrService: SignalrService,
-    private changeDetector: ChangeDetectorRef
+    private readonly changeDetector: ChangeDetectorRef,
+    private readonly nzMessageService: NzMessageService
   ) { }
 
   ngOnInit() {
@@ -123,6 +133,8 @@ export class MessageComponent implements OnInit {
     this.messageService.getMessageByConversation(conversation?.id).subscribe(res => {
       if (res.isSuccess) {
         this.messages = res.data;
+        console.log(res.data);
+
         this.changeDetector.detectChanges();
         this.scrollToBottom();
       }
@@ -143,16 +155,39 @@ export class MessageComponent implements OnInit {
   }
 
   sendMessage() {
-    if (!this.content) {
+    const attachments: Attachment[] = [];
+    if ((this.content === undefined || this.content === '') && this.fileList.length === 0) {
       return;
     }
+
+    if (!this.isLoad) {
+      return;
+    }
+
+    this.fileList.forEach(file => {
+      const fileType = fileMineTypes.filter(x => x.mimeType.includes(file.type));
+      if (fileType[0]?.name == 'IMAGE') {
+        attachments.push({
+          thumbUrl: file.response?.data[0]
+        })
+      }
+      else {
+        attachments.push({
+          fileUrl: file.response?.data[0],
+          name: file.name
+        })
+      }
+    })
+
+
     const messageRequest: MessageRequest = {
       content: this.content,
       senderImage: this.customer?.image,
       senderName: this.customer?.customerName,
       conversation_id: this.conversationSelected.id,
       sender_id: this.accountId,
-      receive_id: this.conversationSelected.receive_id
+      receive_id: this.conversationSelected.receive_id,
+      attachments: attachments
     }
 
     this.messageService.sendMessage(messageRequest).subscribe(res => {
@@ -162,12 +197,13 @@ export class MessageComponent implements OnInit {
           content: this.content,
           created_at: new Date(),
           sender_id: this.accountId,
-          isRead: true
+          isRead: true,
+          attachments: attachments
         };
         this.messages.push(message)
 
         this.content = "";
-
+        this.fileList = [];
         const index = this.conversations.findIndex(x => x.id == this.conversationSelected.id);
         this.conversations[index].lastMessage = message;
         this.conversations = [
@@ -180,6 +216,34 @@ export class MessageComponent implements OnInit {
 
     })
   }
+
+  removeAttachment(id: string) {
+    this.fileList = this.fileList.filter(x => x.uid !== id);
+  }
+
+  handleChange = (info: NzUploadChangeParam) => {
+    this.isLoad = false;
+    if (info.type == 'success') {
+      this.isLoad = true;
+    }
+  }
+
+  beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]) => {
+    return new Observable((observer: Observer<boolean>) => {
+      const isSmall2M = file.size! / 1024 / 1024 < 1;
+      if (!isSmall2M) {
+        this.nzMessageService.error('File must smaller than 1MB!');
+        observer.complete();
+        return;
+      }
+      const fileType = fileMineTypes.filter(x => x.mimeType.includes(file.type));
+      file.color = fileType.length > 0 ? fileType[0].colorCode : fileMineTypes[0].colorCode;
+      file.extension = file.name.split('.').pop().toLocaleUpperCase();
+      file.newSize = file.size / 1024 < 1 ? `${file.size} B` : `${Math.round(file.size / 1024)} KB`;
+      observer.next(isSmall2M);
+      observer.complete();
+    });
+  };
 
   scrollToBottom(): void {
     this.messageContent.nativeElement.scrollTop = this.messageContent.nativeElement.scrollHeight;
@@ -195,4 +259,5 @@ export class MessageComponent implements OnInit {
       }
     }, 1000)
   }
+
 }

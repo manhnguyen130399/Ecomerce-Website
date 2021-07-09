@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  userServiceUrl: "https://user-service-net.herokuapp.com",
-  orderServiceUrl: "https://order-service-net.herokuapp.com",
+  userServiceUrl: "https://aspnetclusters-37619-0.cloudclusters.net",
+  orderServiceUrl: "https://aspnetclusters-37670-0.cloudclusters.net",
   productServiceUrl: "https://backend-java-api.herokuapp.com",
   messageServiceUrl: 'https://aspnetclusters-37333-0.cloudclusters.net',
   localUserServiceUrl: "https://localhost:5001",
@@ -12,8 +12,8 @@ export const environment = {
   ghnToken: "aa3d5553-73e6-11eb-8be2-c21e19fc6803",
   verifyKey: "verifyKey",
   backendDomain: [
-    "user-service-net.herokuapp.com",
-    "order-service-net.herokuapp.com",
+    "aspnetclusters-37619-0.cloudclusters.net",
+    "aspnetclusters-37670-0.cloudclusters.net",
     "backend-java-api.herokuapp.com",
     "aspnetclusters-37333-0.cloudclusters.net",
     "localhost:5001",

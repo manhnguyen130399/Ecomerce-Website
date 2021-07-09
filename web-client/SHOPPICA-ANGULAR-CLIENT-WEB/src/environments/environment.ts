@@ -4,11 +4,11 @@
 
 export const environment = {
   production: false,
-  userServiceUrl: 'https://user-service-net.herokuapp.com',
+  userServiceUrl: 'https://aspnetclusters-37619-0.cloudclusters.net',
+  orderServiceUrl: 'https://aspnetclusters-37670-0.cloudclusters.net',
+  productServiceUrl: 'https://backend-java-api.herokuapp.com',
   recommendationServiceUrl: 'https://shopica-recommendation.herokuapp.com',
   messageServiceUrl: 'https://aspnetclusters-37333-0.cloudclusters.net',
-  orderServiceUrl: 'https://order-service-net.herokuapp.com',
-  productServiceUrl: 'https://backend-java-api.herokuapp.com',
   imageAnalyzerUrl: 'https://ec2-13-212-161-115.ap-southeast-1.compute.amazonaws.com/api/image-analyzer',
   localUserServiceUrl: 'https://localhost:5001',
   localOrderServiceUrl: 'https://localhost:5002',
@@ -23,8 +23,8 @@ export const environment = {
   loginMethod: 'loginMethod',
   USDToVND: 23000,
   backendDomain: [
-    'user-service-net.herokuapp.com',
-    'order-service-net.herokuapp.com',
+    'aspnetclusters-37619-0.cloudclusters.net',
+    'aspnetclusters-37670-0.cloudclusters.net',
     'backend-java-api.herokuapp.com',
     "aspnetclusters-37333-0.cloudclusters.net",
     'localhost:5001',

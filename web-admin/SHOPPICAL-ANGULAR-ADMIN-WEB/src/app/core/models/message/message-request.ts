@@ -1,3 +1,4 @@
+import { Attachment } from './attachment';
 export interface MessageRequest {
   content: string;
   senderName: string;
@@ -5,4 +6,5 @@ export interface MessageRequest {
   conversation_id: number;
   sender_id: number;
   receive_id: number;
+  attachments?: Attachment[];
 }
