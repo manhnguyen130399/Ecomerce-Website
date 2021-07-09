@@ -18,7 +18,8 @@ import {
   BarChartOutline,
   MessageOutline,
   SendOutline,
-  CloseOutline
+  CloseOutline,
+  FileTextOutline
 } from '@ant-design/icons-angular/icons';
 
 export const icons: IconDefinition[] = [
@@ -40,5 +41,6 @@ export const icons: IconDefinition[] = [
   BarChartOutline,
   MessageOutline,
   SendOutline,
-  CloseOutline
+  CloseOutline,
+  FileTextOutline
 ];
