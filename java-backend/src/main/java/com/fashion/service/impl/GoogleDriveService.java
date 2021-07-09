@@ -47,7 +47,7 @@ public class GoogleDriveService implements IGoogleDriveService {
 		final File fileMetadata = new File();
 		fileMetadata.setName(input.getName());
 		fileMetadata.setParents(Collections.singletonList(FOLDER_ID_TEST));
-		final FileContent mediaContent = new FileContent("image/jpeg", input);
+		final FileContent mediaContent = new FileContent("application/octet-stream", input);
 		final File file = googleDrive.files().create(fileMetadata, mediaContent).setFields("id").execute();
 		return file.getId();
 	}

@@ -128,9 +128,8 @@ public final class Constants {
 	public static final String AUTHORIZATION = "Authorization";
 
 	// NET API
-	public static final String USER_URL = "https://user-service-net.herokuapp.com/api";
-	public static final String ORDER_URL = "https://order-service-net.herokuapp.com/api";
-
+	public static final String USER_URL = "https://aspnetclusters-37619-0.cloudclusters.net/api";
+	public static final String ORDER_URL = "https://aspnetclusters-37670-0.cloudclusters.net/api";
 	// EXCEL
 	public static final List<String> EXCEL_VALID_FORMATS = Lists.newArrayList("xls", "xlsx");
 
