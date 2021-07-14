@@ -28,6 +28,10 @@
   margin-bottom: 15px;
 }
 
+.num-comments {
+  margin-left: 10px;
+}
+
 .product-price .price {
   font-size: 22px;
   color: #696969;

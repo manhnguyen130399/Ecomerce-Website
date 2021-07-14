@@ -107,6 +107,7 @@ p {
   overflow: hidden;
   overflow-y: auto;
   flex: 1 1 auto;
+  position: relative;
 }
 
 .conversation-detail .introduce {
@@ -360,8 +361,8 @@ p {
 .attachments {
   max-height: 200px;
   overflow: hidden;
-  flex: 1 0 auto;
   overflow-y: auto;
+  flex: 1 0 auto;
 }
 
 .attachment {
@@ -406,4 +407,9 @@ p {
 
 .attachment .remove-btn i {
   font-size: 15px;
+}
+
+.isLoading {
+  padding-top: 45%;
+  background-color: white;
 }

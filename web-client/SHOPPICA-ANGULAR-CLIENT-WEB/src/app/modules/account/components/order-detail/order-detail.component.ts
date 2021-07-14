@@ -22,7 +22,8 @@ export class OrderDetailComponent implements OnInit {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly checkoutService: CheckoutService,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+
   ) { }
 
   ngOnInit(): void {

@@ -1,3 +1,4 @@
+import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CommonModule } from '@angular/common';
@@ -35,6 +36,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzUploadModule,
     NzDropDownModule,
     NzBadgeModule,
+    NzImageModule,
     NzIconModule.forRoot(shareIcons)
   ],
   exports: [

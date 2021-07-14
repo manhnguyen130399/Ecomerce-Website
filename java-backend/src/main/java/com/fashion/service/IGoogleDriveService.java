@@ -7,7 +7,7 @@ import com.google.api.services.drive.model.File;
 
 public interface IGoogleDriveService {
 	
-	List<File> getAllFile() throws IOException;
+	void getAllFile() throws IOException;
 
 	String createNewFolder(String name) throws IOException;
 

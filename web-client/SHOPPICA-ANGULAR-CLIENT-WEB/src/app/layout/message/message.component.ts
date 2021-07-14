@@ -1,3 +1,5 @@
+import { NzImage, NzImageService } from 'ng-zorro-antd/image';
+import { LoaderService } from './../../shared/modules/loader/loader.service';
 import { Attachment } from './../../core/model/message/attachment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile, NzUploadChangeParam } from 'ng-zorro-antd/upload';
@@ -14,6 +16,7 @@ import { Message } from '@core/model/message/message';
 import { MessageService } from '@core/services/message/message.service';
 import { Observable, Observer } from 'rxjs';
 import { fileMineTypes } from '@core/model/file-type';
+import { convertToLocalTime } from '@core/model/time-helper';
 
 @Component({
   selector: 'app-message',
@@ -44,7 +47,9 @@ export class MessageComponent implements OnInit {
     private readonly renderer: Renderer2,
     private readonly signalrService: SignalrService,
     private readonly changeDetector: ChangeDetectorRef,
-    private readonly nzMessageService: NzMessageService
+    private readonly nzMessageService: NzMessageService,
+    private readonly loaderService: LoaderService,
+    private readonly nzImageService: NzImageService
   ) { }
 
   ngOnInit() {
@@ -111,11 +116,20 @@ export class MessageComponent implements OnInit {
     })
   }
 
-  getConversations() {
 
+  getConversations() {
     this.messageService.getAllConversations(this.accountId).subscribe(res => {
       if (res.isSuccess) {
         this.conversations = res.data;
+
+        this.conversations.map(c => {
+          c.created_at = convertToLocalTime(c.created_at);
+          if (c.lastMessage) {
+            c.lastMessage.created_at = convertToLocalTime(c.lastMessage.created_at);
+          }
+          return c;
+        });
+
         if (this.conversations.length > 0) {
           this.conversationSelected = this.conversations[0];
           this.openConversation(this.conversationSelected);
@@ -130,11 +144,13 @@ export class MessageComponent implements OnInit {
   }
 
   openConversation(conversation: Conversation) {
+    this.fileList = [];
+    this.messages = [];
+    this.loaderService.showLoader("message");
     this.messageService.getMessageByConversation(conversation?.id).subscribe(res => {
       if (res.isSuccess) {
+        this.loaderService.hideLoader("message");
         this.messages = res.data;
-        console.log(res.data);
-
         this.changeDetector.detectChanges();
         this.scrollToBottom();
       }
@@ -215,6 +231,17 @@ export class MessageComponent implements OnInit {
       }
 
     })
+  }
+
+  previewImage(imageUrl: string) {
+    let listNzImages: NzImage[] = [];
+    listNzImages.push({
+      src: imageUrl,
+
+
+    });
+
+    this.nzImageService.preview(listNzImages, { nzZoom: 1, nzRotate: 0 })
   }
 
   removeAttachment(id: string) {

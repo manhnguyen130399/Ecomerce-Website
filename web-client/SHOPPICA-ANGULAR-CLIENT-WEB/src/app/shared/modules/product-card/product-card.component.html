@@ -30,6 +30,9 @@
     </div>
   </div>
   <div class="product-info">
+    <nz-rate [ngModel]="rating" nzAllowHalf nzDisabled></nz-rate>
+    <span *ngIf="product.comments && product.comments?.length >0"
+      class="num-comments">({{product.comments.length}})</span>
     <p [routerLink]="'/product/detail/'+ product.id" class="product-name text-hover">{{product.productName}}</p>
     <span class="product-price">{{product.price |currency}}</span>
     <app-select-color [showTitle]="false" [listColor]="listColor" [(colorSelected)]="colorSelected"></app-select-color>

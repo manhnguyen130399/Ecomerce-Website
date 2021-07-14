@@ -46,12 +46,12 @@ export class ReviewComponent implements OnInit {
       productId: this.orderDetail.productId,
     }
 
-    console.log(this.reviewForm.value)
     this.isLoading = true;
     this.commentService.comment(request).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe((res) => {
       if (res.code = 'OK') {
+        this.reviewForm.reset();
         this.isVisibleChange.emit(false);
         this.messageService.success('Add review successfully!');
       }

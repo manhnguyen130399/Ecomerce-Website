@@ -38,6 +38,7 @@ export class QuickViewComponent implements OnInit {
   inWishList = false;
   listWishIds: number[] = [];
   quantity = 1;
+  rating: number;
   customOptions: OwlOptions = {
     loop: false,
     autoplay: true,
@@ -69,6 +70,10 @@ export class QuickViewComponent implements OnInit {
 
     this.modalService.openQuickViewEmitted$.subscribe((product) => {
       this.product = product;
+
+      this.rating = this.product.comments.length == 0 ? 0 :
+        this.product.comments.map(c => c.rating).reduce((prev, cur) => prev + cur) / this.product.comments.length;
+
       this.isVisible = true;
       this.quantity = 1;
       this.listSize = getListSize(product.productDetails);

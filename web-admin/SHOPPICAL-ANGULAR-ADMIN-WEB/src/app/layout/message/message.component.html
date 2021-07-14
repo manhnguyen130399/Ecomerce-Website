@@ -14,6 +14,7 @@
       <p class="title">{{conversationSelected?.conversationTitle}}</p>
     </div>
     <div #messageContent class="message-content">
+      <nz-spin [ngClass]="{'isLoading':isLoading}" [nzSpinning]="isLoading" nzSimple></nz-spin>
       <div class="introduce flex fd-column al-center">
         <div class="avatar ">
           <img height="50" width="50" [src]="conversationSelected?.conversationImage" alt="avatar">
@@ -34,7 +35,7 @@
           <div class="content">
             <div *ngFor="let attachment of message.attachments">
               <div *ngIf="attachment.thumbUrl" class="image">
-                <img [src]="attachment.thumbUrl" alt="">
+                <img (click)="previewImage(attachment.thumbUrl)" [src]="attachment.thumbUrl" alt="">
               </div>
               <div *ngIf="!attachment.thumbUrl" class="attach flex al-center">
                 <div class="flex jc-center al-center"><i nz-icon nzType="file-text" nzTheme="outline"></i></div>
@@ -106,8 +107,8 @@
             class=" shop-info flex fd-column">
             <span class="shop-name">{{conversation.conversationTitle}}</span>
             <span class="last-message">{{conversation.lastMessage?.sender_id == accountId?'You: ':''}}{{
-              (conversation.lastMessage?.content ? conversation.lastMessage.content :"sent an attachment")
-              }}</span>
+              (!conversation.lastMessage? '' : conversation.lastMessage?.content ? conversation.lastMessage.content
+              :"sent an attachment")}}</span>
           </div>
         </div>
         <div

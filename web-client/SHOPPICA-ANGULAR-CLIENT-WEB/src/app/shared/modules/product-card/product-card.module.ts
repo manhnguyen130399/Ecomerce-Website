@@ -1,3 +1,5 @@
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { FormsModule } from '@angular/forms';
 import { productRoutes } from './../../../modules/product/product.routing';
 import { RouterModule } from '@angular/router';
 import { CartItemModule } from './../cart-item/cart-item.module';
@@ -16,6 +18,8 @@ import { ProductCardComponent } from './product-card.component';
     NzIconModule,
     NzToolTipModule,
     CartItemModule,
+    NzRateModule,
+    FormsModule,
     RouterModule
   ],
   exports: [ProductCardComponent]

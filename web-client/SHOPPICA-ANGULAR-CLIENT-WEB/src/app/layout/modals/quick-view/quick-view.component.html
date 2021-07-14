@@ -16,7 +16,11 @@
         </div>
         <div class="product-price flex al-center">
           <p class="price">{{product.price | currency}}</p>
-          <nz-rate [ngModel]="2" nzDisabled></nz-rate>
+          <div>
+            <nz-rate [ngModel]="rating" nzDisabled></nz-rate>
+            <span *ngIf="product.comments && product.comments?.length >0"
+              class="num-comments">({{product.comments.length}})</span>
+          </div>
         </div>
         <div class="product-description">
           <p>Go sporty this summer with this vintage navy and white striped v-neck t-shirt from the Nike. Perfect for

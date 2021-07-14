@@ -13,6 +13,10 @@
   margin-bottom: 7px;
 }
 
+.num-comments {
+  margin-left: 10px;
+}
+
 .product-name .name:hover {
   cursor: pointer;
   color: #56cfe1;

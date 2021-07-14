@@ -12,6 +12,8 @@ import { Conversation } from '@app/core/models/message/conversation';
 import { Message } from '@app/core/models/message/message';
 import { MessageService } from '@core/services/message/message.service';
 import { Observer, Observable } from 'rxjs';
+import { convertToLocalTime } from '@app/core/models/message/time-helper';
+import { NzImage, NzImageService } from 'ng-zorro-antd/image';
 
 @Component({
   selector: 'app-message',
@@ -26,6 +28,7 @@ export class MessageComponent implements OnInit {
   content: string;
   storeName: string;
   isLoad = true;
+  isLoading = false;
   numMessageUnRead: number;
   conversationSelected: Conversation;
   conversations: Conversation[] = [];
@@ -40,8 +43,9 @@ export class MessageComponent implements OnInit {
     private readonly signalrService: SignalrService,
     private readonly renderer: Renderer2,
     private readonly profileService: ProfileService,
-    private changeDetector: ChangeDetectorRef,
-    private readonly nzMessageService: NzMessageService
+    private readonly changeDetector: ChangeDetectorRef,
+    private readonly nzMessageService: NzMessageService,
+    private readonly nzImageService: NzImageService
   ) { }
 
   ngOnInit() {
@@ -105,6 +109,15 @@ export class MessageComponent implements OnInit {
     this.messageService.getAllConversations(this.accountId).subscribe(res => {
       if (res.isSuccess) {
         this.conversations = res.data;
+
+        this.conversations.map(c => {
+          c.created_at = convertToLocalTime(c.created_at);
+          if (c.lastMessage) {
+            c.lastMessage.created_at = convertToLocalTime(c.lastMessage.created_at);
+          }
+          return c;
+        });
+
         if (this.conversations.length > 0) {
           this.conversationSelected = this.conversations[0];
           this.openConversation(this.conversationSelected);
@@ -119,9 +132,13 @@ export class MessageComponent implements OnInit {
   }
 
   openConversation(conversation: Conversation) {
+    this.fileList = [];
+    this.messages = [];
+    this.isLoading = true;
     this.messageService.getMessageByConversation(conversation?.id).subscribe(res => {
       if (res.isSuccess) {
         this.messages = res.data;
+        this.isLoading = false;
         this.changeDetector.detectChanges();
         this.scrollToBottom();
       }
@@ -200,6 +217,15 @@ export class MessageComponent implements OnInit {
       }
 
     })
+  }
+
+  previewImage(imageUrl: string) {
+    let listNzImages: NzImage[] = [];
+    listNzImages.push({
+      src: imageUrl
+    });
+
+    this.nzImageService.preview(listNzImages, { nzZoom: 1, nzRotate: 0 })
   }
 
   removeAttachment(id: string) {

@@ -16,23 +16,23 @@ import com.google.api.services.drive.model.FileList;
 @Service
 public class GoogleDriveService implements IGoogleDriveService {
 	
-	@Autowired
-	private Drive googleDrive;
+
 
 	@Override
-	public List<File> getAllFile() throws IOException {
-		FileList result = googleDrive.files().list().setFields("nextPageToken, files(id, name, parents, mimeType)")
-				.execute();
-		return result.getFiles();
+	public void getAllFile() throws IOException {
+//		FileList result = googleDrive.files().list().setFields("nextPageToken, files(id, name, parents, mimeType)")
+//				.execute();
+//		return result.getFiles();
 	}
 
 	@Override
 	public String createNewFolder(final String name) throws IOException {
-		final File fileMetadata = new File();
-        fileMetadata.setName(name);
-        fileMetadata.setMimeType("application/vnd.google-apps.folder");
-        final File file = googleDrive.files().create(fileMetadata).setFields("id").execute();
-        return file.getId();
+//		final File fileMetadata = new File();
+//        fileMetadata.setName(name);
+//        fileMetadata.setMimeType("application/vnd.google-apps.folder");
+//        final File file = googleDrive.files().create(fileMetadata).setFields("id").execute();
+//        return file.getId();
+		return "";
 	}
 
 	@Override
@@ -43,13 +43,14 @@ public class GoogleDriveService implements IGoogleDriveService {
 
 	@Override
 	public String uploadFile(final java.io.File input) throws IOException {
-		final String FOLDER_ID_TEST = "1TaQdtZyViboIhjJ84n2Bnfw48fwvefWD";
-		final File fileMetadata = new File();
-		fileMetadata.setName(input.getName());
-		fileMetadata.setParents(Collections.singletonList(FOLDER_ID_TEST));
-		final FileContent mediaContent = new FileContent("image/jpeg", input);
-		final File file = googleDrive.files().create(fileMetadata, mediaContent).setFields("id").execute();
-		return file.getId();
+//		final String FOLDER_ID_TEST = "1TaQdtZyViboIhjJ84n2Bnfw48fwvefWD";
+//		final File fileMetadata = new File();
+//		fileMetadata.setName(input.getName());
+//		fileMetadata.setParents(Collections.singletonList(FOLDER_ID_TEST));
+//		final FileContent mediaContent = new FileContent("image/jpeg", input);
+//		final File file = googleDrive.files().create(fileMetadata, mediaContent).setFields("id").execute();
+//		return file.getId();
+		return "";
 	}
 
 }

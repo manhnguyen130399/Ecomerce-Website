@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   userServiceUrl: 'https://aspnetclusters-37619-0.cloudclusters.net',
   orderServiceUrl: 'https://aspnetclusters-37670-0.cloudclusters.net',
-  productServiceUrl: "https://backend-java-api.herokuapp.com",
+  productServiceUrl: 'https://javaclusters-38542-0.cloudclusters.net',
   recommendationServiceUrl: 'https://shopica-recommendation.herokuapp.com',
   messageServiceUrl: 'https://aspnetclusters-37333-0.cloudclusters.net',
   imageAnalyzerUrl: 'https://ec2-13-212-161-115.ap-southeast-1.compute.amazonaws.com/api/image-analyzer',
@@ -21,7 +21,7 @@ export const environment = {
   backendDomain: [
     'aspnetclusters-37619-0.cloudclusters.net',
     'aspnetclusters-37670-0.cloudclusters.net',
-    "backend-java-api.herokuapp.com",
+    "javaclusters-38542-0.cloudclusters.net",
     "aspnetclusters-37333-0.cloudclusters.net",
     "localhost:5001",
     "localhost:5002",

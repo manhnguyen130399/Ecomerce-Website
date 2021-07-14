@@ -25,6 +25,7 @@ export class ProductCardComponent implements OnInit {
   colorSelected: Color;
   image: string;
   sizes = '';
+  rating: number;
   inWishList = false;
   isChangeWishList = false;
   constructor(
@@ -53,7 +54,8 @@ export class ProductCardComponent implements OnInit {
       this.colorSelected = this.listColor[0];
       this.image = changes.product.currentValue.productImages[0].image;
       this.sizes = this.listSize.map(x => x.sizeName).join(', ');
-
+      this.rating = (this.product.comments === undefined || this.product.comments?.length == 0) ? 0 :
+        this.product.comments.map(c => c.rating).reduce((prev, cur) => prev + cur) / this.product.comments.length;
     }
   }
 
