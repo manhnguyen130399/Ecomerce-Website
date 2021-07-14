@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   userServiceUrl: "https://aspnetclusters-37619-0.cloudclusters.net",
   orderServiceUrl: "https://aspnetclusters-37670-0.cloudclusters.net",
-  productServiceUrl: "https://backend-java-api.herokuapp.com",
+  productServiceUrl: "https://javaclusters-38542-0.cloudclusters.net",
   messageServiceUrl: 'https://aspnetclusters-37333-0.cloudclusters.net',
   localUserServiceUrl: "https://localhost:5001",
   localOrderServiceUrl: "https://localhost:5002",
@@ -18,7 +18,7 @@ export const environment = {
   backendDomain: [
     "aspnetclusters-37619-0.cloudclusters.net",
     "aspnetclusters-37670-0.cloudclusters.net",
-    "backend-java-api.herokuapp.com",
+    "javaclusters-38542-0.cloudclusters.net",
     "aspnetclusters-37333-0.cloudclusters.net",
     "localhost:5001",
     "localhost:5002",
