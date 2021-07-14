@@ -34,29 +34,29 @@ public class GoogleDriveConfig {
 			DriveScopes.DRIVE);
 	private static final String CREDENTIALS_FILE_PATH = "/client_secret.json";
 
-//	@Bean
-//	public void getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-////		// Load client secrets.
-////		InputStream in = GoogleDriveConfig.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-////		if (in == null) {
-////			throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
-////		}
-////		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
-////
-////		// Build flow and trigger user authorization request.
-////		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
-////				clientSecrets, SCOPES)
-////						.setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
-////						.setAccessType("offline").build();
-////		LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8080).build();
-////		return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-//	}
+	@Bean
+	public Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+		// Load client secrets.
+		InputStream in = GoogleDriveConfig.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+		if (in == null) {
+			throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
+		}
+		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
-//	@Bean
-//	public void googleDrive() throws GeneralSecurityException, IOException {
-////		final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-////		return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-////				.setApplicationName(APPLICATION_NAME).build();
-//	}
+		// Build flow and trigger user authorization request.
+		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
+				clientSecrets, SCOPES)
+						.setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+						.setAccessType("offline").build();
+		LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8080).build();
+		return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
+	}
+
+	@Bean
+	public Drive googleDrive() throws GeneralSecurityException, IOException {
+		final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+		return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+				.setApplicationName(APPLICATION_NAME).build();
+	}
 
 }
