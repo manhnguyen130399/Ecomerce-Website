@@ -149,7 +149,6 @@ export class ProductDetailSummaryComponent implements OnInit {
         if (res[0].code === 'OK') {
           this.storeAddress = JSON.parse(res[0].data.address);
           this.store = res[0].data;
-          console.log(res[0].data);
 
           if (res[1] && res[1].isSuccessed) {
             this.userAddress = res[1].data.address;

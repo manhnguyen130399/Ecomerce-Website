@@ -59,7 +59,7 @@ namespace ORDER_SERVICE_NET.Services.OrderServices
                         Phone = request.Phone,
                         State = Constant.PENDING,
                         Notes = orderStore.Notes,
-                        QrCode = qrCodeData.Message == "OK" ? qrCodeData.Data : null,
+                        QrCode = qrCodeData?.Message == "OK" ? qrCodeData?.Data : null,
                         Total = orderStore.Total,
                         Discount = orderStore.Discount,
                         ShippingCost = orderStore.ShippingCost,

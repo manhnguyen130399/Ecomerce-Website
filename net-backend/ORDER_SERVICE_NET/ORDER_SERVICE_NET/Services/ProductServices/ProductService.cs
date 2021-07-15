@@ -34,11 +34,12 @@ namespace ORDER_SERVICE_NET.Services.ProductServices
                     return JsonConvert.DeserializeObject<APIResultSuccess<List<ProductView>>>(data);
                 }
             }
-            return JsonConvert.DeserializeObject<APIResultErrors<List<ProductView>>>(null);
+            return JsonConvert.DeserializeObject<APIResultErrors<List<ProductView>>>("");
         }
 
         public async Task<APIResult<string>> GetOrderQrCode(string request)
         {
+            _httpClient.BaseAddress = new Uri("https://backend-java-api.herokuapp.com/api/");
             var response = await _httpClient.PostStringAsyncWithAuth("qr", request, _httpContextAccessor);
             if (response.IsSuccessStatusCode)
             {
@@ -48,7 +49,7 @@ namespace ORDER_SERVICE_NET.Services.ProductServices
                     return JsonConvert.DeserializeObject<APIResultSuccess<string>>(data);
                 }
             }
-            return JsonConvert.DeserializeObject<APIResultErrors<string>>(null);
+            return JsonConvert.DeserializeObject<APIResultErrors<string>>("");
         }
 
         public async Task<APIResult<string>> UpdateQuantityProductDetail(List<UpdateProductDetailQuantityRequest> request)
@@ -62,7 +63,7 @@ namespace ORDER_SERVICE_NET.Services.ProductServices
                     return JsonConvert.DeserializeObject<APIResultSuccess<string>>(data);
                 }
             }
-            return JsonConvert.DeserializeObject<APIResultErrors<string>>(null);
+            return JsonConvert.DeserializeObject<APIResultErrors<string>>("");
         }
     }
 }

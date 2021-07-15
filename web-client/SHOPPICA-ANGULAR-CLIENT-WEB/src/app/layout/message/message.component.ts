@@ -25,7 +25,7 @@ import { convertToLocalTime } from '@core/model/time-helper';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageComponent implements OnInit {
-  uploadUrl = `${environment.productServiceUrl}/api/upload`;
+  uploadUrl = `${environment.uploadFileUrl}/api/upload`;
   isShowMessagesFrame = false;
   accountId: number = -1;
   content: string;

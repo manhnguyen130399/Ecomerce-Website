@@ -14,12 +14,15 @@ export const environment = {
   ghnAPIUrl: "https://dev-online-gateway.ghn.vn/shiip/public-api",
   tokenKey: "token",
   verifyKey: "verifyKey",
+  clientWebUrl: "https://hieuvo1.github.io/shopica-client-v2",
   ghnToken: "aa3d5553-73e6-11eb-8be2-c21e19fc6803",
+  uploadFileUrl: "https://backend-java-api.herokuapp.com",
   backendDomain: [
     "aspnetclusters-37619-0.cloudclusters.net",
     "aspnetclusters-37670-0.cloudclusters.net",
     "javaclusters-38542-0.cloudclusters.net",
     "aspnetclusters-37333-0.cloudclusters.net",
+    "backend-java-api.herokuapp.com",
     "localhost:5001",
     "localhost:5002",
     "localhost:5003"

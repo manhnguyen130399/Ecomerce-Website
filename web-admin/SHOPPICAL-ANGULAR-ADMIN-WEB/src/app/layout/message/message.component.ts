@@ -22,7 +22,7 @@ import { NzImage, NzImageService } from 'ng-zorro-antd/image';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageComponent implements OnInit {
-  uploadUrl = `${environment.productServiceUrl}/api/upload`;
+  uploadUrl = `${environment.uploadFileUrl}/api/upload`;
   isShowMessagesFrame = false;
   accountId: number = -1;
   content: string;

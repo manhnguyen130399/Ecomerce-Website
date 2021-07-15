@@ -17,7 +17,7 @@ export class BlogFormComponent implements OnInit {
   isLoadingButtonSubmit = false;
   loading = false;
   avatarUrl?: string;
-  backEndUrl = `${environment.productServiceUrl}/api/upload`;
+  backEndUrl = `${environment.uploadFileUrl}/api/upload`;
   blog: Blog = {
     id: null,
     title: null,

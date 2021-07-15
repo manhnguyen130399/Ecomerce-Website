@@ -28,7 +28,7 @@ export class UpdateInfoComponent implements OnInit {
   listDistrict: District[] = [];
   districtIdSelected = -1;
   wardIdSelected: string = '-1';
-  backendUrl = `${environment.productServiceUrl}/api/upload`;
+  backendUrl = `${environment.uploadFileUrl}/api/upload`;
   isLoadingSubmit = false;
   isLoadingSellerDetail = true;
   initialEmailValue: string;

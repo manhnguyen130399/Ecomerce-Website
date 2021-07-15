@@ -31,7 +31,7 @@ export class UpdateStoreInfoComponent implements OnInit {
   listDistrict: District[] = [];
   districtIdSelected: number = -1;
   wardIdSelected = '-1';
-  backendUrl = `${environment.productServiceUrl}/api/upload`;
+  backendUrl = `${environment.uploadFileUrl}/api/upload`;
   isLoadingSubmit = false;
   isLoadingSellerDetail = true;
   initialStoreNameValue: string;

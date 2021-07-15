@@ -21,7 +21,7 @@ export class CategoryModalComponent extends BaseModalComponent<Category> impleme
   @Output() okModalEvent = new EventEmitter<Category>();
   isHaveFile = false;
   categories: Category[] = [];
-  backEndUrl = `${environment.productServiceUrl}/api/upload`;
+  backEndUrl = `${environment.uploadFileUrl}/api/upload`;
   fileList: NzUploadFile[] = [];
   isLoadingCategoryInSelect = false;
 

@@ -29,7 +29,7 @@ namespace USER_SERVICE_NET.Utilities
 
         public const string DriveServiceNotFoundImage = "1KXVcuCEi-aYgrJXkUwV_RODDh5cT5qHv";
 
-        public const string DriveServiceBaseImageUrl = "https://drive.google.com/thumbnail?id={0}";
+        public const string DriveServiceBaseImageUrl = "https://drive.google.com/uc?export=view&id={0}";
 
 
     }

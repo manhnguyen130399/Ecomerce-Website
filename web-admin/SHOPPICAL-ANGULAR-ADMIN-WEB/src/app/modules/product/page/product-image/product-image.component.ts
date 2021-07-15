@@ -18,7 +18,7 @@ function getBase64(file: File): Promise<string | ArrayBuffer | null> {
   styleUrls: ['./product-image.component.css']
 })
 export class ProductImageComponent implements OnInit {
-  backEndUrl = `${environment.productServiceUrl}/api/upload`;
+  backEndUrl = `${environment.uploadFileUrl}/api/upload`;
   @Input() listImage: NzUploadFile[];
   @Output() listImageChange = new EventEmitter<NzUploadFile[]>();
 

@@ -1,3 +1,4 @@
+import { environment } from '@env';
 import { UserService } from '@modules/auth/services/user.service';
 import { ShareService } from './../../services/share.service';
 import { Component, OnInit } from '@angular/core';
@@ -40,7 +41,7 @@ export class StoreInfoComponent implements OnInit {
 
     this.storeRegisterForm.get("storeName").valueChanges.subscribe(storeName => {
       const slugStoreName = this.slugifyPipe.transform(storeName);
-      this.storeRegisterForm.controls.website.setValue(`http://localhost:4200/${slugStoreName}`)
+      this.storeRegisterForm.controls.website.setValue(`${environment.clientWebUrl}/${slugStoreName}`)
     })
   }
 
@@ -59,7 +60,7 @@ export class StoreInfoComponent implements OnInit {
     const data = {
       ...this.storeRegisterForm.value,
       isPrev: true,
-      website: (`http://localhost:4200/${this.slugifyPipe.transform(this.storeRegisterForm.controls.storeName.value)}`)
+      website: (`${environment.clientWebUrl}/${this.slugifyPipe.transform(this.storeRegisterForm.controls.storeName.value)}`)
     };
     this.shareService.childEmitChange(data);
   }

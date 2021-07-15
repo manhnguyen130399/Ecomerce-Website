@@ -11,6 +11,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using USER_SERVICE_NET.Utilities;
+using USER_SERVICE_NET.ViewModels.Commons;
 
 namespace USER_SERVICE_NET.Services.StorageServices
 {
@@ -67,7 +68,7 @@ namespace USER_SERVICE_NET.Services.StorageServices
             return service;
         }
 
-        public async Task<string> UploadFileAsync(IFormFile file)
+        public async Task<APIResult<string>> UploadFileAsync(IFormFile file)
         {
             if (file != null && file.Length > 0)
             {
@@ -90,15 +91,15 @@ namespace USER_SERVICE_NET.Services.StorageServices
                     var result  = await request.UploadAsync();
                     if( result.Status == UploadStatus.Completed)
                     {
-                        return String.Format(Constant.DriveServiceBaseImageUrl, fileId);
+                        return new APIResultSuccess<string>(String.Format(Constant.DriveServiceBaseImageUrl, fileId));
                     }
                     else
                     {
-                        return String.Format(Constant.DriveServiceBaseImageUrl, Constant.DriveServiceNotFoundImage);
+                        return new APIResultSuccess<string>(String.Format(Constant.DriveServiceBaseImageUrl, Constant.DriveServiceNotFoundImage));
                     }
                 } 
             }
-            return String.Format(Constant.DriveServiceBaseImageUrl, Constant.DriveServiceNotFoundImage);
+            return new APIResultSuccess<string>(String.Format(Constant.DriveServiceBaseImageUrl, Constant.DriveServiceNotFoundImage));
         }
     }
 }

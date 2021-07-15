@@ -41,6 +41,15 @@ export class ReviewComponent implements OnInit {
   }
 
   sendReview() {
+    // validate
+    for (const i in this.reviewForm.controls) {
+      this.reviewForm.controls[i].markAsDirty();
+      this.reviewForm.controls[i].updateValueAndValidity();
+    }
+    if (this.reviewForm.invalid) {
+      return;
+    }
+
     const request: CommentCreateRequest = {
       ...this.reviewForm.value,
       productId: this.orderDetail.productId,

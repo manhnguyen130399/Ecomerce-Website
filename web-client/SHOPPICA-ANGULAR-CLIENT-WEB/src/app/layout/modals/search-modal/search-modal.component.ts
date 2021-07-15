@@ -27,7 +27,6 @@ export class SearchModalComponent implements OnInit {
   avatarUrl?: string;
   listProduct: Product[] = [];
   imgAnalyzer: string = `${environment.imageAnalyzerUrl}`;
-  // imgAnalyzer: string = `${environment.productServiceUrl}/api/upload`;
 
   constructor(
     private readonly formBuilder: FormBuilder,
