@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fashion.commons.enums.AccountType;
 import com.fashion.domain.UserContext;
+import com.fashion.model.AccountVM;
 import com.fashion.modules.brand.domain.Brand;
 import com.fashion.modules.category.domain.Category;
 import com.fashion.modules.color.domain.Color;
@@ -54,9 +55,9 @@ public class BaseService implements IBaseService {
 	@Override
 	public CommentVM convertToVM(final Comment comment) {
 		final CommentVM vm = mapper.map(comment, CommentVM.class);
-		final String email = comment.getEmail();
-		vm.setCustomerName(email);
-		vm.setCustomerImage(accountService.getAccountByUsername(email).getImageUrl());
+		vm.setCustomerName(comment.getEmail());
+		final AccountVM accountById = accountService.getAccountById(comment.getAccountId());
+		vm.setCustomerImage(accountById != null ? accountById.getImageUrl() : null);
 		return vm;
 	}
 	

@@ -455,7 +455,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	@Cacheable(Constants.PRODUCTS)
+	@Cacheable(value = Constants.PRODUCTS)
 	public Page<ProductVM> getAllOrFilterProduct(final ProductFilterRequest req, final Integer page,
 			final Integer pageSize) {
 		return productRepo.filterProduct(req, page, pageSize).map(it -> convertProductToVM(it));
@@ -463,7 +463,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	@Cacheable(Constants.PRODUCTS)
+	@Cacheable(value = Constants.PRODUCTS)
 	public List<ProductVM> getBestSellerProductByStore(final Integer storeId, final Integer Top) {
 		final BestSellerData data = getBestSellerByStore(storeId);
 		return productRepo
