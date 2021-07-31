@@ -1,7 +1,10 @@
 <app-banner></app-banner>
 <div class="container">
   <app-category-list></app-category-list>
-  <app-product-trending></app-product-trending>
+  <div *ngIf="showRecommend">
+    <app-product-trending></app-product-trending>
+  </div>
+
 </div>
 <app-deal-of-day></app-deal-of-day>
 <div class="container">

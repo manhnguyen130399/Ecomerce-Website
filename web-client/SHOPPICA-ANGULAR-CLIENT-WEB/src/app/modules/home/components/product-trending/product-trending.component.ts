@@ -39,10 +39,8 @@ export class ProductTrendingComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.productService.getProductBestSellerByStore(5).subscribe(res => {
-      if (res.code === 'OK') {
-        this.listProduct = res.data;
-      }
-    });
+    this.productService.getProductRecommender().subscribe(res => {
+      this.listProduct = res;
+    })
   }
 }

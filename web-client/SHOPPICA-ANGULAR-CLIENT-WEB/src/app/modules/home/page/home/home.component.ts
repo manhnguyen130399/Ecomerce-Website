@@ -1,3 +1,4 @@
+import { AuthService } from './../../../../core/services/auth/auth.service';
 import { Category } from '../../../../core/model/category/category';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,10 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-
-  constructor() { }
+  showRecommend = false;
+  constructor(private readonly authService: AuthService) { }
 
   ngOnInit(): void {
+    this.showRecommend = this.authService.isAuthenticated();
   }
 
 

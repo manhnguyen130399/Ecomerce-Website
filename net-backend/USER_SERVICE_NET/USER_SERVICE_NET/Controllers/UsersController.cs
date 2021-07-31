@@ -65,6 +65,21 @@ namespace USER_SERVICE_NET.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetAccountInfoByAccountId")]
+        public async Task<IActionResult> GetAccountInfoByAccountId(int accountId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userService.GetAccountInfoByAccountId(accountId);
+
+            if (!result.IsSuccessed) return BadRequest(result);
+
+            return Ok(result);
+        }
+
         [HttpGet("GetSellerById")]
         [Authorize]
         public async Task<IActionResult> GetSellerById()

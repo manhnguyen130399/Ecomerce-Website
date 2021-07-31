@@ -68,16 +68,11 @@ export class ProductDetailComponent implements OnInit {
       });
     });
 
-    if (this.authService.isAuthenticated()) {
-      this.productService.getProductRecommender().subscribe(res => {
-        this.listProduct = res;
-      })
-    }
-    else {
-      this.productService.getProductBestSellerByStore().subscribe(res => {
+    this.productService.getProductBestSellerByStore(5).subscribe(res => {
+      if (res.code === 'OK') {
         this.listProduct = res.data;
-      })
-    }
+      }
+    });
 
   }
 

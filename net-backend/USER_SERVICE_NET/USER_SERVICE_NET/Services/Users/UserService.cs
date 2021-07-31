@@ -479,5 +479,26 @@ namespace USER_SERVICE_NET.Services.Users
 
             return new APIResultSuccess<SellerView>(data);
         }
+
+        public async Task<APIResult<AccountView>> GetAccountInfoByAccountId(int accountId)
+        {
+            var account = await _context.Account.Include(x => x.Seller).FirstOrDefaultAsync(a => a.Id == accountId);
+            if (account == null)
+            {
+                return new APIResultErrors<AccountView>("Not found");
+            }
+            var accountView = new AccountView()
+            {
+                Id = account.Id,
+                UserName = account.Username,
+                Password = account.Password,
+                Type = account.Type,
+                ImageUrl = account.ImageUrl,
+                IsActive = account.IsActive,
+                StoreId = account.Seller.Count > 0 ? account.Seller.FirstOrDefault().StoreId : -1,
+            };
+
+            return new APIResultSuccess<AccountView>(accountView);
+        }
     }
 }
