@@ -6,4 +6,5 @@ public interface IAccountService {
 
 	AccountVM getAccountByUsername(String username);
 	
+	AccountVM getAccountById(Integer id);
 }

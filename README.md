@@ -1,6 +1,6 @@
 Project Microservice 
-- BACKEND : .NET (Netcore), Java (Spring boot)
+- BACKEND : .NET (ASP.NET Core), Java (Spring boot)
 - FRONT-END: ANGULAR
 - DB: MySQL
 - CNN: Python
-- Recomender: 
+- Recomender: Python

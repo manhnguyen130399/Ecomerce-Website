@@ -22,5 +22,11 @@ public class AccountService implements IAccountService {
 				.getForObject(Constants.USER_URL + RestURL.GET_ACCOUNT_INFO_BY_USERNAME + username, AccountRes.class)
 				.getData();
 	}
+
+	@Override
+	public AccountVM getAccountById(final Integer id) {
+		return restTemplate.getForObject(Constants.USER_URL + RestURL.GET_ACCOUNT_INFO_BY_ID + id, AccountRes.class)
+				.getData();
+	}
 	
 }
