@@ -60,6 +60,7 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()//
 				.antMatchers(HttpMethod.POST, "/api/auth/**").permitAll()//
+				.antMatchers(HttpMethod.POST, "/api/product/import").permitAll()
 				.antMatchers(HttpMethod.POST, "/api/complain/create").permitAll()//
 				.antMatchers(HttpMethod.GET, "/api/promotion/valid-date").permitAll()//
 				.antMatchers(HttpMethod.POST, "/api/promotion/code").permitAll()//
@@ -71,6 +72,7 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST, "/api/product/product-all-store").permitAll()//
 				.antMatchers(HttpMethod.GET, "/api/product/fulltext-search").permitAll()//
 				.antMatchers(HttpMethod.GET, "/api/product/best-seller").permitAll()//
+				.antMatchers(HttpMethod.POST, "/api/product/send").permitAll()//
 				.antMatchers(HttpMethod.GET, "/api/product/**").permitAll()//
 				.antMatchers(HttpMethod.GET, "/api/blog/**").permitAll()//
 				.antMatchers(HttpMethod.POST, "/api/store/v2").permitAll()//
@@ -101,7 +103,6 @@ public class JwtConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.DELETE, "/api/blog/**").hasRole(admin)//
 				.antMatchers(HttpMethod.GET, "/api/store").hasRole(admin)//
 				.antMatchers(HttpMethod.DELETE, "/api/store/**").hasRole(admin)//
-
 				.antMatchers("/api/complain/**").hasRole(admin)//
 				.antMatchers("/api/**")//
 				.authenticated();

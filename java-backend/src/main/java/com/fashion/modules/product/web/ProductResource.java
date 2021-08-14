@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fashion.commons.constants.Constants;
 import com.fashion.commons.enums.SortType;
 import com.fashion.commons.utils.CommonUtil;
+import com.fashion.model.DataSendMQ;
 import com.fashion.modules.product.model.ProductDetailReq;
 import com.fashion.modules.product.model.ProductFilterRequest;
 import com.fashion.modules.product.model.ProductReq;
@@ -38,6 +40,9 @@ public class ProductResource extends BaseResource {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 
 	@PostMapping(URL + "/create")
 	public ResponseEntity<Map<String, Object>> createProduct(@RequestBody final ProductReq req) {
@@ -98,11 +103,12 @@ public class ProductResource extends BaseResource {
 	}
 
 	@PostMapping(URL + "/import")
-	public ResponseEntity<Map<String, Object>> importProducts(@RequestParam final MultipartFile file) {
+	public ResponseEntity<Map<String, Object>> importProducts(@RequestBody final MultipartFile file) {
 		CommonUtil.checkExcelFiles(file);
 		final List<ProductRes> productVMs = productService.readExcelFile(file);
 		if (org.apache.commons.collections.CollectionUtils.isNotEmpty(productVMs)) {
-			return success(productService.createProducts(productVMs));
+			rabbitTemplate.convertAndSend(Constants.PRODUCT_EXCHANGE_NAME, Constants.ROUTE_KEY, new DataSendMQ(productVMs));
+			return success(Constants.SUCCESS);
 		}
 		return success(Collections.emptyList());
 	}
@@ -133,5 +139,11 @@ public class ProductResource extends BaseResource {
 	public ResponseEntity<Map<String, Object>> updateQuantityProductDetail(
 			@RequestBody final List<ProductDetailReq> req) {
 		return success(productService.updateQuantityProductDetail(req));
+	}
+
+	@PostMapping(URL + "/send")
+	public ResponseEntity<Map<String, Object>> sendMessage(@RequestBody String str) {
+		rabbitTemplate.convertAndSend(Constants.EXCHANGE_NAME, Constants.ROUTE_KEY, str);
+		return success(Constants.THANK_YOU);
 	}
 }

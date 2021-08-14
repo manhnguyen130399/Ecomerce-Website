@@ -163,4 +163,11 @@ public final class Constants {
 	public static final String LIKED = "liked";
 	public static final String DISLIKED = "disliked";
 
+	// rabbitmq
+	public static final String QUEUE_NAME = "shopica-default";
+	public static final String EXCHANGE_NAME = "exchange-defaut";
+	public static final String ROUTE_KEY = "rabbitmq.*";
+	public static final String QUEUE_PRODUCT_NAME = "shopica-product";
+	public static final String PRODUCT_EXCHANGE_NAME = "product-exchange";
+
 }
