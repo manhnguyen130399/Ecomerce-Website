@@ -1,4 +1,4 @@
-Project Microservice 
+Project Ecommerce
 - BACKEND : .NET (ASP.NET Core), Java (Spring boot)
 - FRONT-END: ANGULAR
 - DB: MySQL
