@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -52,7 +53,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.PROMOTIONS, allEntries = true)
+	@CachePut(value = Constants.PROMOTIONS, key = "#req.code")
 	public PromotionVM createPromotion(final PromotionRequest req) throws Exception {
 		final Store store = storeRepo.findOneById(getCurrentStoreId());
 		if (store == null) {
@@ -84,6 +85,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
+//	@Cacheable(value = Constants.PROMOTIONS, key = "#id")
 	public PromotionVM findPromotionById(final Integer id) {
 		return mapper.map(promoRepo.findOneById(id), PromotionVM.class);
 	}
@@ -158,7 +160,7 @@ public class PromotionServiceImpl extends BaseService implements PromotionServic
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.PROMOTIONS, allEntries = true)
+	@CacheEvict(value = Constants.PROMOTIONS, key = "#id")
 	public PromotionVM deletePromotion(final Integer id, final Integer page, final Integer pageSize,
 			final SortType sortOrder, final String sortField) {
 		try {

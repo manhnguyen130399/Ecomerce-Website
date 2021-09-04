@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +36,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.BRANDS, allEntries = true)
+	@CachePut(value = Constants.BRANDS, key = "#req.brandName")
 	public BrandVM createBrand(final BrandVM req) {
 		final Store store = getStore(getUserContext());
 		final Brand existed = brandRepo.getByBrandName(req.getBrandName());
@@ -56,12 +57,14 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
+//	@Cacheable(value = Constants.BRANDS, key = "#id")
 	public BrandVM findById(final Integer id) {
 		return mapper.map(brandRepo.findOneByIdAndStoreId(id, getCurrentStoreId()), BrandVM.class);
 	}
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.BRANDS)
 	public Page<BrandVM> getBrands(final Integer page, final Integer pageSize, final String brandName,
 			final SortType sortOrder, final String sortField) {
 		return !isAdmin() ? getBrandsBySeller(page, pageSize, brandName, sortOrder, sortField)
@@ -89,7 +92,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.BRANDS, allEntries = true)
+	@CacheEvict(value = Constants.BRANDS, key = "#id")
 	public BrandVM deleteBrand(final Integer id, final Integer page, final Integer pageSize, final String brandName,
 			final SortType sortOrder, final String sortField) {
 		if (!isAdmin()) {
@@ -120,6 +123,7 @@ public class BrandServiceImpl extends BaseService implements BrandService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.BRANDS)
 	public Set<BrandVM> getBrands() {
 		final Set<BrandVM> brands = brandRepo.findAll().stream().map(it -> mapper.map(it, BrandVM.class))
 				.collect(Collectors.toSet());

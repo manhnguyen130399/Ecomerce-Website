@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +36,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.COLORS, allEntries = true)
+	@CachePut(value = Constants.COLORS, key = "#vm.colorCode")
 	public ColorVM createColor(final ColorVM vm) {
 		final UserContext context = getUserContext();
 		final Store store = getStore(context);
@@ -91,7 +92,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.COLORS, allEntries = true)
+	@CacheEvict(value = Constants.COLORS, key = "#id")
 	public ColorVM deleteColor(final Integer id, final String colorName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		if (!isAdmin()) {
@@ -112,7 +113,6 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
-	@Cacheable(value = Constants.COLORS)
 	public Page<ColorVM> searchColorByKeywordAndStore(final String colorName, final SortType sortOrder,
 			final String sortField, final Integer page, final Integer pageSize) {
 		return colorRepo
@@ -123,6 +123,7 @@ public class ColorServiceImpl extends BaseService implements ColorService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.COLORS)
 	public Set<ColorVM> getColors() {
 		final Set<ColorVM> res = colorRepo.findAll().stream().map(it -> mapper.map(it, ColorVM.class))
 				.collect(Collectors.toSet());

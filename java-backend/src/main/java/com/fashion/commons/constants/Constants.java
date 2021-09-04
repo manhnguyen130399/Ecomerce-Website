@@ -128,28 +128,34 @@ public final class Constants {
 	public static final String AUTHORIZATION = "Authorization";
 
 	// NET API
-	public static final String USER_URL = "https://aspnetclusters-37619-0.cloudclusters.net/api";
-	public static final String ORDER_URL = "https://aspnetclusters-37670-0.cloudclusters.net/api";
+	public static final String USER_URL = "https://user-service-net.herokuapp.com/api";
+	public static final String ORDER_URL = "https://order-service-net.herokuapp.com/api";
 	// EXCEL
 	public static final List<String> EXCEL_VALID_FORMATS = Lists.newArrayList("xls", "xlsx");
 
 	// CACHE
 	// product
 	public static final String PRODUCTS = "products";
+	public static final String PRODUCT = "product";
 	public static final String BEST_SELLER = "best-seller";
 	// blog
 	public static final String BLOG = "blogs";
 	public static final String BLOG_RES = "blog-res";
 	// brand
 	public static final String BRANDS = "brands";
+	public static final String BRAND = "brand";
 	// category
 	public static final String CATEGORIES = "categories";
+	public static final String CATEGORY = "category";
 	// color
 	public static final String COLORS = "colors";
+	public static final String COLOR = "color";
 	// size
 	public static final String SIZES = "sizes";
+	public static final String SIZE = " size";
 	// promotion
 	public static final String PROMOTIONS = "promotions";
+	public static final String PROMOTION = "promotion";
 	//
 	public static final String ORDER_REPORT = "Report Order ";
 	//

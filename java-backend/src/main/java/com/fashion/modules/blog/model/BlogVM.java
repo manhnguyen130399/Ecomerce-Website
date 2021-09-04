@@ -1,5 +1,6 @@
 package com.fashion.modules.blog.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Data
-public class BlogVM extends BlogReq {
+public class BlogVM extends BlogReq implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1743136493531744666L;
 
 	private Integer id;
 

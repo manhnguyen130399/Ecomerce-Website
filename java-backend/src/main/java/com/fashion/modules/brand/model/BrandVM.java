@@ -1,9 +1,16 @@
 package com.fashion.modules.brand.model;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class BrandVM {
+public class BrandVM implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7622595682094824739L;
 
 	private Integer id;
 

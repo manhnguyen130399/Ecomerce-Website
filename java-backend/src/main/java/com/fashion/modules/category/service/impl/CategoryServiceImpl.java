@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +37,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.CATEGORIES)
+	@CachePut(value = Constants.CATEGORIES, key = "#req.categoryName")
 	public CategoryVM createCategory(final CategoryVM req) {
 		final Store store = getStore(getUserContext());
 		final Category existed = cateRepo.getByCategoryName(req.getCategoryName());
@@ -58,12 +59,14 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
+//	@Cacheable(value = Constants.CATEGORIES, key = "#id")
 	public CategoryVM findById(final Integer id) {
 		return mapper.map(cateRepo.findOneByIdAndStoreId(id, getCurrentStoreId()), CategoryVM.class);
 	}
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.CATEGORIES)
 	public Page<CategoryVM> getCategories(final Integer page, final Integer pageSize, final String categoryName,
 			final SortType sortOrder, final String sortField, final Integer storeId) {
 		final Pageable pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
@@ -89,7 +92,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.CATEGORIES, allEntries = true)
+	@CacheEvict(value = Constants.CATEGORIES, key = "#id")
 	public CategoryVM deleteCategory(final Integer id, final Integer page, final Integer pageSize,
 			final String categoryName, final SortType sortOrder, final String sortField) {
 		final Store store = getStore(getUserContext());
@@ -123,6 +126,7 @@ public class CategoryServiceImpl extends BaseService implements CategoryService 
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.CATEGORIES)
 	public Set<CategoryVM> getCategories() {
 		final Set<CategoryVM> res = cateRepo.findAll().stream().map(it -> mapper.map(it, CategoryVM.class))
 				.collect(Collectors.toSet());

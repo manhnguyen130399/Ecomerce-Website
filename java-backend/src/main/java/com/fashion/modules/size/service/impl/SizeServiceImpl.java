@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +36,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.SIZES, allEntries = true)
+	@CachePut(value = Constants.SIZES, key = "#size.sizeName")
 	public SizeVM createSize(final SizeVM size) {
 		final UserContext userContext = getUserContext();
 		final Store store = getStore(userContext);
@@ -57,12 +58,14 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
+//	@Cacheable(value = Constants.SIZES, key = "#id")
 	public SizeVM findById(final Integer id) {
 		return mapper.map(sizeRepo.findOneByIdAndStoreId(id, getCurrentStoreId()), SizeVM.class);
 	}
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.SIZES)
 	public Page<SizeVM> getSizes(final Integer page, final Integer pageSize, final String sizeName,
 			final SortType sortOrder, final String sortField) {
 		final PageRequest pageable = PageRequest.of(page, pageSize, CommonUtil.sortCondition(sortOrder, sortField));
@@ -90,7 +93,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.SIZES, allEntries = true)
+	@CacheEvict(value = Constants.SIZES, key = "#id")
 	public SizeVM deleteSize(final Integer id, final Integer page, final Integer pageSize, final String sizeName,
 			final SortType sortOrder, final String sortField) {
 		if (!isAdmin()) {
@@ -123,6 +126,7 @@ public class SizeServiceImpl extends BaseService implements SizeService {
 
 	@Override
 	@Transactional
+	@Cacheable(value = Constants.SIZES)
 	public Set<SizeVM> getSizes() {
 		final Set<SizeVM> sizes = sizeRepo.findAll().stream().map(it -> mapper.map(it, SizeVM.class))
 				.collect(Collectors.toSet());

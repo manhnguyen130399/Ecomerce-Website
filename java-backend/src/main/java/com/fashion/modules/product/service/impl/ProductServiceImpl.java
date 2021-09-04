@@ -140,7 +140,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.PRODUCTS, allEntries = true)
+	@Cacheable(value = Constants.PRODUCTS, key = "#req.productName")
 	public ProductVM createProduct(final ProductReq req) {
 		final Store store = getStore(getUserContext());
 		final Integer storeId = store.getId();
@@ -189,7 +189,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	@CachePut(value = Constants.PRODUCTS)
+	@CachePut(value = Constants.PRODUCT, key = "#req.id")
 	public ProductVM updateProduct(final ProductReq req) {
 		final Store store = getStore(getUserContext());
 		final Integer storeId = store.getId();
@@ -308,7 +308,7 @@ public class ProductServiceImpl extends BaseService implements ProductService {
 
 	@Override
 	@Transactional
-	@CacheEvict(value = Constants.PRODUCTS, allEntries = true)
+	@CacheEvict(value = Constants.PRODUCTS, key = "#id")
 	public ProductVM deleteProduct(final Integer id, final Integer page, final Integer pageSize,
 			final SortType sortOrder, final String sortField) {
 		try {
